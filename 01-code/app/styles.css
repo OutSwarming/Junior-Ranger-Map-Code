@@ -1080,7 +1080,7 @@ body.app-tab-active #slide-panel {
 #slide-panel {
     background: #101214;
     color: #f8fafc;
-    padding: 10px 0 0;
+    padding: 6px 0 0;
     overflow: hidden;
 }
 
@@ -1089,8 +1089,18 @@ body.app-tab-active #slide-panel {
     height: 6px;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.32);
-    margin: 0 auto 10px;
+    margin: 0 auto 6px;
     flex: 0 0 auto;
+    touch-action: none;
+    cursor: grab;
+}
+
+.panel-drag-handle:active {
+    cursor: grabbing;
+}
+
+#slide-panel.panel-dragging {
+    transition: none !important;
 }
 
 #slide-panel .close-btn {
@@ -1111,7 +1121,7 @@ body.app-tab-active #slide-panel {
 #slide-panel .panel-content {
     display: flex;
     flex-direction: column;
-    padding: 0 18px 22px;
+    padding: 0 16px 18px;
     margin: 0;
     color: #f8fafc;
 }
@@ -1121,30 +1131,33 @@ body.app-tab-active #slide-panel {
 }
 
 .panel-hero {
-    padding: 4px 52px 8px 0;
+    padding: 0 52px 2px 0;
 }
 
 #panel-title {
     margin: 0;
     color: #f8fafc;
-    font-size: clamp(26px, 7vw, 40px);
-    line-height: 1.12;
+    font-size: clamp(28px, 7.4vw, 34px);
+    line-height: 1.05;
     font-weight: 500;
     letter-spacing: 0;
 }
 
 .panel-subtitle {
-    margin: 8px 0 0;
+    margin: 2px 0 0;
     color: #cbd5e1;
-    font-size: 15px;
-    line-height: 1.35;
+    font-size: 13px;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .park-meta-bar {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     overflow-x: auto;
-    padding: 12px 0 0;
+    padding: 5px 0 0;
     scrollbar-width: none;
 }
 
@@ -1159,26 +1172,26 @@ body.app-tab-active #slide-panel {
     background: rgba(255, 255, 255, 0.08);
     color: #dbeafe;
     border-radius: 999px;
-    padding: 7px 10px;
-    font-size: 12px;
+    padding: 5px 8px;
+    font-size: 11px;
     font-weight: 700;
     white-space: nowrap;
 }
 
 .panel-primary-actions {
     flex: 0 0 auto;
-    min-height: 76px;
+    min-height: 52px;
     display: flex;
-    gap: 10px;
+    gap: 8px;
     overflow-x: auto;
-    padding: 12px 0 16px;
+    padding: 4px 0 4px;
     scrollbar-width: none;
 }
 
 .panel-action-btn {
     flex: 0 0 auto;
     min-width: 104px;
-    min-height: 48px;
+    min-height: 44px;
     border: 0;
     border-radius: 999px;
     background: #003f45;
@@ -1186,7 +1199,7 @@ body.app-tab-active #slide-panel {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0 18px;
+    padding: 0 16px;
     text-decoration: none;
     font-size: 16px;
     font-weight: 700;
@@ -1377,9 +1390,9 @@ body.app-tab-active #slide-panel {
 }
 
 #panel-title {
-    font-size: clamp(26px, 7vw, 40px);
+    font-size: clamp(28px, 7.4vw, 34px);
     font-weight: 500;
-    line-height: 1.12;
+    line-height: 1.05;
 }
 
 #panel-location {

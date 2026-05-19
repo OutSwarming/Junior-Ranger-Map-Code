@@ -808,9 +808,15 @@
 /* Quick-Info Meta Bar */
 .park-meta-bar {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
     gap: 6px;
-    margin: 15px 0;
+    margin: 6px 0 0;
+    scrollbar-width: none;
+}
+
+.park-meta-bar::-webkit-scrollbar {
+    display: none;
 }
 
 .meta-pill {

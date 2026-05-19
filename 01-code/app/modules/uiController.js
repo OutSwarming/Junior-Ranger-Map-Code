@@ -33,7 +33,10 @@ function syncAppTabMode() {
 
 function closeMapOnlySurfaces() {
     const panel = document.getElementById('slide-panel');
-    if (panel) panel.classList.remove('open');
+    if (panel) {
+        panel.classList.remove('open', 'panel-dragging', 'panel-expanded');
+        panel.style.removeProperty('height');
+    }
 }
 
 function settleAppViewportAfterKeyboard() {
@@ -105,6 +108,7 @@ if (window.visualViewport) {
 // ====== DOM ELEMENTS ======
 const slidePanel = document.getElementById('slide-panel');
 const closeSlideBtn = document.getElementById('close-slide-panel');
+const slidePanelHandle = document.querySelector('.panel-drag-handle');
 const navItems = document.querySelectorAll('.nav-item');
 const uiViews = document.querySelectorAll('.ui-view');
 const filterPanel = document.getElementById('filter-panel');
@@ -164,6 +168,128 @@ function bindFixedSurfaceScrollGuard(root) {
 
     root.addEventListener('wheel', guardScroll, { passive: false, capture: true });
     root.addEventListener('touchmove', guardScroll, { passive: false, capture: true });
+}
+
+function resetSlidePanelHeight() {
+    if (!slidePanel) return;
+    slidePanel.classList.remove('panel-dragging', 'panel-expanded');
+    slidePanel.style.removeProperty('height');
+}
+
+function closeSlidePanel(options = {}) {
+    if (!slidePanel) return;
+    slidePanel.classList.remove('open');
+    resetSlidePanelHeight();
+    if (options.clearPin === true && typeof window.BARK.clearActivePin === 'function') {
+        window.BARK.clearActivePin();
+    }
+}
+
+function getMobileSheetMetrics() {
+    const viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    const navHeight = bottomNav ? bottomNav.getBoundingClientRect().height : 75;
+    const maxHeight = Math.max(280, viewportHeight - navHeight - 12);
+    const defaultHeight = Math.min(maxHeight, Math.max(360, viewportHeight * 0.64));
+    const closeThreshold = Math.max(250, defaultHeight * 0.62);
+    return { maxHeight, defaultHeight, closeThreshold };
+}
+
+function bindSlidePanelDrag() {
+    if (!slidePanel || !slidePanelHandle || slidePanelHandle._barkDragBound) return;
+    slidePanelHandle._barkDragBound = true;
+
+    let dragState = null;
+    const isMobileSheet = () => window.matchMedia && window.matchMedia('(max-width: 767px)').matches;
+    const setSheetHeight = (height) => {
+        slidePanel.style.height = `${Math.round(height)}px`;
+    };
+
+    const dragMove = (event) => {
+        if (!dragState) return;
+
+        const clientY = event.touches && event.touches[0] ? event.touches[0].clientY : event.clientY;
+        if (!Number.isFinite(clientY)) return;
+
+        dragState.currentY = clientY;
+        const deltaY = dragState.startY - clientY;
+        const nextHeight = Math.min(
+            dragState.maxHeight,
+            Math.max(dragState.minHeight, dragState.startHeight + deltaY)
+        );
+        dragState.currentHeight = nextHeight;
+        setSheetHeight(nextHeight);
+        event.preventDefault();
+    };
+
+    const finishDrag = () => {
+        if (!dragState) return;
+
+        const state = dragState;
+        dragState = null;
+        slidePanel.classList.remove('panel-dragging');
+        document.removeEventListener('pointermove', dragMove);
+        document.removeEventListener('pointerup', finishDrag);
+        document.removeEventListener('pointercancel', finishDrag);
+        document.removeEventListener('mousemove', dragMove);
+        document.removeEventListener('mouseup', finishDrag);
+        document.removeEventListener('touchmove', dragMove);
+        document.removeEventListener('touchend', finishDrag);
+        document.removeEventListener('touchcancel', finishDrag);
+
+        const metrics = getMobileSheetMetrics();
+        const movedDown = state.currentY - state.startY;
+        const currentHeight = state.currentHeight;
+
+        if (movedDown > 150 || currentHeight < metrics.closeThreshold) {
+            closeSlidePanel({ clearPin: true });
+            return;
+        }
+
+        if (currentHeight > (metrics.defaultHeight + metrics.maxHeight) / 2) {
+            slidePanel.classList.add('panel-expanded');
+            setSheetHeight(metrics.maxHeight);
+            return;
+        }
+
+        slidePanel.classList.remove('panel-expanded');
+        setSheetHeight(metrics.defaultHeight);
+    };
+
+    slidePanelHandle.addEventListener('pointerdown', (event) => {
+        if (!isMobileSheet() || !slidePanel.classList.contains('open')) return;
+
+        const metrics = getMobileSheetMetrics();
+        const rect = slidePanel.getBoundingClientRect();
+        dragState = {
+            startY: event.clientY,
+            currentY: event.clientY,
+            startHeight: rect.height,
+            currentHeight: rect.height,
+            minHeight: Math.max(220, metrics.defaultHeight * 0.45),
+            maxHeight: metrics.maxHeight
+        };
+
+        slidePanel.classList.add('panel-dragging');
+        slidePanelHandle.setPointerCapture(event.pointerId);
+        document.addEventListener('pointermove', dragMove, { passive: false });
+        document.addEventListener('pointerup', finishDrag);
+        document.addEventListener('pointercancel', finishDrag);
+        document.addEventListener('mousemove', dragMove, { passive: false });
+        document.addEventListener('mouseup', finishDrag);
+        document.addEventListener('touchmove', dragMove, { passive: false });
+        document.addEventListener('touchend', finishDrag);
+        document.addEventListener('touchcancel', finishDrag);
+        event.preventDefault();
+    });
+
+    slidePanelHandle.addEventListener('click', (event) => {
+        if (!isMobileSheet() || !slidePanel.classList.contains('open') || dragState) return;
+        const metrics = getMobileSheetMetrics();
+        const isExpanded = slidePanel.classList.contains('panel-expanded');
+        slidePanel.classList.toggle('panel-expanded', !isExpanded);
+        setSheetHeight(isExpanded ? metrics.defaultHeight : metrics.maxHeight);
+        event.preventDefault();
+    });
 }
 
 if (slidePanel && window.MutationObserver) {
@@ -287,6 +413,7 @@ if (plannerViewEl) {
 if (slidePanel) {
     L.DomEvent.disableClickPropagation(slidePanel);
     L.DomEvent.disableScrollPropagation(slidePanel);
+    bindSlidePanelDrag();
 }
 if (filterPanel) {
     L.DomEvent.disableClickPropagation(filterPanel);
@@ -302,8 +429,7 @@ if (bottomNav) {
 // Close panel and clear pin
 if (closeSlideBtn) {
     closeSlideBtn.addEventListener('click', () => {
-        slidePanel.classList.remove('open');
-        window.BARK.clearActivePin();
+        closeSlidePanel({ clearPin: true });
     });
 }
 
@@ -342,7 +468,7 @@ navItems.forEach(btn => {
             });
             syncAppTabMode();
             if (filterPanel) filterPanel.style.display = 'none';
-            if (slidePanel) slidePanel.classList.remove('open');
+            closeSlidePanel();
             if (leafletControls.length) leafletControls[0].style.display = 'none';
         }
     });
@@ -352,8 +478,7 @@ navItems.forEach(btn => {
 if (window.map) {
     // Close panel when clicking on map
     map.on('click', () => {
-        if (slidePanel) slidePanel.classList.remove('open');
-        window.BARK.clearActivePin();
+        closeSlidePanel({ clearPin: true });
         document.getElementById('filter-panel').classList.add('collapsed');
     });
 
