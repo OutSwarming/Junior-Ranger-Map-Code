@@ -2061,16 +2061,17 @@ body.app-tab-active #slide-panel {
     z-index: 500 !important;
 }
 
-.custom-bark-marker.visited-pin .enamel-pin-wrapper {
+.custom-bark-marker.visited-pin .enamel-pin-wrapper,
+.custom-bark-marker.visited-pin.jr-svg-pin {
     opacity: 1 !important;
 }
 
 .cat-national:not(.visited-pin) {
-    filter: drop-shadow(0 0 7px var(--pin-shadow-color, rgba(37, 99, 235, 0.38)));
+    filter: none;
 }
 
 .cat-state:not(.visited-pin) {
-    filter: drop-shadow(0 0 7px var(--pin-shadow-color, rgba(17, 24, 39, 0.36)));
+    filter: none;
 }
 
 #mark-visited-btn {
@@ -3493,6 +3494,10 @@ body.viewport-culling .leaflet-marker-icon {
  * visible marker at that location. Class is applied by MarkerLayerManager;
  * TripLayerManager never touches park marker DOM. */
 .custom-bark-marker.park-pin--in-trip .enamel-pin-wrapper {
+    visibility: hidden;
+}
+
+.custom-bark-marker.park-pin--in-trip.jr-svg-pin {
     visibility: hidden;
 }
 

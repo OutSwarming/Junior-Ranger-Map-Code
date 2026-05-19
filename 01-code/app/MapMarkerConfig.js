@@ -1,9 +1,46 @@
 /**
  * MapMarkerConfig.js
- * Exposes a generator function for creating Leaflet divIcons that adopt the premium 3D CSS.
+ * Exposes a generator function for fast Leaflet image icons.
  */
 
 class MapMarkerConfig {
+    static getPinIconUrl(style = {}) {
+        const fill = style.pinColor || '#2563EB';
+        const stroke = style.ringColor && style.ringColor !== fill ? style.ringColor : '#FFFFFF';
+        const strokeWidth = stroke === '#FFFFFF' ? 2.25 : 3;
+        const cacheKey = `${fill}|${stroke}|${strokeWidth}`;
+
+        MapMarkerConfig._pinIconUrlCache = MapMarkerConfig._pinIconUrlCache || new Map();
+        if (MapMarkerConfig._pinIconUrlCache.has(cacheKey)) {
+            return MapMarkerConfig._pinIconUrlCache.get(cacheKey);
+        }
+
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="44" viewBox="0 0 32 44"><path d="M16 42S4 28.4 4 16.4C4 9.6 9.4 4 16 4s12 5.6 12 12.4C28 28.4 16 42 16 42Z" fill="${fill}" stroke="${stroke}" stroke-width="${strokeWidth}" stroke-linejoin="round"/><circle cx="16" cy="16.5" r="5.1" fill="#fff"/></svg>`;
+        const url = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+        MapMarkerConfig._pinIconUrlCache.set(cacheKey, url);
+        return url;
+    }
+
+    static getIconSignature(parkData, isVisited = false) {
+        const style = MapMarkerConfig.getPinStyle(parkData, isVisited);
+        return `${style.agencyKey}|${isVisited ? 'visited' : 'open'}`;
+    }
+
+    static createIcon(parkData, isVisited = false) {
+        const style = MapMarkerConfig.getPinStyle(parkData, isVisited);
+        const stateClass = isVisited ? 'visited-marker visited-pin' : 'unvisited-marker';
+        const catClass = style.categoryClass;
+        const agencyClass = `agency-${style.agencyKey || 'other'}`;
+
+        return L.icon({
+            className: `custom-bark-marker jr-svg-pin ${stateClass} ${catClass} ${agencyClass}`,
+            iconUrl: MapMarkerConfig.getPinIconUrl(style),
+            iconSize: [32, 44],
+            iconAnchor: [16, 42],
+            popupAnchor: [0, -40]
+        });
+    }
+
     static getAgencyKey(parkData = {}) {
         const agency = String(parkData.agency || parkData.rawAgency || '').trim().toLowerCase();
 
@@ -52,34 +89,19 @@ class MapMarkerConfig {
     }
 
     /**
-     * Generates a Leaflet L.marker with appropriate HTML structure and classes for CSS binding.
+     * Generates a Leaflet L.marker with appropriate icon classes for CSS binding.
      * @param {Object} parkData - Data payload for the park (needs lat, lng, and parkCategory)
      * @param {Boolean} isVisited - True if the user has visited this park
      * @returns {L.marker} The constructed Leaflet marker instance
      */
     static createCustomMarker(parkData, isVisited) {
-        const style = MapMarkerConfig.getPinStyle(parkData, isVisited);
-
-        const stateClass = isVisited ? 'visited-marker visited-pin' : 'unvisited-marker';
-        const catClass = style.categoryClass;
-        const agencyClass = `agency-${style.agencyKey || 'other'}`;
-
-        const markerHtml = `<div class="enamel-pin-wrapper jr-map-pin" aria-hidden="true"><span class="jr-pin-center"></span></div>`;
-
-        // Initialize Leaflet divIcon
-        const divIcon = L.divIcon({
-            className: `custom-bark-marker ${stateClass} ${catClass} ${agencyClass}`,
-            html: markerHtml,
-            iconSize: [32, 44],
-            iconAnchor: [16, 42],
-            popupAnchor: [0, -40]
+        const marker = L.marker([parkData.lat, parkData.lng], {
+            icon: MapMarkerConfig.createIcon(parkData, isVisited)
         });
-
-        // Initialize and return the L.marker
-        const marker = L.marker([parkData.lat, parkData.lng], { icon: divIcon });
 
         // Keep parkData securely bound for UI handlers downstream
         marker._parkData = parkData;
+        marker._barkIconSignature = MapMarkerConfig.getIconSignature(parkData, isVisited);
 
         return marker;
     }

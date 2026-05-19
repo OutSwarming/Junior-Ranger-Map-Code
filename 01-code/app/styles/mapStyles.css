@@ -7,6 +7,14 @@
     border: none;
 }
 
+.custom-bark-marker.jr-svg-pin {
+    display: block;
+    background: transparent;
+    border: 0;
+    filter: none;
+    transform-origin: center bottom;
+}
+
 /* Optimized Enamel Pin Wrapper */
 .enamel-pin-wrapper {
     width: 30px;
