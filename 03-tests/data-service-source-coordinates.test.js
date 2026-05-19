@@ -137,6 +137,7 @@ test('data service publishes Junior Ranger sheet rows by siteID and latitude/lon
     assert.equal(publishedPoints[0].name, 'Test Junior Ranger Site');
     assert.equal(publishedPoints[0].lat, 38.1234);
     assert.equal(publishedPoints[0].lng, -77.5678);
+    assert.equal(publishedPoints[0].agency, 'NPS');
     assert.equal(publishedPoints[0].parkCategory, 'National');
     assert.equal(publishedPoints[0].swagType, 'Special Programs');
     assert.equal(publishedPoints[0].specialPrograms, 'Night Explorer');

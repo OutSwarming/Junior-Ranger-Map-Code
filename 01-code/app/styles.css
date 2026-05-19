@@ -2057,51 +2057,20 @@ body.app-tab-active #slide-panel {
 }
 
 .visited-pin {
-    --ring-color: #4CAF50 !important;
-    --pin-color: #4CAF50 !important;
-    --pin-shadow-color: rgba(76, 175, 80, 0.5) !important;
     filter: none !important;
     z-index: 500 !important;
 }
 
 .custom-bark-marker.visited-pin .enamel-pin-wrapper {
     opacity: 1 !important;
-    box-shadow: none !important;
 }
 
-.visited-pin img,
-.visited-pin .jr-pin-face {
-    border: 3px solid var(--ring-color, #4CAF50) !important;
-    border-radius: 50%;
-    box-sizing: border-box;
-}
-
-/* Unvisited National Parks — same green ring style but in BLACK */
 .cat-national:not(.visited-pin) {
-    --ring-color: #000;
-    --pin-color: #000;
-    --pin-shadow-color: rgba(0, 0, 0, 0.4);
-    filter: drop-shadow(0 0 7px var(--pin-shadow-color, rgba(0, 0, 0, 0.4)));
+    filter: drop-shadow(0 0 7px var(--pin-shadow-color, rgba(37, 99, 235, 0.38)));
 }
 
-.cat-national:not(.visited-pin) img,
-.cat-national:not(.visited-pin) .jr-pin-face {
-    border: 3px solid var(--ring-color, #000);
-    border-radius: 50%;
-}
-
-/* Unvisited State/Other Parks — same green ring style but in BLUE */
 .cat-state:not(.visited-pin) {
-    --ring-color: #2196F3;
-    --pin-color: #2196F3;
-    --pin-shadow-color: rgba(33, 150, 243, 0.4);
-    filter: drop-shadow(0 0 7px var(--pin-shadow-color, rgba(33, 150, 243, 0.4)));
-}
-
-.cat-state:not(.visited-pin) img,
-.cat-state:not(.visited-pin) .jr-pin-face {
-    border: 3px solid var(--ring-color, #2196F3);
-    border-radius: 50%;
+    filter: drop-shadow(0 0 7px var(--pin-shadow-color, rgba(17, 24, 39, 0.36)));
 }
 
 #mark-visited-btn {
@@ -3377,7 +3346,7 @@ body.viewport-culling .leaflet-marker-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #05070b;
+    background: var(--pin-color, #05070b);
     border: 3px solid var(--ring-color, #111827);
     overflow: hidden;
     box-shadow: 0 3px 7px var(--pin-shadow-color, rgba(0, 0, 0, 0.36));

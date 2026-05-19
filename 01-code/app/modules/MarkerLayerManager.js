@@ -26,6 +26,7 @@ class MarkerLayerManager {
             parkData.state,
             parkData.cost,
             parkData.swagType,
+            parkData.agency,
             parkData.info,
             parkData.website,
             parkData.pics,
@@ -112,6 +113,8 @@ class MarkerLayerManager {
         const style = MapMarkerConfig.getPinStyle(marker._parkData, isVisited);
         marker._icon.classList.toggle('cat-national', style.categoryClass === 'cat-national');
         marker._icon.classList.toggle('cat-state', style.categoryClass === 'cat-state');
+        ['agency-nps', 'agency-state-park', 'agency-army-corps', 'agency-wildlife-refuge', 'agency-blm', 'agency-other']
+            .forEach(className => marker._icon.classList.toggle(className, className === `agency-${style.agencyKey || 'other'}`));
         marker._icon.classList.toggle('visited-pin', Boolean(isVisited));
         marker._icon.classList.toggle('visited-marker', Boolean(isVisited));
         marker._icon.classList.toggle('unvisited-marker', !isVisited);

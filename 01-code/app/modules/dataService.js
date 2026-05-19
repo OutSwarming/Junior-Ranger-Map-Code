@@ -152,6 +152,7 @@ function processParsedResults(results) {
             const state = item.state;
             const cost = item.cost;
             const category = item.category;
+            const agency = category;
             const info = item.info;
             const website = item.website;
             const pics = item.pics;
@@ -196,6 +197,7 @@ function processParsedResults(results) {
                 state,
                 cost,
                 swagType,
+                agency,
                 info,
                 website,
                 pics,

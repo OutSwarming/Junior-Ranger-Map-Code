@@ -9,10 +9,10 @@
 
 /* Optimized Enamel Pin Wrapper */
 .enamel-pin-wrapper {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    overflow: hidden;
+    width: 30px;
+    height: 30px;
+    border-radius: 0;
+    overflow: visible;
     position: relative;
     display: flex;
     justify-content: center;
@@ -23,8 +23,12 @@
 
 /* Hover effects stay active for premium mode */
 .enamel-pin-wrapper:hover {
-    transform: scale(1.15) translateY(-2px);
+    transform: scale(1.12) translateY(-3px);
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.enamel-pin-wrapper.jr-map-pin:hover {
+    transform: rotate(-45deg) scale(1.12) translate(2px, -3px);
 }
 
 
@@ -89,33 +93,46 @@ body.low-graphics .enamel-pin-wrapper:hover {
     pointer-events: none;
 }
 
-.enamel-pin-wrapper.jr-pin-face {
-    border: 3px solid var(--ring-color, #111827);
+.enamel-pin-wrapper.jr-map-pin {
+    width: 30px;
+    height: 30px;
+    border: 2px solid #ffffff;
+    border-radius: 50% 50% 50% 0;
     background:
-        radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.95) 0 16%, rgba(255, 255, 255, 0) 17%),
-        linear-gradient(145deg, #f8fafc 0%, #dbeafe 45%, #bfdbfe 100%);
+        radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.45) 0 14%, rgba(255, 255, 255, 0) 15%),
+        linear-gradient(145deg, color-mix(in srgb, var(--pin-color, #2563EB) 88%, white 12%) 0%, var(--pin-color, #2563EB) 58%, color-mix(in srgb, var(--pin-color, #2563EB) 80%, black 20%) 100%);
     box-shadow:
-        0 4px 11px var(--pin-shadow-color, rgba(0, 0, 0, 0.32)),
-        inset 0 -2px 5px rgba(15, 23, 42, 0.18);
+        0 7px 14px var(--pin-shadow-color, rgba(0, 0, 0, 0.28)),
+        0 2px 5px rgba(15, 23, 42, 0.22),
+        inset 0 -2px 5px rgba(15, 23, 42, 0.2);
     box-sizing: border-box;
+    transform: rotate(-45deg);
+    transform-origin: 50% 50%;
 }
 
-.jr-pin-label {
-    color: #0f172a;
-    font-size: 12px;
-    font-weight: 900;
-    line-height: 1;
-    letter-spacing: 0;
+.jr-pin-center {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow:
+        0 1px 3px rgba(15, 23, 42, 0.24),
+        inset 0 -1px 1px rgba(15, 23, 42, 0.16);
     pointer-events: none;
 }
 
-.custom-bark-marker.visited-pin .jr-pin-label {
-    color: #14532d;
+.custom-bark-marker.visited-pin .jr-map-pin {
+    border-color: #22C55E;
+    box-shadow:
+        0 0 0 2px rgba(34, 197, 94, 0.24),
+        0 7px 14px var(--pin-shadow-color, rgba(34, 197, 94, 0.42)),
+        0 2px 5px rgba(15, 23, 42, 0.22),
+        inset 0 -2px 5px rgba(15, 23, 42, 0.2);
 }
 
 .custom-bark-marker.unvisited-marker .enamel-pin-wrapper {
     opacity: 0.92;
-    transform: scale(0.95);
+    transform: rotate(-45deg) scale(0.95);
 }
 
 /* 
@@ -124,7 +141,7 @@ body.low-graphics .enamel-pin-wrapper:hover {
  */
 .custom-bark-marker.visited-marker .enamel-pin-wrapper {
     opacity: 1;
-    transform: scale(1.0);
+    transform: rotate(-45deg) scale(1.0);
 }
 
 .custom-bark-marker.visited-marker {
@@ -132,7 +149,7 @@ body.low-graphics .enamel-pin-wrapper:hover {
 }
 
 .custom-bark-marker.active-pin:not(.visited-pin) .enamel-pin-wrapper {
-    transform: scale(1.3) translateY(-4px);
+    transform: rotate(-45deg) scale(1.22) translate(3px, -5px);
     box-shadow:
         0 0 0 3px #FBBF24,
         0 15px 30px rgba(0, 0, 0, 0.6),
@@ -141,7 +158,7 @@ body.low-graphics .enamel-pin-wrapper:hover {
 }
 
 .custom-bark-marker.visited-pin.active-pin .enamel-pin-wrapper {
-    transform: scale(1.12) translateY(-2px);
+    transform: rotate(-45deg) scale(1.14) translate(2px, -3px);
     box-shadow:
         0 0 0 3px #FBBF24,
         0 7px 16px rgba(0, 0, 0, 0.42),

@@ -144,7 +144,7 @@ function hasTripVisitedPlace(placeOrId) {
             : 'trip-overlay-badge-wrapper--national';
         const html = `
             <div class="trip-overlay-badge trip-overlay-badge--official"
-                style="--ring-color:${style.ringColor}; --pin-shadow-color:${style.pinShadowColor};">
+                style="--ring-color:${style.ringColor}; --pin-color:${style.pinColor}; --pin-shadow-color:${style.pinShadowColor};">
                 <span class="trip-overlay-badge-face">
                     ${style.iconUrl
                         ? `<img src="${style.iconUrl}" alt="" loading="lazy" />`
