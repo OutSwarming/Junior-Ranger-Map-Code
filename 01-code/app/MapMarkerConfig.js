@@ -10,6 +10,7 @@ class MapMarkerConfig {
         if (agency.includes('blm') || agency.includes('bureau of land management')) return 'blm';
         if (agency.includes('army corps') || agency.includes('corps of engineer')) return 'army-corps';
         if (agency.includes('wildlife refuge') || agency.includes('fish & wildlife') || agency.includes('fish and wildlife')) return 'wildlife-refuge';
+        if (agency.includes('national forest') || agency.includes('forest service') || agency.includes('usfs')) return 'national-forest';
         if (agency.includes('state park') || agency.includes('state forest') || agency === 'state') return 'state-park';
         if (agency.includes('nps') || agency.includes('national park service')) return 'nps';
 
@@ -26,6 +27,7 @@ class MapMarkerConfig {
             'state-park': { pinColor: '#111827', pinShadowColor: 'rgba(17, 24, 39, 0.44)' },
             'army-corps': { pinColor: '#DC2626', pinShadowColor: 'rgba(220, 38, 38, 0.42)' },
             'wildlife-refuge': { pinColor: '#16A34A', pinShadowColor: 'rgba(22, 163, 74, 0.42)' },
+            'national-forest': { pinColor: '#8B5E34', pinShadowColor: 'rgba(139, 94, 52, 0.44)' },
             blm: { pinColor: '#F97316', pinShadowColor: 'rgba(249, 115, 22, 0.42)' },
             other: { pinColor: '#FACC15', pinShadowColor: 'rgba(250, 204, 21, 0.45)' }
         };
