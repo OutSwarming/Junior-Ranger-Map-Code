@@ -70,11 +70,11 @@ class MarkerLayerManager {
         });
 
         marker.on('add', () => {
-            this.applyMarkerStyle(marker);
             if (marker._icon) {
                 if (window.BARK.activePinMarker === marker) marker._icon.classList.add('active-pin');
                 marker._icon.classList.toggle('marker-filter-hidden', marker._barkIsVisible === false);
             }
+            this.applyMarkerStyle(marker);
         });
 
         marker.on('click', () => {
@@ -111,15 +111,16 @@ class MarkerLayerManager {
 
         const isVisited = this.getVisitedState(marker._parkData);
         const style = MapMarkerConfig.getPinStyle(marker._parkData, isVisited);
-        const iconSignature = MapMarkerConfig.getIconSignature(marker._parkData, isVisited);
+        const isActive = marker._icon.classList.contains('active-pin') || window.BARK.activePinMarker === marker;
+        const iconSignature = MapMarkerConfig.getIconSignature(marker._parkData, isVisited, isActive);
         const wasActive = marker._icon.classList.contains('active-pin');
         const wasHidden = marker._icon.classList.contains('marker-filter-hidden');
 
         if (marker._barkIconSignature !== iconSignature && typeof marker.setIcon === 'function') {
-            marker.setIcon(MapMarkerConfig.createIcon(marker._parkData, isVisited));
+            marker.setIcon(MapMarkerConfig.createIcon(marker._parkData, isVisited, isActive));
             marker._barkIconSignature = iconSignature;
             if (!marker._icon) return;
-            marker._icon.classList.toggle('active-pin', wasActive);
+            marker._icon.classList.toggle('active-pin', wasActive || isActive);
             marker._icon.classList.toggle('marker-filter-hidden', wasHidden);
         }
 

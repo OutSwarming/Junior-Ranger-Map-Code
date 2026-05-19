@@ -195,12 +195,20 @@ function renderMarkerClickPanel(context) {
     const refreshOnly = context.refreshOnly === true;
 
     if (!refreshOnly && window.BARK.activePinMarker && window.BARK.activePinMarker._icon) {
-        window.BARK.activePinMarker._icon.classList.remove('active-pin');
-    }
-    if (marker._icon) {
-        marker._icon.classList.add('active-pin');
+        const previousMarker = window.BARK.activePinMarker;
+        window.BARK.activePinMarker = null;
+        previousMarker._icon.classList.remove('active-pin');
+        if (window.BARK.markerManager && typeof window.BARK.markerManager.applyMarkerStyle === 'function') {
+            window.BARK.markerManager.applyMarkerStyle(previousMarker);
+        }
     }
     window.BARK.activePinMarker = marker;
+    if (marker._icon) {
+        marker._icon.classList.add('active-pin');
+        if (window.BARK.markerManager && typeof window.BARK.markerManager.applyMarkerStyle === 'function') {
+            window.BARK.markerManager.applyMarkerStyle(marker);
+        }
+    }
 
     const panelScrollContainer = document.querySelector('.panel-content');
     if (panelScrollContainer && !refreshOnly) panelScrollContainer.scrollTop = 0;

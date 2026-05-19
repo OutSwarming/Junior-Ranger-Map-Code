@@ -36,3 +36,15 @@ test('map marker config uses lightweight SVG image pins', () => {
     assert.match(decoded, /fill="#2563EB"/);
     assert.doesNotMatch(decoded, /filter|box-shadow|linearGradient/);
 });
+
+test('map marker config gives active pins a yellow SVG outline', () => {
+    const MapMarkerConfig = loadMapMarkerConfig();
+    const style = MapMarkerConfig.getPinStyle({
+        agency: 'NPS',
+        parkCategory: 'National'
+    });
+    const decoded = decodeURIComponent(MapMarkerConfig.getPinIconUrl(style, { isActive: true }));
+
+    assert.match(decoded, /stroke="#FBBF24"/);
+    assert.equal(MapMarkerConfig.getIconSignature({ agency: 'NPS', parkCategory: 'National' }, false, true), 'nps|open|active');
+});

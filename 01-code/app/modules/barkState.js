@@ -94,10 +94,14 @@ let _searchResultCache = { query: '', matchedIds: null };
 let activePinMarker = null;
 
 function clearActivePin() {
-    if (activePinMarker && activePinMarker._icon) {
-        activePinMarker._icon.classList.remove('active-pin');
-    }
+    const marker = activePinMarker;
     activePinMarker = null;
+    if (marker && marker._icon) {
+        marker._icon.classList.remove('active-pin');
+        if (window.BARK.markerManager && typeof window.BARK.markerManager.applyMarkerStyle === 'function') {
+            window.BARK.markerManager.applyMarkerStyle(marker);
+        }
+    }
 }
 
 let activeSwagFilters = new Set();

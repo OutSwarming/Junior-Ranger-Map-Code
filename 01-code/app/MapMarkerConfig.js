@@ -4,10 +4,13 @@
  */
 
 class MapMarkerConfig {
-    static getPinIconUrl(style = {}) {
+    static getPinIconUrl(style = {}, options = {}) {
         const fill = style.pinColor || '#2563EB';
-        const stroke = style.ringColor && style.ringColor !== fill ? style.ringColor : '#FFFFFF';
-        const strokeWidth = stroke === '#FFFFFF' ? 2.25 : 3;
+        const isActive = options.isActive === true;
+        const stroke = isActive
+            ? '#FBBF24'
+            : (style.ringColor && style.ringColor !== fill ? style.ringColor : '#FFFFFF');
+        const strokeWidth = isActive ? 3.75 : (stroke === '#FFFFFF' ? 2.25 : 3);
         const cacheKey = `${fill}|${stroke}|${strokeWidth}`;
 
         MapMarkerConfig._pinIconUrlCache = MapMarkerConfig._pinIconUrlCache || new Map();
@@ -21,22 +24,25 @@ class MapMarkerConfig {
         return url;
     }
 
-    static getIconSignature(parkData, isVisited = false) {
+    static getIconSignature(parkData, isVisited = false, isActive = false) {
         const style = MapMarkerConfig.getPinStyle(parkData, isVisited);
-        return `${style.agencyKey}|${isVisited ? 'visited' : 'open'}`;
+        return `${style.agencyKey}|${isVisited ? 'visited' : 'open'}|${isActive ? 'active' : 'idle'}`;
     }
 
-    static createIcon(parkData, isVisited = false) {
+    static createIcon(parkData, isVisited = false, isActive = false) {
         const style = MapMarkerConfig.getPinStyle(parkData, isVisited);
         const stateClass = isVisited ? 'visited-marker visited-pin' : 'unvisited-marker';
         const catClass = style.categoryClass;
         const agencyClass = `agency-${style.agencyKey || 'other'}`;
+        const activeClass = isActive ? 'active-pin' : '';
+        const iconSize = isActive ? [39, 54] : [32, 44];
+        const iconAnchor = isActive ? [20, 51] : [16, 42];
 
         return L.icon({
-            className: `custom-bark-marker jr-svg-pin ${stateClass} ${catClass} ${agencyClass}`,
-            iconUrl: MapMarkerConfig.getPinIconUrl(style),
-            iconSize: [32, 44],
-            iconAnchor: [16, 42],
+            className: `custom-bark-marker jr-svg-pin ${stateClass} ${catClass} ${agencyClass} ${activeClass}`.trim(),
+            iconUrl: MapMarkerConfig.getPinIconUrl(style, { isActive }),
+            iconSize,
+            iconAnchor,
             popupAnchor: [0, -40]
         });
     }
@@ -101,7 +107,7 @@ class MapMarkerConfig {
 
         // Keep parkData securely bound for UI handlers downstream
         marker._parkData = parkData;
-        marker._barkIconSignature = MapMarkerConfig.getIconSignature(parkData, isVisited);
+        marker._barkIconSignature = MapMarkerConfig.getIconSignature(parkData, isVisited, false);
 
         return marker;
     }
