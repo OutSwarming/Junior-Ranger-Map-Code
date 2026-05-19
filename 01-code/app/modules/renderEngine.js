@@ -40,7 +40,9 @@ function getBadgeClass(type) {
 function getParkCategory(typeString) {
     if (!typeString) return 'Other';
     const t = String(typeString).trim().toLowerCase();
+    if (t === 'nps' || t.includes('national park service')) return 'National';
     if (t === 'national' || t.includes('national')) return 'National';
+    if (t === 'sp' || t.includes('state park') || t.includes('state forest')) return 'State';
     if (t === 'state' || t.includes('state')) return 'State';
     return 'Other';
 }

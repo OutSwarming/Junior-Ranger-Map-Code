@@ -89,6 +89,30 @@ body.low-graphics .enamel-pin-wrapper:hover {
     pointer-events: none;
 }
 
+.enamel-pin-wrapper.jr-pin-face {
+    border: 3px solid var(--ring-color, #111827);
+    background:
+        radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.95) 0 16%, rgba(255, 255, 255, 0) 17%),
+        linear-gradient(145deg, #f8fafc 0%, #dbeafe 45%, #bfdbfe 100%);
+    box-shadow:
+        0 4px 11px var(--pin-shadow-color, rgba(0, 0, 0, 0.32)),
+        inset 0 -2px 5px rgba(15, 23, 42, 0.18);
+    box-sizing: border-box;
+}
+
+.jr-pin-label {
+    color: #0f172a;
+    font-size: 12px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0;
+    pointer-events: none;
+}
+
+.custom-bark-marker.visited-pin .jr-pin-label {
+    color: #14532d;
+}
+
 .custom-bark-marker.unvisited-marker .enamel-pin-wrapper {
     opacity: 0.92;
     transform: scale(0.95);
@@ -373,6 +397,15 @@ body.low-graphics .enamel-pin-wrapper:hover {
     margin: 0;
     padding: 0;
     border: none;
+}
+
+.cluster-jr-label {
+    color: #f8fafc;
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1;
+    pointer-events: none;
 }
 
 /* The Metallic Number Badge (Docked top-right) */

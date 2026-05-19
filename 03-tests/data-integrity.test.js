@@ -16,8 +16,8 @@ const csvFiles = [
 ];
 
 const hostedFallbackCsv = {
-    path: path.join(repoRoot, '01-code', 'app', 'assets', 'data', 'bark-fallback.csv'),
-    requiredHeaders: ['Location', 'State', 'lat', 'lng', 'Park id']
+    path: path.join(repoRoot, '01-code', 'app', 'assets', 'data', 'jr-fallback.csv'),
+    requiredHeaders: ['siteID', 'siteName', 'latitude', 'longitude', 'state', 'specialPrograms']
 };
 
 test('repo CSV data files do not contain unresolved git conflict markers', () => {
@@ -40,32 +40,31 @@ test('hosted fallback CSV is deployable and contains canonical park ids', () => 
 
     const firstLine = contents.split(/\r?\n/, 1)[0];
     for (const header of hostedFallbackCsv.requiredHeaders) {
-        assert.match(firstLine, new RegExp(`(^|,)${header}(,|$)`, 'i'), `${hostedFallbackCsv.path} is missing ${header}`);
+        assert.match(firstLine, new RegExp(`(^|,)"?${header}"?(,|$)`, 'i'), `${hostedFallbackCsv.path} is missing ${header}`);
     }
 
     const lineCount = contents.split(/\r?\n/).filter(Boolean).length;
     assert.ok(lineCount > 300, `${hostedFallbackCsv.path} should contain the official fallback dataset`);
 });
 
-test('hosted fallback CSV keeps coordinates for Cliffs of the Neuse', () => {
+test('hosted fallback CSV keeps Junior Ranger coordinates for Acadia', () => {
     const contents = fs.readFileSync(hostedFallbackCsv.path, 'utf8');
-    const cliffsLine = contents.split(/\r?\n/).find(line => line.startsWith('Cliffs of the Neuse State Park,'));
 
-    assert.ok(cliffsLine, 'Cliffs of the Neuse State Park must be present in the hosted fallback CSV');
-    assert.match(cliffsLine, /,35\.2354,-77\.8932,/, 'Cliffs of the Neuse State Park must keep its lat/lng populated');
+    assert.match(contents, /"jr_acadia_national_park"/, 'Acadia National Park must be present in the hosted Junior Ranger fallback CSV');
+    assert.match(contents, /"44\.3385559","-68\.2733346"/, 'Acadia National Park must keep its latitude/longitude populated');
 });
 
-test('hosted fallback CSV separates Fort Caroline and Kingsley Plantation coordinates', () => {
+test('hosted fallback CSV separates Junior Ranger Fort Caroline and Kingsley coordinates', () => {
     const contents = fs.readFileSync(hostedFallbackCsv.path, 'utf8');
 
     assert.match(
         contents,
-        /Fort Caroline\/Timucuan Ecological and Historical Preserve[\s\S]*?,30\.385948,-81\.497541,[\s\S]*?b7b26034-7d2c-4c3e-9901-29e1b5751230/,
-        'Fort Caroline must use the NPS Fort Caroline coordinates'
+        /Fort Caroline National Memorial[\s\S]*?"30\.3853866","-81\.4973666"/,
+        'Fort Caroline must use the Junior Ranger Fort Caroline coordinates'
     );
     assert.match(
         contents,
-        /Timucuan Ecological and Historical Preserve Kingsley Plantation[\s\S]*?,30\.439983,-81\.437833,[\s\S]*?f1bf6d46-3919-4c0c-838d-555ca47155d2/,
-        'Kingsley Plantation must use separate Kingsley coordinates'
+        /Kingsley Plantation[\s\S]*?"30\.4398902","-81\.4378092"/,
+        'Kingsley Plantation must use separate Junior Ranger Kingsley coordinates'
     );
 });

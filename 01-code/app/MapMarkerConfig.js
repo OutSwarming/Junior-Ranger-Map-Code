@@ -7,7 +7,7 @@ class MapMarkerConfig {
     static getPinStyle(parkData, isVisited = false) {
         if (isVisited) {
             return {
-                iconUrl: (parkData.parkCategory === 'National') ? 'assets/images/bark-logo.jpeg' : 'assets/images/bark-tag.jpeg',
+                label: 'JR',
                 ringColor: '#4CAF50',
                 pinColor: '#4CAF50',
                 pinShadowColor: '#4CAF50',
@@ -17,7 +17,7 @@ class MapMarkerConfig {
 
         const isNational = (parkData.parkCategory === 'National');
         return {
-            iconUrl: isNational ? 'assets/images/bark-logo.jpeg' : 'assets/images/bark-tag.jpeg',
+            label: 'JR',
             ringColor: isNational ? '#000' : '#2196F3',
             pinColor: isNational ? '#000' : '#2196F3',
             pinShadowColor: isNational ? 'rgba(0, 0, 0, 0.4)' : 'rgba(33, 150, 243, 0.4)',
@@ -37,7 +37,7 @@ class MapMarkerConfig {
         const stateClass = isVisited ? 'visited-marker visited-pin' : 'unvisited-marker';
         const catClass = style.categoryClass;
 
-        const markerHtml = `<div class="enamel-pin-wrapper"><img src="${style.iconUrl}" alt="Park Pin" loading="lazy" /></div>`;
+        const markerHtml = `<div class="enamel-pin-wrapper jr-pin-face" aria-hidden="true"><span class="jr-pin-label">${style.label || 'JR'}</span></div>`;
 
         // Initialize Leaflet divIcon
         const divIcon = L.divIcon({

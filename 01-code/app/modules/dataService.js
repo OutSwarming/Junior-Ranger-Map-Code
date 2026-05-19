@@ -11,21 +11,27 @@ let pendingCSV = null;
 let pendingCSVOptions = null;
 
 const CSV_COLUMNS = {
-    PARK_ID: 'Park ID',
-    LOCATION: 'Location',
-    STATE: 'State',
-    SWAG_COST: 'Swag Cost',
-    TYPE: 'Type',
-    INFO: 'Useful/Important/Other Info',
-    WEBSITE: 'Website',
-    PICS: 'Swag Pics - If available, and may not be current.',
-    VIDEO: 'Swearing-In Video. Not all sites do this, and ones that do only do it as time permits.',
-    LAT: 'lat',
-    LNG: 'lng'
+    PARK_ID: ['siteID', 'Park ID', 'Park id'],
+    LOCATION: ['siteName', 'Location'],
+    STATE: ['state', 'State'],
+    SWAG_COST: ['Swag Cost'],
+    TYPE: ['agency', 'Type'],
+    INFO: ['siteInfo', 'Useful/Important/Other Info'],
+    JR_BOOKS: ['jrBooks'],
+    SPECIAL_PROGRAMS: ['specialPrograms'],
+    WEBSITE: ['officialGovWebsite', 'websiteLinks', 'Website'],
+    PICS: ['badgePictures', 'Swag Pics - If available, and may not be current.'],
+    VIDEO: ['Swearing-In Video. Not all sites do this, and ones that do only do it as time permits.'],
+    LAT: ['latitude', 'lat'],
+    LNG: ['longitude', 'lng']
 };
 
 const SWAG_TYPE_COLUMNS = ['Swag Type', 'Swag', 'Swag Available'];
-const STATIC_FALLBACK_CSV_URL = 'assets/data/bark-fallback.csv';
+const LIVE_JUNIOR_RANGER_CSV_URL = 'https://docs.google.com/spreadsheets/d/1aKhDQYHN5TrZhkoa2bPd8IKNDsTIbvTdpaauhWsFBmI/export?format=csv&gid=311809418';
+const STATIC_FALLBACK_CSV_URL = 'assets/data/jr-fallback.csv';
+const DATA_CACHE_KEY = 'juniorRangerCSV';
+const DATA_CACHE_TIME_KEY = 'juniorRangerCSV_time';
+const LEGACY_DATA_CACHE_KEYS = ['barkCSV', 'barkCSV_time'];
 let staticFallbackLoadInFlight = null;
 
 function cleanCSVValue(value) {
@@ -34,13 +40,24 @@ function cleanCSVValue(value) {
     return value;
 }
 
-function getCSVValue(row, columnName) {
+function getCSVColumnKey(row, columnName) {
     if (!row) return '';
-    if (Object.prototype.hasOwnProperty.call(row, columnName)) return cleanCSVValue(row[columnName]);
+    const columnNames = Array.isArray(columnName) ? columnName : [columnName];
 
-    const normalizedColumnName = cleanCSVValue(columnName).toLowerCase();
-    const matchingKey = Object.keys(row).find(key => cleanCSVValue(key).toLowerCase() === normalizedColumnName);
-    return matchingKey ? cleanCSVValue(row[matchingKey]) : '';
+    for (const name of columnNames) {
+        if (Object.prototype.hasOwnProperty.call(row, name)) return name;
+
+        const normalizedColumnName = cleanCSVValue(name).toLowerCase();
+        const matchingKey = Object.keys(row).find(key => cleanCSVValue(key).toLowerCase() === normalizedColumnName);
+        if (matchingKey) return matchingKey;
+    }
+
+    return '';
+}
+
+function getCSVValue(row, columnName) {
+    const key = getCSVColumnKey(row, columnName);
+    return key ? cleanCSVValue(row[key]) : '';
 }
 
 function getFirstPresentCSVValue(row, columnNames) {
@@ -48,7 +65,7 @@ function getFirstPresentCSVValue(row, columnNames) {
         if (row && Object.prototype.hasOwnProperty.call(row, columnName)) {
             return { found: true, value: cleanCSVValue(row[columnName]) };
         }
-        const matchingKey = row && Object.keys(row).find(key => cleanCSVValue(key) === columnName);
+        const matchingKey = getCSVColumnKey(row, columnName);
         if (matchingKey) return { found: true, value: cleanCSVValue(row[matchingKey]) };
     }
     return { found: false, value: '' };
@@ -57,13 +74,34 @@ function getFirstPresentCSVValue(row, columnNames) {
 function normalizeSwagType(value) {
     if (!value) return 'Other';
     if (['Tag', 'Bandana', 'Certificate', 'Other'].includes(value)) return value;
+    if (['Junior Ranger', 'Special Programs'].includes(value)) return value;
     return window.BARK.getSwagType(value);
+}
+
+function isJuniorRangerRow(row) {
+    return Boolean(getCSVColumnKey(row, 'siteID') || getCSVColumnKey(row, 'siteName'));
+}
+
+function buildJuniorRangerInfo(row) {
+    const sections = [];
+    const siteInfo = getCSVValue(row, CSV_COLUMNS.INFO);
+    const jrBooks = getCSVValue(row, CSV_COLUMNS.JR_BOOKS);
+    const specialPrograms = getCSVValue(row, CSV_COLUMNS.SPECIAL_PROGRAMS);
+
+    if (siteInfo) sections.push(siteInfo);
+    if (jrBooks) sections.push(`Junior Ranger books: ${jrBooks}`);
+    if (specialPrograms) sections.push(`Special programs: ${specialPrograms}`);
+
+    return sections.join('\n\n');
 }
 
 function normalizeCSVRow(rawItem) {
     const row = rawItem && typeof rawItem === 'object' ? rawItem : {};
-    const info = getCSVValue(row, CSV_COLUMNS.INFO);
+    const isJuniorRanger = isJuniorRangerRow(row);
+    const info = isJuniorRanger ? buildJuniorRangerInfo(row) : getCSVValue(row, CSV_COLUMNS.INFO);
     const explicitSwag = getFirstPresentCSVValue(row, SWAG_TYPE_COLUMNS);
+    const specialPrograms = getCSVValue(row, CSV_COLUMNS.SPECIAL_PROGRAMS);
+    const jrSwagType = specialPrograms ? 'Special Programs' : 'Junior Ranger';
 
     return {
         parkId: getCSVValue(row, CSV_COLUMNS.PARK_ID),
@@ -77,7 +115,11 @@ function normalizeCSVRow(rawItem) {
         video: getCSVValue(row, CSV_COLUMNS.VIDEO),
         lat: getCSVValue(row, CSV_COLUMNS.LAT),
         lng: getCSVValue(row, CSV_COLUMNS.LNG),
-        swagType: explicitSwag.found ? normalizeSwagType(explicitSwag.value) : window.BARK.getSwagType(info)
+        specialPrograms,
+        jrBooks: getCSVValue(row, CSV_COLUMNS.JR_BOOKS),
+        swagType: isJuniorRanger
+            ? jrSwagType
+            : (explicitSwag.found ? normalizeSwagType(explicitSwag.value) : window.BARK.getSwagType(info))
     };
 }
 
@@ -148,7 +190,22 @@ function processParsedResults(results) {
             }
             seenParkIds.add(id);
 
-            const parkData = { id, name, state, cost, swagType, info, website, pics, video, lat, lng, parkCategory };
+            const parkData = {
+                id,
+                name,
+                state,
+                cost,
+                swagType,
+                info,
+                website,
+                pics,
+                video,
+                lat,
+                lng,
+                parkCategory,
+                specialPrograms: item.specialPrograms,
+                jrBooks: item.jrBooks
+            };
 
             // v25: Pre-Normalized Name
             parkData._cachedNormalizedName = window.BARK.normalizeText(name);
@@ -201,8 +258,8 @@ function processParsedResults(results) {
 
 function commitCSVCache(csvString, options = {}) {
     if (!options.cacheTime) return;
-    localStorage.setItem('barkCSV', csvString);
-    localStorage.setItem('barkCSV_time', String(options.cacheTime));
+    localStorage.setItem(DATA_CACHE_KEY, csvString);
+    localStorage.setItem(DATA_CACHE_TIME_KEY, String(options.cacheTime));
 }
 
 function hasAcceptedParkData() {
@@ -349,14 +406,13 @@ function pollForUpdates() {
     pollInFlight = true;
     lastDataPollStartedAt = Date.now();
 
-    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRMM2ZRU5lmT-ncrsil4W3qhrbo8NBxnQ-xC877TNkhLYOpTlnCocYA9gNg-dPRyaQr_8e0CWZ0WB2F/pub?output=csv';
+    const csvUrl = LIVE_JUNIOR_RANGER_CSV_URL;
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 6000);
 
     return fetch(csvUrl + '&t=' + Date.now() + '&r=' + Math.random(), {
         cache: 'no-store',
-        headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate', 'Pragma': 'no-cache' },
         signal: controller.signal
     })
         .then(res => {
@@ -484,8 +540,10 @@ function clearMarkerLayersSafely() {
 }
 
 function loadData() {
-    const cachedCsv = localStorage.getItem('barkCSV');
-    const cachedTime = localStorage.getItem('barkCSV_time');
+    LEGACY_DATA_CACHE_KEYS.forEach(key => localStorage.removeItem(key));
+
+    const cachedCsv = localStorage.getItem(DATA_CACHE_KEY);
+    const cachedTime = localStorage.getItem(DATA_CACHE_TIME_KEY);
 
     if (cachedCsv) {
         lastDataHash = quickHash(cachedCsv);

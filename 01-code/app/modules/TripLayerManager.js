@@ -133,7 +133,7 @@ function hasTripVisitedPlace(placeOrId) {
         const style = window.MapMarkerConfig && typeof window.MapMarkerConfig.getPinStyle === 'function'
             ? window.MapMarkerConfig.getPinStyle(parkData, isVisited)
             : {
-                iconUrl: 'assets/images/bark-logo.jpeg',
+                label: 'JR',
                 ringColor: isVisited ? '#4CAF50' : '#000',
                 pinShadowColor: isVisited ? '#4CAF50' : 'rgba(0, 0, 0, 0.4)',
                 categoryClass: 'cat-national'
@@ -146,7 +146,9 @@ function hasTripVisitedPlace(placeOrId) {
             <div class="trip-overlay-badge trip-overlay-badge--official"
                 style="--ring-color:${style.ringColor}; --pin-shadow-color:${style.pinShadowColor};">
                 <span class="trip-overlay-badge-face">
-                    <img src="${style.iconUrl}" alt="" loading="lazy" />
+                    ${style.iconUrl
+                        ? `<img src="${style.iconUrl}" alt="" loading="lazy" />`
+                        : `<span class="trip-overlay-jr-label">${style.label || 'JR'}</span>`}
                 </span>
                 <span class="trip-overlay-badge-number">${number}</span>
             </div>`;
@@ -157,7 +159,7 @@ function hasTripVisitedPlace(placeOrId) {
                 number,
                 isVisited ? 'visited' : 'unvisited',
                 style.categoryClass,
-                style.iconUrl,
+                style.iconUrl || style.label || 'JR',
                 style.ringColor,
                 style.pinShadowColor
             ].join('|'),

@@ -41,7 +41,12 @@ function loadDataServiceHarness() {
             BARK: {
                 debugDataRefresh: false,
                 getSwagType() { return 'Other'; },
-                getParkCategory(value) { return value || 'Unknown'; },
+                getParkCategory(value) {
+                    const normalized = String(value || '').trim().toLowerCase();
+                    if (normalized === 'nps' || normalized.includes('national')) return 'National';
+                    if (normalized.includes('state')) return 'State';
+                    return value || 'Unknown';
+                },
                 normalizeText(value) { return String(value || '').trim().toLowerCase(); },
                 repos: {
                     ParkRepo: {
@@ -115,4 +120,25 @@ test('data service publishes War in the Pacific source coordinates unchanged', (
     assert.equal(publishedPoints.length, 1);
     assert.equal(publishedPoints[0].lat, 13.4744653);
     assert.equal(publishedPoints[0].lng, 144.7187141);
+});
+
+test('data service publishes Junior Ranger sheet rows by siteID and latitude/longitude', () => {
+    const harness = loadDataServiceHarness();
+
+    harness.sandbox.window.BARK.parseCSVString([
+        'siteID,siteName,siteInfo,jrBooks,latitude,longitude,state,agency,officialGovWebsite,badgePictures,specialPrograms',
+        'jr_test_site,Test Junior Ranger Site,Main badge available,Booklet A,38.1234,-77.5678,Virginia,NPS,https://www.nps.gov/test,,Night Explorer'
+    ].join('\n'));
+
+    const publishedPoints = harness.getPublishedPoints();
+
+    assert.equal(publishedPoints.length, 1);
+    assert.equal(publishedPoints[0].id, 'jr_test_site');
+    assert.equal(publishedPoints[0].name, 'Test Junior Ranger Site');
+    assert.equal(publishedPoints[0].lat, 38.1234);
+    assert.equal(publishedPoints[0].lng, -77.5678);
+    assert.equal(publishedPoints[0].parkCategory, 'National');
+    assert.equal(publishedPoints[0].swagType, 'Special Programs');
+    assert.equal(publishedPoints[0].specialPrograms, 'Night Explorer');
+    assert.match(publishedPoints[0].info, /Special programs: Night Explorer/);
 });

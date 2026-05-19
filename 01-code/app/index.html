@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>US BARK Rangers</title>
+    <title>Junior Ranger Map</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -17,8 +17,8 @@
 
     <!-- QRCode JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <link rel="stylesheet" href="styles.css?v=49">
-    <link rel="stylesheet" href="styles/mapStyles.css?v=6">
+    <link rel="stylesheet" href="styles.css?v=50">
+    <link rel="stylesheet" href="styles/mapStyles.css?v=7">
     <link rel="stylesheet" href="styles/trophyCase.css?v=2">
 
     <!-- PWA Manifest & App Icons -->
@@ -28,7 +28,7 @@
     <!-- iOS PWA Enhancements -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="US BARK Rangers">
+    <meta name="apple-mobile-web-app-title" content="Junior Ranger Map">
     <link rel="apple-touch-icon" href="assets/images/bark-logo.jpeg">
     <link rel="icon" type="image/jpeg" href="assets/images/bark-logo.jpeg">
 
@@ -47,7 +47,7 @@
 <body>
     <div id="bark-loader">
         <div class="dog-spinner">🐾</div>
-        <p>US BARK Rangers Loading...</p>
+        <p>Junior Ranger Map Loading...</p>
     </div>
     <div id="map"></div>
     <div id="map-unavailable-message" class="map-unavailable-notice" role="alert" aria-live="assertive" hidden>
@@ -69,7 +69,7 @@
 
     <div id="filter-panel" class="glass-panel collapsed">
         <div class="panel-header" id="panel-header" style="text-align: center; width: 100%; cursor: default;">
-            <h1 style="margin-bottom: 12px; font-size: 18px;">US BARK RANGERS&reg;</h1>
+            <h1 style="margin-bottom: 12px; font-size: 18px;">Junior Ranger Map</h1>
             <div class="search-bar-row" style="display: flex; gap: 10px; width: 100%; align-items: center;">
                 <div class="search-container" style="flex: 1; position: relative; display: flex; align-items: center;">
                     <input type="text" id="park-search" placeholder="Search by name (e.g. 'Acadia')..."
@@ -101,17 +101,11 @@
             </div>
 
             <div class="filter-toggles">
-                <button class="filter-btn" data-filter="Tag">
-                    <span class="dot blue"></span> Tags
+                <button class="filter-btn" data-filter="Junior Ranger">
+                    <span class="dot blue"></span> Junior Ranger
                 </button>
-                <button class="filter-btn" data-filter="Bandana">
-                    <span class="dot orange"></span> Bandanas
-                </button>
-                <button class="filter-btn" data-filter="Certificate">
-                    <span class="dot green"></span> Certificates
-                </button>
-                <button class="filter-btn" data-filter="Other">
-                    <span class="dot gray"></span> Other
+                <button class="filter-btn" data-filter="Special Programs">
+                    <span class="dot orange"></span> Special Programs
                 </button>
             </div>
 
@@ -1410,7 +1404,7 @@
     <script src="utils/geoUtils.js?v=1" defer></script>
     <script src="utils/scoringUtils.js?v=2" defer></script>
     <script src="gamificationLogic.js?v=4" defer></script>
-    <script src="MapMarkerConfig.js?v=4" defer></script>
+    <script src="MapMarkerConfig.js?v=5" defer></script>
 
     <!-- NEW: Modular Architecture (strict load order) -->
     <script src="modules/settingsRegistry.js?v=1" defer></script>
@@ -1434,13 +1428,13 @@
     <script src="modules/paywallController.js?v=8" defer></script>
     <script src="services/authService.js?v=26" defer></script>
     <script src="modules/markerLayerPolicy.js?v=2" defer></script>
-    <script src="modules/MarkerLayerManager.js?v=9" defer></script>
-    <script src="modules/TripLayerManager.js?v=5" defer></script>
-    <script src="modules/mapEngine.js?v=2" defer></script>
-    <script src="modules/renderEngine.js?v=8" defer></script>
+    <script src="modules/MarkerLayerManager.js?v=10" defer></script>
+    <script src="modules/TripLayerManager.js?v=6" defer></script>
+    <script src="modules/mapEngine.js?v=3" defer></script>
+    <script src="modules/renderEngine.js?v=9" defer></script>
     <script src="renderers/panelRenderer.js?v=7" defer></script>
     <script src="modules/searchEngine.js?v=6" defer></script>
-    <script src="modules/dataService.js?v=8" defer></script>
+    <script src="modules/dataService.js?v=9" defer></script>
     <script src="renderers/leaderboardRenderer.js?v=1" defer></script>
     <script src="modules/profileEngine.js?v=10" defer></script>
     <script src="modules/expeditionEngine.js?v=5" defer></script>

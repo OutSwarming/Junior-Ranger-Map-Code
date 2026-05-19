@@ -454,7 +454,7 @@ const markerClusterGroup = L.markerClusterGroup({
         const hiddenClass = visibleChildCount > 0 ? '' : ' marker-filter-hidden';
         const markerHtml = `
             <div class="cluster-enamel-wrapper">
-                <img src="assets/images/bark-logo.jpeg" alt="B.A.R.K. Cluster" loading="lazy" />
+                <span class="cluster-jr-label" aria-hidden="true">JR</span>
                 <div class="cluster-count-badge">${visibleChildCount}</div>
             </div>
         `;

@@ -2069,7 +2069,8 @@ body.app-tab-active #slide-panel {
     box-shadow: none !important;
 }
 
-.visited-pin img {
+.visited-pin img,
+.visited-pin .jr-pin-face {
     border: 3px solid var(--ring-color, #4CAF50) !important;
     border-radius: 50%;
     box-sizing: border-box;
@@ -2083,7 +2084,8 @@ body.app-tab-active #slide-panel {
     filter: drop-shadow(0 0 7px var(--pin-shadow-color, rgba(0, 0, 0, 0.4)));
 }
 
-.cat-national:not(.visited-pin) img {
+.cat-national:not(.visited-pin) img,
+.cat-national:not(.visited-pin) .jr-pin-face {
     border: 3px solid var(--ring-color, #000);
     border-radius: 50%;
 }
@@ -2096,7 +2098,8 @@ body.app-tab-active #slide-panel {
     filter: drop-shadow(0 0 7px var(--pin-shadow-color, rgba(33, 150, 243, 0.4)));
 }
 
-.cat-state:not(.visited-pin) img {
+.cat-state:not(.visited-pin) img,
+.cat-state:not(.visited-pin) .jr-pin-face {
     border: 3px solid var(--ring-color, #2196F3);
     border-radius: 50%;
 }
@@ -3393,6 +3396,13 @@ body.viewport-culling .leaflet-marker-icon {
     object-fit: cover;
     display: block;
     pointer-events: none;
+}
+.trip-overlay-jr-label {
+    color: #f8fafc;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1;
 }
 .trip-overlay-custom-pin-shape {
     position: relative;

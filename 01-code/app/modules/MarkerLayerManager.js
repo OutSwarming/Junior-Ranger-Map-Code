@@ -34,6 +34,8 @@ class MarkerLayerManager {
             parkData.lng,
             parkData.parkCategory,
             parkData.category,
+            parkData.specialPrograms,
+            parkData.jrBooks,
             parkData._cachedNormalizedName
         ].join('\u001f');
     }
