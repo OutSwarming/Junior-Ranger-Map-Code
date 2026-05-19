@@ -107,8 +107,193 @@ function createExternalLink(href, className, text) {
 function createMetaPill(icon, value, fallback) {
     const pill = document.createElement('div');
     pill.className = 'meta-pill';
-    pill.textContent = `${icon} ${value || fallback}`;
+    pill.textContent = icon ? `${icon} ${value || fallback}` : `${value || fallback}`;
     return pill;
+}
+
+function getAgencyLabel(agency) {
+    const value = String(agency || '').trim();
+    if (!value) return 'Agency not listed';
+    const normalized = value.toLowerCase();
+    if (normalized === 'nps') return 'National Park Service';
+    if (normalized.includes('blm')) return 'Bureau of Land Management';
+    if (normalized.includes('usfs') || normalized.includes('forest service')) return 'National Forest';
+    return value;
+}
+
+function getPickupPosition(place = {}) {
+    const source = `${place.name || ''} ${place.info || ''}`;
+    const match = source.match(/\(?\s*(\d+)\s+of\s+(\d+)\s*\)?/i);
+    if (!match) return null;
+
+    const index = Number(match[1]);
+    const total = Number(match[2]);
+    if (!Number.isFinite(index) || !Number.isFinite(total) || total < 2) return null;
+    return { index, total };
+}
+
+function getDisplayPlaceName(name) {
+    return String(name || 'Unknown Park').replace(/^\s*\(?\d+\s+of\s+\d+\)?\s*/i, '').trim() || 'Unknown Park';
+}
+
+function getBookLinks(place = {}) {
+    const source = String(place.jrBooks || '');
+    const urls = getSafeHttpUrls(source);
+    return urls.map((url, index) => {
+        const urlIndex = source.indexOf(url);
+        const prefix = urlIndex > -1 ? source.slice(0, urlIndex).split(/\r?\n/).pop().replace(/[:\-\s]+$/, '').trim() : '';
+        return {
+            url,
+            label: prefix || (urls.length > 1 ? `Junior Ranger Book ${index + 1}` : 'Download Book')
+        };
+    });
+}
+
+function createPanelButton({ text, className = '', href = '', onClick = null }) {
+    const element = href ? document.createElement('a') : document.createElement('button');
+    element.className = `panel-action-btn ${className}`.trim();
+    element.textContent = text;
+    if (href) configureExternalLink(element, href);
+    if (!href) element.type = 'button';
+    if (onClick) element.addEventListener('click', onClick);
+    return element;
+}
+
+function scrollPanelTo(element) {
+    if (!element) return;
+    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function syncTripButton(button, place) {
+    if (!button) return;
+    const tripDays = Array.isArray(window.BARK.tripDays) ? window.BARK.tripDays : [];
+    const inTripDay = tripDays.findIndex(day => day && Array.isArray(day.stops) && day.stops.some(stop => stop.id === place.id));
+
+    if (inTripDay > -1) {
+        button.textContent = `In Trip Day ${inTripDay + 1}`;
+        button.classList.add('is-added');
+    } else {
+        button.textContent = 'Add To Trip';
+        button.classList.remove('is-added');
+    }
+}
+
+function buildPrimaryActions(place, bookLinks) {
+    const container = document.getElementById('panel-primary-actions');
+    if (!container) return;
+
+    clearElement(container);
+    container.appendChild(createPanelButton({
+        text: 'Directions',
+        className: 'primary',
+        href: buildMapSearchUrl(place.name, place.lat, place.lng, 'google')
+    }));
+
+    const tripButton = createPanelButton({ text: 'Add To Trip' });
+    syncTripButton(tripButton, place);
+    tripButton.addEventListener('click', () => {
+        if (typeof window.addStopToTrip === 'function' && window.addStopToTrip({
+            id: place.id,
+            name: place.name,
+            lat: place.lat,
+            lng: place.lng,
+            state: place.state || ''
+        })) {
+            syncTripButton(tripButton, place);
+        }
+    });
+    container.appendChild(tripButton);
+
+    if (bookLinks.length > 0) {
+        container.appendChild(createPanelButton({
+            text: 'Book',
+            href: bookLinks[0].url
+        }));
+    } else {
+        container.appendChild(createPanelButton({
+            text: 'Book',
+            onClick: () => scrollPanelTo(document.getElementById('panel-book-section'))
+        }));
+    }
+
+    container.appendChild(createPanelButton({
+        text: 'Park Info',
+        onClick: () => scrollPanelTo(document.getElementById('panel-info-section'))
+    }));
+}
+
+function renderJuniorRangerSummary(place, pickupPosition) {
+    const section = document.getElementById('panel-jr-summary');
+    if (!section) return;
+
+    clearElement(section);
+    const title = document.createElement('div');
+    title.className = 'panel-card-heading';
+    title.innerHTML = '<span class="panel-card-title">Junior Ranger</span><span class="panel-card-chip">Program</span>';
+    section.appendChild(title);
+
+    const lines = [];
+    lines.push(place.specialPrograms ? `Special program: ${place.specialPrograms}` : 'Site-specific Junior Ranger badge or booklet.');
+    if (place.jrBooks) lines.push('Book information is listed below.');
+    if (pickupPosition) lines.push(`This appears to be pickup location ${pickupPosition.index} of ${pickupPosition.total}.`);
+
+    const copy = document.createElement('p');
+    copy.className = 'panel-card-copy';
+    copy.textContent = lines.join(' ');
+    section.appendChild(copy);
+}
+
+function renderBookSection(place, bookLinks, websiteUrls) {
+    const section = document.getElementById('panel-book-section');
+    const count = document.getElementById('panel-book-count');
+    const linksContainer = document.getElementById('panel-book-links');
+    if (!section || !linksContainer) return;
+
+    section.style.display = 'block';
+    clearElement(linksContainer);
+    if (count) count.textContent = bookLinks.length ? `${bookLinks.length} Link${bookLinks.length === 1 ? '' : 's'}` : 'Needed';
+
+    if (bookLinks.length > 0) {
+        bookLinks.forEach(link => {
+            linksContainer.appendChild(createExternalLink(link.url, 'panel-link-btn panel-link-btn-primary', link.label));
+        });
+    } else {
+        const empty = document.createElement('p');
+        empty.className = 'panel-card-copy panel-empty-copy';
+        empty.textContent = place.jrBooks ? place.jrBooks : 'No downloadable Junior Ranger book is listed for this spot yet.';
+        linksContainer.appendChild(empty);
+    }
+
+    websiteUrls.slice(0, 2).forEach((url, index) => {
+        linksContainer.appendChild(createExternalLink(
+            url,
+            'panel-link-btn',
+            index === 0 ? 'Official Website' : `Official Link ${index + 1}`
+        ));
+    });
+}
+
+function renderPickupSection(place, pickupPosition) {
+    const section = document.getElementById('panel-pickup-section');
+    const chip = document.getElementById('panel-pickup-chip');
+    const copy = document.getElementById('panel-pickup-copy');
+    const button = document.getElementById('show-pickup-spots-btn');
+    if (!section || !copy) return;
+
+    section.style.display = 'block';
+    if (pickupPosition) {
+        if (chip) chip.textContent = `${pickupPosition.index} of ${pickupPosition.total}`;
+        copy.textContent = `This is one of ${pickupPosition.total} known places tied to this Junior Ranger badge or book. A future grouped map view can reveal the other pickup dots only while this park is selected.`;
+        if (button) {
+            button.style.display = 'inline-flex';
+            button.disabled = true;
+            button.textContent = 'Pickup Map Coming Next';
+        }
+    } else {
+        if (chip) chip.textContent = 'Primary';
+        copy.textContent = 'This pin is the listed Junior Ranger pickup or program location.';
+        if (button) button.style.display = 'none';
+    }
 }
 
 function openFreeAccountPrompt(source) {
@@ -216,15 +401,30 @@ function renderMarkerClickPanel(context) {
     if (!refreshOnly) document.getElementById('filter-panel').classList.add('collapsed');
 
     const d = marker._parkData;
-    if (titleEl) titleEl.textContent = d.name || 'Unknown Park';
+    const pickupPosition = getPickupPosition(d);
+    const displayName = getDisplayPlaceName(d.name);
+    const bookLinks = getBookLinks(d);
+    const websiteUrls = getSafeHttpUrls(d.website || '');
+
+    if (titleEl) titleEl.textContent = displayName;
+    const subtitleEl = document.getElementById('panel-subtitle');
+    if (subtitleEl) {
+        const subtitleParts = [getAgencyLabel(d.agency), d.state].filter(Boolean);
+        subtitleEl.textContent = subtitleParts.length ? `${subtitleParts.join(' • ')} • Junior Ranger` : 'Junior Ranger program';
+    }
 
     const metaContainer = document.getElementById('panel-meta-container');
     if (metaContainer) {
         clearElement(metaContainer);
-        metaContainer.appendChild(createMetaPill('📍', d.state, 'N/A'));
-        metaContainer.appendChild(createMetaPill('🏷️', d.swagType, 'Other'));
-        metaContainer.appendChild(createMetaPill('💰', d.cost, 'Free'));
+        metaContainer.appendChild(createMetaPill('', d.swagType, 'Junior Ranger'));
+        metaContainer.appendChild(createMetaPill('', d.specialPrograms ? 'Special Program' : 'Site Program', 'Site Program'));
+        metaContainer.appendChild(createMetaPill('', pickupPosition ? `${pickupPosition.index} of ${pickupPosition.total} pickup spots` : d.state, 'Location'));
     }
+
+    buildPrimaryActions(d, bookLinks);
+    renderJuniorRangerSummary(d, pickupPosition);
+    renderBookSection(d, bookLinks, websiteUrls);
+    renderPickupSection(d, pickupPosition);
 
     const suggestEditBtn = document.getElementById('suggest-edit-btn');
     if (suggestEditBtn) {
@@ -260,93 +460,40 @@ function renderMarkerClickPanel(context) {
         clearElement(infoEl);
     }
 
-    if (d.pics && typeof d.pics === 'string') {
-        const pictureUrls = getSafeHttpUrls(d.pics);
-        if (pictureUrls.length > 0) {
-            if (picsEl) {
-                picsEl.style.display = 'grid';
-                clearElement(picsEl);
-                pictureUrls.forEach((url, index) => {
-                    picsEl.appendChild(createExternalLink(url, 'swag-link-btn', `📷 Swag Pic ${index + 1}`));
-                });
-            }
-        } else {
-            if (picsEl) { picsEl.style.display = 'none'; clearElement(picsEl); }
-        }
-    } else {
-        if (picsEl) { picsEl.style.display = 'none'; clearElement(picsEl); }
+    const historySection = document.getElementById('panel-history-section');
+    const historyEl = document.getElementById('panel-history');
+    if (historySection && historyEl) {
+        historySection.style.display = 'block';
+        setTextWithLineBreaks(
+            historyEl,
+            d.historyTimelineInfo || 'Junior Ranger history notes have not been added for this location yet.'
+        );
     }
 
     const videoUrl = getSafeHttpUrls(d.video || '')[0];
+    const mediaLinks = document.getElementById('media-links');
     if (videoUrl) {
+        if (mediaLinks) mediaLinks.style.display = 'flex';
         if (videoEl) {
             videoEl.style.display = 'block';
             configureExternalLink(videoEl, videoUrl);
         }
     } else {
+        if (mediaLinks) mediaLinks.style.display = 'none';
         if (videoEl) { videoEl.style.display = 'none'; videoEl.removeAttribute('href'); }
     }
 
+    if (picsEl) { picsEl.style.display = 'none'; clearElement(picsEl); }
     if (websitesContainer) {
         clearElement(websitesContainer);
-        if (d.website && typeof d.website === 'string') {
-            const urls = getSafeHttpUrls(d.website);
-            if (urls && urls.length > 0) {
-                websitesContainer.style.display = 'grid';
-                urls.forEach((url, index) => {
-                    websitesContainer.appendChild(createExternalLink(
-                        url,
-                        'website-btn',
-                        urls.length > 1 ? `Website ${index + 1}` : 'Official Website'
-                    ));
-                });
-            } else {
-                websitesContainer.style.display = 'none';
-            }
-        } else {
-            websitesContainer.style.display = 'none';
-        }
+        websitesContainer.style.display = 'none';
     }
 
     // --- MAP URLS & BUTTON RENDERING ---
     const stickyFooter = document.getElementById('panel-sticky-footer');
     if (stickyFooter) {
-        stickyFooter.style.display = 'grid';
+        stickyFooter.style.display = 'none';
         clearElement(stickyFooter);
-        stickyFooter.appendChild(createExternalLink(buildMapSearchUrl(d.name, d.lat, d.lng, 'google'), 'dir-btn', '🗺️ Google'));
-        stickyFooter.appendChild(createExternalLink(buildMapSearchUrl(d.name, d.lat, d.lng, 'apple'), 'dir-btn', '🧭 Apple'));
-
-        const addTripButton = document.createElement('button');
-        addTripButton.className = 'glass-btn btn-trip';
-        addTripButton.type = 'button';
-        addTripButton.textContent = '➕ Add to Trip';
-        stickyFooter.appendChild(addTripButton);
-
-        const btnTrip = stickyFooter.querySelector('.btn-trip');
-        if (btnTrip) {
-            const tripDays = window.BARK.tripDays;
-            const syncPopupUI = () => {
-                const inTripDay = Array.from(tripDays).findIndex(day => day.stops.some(s => s.id === d.id));
-                if (inTripDay > -1) {
-                    btnTrip.textContent = `✓ In Trip (Day ${inTripDay + 1})`;
-                    btnTrip.style.background = '#e8f5e9';
-                    btnTrip.style.borderColor = '#4CAF50';
-                    btnTrip.style.color = '#2E7D32';
-                } else {
-                    btnTrip.textContent = `➕ Add to Trip`;
-                    btnTrip.style.background = '#fff';
-                    btnTrip.style.borderColor = '#cbd5e1';
-                    btnTrip.style.color = '#333';
-                }
-            };
-            syncPopupUI();
-            btnTrip.onclick = (e) => {
-                e.preventDefault();
-                if (window.addStopToTrip({ id: d.id, name: d.name, lat: d.lat, lng: d.lng, state: d.state || '' })) {
-                    syncPopupUI();
-                }
-            };
-        }
     }
 
     // --- VISITED SECTION ---
@@ -392,13 +539,13 @@ function renderMarkerClickPanel(context) {
 
                 if (cachedObj.verified) {
                     verifyBtn.style.background = '#4CAF50';
-                    verifyBtnText.textContent = '🐾 Verified & Secured';
+                    verifyBtnText.textContent = 'Verified & Secured';
                     verifyBtn.disabled = true;
                     verifyBtn.style.cursor = 'default';
                     verifyBtn.style.opacity = '0.7';
                 } else {
                     verifyBtn.style.background = '#FF9800';
-                    verifyBtnText.textContent = '🐾 Verified Check-In';
+                    verifyBtnText.textContent = 'Verified Check-In';
                     verifyBtn.disabled = false;
                     verifyBtn.style.cursor = 'pointer';
                     verifyBtn.style.opacity = '1';
@@ -413,7 +560,7 @@ function renderMarkerClickPanel(context) {
                 markVisitedBtn.onmouseleave = null;
 
                 verifyBtn.style.background = '#FF9800';
-                verifyBtnText.textContent = '🐾 Verified Check-In';
+                verifyBtnText.textContent = 'Verified Check-In';
                 verifyBtn.disabled = false;
                 verifyBtn.style.cursor = 'pointer';
                 verifyBtn.style.opacity = '1';
@@ -432,7 +579,7 @@ function renderMarkerClickPanel(context) {
                         alert(`Check-in Verified! You earned 2 points.`);
 
                         verifyBtn.style.background = '#4CAF50';
-                        verifyBtnText.textContent = '🐾 Verified & Secured';
+                        verifyBtnText.textContent = 'Verified & Secured';
                         verifyBtn.disabled = true;
                         verifyBtn.style.cursor = 'default';
                         verifyBtn.style.opacity = '0.7';
@@ -460,12 +607,12 @@ function renderMarkerClickPanel(context) {
                         } else {
                             alert("Check-in could not be verified. Try again later.");
                         }
-                        verifyBtnText.textContent = '🐾 Verified Check-In';
+                        verifyBtnText.textContent = 'Verified Check-In';
                     }
                 } catch (error) {
                     console.error("[panelRenderer] verify check-in failed:", error);
                     alert("Failed to get location. Try again later.");
-                    verifyBtnText.textContent = '🐾 Verified Check-In';
+                    verifyBtnText.textContent = 'Verified Check-In';
                 }
             };
 
@@ -514,7 +661,7 @@ function renderMarkerClickPanel(context) {
             visitedSection.style.display = 'grid';
             verifyBtn.style.background = '#94a3b8';
             setAccountLockedCheckinButton(markVisitedBtn, markVisitedText, 'Mark as Visited', 'mark-visited');
-            setAccountLockedCheckinButton(verifyBtn, verifyBtnText, '🐾 Verified Check-In', 'verified-checkin');
+            setAccountLockedCheckinButton(verifyBtn, verifyBtnText, 'Verified Check-In', 'verified-checkin');
         }
     }
 

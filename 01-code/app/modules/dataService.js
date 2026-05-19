@@ -23,7 +23,9 @@ const CSV_COLUMNS = {
     PICS: ['badgePictures', 'Swag Pics - If available, and may not be current.'],
     VIDEO: ['Swearing-In Video. Not all sites do this, and ones that do only do it as time permits.'],
     LAT: ['latitude', 'lat'],
-    LNG: ['longitude', 'lng']
+    LNG: ['longitude', 'lng'],
+    ADDRESS: ['address', 'Address'],
+    HISTORY: ['historyTimelineInfo', 'History Timeline Info', 'Junior Ranger History']
 };
 
 const SWAG_TYPE_COLUMNS = ['Swag Type', 'Swag', 'Swag Available'];
@@ -115,6 +117,8 @@ function normalizeCSVRow(rawItem) {
         video: getCSVValue(row, CSV_COLUMNS.VIDEO),
         lat: getCSVValue(row, CSV_COLUMNS.LAT),
         lng: getCSVValue(row, CSV_COLUMNS.LNG),
+        address: getCSVValue(row, CSV_COLUMNS.ADDRESS),
+        historyTimelineInfo: getCSVValue(row, CSV_COLUMNS.HISTORY),
         specialPrograms,
         jrBooks: getCSVValue(row, CSV_COLUMNS.JR_BOOKS),
         swagType: isJuniorRanger
@@ -157,6 +161,8 @@ function processParsedResults(results) {
             const website = item.website;
             const pics = item.pics;
             const video = item.video;
+            const address = item.address;
+            const historyTimelineInfo = item.historyTimelineInfo;
             let lat = item.lat;
             let lng = item.lng;
             const id = getParkId(item);
@@ -202,6 +208,8 @@ function processParsedResults(results) {
                 website,
                 pics,
                 video,
+                address,
+                historyTimelineInfo,
                 lat,
                 lng,
                 parkCategory,

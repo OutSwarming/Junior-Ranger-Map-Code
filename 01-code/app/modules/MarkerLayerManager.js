@@ -31,6 +31,8 @@ class MarkerLayerManager {
             parkData.website,
             parkData.pics,
             parkData.video,
+            parkData.address,
+            parkData.historyTimelineInfo,
             parkData.lat,
             parkData.lng,
             parkData.parkCategory,

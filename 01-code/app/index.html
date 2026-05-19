@@ -17,7 +17,7 @@
 
     <!-- QRCode JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <link rel="stylesheet" href="styles.css?v=53">
+    <link rel="stylesheet" href="styles.css?v=54">
     <link rel="stylesheet" href="styles/mapStyles.css?v=9">
     <link rel="stylesheet" href="styles/trophyCase.css?v=2">
 
@@ -157,9 +157,68 @@
 
 
     <div id="slide-panel">
+        <div class="panel-drag-handle" aria-hidden="true"></div>
         <button id="close-slide-panel" aria-label="Close" class="close-btn">&times;</button>
         <div class="panel-content">
-            <h2 id="panel-title" style="margin-bottom: 20px;">Park Name</h2>
+            <section class="panel-hero">
+                <h2 id="panel-title">Park Name</h2>
+                <p id="panel-subtitle" class="panel-subtitle">Junior Ranger program</p>
+                <div id="panel-meta-container" class="park-meta-bar"></div>
+            </section>
+
+            <div id="panel-primary-actions" class="panel-primary-actions"></div>
+
+            <section id="panel-jr-summary" class="panel-card panel-jr-summary"></section>
+
+            <section id="panel-book-section" class="panel-card panel-book-section">
+                <div class="panel-card-heading">
+                    <span class="panel-card-title">Get The Book</span>
+                    <span id="panel-book-count" class="panel-card-chip">Book</span>
+                </div>
+                <div id="panel-book-links" class="panel-link-list"></div>
+            </section>
+
+            <section id="panel-pickup-section" class="panel-card panel-pickup-section">
+                <div class="panel-card-heading">
+                    <span class="panel-card-title">Pickup Locations</span>
+                    <span id="panel-pickup-chip" class="panel-card-chip">Location</span>
+                </div>
+                <p id="panel-pickup-copy" class="panel-card-copy"></p>
+                <button id="show-pickup-spots-btn" class="panel-inline-btn" type="button">Show Pickup Spots</button>
+            </section>
+
+            <a id="suggest-edit-btn" href="mailto:usbarkrangers@gmail.com" class="glass-btn outline-btn panel-secondary-action">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 20h9"></path>
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                </svg>
+                Suggest an Edit
+            </a>
+
+            <div class="panel-section" id="panel-info-section" style="display: none;">
+                <div class="panel-label">Park Info</div>
+                <div id="panel-info-container" class="report-container">
+                    <div id="panel-info" class="panel-value">Details...</div>
+                    <div class="report-fade-overlay"></div>
+                </div>
+                <button id="show-more-info" class="show-more-btn" style="display: none;">Show Full Info ▾</button>
+            </div>
+
+            <div class="panel-section" id="panel-history-section" style="display: none;">
+                <div class="panel-label">Junior Ranger History</div>
+                <div id="panel-history" class="panel-value"></div>
+            </div>
+
+            <div id="media-links" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+                <div id="websites-container" style="display: flex; flex-wrap: wrap; gap: 10px; flex: 1;"></div>
+                <div id="panel-pics"
+                    style="display: none; flex-wrap: wrap; flex: 1; align-items: center; justify-content: center;">
+                </div>
+                <a id="panel-video" href="#" target="_blank" class="glass-btn"
+                    style="display: none; padding: 8px 16px; font-size: 14px; flex: 1; text-align: center;">Watch
+                    Video</a>
+            </div>
 
             <div class="panel-section" id="panel-visited-section" style="display: none;">
                 <button id="verify-checkin-btn" class="glass-btn panel-visit-action">
@@ -177,38 +236,6 @@
                 </button>
             </div>
 
-            <a id="suggest-edit-btn" href="mailto:usbarkrangers@gmail.com" class="glass-btn outline-btn panel-secondary-action">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 20h9"></path>
-                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-                </svg>
-                Suggest an Edit
-            </a>
-
-            <!-- High-Density Quick-Info Bar -->
-            <div id="panel-meta-container" class="park-meta-bar"></div>
-
-            <div class="panel-section" id="panel-info-section" style="display: none;">
-                <div class="panel-label">Updates & Reports</div>
-                <div id="panel-info-container" class="report-container">
-                    <div id="panel-info" class="panel-value">Details...</div>
-                    <div class="report-fade-overlay"></div>
-                </div>
-                <button id="show-more-info" class="show-more-btn" style="display: none;">Show Full Reports ▾</button>
-            </div>
-
-            <div id="media-links" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
-                <div id="websites-container" style="display: flex; flex-wrap: wrap; gap: 10px; flex: 1;"></div>
-                <div id="panel-pics"
-                    style="display: none; flex-wrap: wrap; flex: 1; align-items: center; justify-content: center;">
-                </div>
-                <a id="panel-video" href="#" target="_blank" class="glass-btn"
-                    style="display: none; padding: 8px 16px; font-size: 14px; flex: 1; text-align: center;">Watch
-                    Video</a>
-            </div>
-
-            <!-- Command Center Sticky Footer -->
             <div id="panel-sticky-footer" class="panel-sticky-footer" style="display: none;"></div>
         </div>
     </div>
@@ -1428,13 +1455,13 @@
     <script src="modules/paywallController.js?v=8" defer></script>
     <script src="services/authService.js?v=26" defer></script>
     <script src="modules/markerLayerPolicy.js?v=2" defer></script>
-    <script src="modules/MarkerLayerManager.js?v=14" defer></script>
+    <script src="modules/MarkerLayerManager.js?v=15" defer></script>
     <script src="modules/TripLayerManager.js?v=7" defer></script>
     <script src="modules/mapEngine.js?v=3" defer></script>
     <script src="modules/renderEngine.js?v=9" defer></script>
-    <script src="renderers/panelRenderer.js?v=8" defer></script>
+    <script src="renderers/panelRenderer.js?v=9" defer></script>
     <script src="modules/searchEngine.js?v=6" defer></script>
-    <script src="modules/dataService.js?v=10" defer></script>
+    <script src="modules/dataService.js?v=11" defer></script>
     <script src="renderers/leaderboardRenderer.js?v=1" defer></script>
     <script src="modules/profileEngine.js?v=10" defer></script>
     <script src="modules/expeditionEngine.js?v=5" defer></script>
