@@ -196,6 +196,37 @@ function closeSlidePanel(options = {}) {
     }
 }
 
+function getStylePixelValue(element, property, fallback = 0) {
+    if (!element) return fallback;
+    const value = parseFloat(window.getComputedStyle(element)[property]);
+    return Number.isFinite(value) ? value : fallback;
+}
+
+function getCompactLowSheetHeight(viewportHeight, highHeight) {
+    const viewportWidth = window.visualViewport ? window.visualViewport.width : window.innerWidth;
+    const handleHeight = slidePanelHandle ? slidePanelHandle.getBoundingClientRect().height : 36;
+    const actionRow = slidePanel ? slidePanel.querySelector('.panel-primary-actions') : null;
+    const actionRowHeight = actionRow
+        ? Math.max(62, Math.ceil(actionRow.getBoundingClientRect().height + 6))
+        : 66;
+    const panelPaddingTop = getStylePixelValue(slidePanel, 'paddingTop', 6);
+    const panelPaddingBottom = getStylePixelValue(slidePanel, 'paddingBottom', 0);
+    const content = slidePanel ? slidePanel.querySelector('.panel-content') : null;
+    const contentPaddingBottom = getStylePixelValue(content, 'paddingBottom', 18);
+    const compactTitleFontSize = Math.min(31, Math.max(25, viewportWidth * 0.07));
+    const compactTitleHeight = Math.ceil(compactTitleFontSize * 1.1);
+    const compactHeight = Math.ceil(
+        panelPaddingTop +
+        panelPaddingBottom +
+        handleHeight +
+        compactTitleHeight +
+        actionRowHeight +
+        contentPaddingBottom
+    );
+
+    return Math.min(highHeight, Math.max(156, Math.min(196, compactHeight)));
+}
+
 function getMobileSheetMetrics() {
     const viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
     const navHeight = bottomNav ? bottomNav.getBoundingClientRect().height : 75;
@@ -213,10 +244,10 @@ function getMobileSheetMetrics() {
         ? Math.min(viewportHeight * 0.42, Math.max(0, controlBottom + MOBILE_SHEET_TOP_GAP))
         : Math.max(88, viewportHeight * 0.14);
     const highHeight = Math.max(280, viewportHeight - navHeight - topLimit);
-    const lowHeight = Math.min(highHeight, Math.max(196, Math.min(268, viewportHeight * 0.28)));
+    const lowHeight = getCompactLowSheetHeight(viewportHeight, highHeight);
     const mediumTarget = Math.max(lowHeight + 96, viewportHeight * 0.42);
     const mediumHeight = Math.min(highHeight, Math.max(lowHeight + 72, Math.min(mediumTarget, highHeight - 72)));
-    const closeThreshold = Math.max(150, lowHeight * 0.72);
+    const closeThreshold = Math.max(112, Math.min(150, lowHeight * 0.76));
     return {
         maxHeight: highHeight,
         defaultHeight: mediumHeight,
