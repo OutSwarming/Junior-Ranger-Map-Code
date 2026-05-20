@@ -684,8 +684,14 @@ function renderMarkerClickPanel(context) {
         : !document.querySelector('.ui-view.active');
 
     if (slidePanel) {
-        if (mapIsActive) slidePanel.classList.add('open');
-        else slidePanel.classList.remove('open');
+        if (mapIsActive) {
+            if (!refreshOnly && typeof window.BARK.resetSlidePanelSheet === 'function') {
+                window.BARK.resetSlidePanelSheet({ snapToDefault: true });
+            }
+            slidePanel.classList.add('open');
+        } else {
+            slidePanel.classList.remove('open');
+        }
     }
 }
 

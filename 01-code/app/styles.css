@@ -1349,12 +1349,6 @@ body.app-tab-active #slide-panel {
     background: #f97316;
 }
 
-@media (max-width: 767px) {
-    #slide-panel {
-        height: min(68vh, calc(100dvh - var(--mobile-nav-height, 75px) - env(safe-area-inset-bottom, 0px) - 12px));
-    }
-}
-
 @media (min-width: 768px) {
     #slide-panel {
         max-height: none;
