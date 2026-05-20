@@ -121,6 +121,7 @@ const MOBILE_SHEET_MODES = ['low', 'medium', 'high'];
 const MOBILE_SHEET_DEFAULT_MODE = 'medium';
 const MOBILE_SHEET_FLICK_MIN_DISTANCE = 16;
 const MOBILE_SHEET_FLICK_VELOCITY = 0.22;
+let slidePanelCloseResetTimer = null;
 
 function findScrollableAncestorWithin(target, root) {
     let el = target;
@@ -179,6 +180,10 @@ function bindFixedSurfaceScrollGuard(root) {
 
 function resetSlidePanelHeight() {
     if (!slidePanel) return;
+    if (slidePanelCloseResetTimer) {
+        clearTimeout(slidePanelCloseResetTimer);
+        slidePanelCloseResetTimer = null;
+    }
     slidePanel.classList.remove('panel-dragging', 'panel-expanded', 'panel-content-scrolled');
     slidePanel.removeAttribute('data-sheet-mode');
     slidePanel.style.removeProperty('height');
@@ -191,8 +196,30 @@ function isMobileSheetViewport() {
 
 function closeSlidePanel(options = {}) {
     if (!slidePanel) return;
+    if (slidePanelCloseResetTimer) {
+        clearTimeout(slidePanelCloseResetTimer);
+        slidePanelCloseResetTimer = null;
+    }
+    const shouldPreserveClosingHeight = (
+        options.preserveHeight !== false &&
+        isMobileSheetViewport() &&
+        slidePanel.classList.contains('open')
+    );
+    if (shouldPreserveClosingHeight) {
+        const rect = slidePanel.getBoundingClientRect();
+        if (rect.height > 0) slidePanel.style.height = `${Math.round(rect.height)}px`;
+    }
     slidePanel.classList.remove('open');
-    resetSlidePanelHeight();
+    slidePanel.classList.remove('panel-dragging', 'panel-content-scrolled');
+    document.body.classList.remove('mobile-sheet-high');
+    if (shouldPreserveClosingHeight) {
+        slidePanelCloseResetTimer = setTimeout(() => {
+            slidePanelCloseResetTimer = null;
+            if (!slidePanel.classList.contains('open')) resetSlidePanelHeight();
+        }, 380);
+    } else {
+        resetSlidePanelHeight();
+    }
     if (options.clearPin === true && typeof window.BARK.clearActivePin === 'function') {
         window.BARK.clearActivePin();
     }
@@ -298,6 +325,10 @@ window.BARK.updateSlidePanelScrollState = updateSlidePanelScrollState;
 
 function setSlidePanelMode(mode, options = {}) {
     if (!slidePanel || !isMobileSheetViewport()) return;
+    if (slidePanelCloseResetTimer) {
+        clearTimeout(slidePanelCloseResetTimer);
+        slidePanelCloseResetTimer = null;
+    }
     const nextMode = normalizeSheetMode(mode);
     const metrics = getMobileSheetMetrics();
     slidePanel.dataset.sheetMode = nextMode;
@@ -429,15 +460,17 @@ function bindSlidePanelDrag() {
         const state = dragState;
         dragState = null;
         slidePanel.classList.remove('panel-dragging');
+        const captureTarget = state.captureTarget || slidePanelHandle;
         if (
             state.pointerId !== null &&
             state.pointerId !== undefined &&
-            typeof slidePanelHandle.hasPointerCapture === 'function' &&
-            typeof slidePanelHandle.releasePointerCapture === 'function'
+            captureTarget &&
+            typeof captureTarget.hasPointerCapture === 'function' &&
+            typeof captureTarget.releasePointerCapture === 'function'
         ) {
             try {
-                if (slidePanelHandle.hasPointerCapture(state.pointerId)) {
-                    slidePanelHandle.releasePointerCapture(state.pointerId);
+                if (captureTarget.hasPointerCapture(state.pointerId)) {
+                    captureTarget.releasePointerCapture(state.pointerId);
                 }
             } catch (_error) {
                 // The pointer may already be released after interrupted gestures.
@@ -462,6 +495,7 @@ function bindSlidePanelDrag() {
         const currentHeight = state.currentHeight;
         if (totalDrag > 6) {
             suppressHandleClick = true;
+            if (closeSlideBtn) closeSlideBtn._barkSuppressClickUntil = Date.now() + 300;
             setTimeout(() => { suppressHandleClick = false; }, 250);
         }
 
@@ -517,6 +551,7 @@ function bindSlidePanelDrag() {
             metrics,
             startMode: slidePanel.dataset.sheetMode || MOBILE_SHEET_DEFAULT_MODE,
             source: options.source || 'handle',
+            captureTarget: options.captureTarget || slidePanelHandle,
             allowScrollHandoff: options.allowScrollHandoff === true,
             startScrollTop: Number.isFinite(options.startScrollTop) ? options.startScrollTop : 0
         };
@@ -593,34 +628,57 @@ function bindSlidePanelDrag() {
     }
 
     if (window.PointerEvent) {
-        slidePanelHandle.addEventListener('pointerdown', (event) => {
-            if (!startDrag(event.clientY, event.pointerId)) return;
+        const bindPointerDragSource = (element, options = {}) => {
+            if (!element) return;
+            element.addEventListener('pointerdown', (event) => {
+                if (event.button !== undefined && event.button !== 0) return;
+                if (!startDrag(event.clientY, event.pointerId, {
+                    source: options.source || 'handle',
+                    captureTarget: element
+                })) return;
 
-            if (typeof slidePanelHandle.setPointerCapture === 'function') {
-                try {
-                    slidePanelHandle.setPointerCapture(event.pointerId);
-                } catch (_error) {
-                    // Synthetic or interrupted gestures may not have an active pointer to capture.
+                if (typeof element.setPointerCapture === 'function') {
+                    try {
+                        element.setPointerCapture(event.pointerId);
+                    } catch (_error) {
+                        // Synthetic or interrupted gestures may not have an active pointer to capture.
+                    }
                 }
-            }
-            document.addEventListener('pointermove', dragMove, { passive: false });
-            document.addEventListener('pointerup', finishDrag);
-            document.addEventListener('pointercancel', finishDrag);
-            if (event.cancelable) event.preventDefault();
+                document.addEventListener('pointermove', dragMove, { passive: false });
+                document.addEventListener('pointerup', finishDrag);
+                document.addEventListener('pointercancel', finishDrag);
+                if (options.preventStartDefault !== false && event.cancelable) event.preventDefault();
+            });
+        };
+        bindPointerDragSource(slidePanelHandle);
+        bindPointerDragSource(closeSlideBtn, {
+            source: 'close-button',
+            preventStartDefault: false
         });
     } else {
-        slidePanelHandle.addEventListener('touchstart', (event) => {
-            if (!event.touches || event.touches.length !== 1) return;
-            if (!startDrag(event.touches[0].clientY)) return;
+        const bindTouchDragSource = (element, options = {}) => {
+            if (!element) return;
+            element.addEventListener('touchstart', (event) => {
+                if (!event.touches || event.touches.length !== 1) return;
+                if (!startDrag(event.touches[0].clientY, null, {
+                    source: options.source || 'handle',
+                    captureTarget: element
+                })) return;
 
-            // The fixed-panel scroll guard also listens to touchmove in capture
-            // phase. Capture here first so legacy touch-only browsers do not
-            // lose the drag before it reaches this sheet handler.
-            document.addEventListener('touchmove', dragMove, { passive: false, capture: true });
-            document.addEventListener('touchend', finishDrag, true);
-            document.addEventListener('touchcancel', finishDrag, true);
-            if (event.cancelable) event.preventDefault();
-        }, { passive: false });
+                // The fixed-panel scroll guard also listens to touchmove in capture
+                // phase. Capture here first so legacy touch-only browsers do not
+                // lose the drag before it reaches this sheet handler.
+                document.addEventListener('touchmove', dragMove, { passive: false, capture: true });
+                document.addEventListener('touchend', finishDrag, true);
+                document.addEventListener('touchcancel', finishDrag, true);
+                if (options.preventStartDefault !== false && event.cancelable) event.preventDefault();
+            }, { passive: false });
+        };
+        bindTouchDragSource(slidePanelHandle);
+        bindTouchDragSource(closeSlideBtn, {
+            source: 'close-button',
+            preventStartDefault: false
+        });
     }
 
     if (panelContent) {
@@ -803,7 +861,11 @@ if (bottomNav) {
 
 // Close panel and clear pin
 if (closeSlideBtn) {
-    closeSlideBtn.addEventListener('click', () => {
+    closeSlideBtn.addEventListener('click', (event) => {
+        if (closeSlideBtn._barkSuppressClickUntil && Date.now() < closeSlideBtn._barkSuppressClickUntil) {
+            event.preventDefault();
+            return;
+        }
         closeSlidePanel({ clearPin: true });
     });
 }
