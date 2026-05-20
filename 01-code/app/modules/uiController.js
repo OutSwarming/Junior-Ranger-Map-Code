@@ -119,6 +119,8 @@ const leafletControls = document.querySelectorAll('.leaflet-control-container');
 const MOBILE_SHEET_TOP_GAP = 8;
 const MOBILE_SHEET_MODES = ['low', 'medium', 'high'];
 const MOBILE_SHEET_DEFAULT_MODE = 'medium';
+const MOBILE_SHEET_FLICK_MIN_DISTANCE = 18;
+const MOBILE_SHEET_FLICK_VELOCITY = 0.62;
 
 function findScrollableAncestorWithin(target, root) {
     let el = target;
@@ -267,6 +269,14 @@ function normalizeSheetMode(mode) {
     return MOBILE_SHEET_MODES.includes(mode) ? mode : MOBILE_SHEET_DEFAULT_MODE;
 }
 
+function getSheetModeAfterFlick(startMode, direction) {
+    const currentIndex = MOBILE_SHEET_MODES.indexOf(normalizeSheetMode(startMode));
+    const nextIndex = currentIndex + direction;
+    if (nextIndex < 0) return 'closed';
+    if (nextIndex >= MOBILE_SHEET_MODES.length) return MOBILE_SHEET_MODES[MOBILE_SHEET_MODES.length - 1];
+    return MOBILE_SHEET_MODES[nextIndex];
+}
+
 function syncSheetChromeForMode(mode) {
     document.body.classList.toggle('mobile-sheet-high', mode === 'high');
 }
@@ -358,12 +368,24 @@ function bindSlidePanelDrag() {
         syncSheetChromeForMode(visualMode);
     };
 
+    const getEventTime = (event) => {
+        return Number.isFinite(event.timeStamp) && event.timeStamp > 0
+            ? event.timeStamp
+            : performance.now();
+    };
+
     const dragMove = (event) => {
         if (!dragState) return;
 
         const clientY = event.touches && event.touches[0] ? event.touches[0].clientY : event.clientY;
         if (!Number.isFinite(clientY)) return;
 
+        const eventTime = getEventTime(event);
+        const elapsed = Math.max(1, eventTime - dragState.lastMoveTime);
+        const instantVelocity = (dragState.lastY - clientY) / elapsed;
+        dragState.velocity = (dragState.velocity * 0.35) + (instantVelocity * 0.65);
+        dragState.lastY = clientY;
+        dragState.lastMoveTime = eventTime;
         dragState.currentY = clientY;
         const deltaY = dragState.startY - clientY;
         let nextHeight = Math.min(
@@ -433,7 +455,20 @@ function bindSlidePanelDrag() {
             return;
         }
 
-        const nextMode = getNearestModeForHeight(currentHeight, metrics);
+        const flickDirection = (
+            totalDrag >= MOBILE_SHEET_FLICK_MIN_DISTANCE &&
+            Math.abs(state.velocity) >= MOBILE_SHEET_FLICK_VELOCITY
+        )
+            ? (state.velocity > 0 ? 1 : -1)
+            : 0;
+        const flickMode = flickDirection ? getSheetModeAfterFlick(state.startMode, flickDirection) : null;
+        if (flickMode === 'closed') {
+            cancelPendingHeight();
+            closeSlidePanel({ clearPin: true });
+            return;
+        }
+
+        const nextMode = flickMode || getNearestModeForHeight(currentHeight, metrics);
         const keepScrollPosition = Boolean(
             state.allowScrollHandoff &&
             nextMode === 'high' &&
@@ -451,9 +486,13 @@ function bindSlidePanelDrag() {
         const metrics = getMobileSheetMetrics();
         const rect = slidePanel.getBoundingClientRect();
         const startHeight = Number.isFinite(options.startHeight) ? options.startHeight : rect.height;
+        const startTime = performance.now();
         dragState = {
             startY: clientY,
             currentY: clientY,
+            lastY: clientY,
+            lastMoveTime: startTime,
+            velocity: 0,
             startHeight,
             currentHeight: startHeight,
             minHeight: Math.max(120, metrics.lowHeight * 0.48),
@@ -527,7 +566,7 @@ function bindSlidePanelDrag() {
         }
 
         if (fingerMovedDown && panelContent && panelContent.scrollTop <= 1) {
-            if (startDrag(clientY, null, {
+            if (startDrag(contentGesture.startY, null, {
                 source: 'content',
                 startHeight: getMobileSheetMetrics().highHeight,
                 startScrollTop: 0
