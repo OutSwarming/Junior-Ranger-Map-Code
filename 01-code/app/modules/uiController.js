@@ -236,12 +236,18 @@ function bindSlidePanelDrag() {
         slidePanel.style.height = `${Math.round(height)}px`;
     };
 
+    const cancelPendingHeight = () => {
+        if (heightFrame) cancelAnimationFrame(heightFrame);
+        heightFrame = null;
+        pendingHeight = null;
+    };
+
     const setSheetHeight = (height, options = {}) => {
         pendingHeight = height;
 
         if (options.immediate === true) {
-            if (heightFrame) cancelAnimationFrame(heightFrame);
-            heightFrame = null;
+            cancelPendingHeight();
+            pendingHeight = height;
             applySheetHeight(pendingHeight);
             pendingHeight = null;
             return;
@@ -258,7 +264,7 @@ function bindSlidePanelDrag() {
     const dragMove = (event) => {
         if (!dragState) return;
 
-        const clientY = event.clientY;
+        const clientY = event.touches && event.touches[0] ? event.touches[0].clientY : event.clientY;
         if (!Number.isFinite(clientY)) return;
 
         dragState.currentY = clientY;
@@ -269,7 +275,7 @@ function bindSlidePanelDrag() {
         );
         dragState.currentHeight = nextHeight;
         setSheetHeight(nextHeight);
-        event.preventDefault();
+        if (event.cancelable) event.preventDefault();
     };
 
     const finishDrag = () => {
@@ -278,12 +284,26 @@ function bindSlidePanelDrag() {
         const state = dragState;
         dragState = null;
         slidePanel.classList.remove('panel-dragging');
-        slidePanelHandle.removeEventListener('pointermove', dragMove);
-        slidePanelHandle.removeEventListener('pointerup', finishDrag);
-        slidePanelHandle.removeEventListener('pointercancel', finishDrag);
+        if (
+            state.pointerId !== null &&
+            state.pointerId !== undefined &&
+            typeof slidePanelHandle.hasPointerCapture === 'function' &&
+            typeof slidePanelHandle.releasePointerCapture === 'function'
+        ) {
+            try {
+                if (slidePanelHandle.hasPointerCapture(state.pointerId)) {
+                    slidePanelHandle.releasePointerCapture(state.pointerId);
+                }
+            } catch (_error) {
+                // The pointer may already be released after interrupted gestures.
+            }
+        }
         document.removeEventListener('pointermove', dragMove);
         document.removeEventListener('pointerup', finishDrag);
         document.removeEventListener('pointercancel', finishDrag);
+        document.removeEventListener('touchmove', dragMove, true);
+        document.removeEventListener('touchend', finishDrag, true);
+        document.removeEventListener('touchcancel', finishDrag, true);
 
         const metrics = getMobileSheetMetrics();
         const movedDown = state.currentY - state.startY;
@@ -295,6 +315,7 @@ function bindSlidePanelDrag() {
         }
 
         if (movedDown > 150 || currentHeight < metrics.closeThreshold) {
+            cancelPendingHeight();
             closeSlidePanel({ clearPin: true });
             return;
         }
@@ -309,36 +330,56 @@ function bindSlidePanelDrag() {
         setSheetHeight(metrics.defaultHeight, { immediate: true });
     };
 
-    slidePanelHandle.addEventListener('pointerdown', (event) => {
-        if (!isMobileSheetViewport() || !slidePanel.classList.contains('open')) return;
-
+    const startDrag = (clientY, pointerId = null) => {
+        if (!Number.isFinite(clientY) || !isMobileSheetViewport() || !slidePanel.classList.contains('open')) {
+            return false;
+        }
         const metrics = getMobileSheetMetrics();
         const rect = slidePanel.getBoundingClientRect();
         dragState = {
-            startY: event.clientY,
-            currentY: event.clientY,
+            startY: clientY,
+            currentY: clientY,
             startHeight: rect.height,
             currentHeight: rect.height,
             minHeight: Math.max(220, metrics.defaultHeight * 0.45),
-            maxHeight: metrics.maxHeight
+            maxHeight: metrics.maxHeight,
+            pointerId
         };
 
         slidePanel.classList.add('panel-dragging');
-        if (typeof slidePanelHandle.setPointerCapture === 'function') {
-            try {
-                slidePanelHandle.setPointerCapture(event.pointerId);
-            } catch (_error) {
-                // Synthetic or interrupted gestures may not have an active pointer to capture.
+        return true;
+    };
+
+    if (window.PointerEvent) {
+        slidePanelHandle.addEventListener('pointerdown', (event) => {
+            if (!startDrag(event.clientY, event.pointerId)) return;
+
+            if (typeof slidePanelHandle.setPointerCapture === 'function') {
+                try {
+                    slidePanelHandle.setPointerCapture(event.pointerId);
+                } catch (_error) {
+                    // Synthetic or interrupted gestures may not have an active pointer to capture.
+                }
             }
-        }
-        slidePanelHandle.addEventListener('pointermove', dragMove, { passive: false });
-        slidePanelHandle.addEventListener('pointerup', finishDrag);
-        slidePanelHandle.addEventListener('pointercancel', finishDrag);
-        document.addEventListener('pointermove', dragMove, { passive: false });
-        document.addEventListener('pointerup', finishDrag);
-        document.addEventListener('pointercancel', finishDrag);
-        event.preventDefault();
-    });
+            document.addEventListener('pointermove', dragMove, { passive: false });
+            document.addEventListener('pointerup', finishDrag);
+            document.addEventListener('pointercancel', finishDrag);
+            if (event.cancelable) event.preventDefault();
+        });
+    } else {
+        slidePanelHandle.addEventListener('touchstart', (event) => {
+            if (!event.touches || event.touches.length !== 1) return;
+            if (!startDrag(event.touches[0].clientY)) return;
+
+            // The fixed-panel scroll guard also listens to touchmove in capture
+            // phase. Capture here first so legacy touch-only browsers do not
+            // lose the drag before it reaches this sheet handler.
+            document.addEventListener('touchmove', dragMove, { passive: false, capture: true });
+            document.addEventListener('touchend', finishDrag, true);
+            document.addEventListener('touchcancel', finishDrag, true);
+            if (event.cancelable) event.preventDefault();
+        }, { passive: false });
+    }
 
     slidePanelHandle.addEventListener('click', (event) => {
         if (!isMobileSheetViewport() || !slidePanel.classList.contains('open') || dragState) return;
