@@ -1089,8 +1089,8 @@ body.app-tab-active #slide-panel {
 }
 
 #slide-panel {
-    background: #101214;
-    color: #f8fafc;
+    background: #f8fafc;
+    color: #172033;
     padding: 6px 0 0;
     overflow: hidden;
 }
@@ -1115,7 +1115,7 @@ body.app-tab-active #slide-panel {
     width: 76px;
     height: 6px;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.36);
+    background: rgba(15, 23, 42, 0.22);
 }
 
 .panel-drag-handle:active {
@@ -1132,14 +1132,14 @@ body.app-tab-active #slide-panel {
     z-index: 3;
     width: 42px;
     height: 42px;
-    background: rgba(255, 255, 255, 0.12);
-    color: #f8fafc;
+    background: #e5e7eb;
+    color: #334155;
     font-size: 26px;
 }
 
 #slide-panel .close-btn:hover,
 #slide-panel .close-btn:active {
-    background: rgba(255, 255, 255, 0.2);
+    background: #d1d5db;
 }
 
 #slide-panel .panel-content {
@@ -1147,7 +1147,7 @@ body.app-tab-active #slide-panel {
     flex-direction: column;
     padding: 0 16px 18px;
     margin: 0;
-    color: #f8fafc;
+    color: #172033;
     overscroll-behavior: contain;
 }
 
@@ -1161,7 +1161,7 @@ body.app-tab-active #slide-panel {
 
 #panel-title {
     margin: 0;
-    color: #f8fafc;
+    color: #172033;
     font-size: clamp(28px, 7.4vw, 34px);
     line-height: 1.05;
     font-weight: 500;
@@ -1170,7 +1170,7 @@ body.app-tab-active #slide-panel {
 
 .panel-subtitle {
     margin: 2px 0 0;
-    color: #cbd5e1;
+    color: #64748b;
     font-size: 13px;
     line-height: 1.2;
     overflow: hidden;
@@ -1187,15 +1187,16 @@ body.app-tab-active #slide-panel {
 }
 
 .park-meta-bar::-webkit-scrollbar,
-.panel-primary-actions::-webkit-scrollbar {
+.panel-primary-actions::-webkit-scrollbar,
+.panel-sticky-footer::-webkit-scrollbar {
     display: none;
 }
 
 .meta-pill {
     flex: 0 0 auto;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    background: rgba(255, 255, 255, 0.08);
-    color: #dbeafe;
+    border: 1px solid #bfdbfe;
+    background: #eff6ff;
+    color: #075985;
     border-radius: 999px;
     padding: 5px 8px;
     font-size: 11px;
@@ -1213,13 +1214,21 @@ body.app-tab-active #slide-panel {
     scrollbar-width: none;
 }
 
+#slide-panel .panel-sticky-footer {
+    display: none;
+    grid-template-columns: none;
+    margin: 0 !important;
+    border-top: 0;
+    box-shadow: none;
+}
+
 .panel-action-btn {
     flex: 0 0 auto;
     min-width: 104px;
     min-height: 44px;
     border: 0;
     border-radius: 999px;
-    background: #003f45;
+    background: #00545d;
     color: #bff7ff !important;
     display: inline-flex;
     align-items: center;
@@ -1238,14 +1247,14 @@ body.app-tab-active #slide-panel {
 }
 
 .panel-action-btn.is-added {
-    background: #123d28;
-    color: #bbf7d0 !important;
+    background: #d1fae5;
+    color: #065f46 !important;
 }
 
 .panel-card,
 #slide-panel .panel-section {
-    background: #181b20;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.1);
     border-radius: 8px;
     padding: 14px;
     margin: 0 0 12px;
@@ -1261,7 +1270,7 @@ body.app-tab-active #slide-panel {
 
 .panel-card-title,
 #slide-panel .panel-label {
-    color: #f8fafc;
+    color: #172033;
     font-size: 16px;
     font-weight: 800;
     letter-spacing: 0;
@@ -1271,8 +1280,8 @@ body.app-tab-active #slide-panel {
 .panel-card-chip {
     flex: 0 0 auto;
     border-radius: 999px;
-    background: rgba(103, 213, 231, 0.14);
-    color: #9eeaf4;
+    background: #e0f2fe;
+    color: #075985;
     padding: 5px 9px;
     font-size: 12px;
     font-weight: 800;
@@ -1280,14 +1289,14 @@ body.app-tab-active #slide-panel {
 
 .panel-card-copy,
 #slide-panel .panel-value {
-    color: #d1d5db;
+    color: #475569;
     font-size: 15px;
     line-height: 1.5;
     margin: 0;
 }
 
 .panel-empty-copy {
-    color: #a7b0bc;
+    color: #64748b;
 }
 
 .panel-link-list {
@@ -1300,9 +1309,9 @@ body.app-tab-active #slide-panel {
     width: 100%;
     min-height: 44px;
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background: #20252d;
-    color: #dff9ff !important;
+    border: 1px solid #cbd5e1;
+    background: #f1f5f9;
+    color: #075985 !important;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1331,8 +1340,8 @@ body.app-tab-active #slide-panel {
     width: 100%;
     justify-content: center;
     background: transparent;
-    border-color: rgba(255, 255, 255, 0.16);
-    color: #dbeafe !important;
+    border-color: #cbd5e1;
+    color: #075985 !important;
     margin: 0 0 12px;
 }
 
@@ -1346,7 +1355,7 @@ body.app-tab-active #slide-panel {
     width: 100%;
     border: 0;
     background: transparent;
-    color: #9eeaf4;
+    color: #0891b2;
     font-weight: 800;
     padding: 12px 0 0;
 }
@@ -1362,8 +1371,8 @@ body.app-tab-active #slide-panel {
     border-radius: 8px;
     border: 0;
     justify-content: center;
-    background: #20252d;
-    color: #f8fafc !important;
+    background: #eef2ff;
+    color: #172033 !important;
 }
 
 #slide-panel #mark-visited-btn {
@@ -1382,6 +1391,52 @@ body.app-tab-active #slide-panel {
 
     #slide-panel[data-sheet-mode="high"] .panel-content {
         overflow-y: auto;
+    }
+
+    #slide-panel[data-sheet-mode="high"] .panel-hero {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        margin: 0 -16px 0;
+        padding: 0 84px 8px 16px;
+        background: #f8fafc;
+    }
+
+    #slide-panel[data-sheet-mode="high"].panel-content-scrolled .panel-content {
+        padding-bottom: 100px;
+    }
+
+    #slide-panel[data-sheet-mode="high"].panel-content-scrolled .panel-hero {
+        border-bottom: 1px solid #dbe3ea;
+        padding-bottom: 12px;
+    }
+
+    #slide-panel[data-sheet-mode="high"].panel-content-scrolled #panel-title {
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        line-height: 1.1;
+    }
+
+    #slide-panel[data-sheet-mode="high"].panel-content-scrolled .panel-subtitle,
+    #slide-panel[data-sheet-mode="high"].panel-content-scrolled .park-meta-bar {
+        display: none;
+    }
+
+    #slide-panel[data-sheet-mode="high"].panel-content-scrolled .panel-sticky-footer {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 3;
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding: 12px 16px 14px !important;
+        border-top: 1px solid #dbe3ea;
+        background: #f8fafc !important;
+        scrollbar-width: none;
     }
 
     #slide-panel[data-sheet-mode="low"] .panel-hero {
@@ -1473,7 +1528,7 @@ body.app-tab-active #slide-panel {
 #panel-info {
     font-size: 15px;
     line-height: 1.5;
-    color: #d1d5db;
+    color: #475569;
     margin-top: 8px;
     padding: 0;
 }

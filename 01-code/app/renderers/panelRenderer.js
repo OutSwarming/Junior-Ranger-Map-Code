@@ -149,10 +149,11 @@ function getBookLinks(place = {}) {
     });
 }
 
-function createPanelButton({ text, className = '', href = '', onClick = null }) {
+function createPanelButton({ text, className = '', href = '', onClick = null, actionKey = '' }) {
     const element = href ? document.createElement('a') : document.createElement('button');
     element.className = `panel-action-btn ${className}`.trim();
     element.textContent = text;
+    if (actionKey) element.dataset.panelAction = actionKey;
     if (href) configureExternalLink(element, href);
     if (!href) element.type = 'button';
     if (onClick) element.addEventListener('click', onClick);
@@ -183,20 +184,26 @@ function syncTripButton(button, place) {
     }
 }
 
+function syncTripActionButtons(place) {
+    document.querySelectorAll('[data-panel-action="add-trip"]').forEach(button => {
+        syncTripButton(button, place);
+    });
+}
+
+function renderPanelActionSet(container, actions) {
+    if (!container) return;
+    clearElement(container);
+    actions.forEach(action => {
+        container.appendChild(createPanelButton(action));
+    });
+}
+
 function buildPrimaryActions(place, bookLinks) {
     const container = document.getElementById('panel-primary-actions');
-    if (!container) return;
+    const stickyFooter = document.getElementById('panel-sticky-footer');
+    if (!container && !stickyFooter) return;
 
-    clearElement(container);
-    container.appendChild(createPanelButton({
-        text: 'Directions',
-        className: 'primary',
-        href: buildMapSearchUrl(place.name, place.lat, place.lng, 'google')
-    }));
-
-    const tripButton = createPanelButton({ text: 'Add To Trip' });
-    syncTripButton(tripButton, place);
-    tripButton.addEventListener('click', () => {
+    const addTripToPanel = () => {
         if (typeof window.addStopToTrip === 'function' && window.addStopToTrip({
             id: place.id,
             name: place.name,
@@ -204,27 +211,39 @@ function buildPrimaryActions(place, bookLinks) {
             lng: place.lng,
             state: place.state || ''
         })) {
-            syncTripButton(tripButton, place);
+            syncTripActionButtons(place);
         }
-    });
-    container.appendChild(tripButton);
-
-    if (bookLinks.length > 0) {
-        container.appendChild(createPanelButton({
-            text: 'Book',
-            href: bookLinks[0].url
-        }));
-    } else {
-        container.appendChild(createPanelButton({
-            text: 'Book',
-            onClick: () => scrollPanelTo(document.getElementById('panel-book-section'))
-        }));
-    }
-
-    container.appendChild(createPanelButton({
+    };
+    const clickPanelButton = (buttonId) => {
+        const button = document.getElementById(buttonId);
+        if (button && typeof button.click === 'function') button.click();
+    };
+    const actions = [{
+        text: 'Directions',
+        className: 'primary',
+        href: buildMapSearchUrl(place.name, place.lat, place.lng, 'google'),
+        actionKey: 'directions'
+    }, {
         text: 'Park Info',
-        onClick: () => scrollPanelTo(document.getElementById('panel-info-section'))
-    }));
+        onClick: () => scrollPanelTo(document.getElementById('panel-info-section')),
+        actionKey: 'park-info'
+    }, {
+        text: 'Add To Trip',
+        onClick: addTripToPanel,
+        actionKey: 'add-trip'
+    }, {
+        text: 'Mark as Visited',
+        onClick: () => clickPanelButton('mark-visited-btn'),
+        actionKey: 'mark-visited'
+    }, {
+        text: 'Verified Check In',
+        onClick: () => clickPanelButton('verify-checkin-btn'),
+        actionKey: 'verify-checkin'
+    }];
+
+    renderPanelActionSet(container, actions);
+    renderPanelActionSet(stickyFooter, actions);
+    syncTripActionButtons(place);
 }
 
 function renderJuniorRangerSummary(place, pickupPosition) {
@@ -492,13 +511,6 @@ function renderMarkerClickPanel(context) {
     if (websitesContainer) {
         clearElement(websitesContainer);
         websitesContainer.style.display = 'none';
-    }
-
-    // --- MAP URLS & BUTTON RENDERING ---
-    const stickyFooter = document.getElementById('panel-sticky-footer');
-    if (stickyFooter) {
-        stickyFooter.style.display = 'none';
-        clearElement(stickyFooter);
     }
 
     // --- VISITED SECTION ---

@@ -34,7 +34,7 @@ function syncAppTabMode() {
 function closeMapOnlySurfaces() {
     const panel = document.getElementById('slide-panel');
     if (panel) {
-        panel.classList.remove('open', 'panel-dragging', 'panel-expanded');
+        panel.classList.remove('open', 'panel-dragging', 'panel-expanded', 'panel-content-scrolled');
         panel.removeAttribute('data-sheet-mode');
         panel.style.removeProperty('height');
     }
@@ -179,7 +179,7 @@ function bindFixedSurfaceScrollGuard(root) {
 
 function resetSlidePanelHeight() {
     if (!slidePanel) return;
-    slidePanel.classList.remove('panel-dragging', 'panel-expanded');
+    slidePanel.classList.remove('panel-dragging', 'panel-expanded', 'panel-content-scrolled');
     slidePanel.removeAttribute('data-sheet-mode');
     slidePanel.style.removeProperty('height');
     document.body.classList.remove('mobile-sheet-high');
@@ -281,6 +281,21 @@ function syncSheetChromeForMode(mode) {
     document.body.classList.toggle('mobile-sheet-high', mode === 'high');
 }
 
+function updateSlidePanelScrollState() {
+    if (!slidePanel) return;
+    const panelScrollContainer = slidePanel.querySelector('.panel-content');
+    const isScrolledHighSheet = Boolean(
+        isMobileSheetViewport() &&
+        slidePanel.classList.contains('open') &&
+        normalizeSheetMode(slidePanel.dataset.sheetMode) === 'high' &&
+        panelScrollContainer &&
+        panelScrollContainer.scrollTop > 12
+    );
+    slidePanel.classList.toggle('panel-content-scrolled', isScrolledHighSheet);
+}
+
+window.BARK.updateSlidePanelScrollState = updateSlidePanelScrollState;
+
 function setSlidePanelMode(mode, options = {}) {
     if (!slidePanel || !isMobileSheetViewport()) return;
     const nextMode = normalizeSheetMode(mode);
@@ -296,6 +311,7 @@ function setSlidePanelMode(mode, options = {}) {
         const panelScrollContainer = slidePanel.querySelector('.panel-content');
         if (panelScrollContainer) panelScrollContainer.scrollTop = 0;
     }
+    requestAnimationFrame(updateSlidePanelScrollState);
 }
 
 window.BARK.setSlidePanelMode = setSlidePanelMode;
@@ -640,6 +656,16 @@ function bindSlidePanelDrag() {
     });
 }
 
+function bindSlidePanelScrollState() {
+    if (!slidePanel || slidePanel._barkScrollStateBound) return;
+    slidePanel._barkScrollStateBound = true;
+    const panelScrollContainer = slidePanel.querySelector('.panel-content');
+    if (!panelScrollContainer) return;
+
+    panelScrollContainer.addEventListener('scroll', updateSlidePanelScrollState, { passive: true });
+    window.addEventListener('resize', updateSlidePanelScrollState);
+}
+
 if (slidePanel && window.MutationObserver) {
     const slidePanelObserver = new MutationObserver(() => {
         if (isAppTabActive() && slidePanel.classList.contains('open')) {
@@ -762,6 +788,7 @@ if (slidePanel) {
     L.DomEvent.disableClickPropagation(slidePanel);
     L.DomEvent.disableScrollPropagation(slidePanel);
     bindSlidePanelDrag();
+    bindSlidePanelScrollState();
 }
 if (filterPanel) {
     L.DomEvent.disableClickPropagation(filterPanel);
