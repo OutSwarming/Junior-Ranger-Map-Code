@@ -275,11 +275,13 @@ window.BARK.resetSlidePanelSheet = function resetSlidePanelSheet(options = {}) {
 function bindSlidePanelDrag() {
     if (!slidePanel || !slidePanelHandle || slidePanelHandle._barkDragBound) return;
     slidePanelHandle._barkDragBound = true;
+    const panelContent = slidePanel.querySelector('.panel-content');
 
     let dragState = null;
     let pendingHeight = null;
     let heightFrame = null;
     let suppressHandleClick = false;
+    let contentGesture = null;
 
     const applySheetHeight = (height) => {
         slidePanel.style.height = `${Math.round(height)}px`;
@@ -310,6 +312,21 @@ function bindSlidePanelDrag() {
         });
     };
 
+    const getNearestModeForHeight = (height, metrics) => {
+        return MOBILE_SHEET_MODES.reduce((closestMode, candidateMode) => {
+            const candidateDistance = Math.abs((metrics.modeHeights[candidateMode] || 0) - height);
+            const closestDistance = Math.abs((metrics.modeHeights[closestMode] || 0) - height);
+            return candidateDistance < closestDistance ? candidateMode : closestMode;
+        }, MOBILE_SHEET_DEFAULT_MODE);
+    };
+
+    const syncSheetModeForHeight = (height, metrics) => {
+        const visualMode = getNearestModeForHeight(height, metrics);
+        slidePanel.dataset.sheetMode = visualMode;
+        slidePanel.classList.toggle('panel-expanded', visualMode === 'high');
+        syncSheetChromeForMode(visualMode);
+    };
+
     const dragMove = (event) => {
         if (!dragState) return;
 
@@ -318,17 +335,22 @@ function bindSlidePanelDrag() {
 
         dragState.currentY = clientY;
         const deltaY = dragState.startY - clientY;
-        const nextHeight = Math.min(
+        let nextHeight = Math.min(
             dragState.maxHeight,
             Math.max(dragState.minHeight, dragState.startHeight + deltaY)
         );
+
+        if (dragState.allowScrollHandoff && panelContent && deltaY > 0) {
+            const expansionToHigh = Math.max(0, dragState.metrics.highHeight - dragState.startHeight);
+            if (nextHeight >= dragState.metrics.highHeight - 1 && deltaY > expansionToHigh) {
+                nextHeight = dragState.metrics.highHeight;
+                panelContent.scrollTop = Math.max(0, dragState.startScrollTop + deltaY - expansionToHigh);
+            }
+        }
+
         dragState.currentHeight = nextHeight;
         setSheetHeight(nextHeight);
-        if (nextHeight > (dragState.metrics.mediumHeight + dragState.metrics.highHeight) / 2) {
-            syncSheetChromeForMode('high');
-        } else {
-            syncSheetChromeForMode(MOBILE_SHEET_DEFAULT_MODE);
-        }
+        syncSheetModeForHeight(nextHeight, dragState.metrics);
         if (event.cancelable) event.preventDefault();
     };
 
@@ -358,6 +380,12 @@ function bindSlidePanelDrag() {
         document.removeEventListener('touchmove', dragMove, true);
         document.removeEventListener('touchend', finishDrag, true);
         document.removeEventListener('touchcancel', finishDrag, true);
+        if (panelContent) {
+            panelContent.removeEventListener('touchmove', handleContentTouchMove, true);
+            panelContent.removeEventListener('touchend', finishContentGesture, true);
+            panelContent.removeEventListener('touchcancel', finishContentGesture, true);
+        }
+        contentGesture = null;
 
         const metrics = getMobileSheetMetrics();
         const movedDown = state.currentY - state.startY;
@@ -374,36 +402,109 @@ function bindSlidePanelDrag() {
             return;
         }
 
-        const nextMode = MOBILE_SHEET_MODES.reduce((closestMode, candidateMode) => {
-            const candidateDistance = Math.abs((metrics.modeHeights[candidateMode] || 0) - currentHeight);
-            const closestDistance = Math.abs((metrics.modeHeights[closestMode] || 0) - currentHeight);
-            return candidateDistance < closestDistance ? candidateMode : closestMode;
-        }, MOBILE_SHEET_DEFAULT_MODE);
+        const nextMode = getNearestModeForHeight(currentHeight, metrics);
+        const keepScrollPosition = Boolean(
+            state.allowScrollHandoff &&
+            nextMode === 'high' &&
+            panelContent &&
+            panelContent.scrollTop > 0
+        );
         cancelPendingHeight();
-        setSlidePanelMode(nextMode);
+        setSlidePanelMode(nextMode, { resetScroll: !keepScrollPosition });
     };
 
-    const startDrag = (clientY, pointerId = null) => {
+    const startDrag = (clientY, pointerId = null, options = {}) => {
         if (!Number.isFinite(clientY) || !isMobileSheetViewport() || !slidePanel.classList.contains('open')) {
             return false;
         }
         const metrics = getMobileSheetMetrics();
         const rect = slidePanel.getBoundingClientRect();
+        const startHeight = Number.isFinite(options.startHeight) ? options.startHeight : rect.height;
         dragState = {
             startY: clientY,
             currentY: clientY,
-            startHeight: rect.height,
-            currentHeight: rect.height,
+            startHeight,
+            currentHeight: startHeight,
             minHeight: Math.max(120, metrics.lowHeight * 0.48),
             maxHeight: metrics.highHeight,
             pointerId,
             metrics,
-            startMode: slidePanel.dataset.sheetMode || MOBILE_SHEET_DEFAULT_MODE
+            startMode: slidePanel.dataset.sheetMode || MOBILE_SHEET_DEFAULT_MODE,
+            source: options.source || 'handle',
+            allowScrollHandoff: options.allowScrollHandoff === true,
+            startScrollTop: Number.isFinite(options.startScrollTop) ? options.startScrollTop : 0
         };
 
         slidePanel.classList.add('panel-dragging');
         return true;
     };
+
+    const finishContentGesture = () => {
+        if (dragState && dragState.source === 'content') {
+            finishDrag();
+        }
+        contentGesture = null;
+        if (panelContent) {
+            panelContent.removeEventListener('touchmove', handleContentTouchMove, true);
+            panelContent.removeEventListener('touchend', finishContentGesture, true);
+            panelContent.removeEventListener('touchcancel', finishContentGesture, true);
+        }
+    };
+
+    function handleContentTouchMove(event) {
+        if (!contentGesture || !event.touches || event.touches.length !== 1) return;
+
+        const clientY = event.touches[0].clientY;
+        const clientX = event.touches[0].clientX;
+        const totalY = clientY - contentGesture.startY;
+        const totalX = clientX - contentGesture.startX;
+        const absY = Math.abs(totalY);
+        const absX = Math.abs(totalX);
+        const currentMode = normalizeSheetMode(slidePanel.dataset.sheetMode);
+        const fingerMovedUp = clientY < contentGesture.lastY;
+        const fingerMovedDown = clientY > contentGesture.lastY;
+        contentGesture.lastX = clientX;
+        contentGesture.lastY = clientY;
+
+        if (!contentGesture.verticalIntent) {
+            if (absX > absY && absX > 8) {
+                contentGesture.horizontalIntent = true;
+                return;
+            }
+            if (contentGesture.horizontalIntent || absY < 8) return;
+            contentGesture.verticalIntent = true;
+        }
+
+        if (dragState && dragState.source === 'content') {
+            dragMove(event);
+            return;
+        }
+
+        if (currentMode !== 'high') {
+            if (startDrag(contentGesture.startY, null, {
+                source: 'content',
+                allowScrollHandoff: true,
+                startScrollTop: 0
+            })) {
+                dragMove(event);
+            }
+            return;
+        }
+
+        if (fingerMovedUp) {
+            return;
+        }
+
+        if (fingerMovedDown && panelContent && panelContent.scrollTop <= 1) {
+            if (startDrag(clientY, null, {
+                source: 'content',
+                startHeight: getMobileSheetMetrics().highHeight,
+                startScrollTop: 0
+            })) {
+                dragMove(event);
+            }
+        }
+    }
 
     if (window.PointerEvent) {
         slidePanelHandle.addEventListener('pointerdown', (event) => {
@@ -434,6 +535,25 @@ function bindSlidePanelDrag() {
             document.addEventListener('touchcancel', finishDrag, true);
             if (event.cancelable) event.preventDefault();
         }, { passive: false });
+    }
+
+    if (panelContent) {
+        panelContent.addEventListener('touchstart', (event) => {
+            if (!isMobileSheetViewport() || !slidePanel.classList.contains('open')) return;
+            if (!event.touches || event.touches.length !== 1) return;
+
+            contentGesture = {
+                startX: event.touches[0].clientX,
+                startY: event.touches[0].clientY,
+                lastX: event.touches[0].clientX,
+                lastY: event.touches[0].clientY,
+                verticalIntent: false,
+                horizontalIntent: false
+            };
+            panelContent.addEventListener('touchmove', handleContentTouchMove, { passive: false, capture: true });
+            panelContent.addEventListener('touchend', finishContentGesture, true);
+            panelContent.addEventListener('touchcancel', finishContentGesture, true);
+        }, { passive: true });
     }
 
     slidePanelHandle.addEventListener('click', (event) => {
