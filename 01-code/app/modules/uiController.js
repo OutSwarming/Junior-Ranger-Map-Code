@@ -230,7 +230,6 @@ function bindSlidePanelDrag() {
     let dragState = null;
     let pendingHeight = null;
     let heightFrame = null;
-    let suppressHandleClick = false;
 
     const applySheetHeight = (height) => {
         slidePanel.style.height = `${Math.round(height)}px`;
@@ -307,12 +306,7 @@ function bindSlidePanelDrag() {
 
         const metrics = getMobileSheetMetrics();
         const movedDown = state.currentY - state.startY;
-        const totalDrag = Math.abs(state.currentY - state.startY);
         const currentHeight = state.currentHeight;
-        if (totalDrag > 6) {
-            suppressHandleClick = true;
-            setTimeout(() => { suppressHandleClick = false; }, 250);
-        }
 
         if (movedDown > 150 || currentHeight < metrics.closeThreshold) {
             cancelPendingHeight();
@@ -381,18 +375,6 @@ function bindSlidePanelDrag() {
         }, { passive: false });
     }
 
-    slidePanelHandle.addEventListener('click', (event) => {
-        if (!isMobileSheetViewport() || !slidePanel.classList.contains('open') || dragState) return;
-        if (suppressHandleClick) {
-            event.preventDefault();
-            return;
-        }
-        const metrics = getMobileSheetMetrics();
-        const isExpanded = slidePanel.classList.contains('panel-expanded');
-        slidePanel.classList.toggle('panel-expanded', !isExpanded);
-        setSheetHeight(isExpanded ? metrics.defaultHeight : metrics.maxHeight, { immediate: true });
-        event.preventDefault();
-    });
 }
 
 if (slidePanel && window.MutationObserver) {
