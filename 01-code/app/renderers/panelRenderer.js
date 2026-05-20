@@ -72,6 +72,35 @@ function setTextWithLineBreaks(element, value) {
     });
 }
 
+function setCollapsiblePanelText({ section, container, textElement, showMoreButton, text, showMoreLabel, visible = true }) {
+    if (section) section.style.display = visible ? 'block' : 'none';
+    if (!visible) {
+        if (textElement) clearElement(textElement);
+        if (container) container.classList.remove('report-collapsed');
+        if (showMoreButton) {
+            showMoreButton.style.display = 'none';
+            showMoreButton.onclick = null;
+        }
+        return;
+    }
+
+    setTextWithLineBreaks(textElement, text);
+
+    const value = String(text || '');
+    const hasManyLines = value.split(/\r?\n/).length > 5;
+    const shouldCollapse = value.length > 250 || hasManyLines;
+
+    if (container) container.classList.toggle('report-collapsed', shouldCollapse);
+    if (!showMoreButton) return;
+
+    showMoreButton.textContent = showMoreLabel;
+    showMoreButton.style.display = shouldCollapse ? 'block' : 'none';
+    showMoreButton.onclick = shouldCollapse ? () => {
+        if (container) container.classList.remove('report-collapsed');
+        showMoreButton.style.display = 'none';
+    } : null;
+}
+
 function getSafeHttpUrls(value) {
     if (!value || typeof value !== 'string') return [];
     const urlRegex = /(https?:\/\/[^\s]+)/g;
@@ -464,41 +493,27 @@ function renderMarkerClickPanel(context) {
     }
 
     // --- UPDATES & REPORTS ---
-    if (d.info) {
-        if (infoSection) infoSection.style.display = 'block';
-        const container = document.getElementById('panel-info-container');
-        const showMoreBtn = document.getElementById('show-more-info');
-        setTextWithLineBreaks(infoEl, d.info);
-
-        const hasManyLines = String(d.info || '').split(/\r?\n/).length > 5;
-
-        if (d.info.length > 250 || hasManyLines) {
-            if (container) container.classList.add('report-collapsed');
-            if (showMoreBtn) {
-                showMoreBtn.style.display = 'block';
-                showMoreBtn.onclick = () => {
-                    container.classList.remove('report-collapsed');
-                    showMoreBtn.style.display = 'none';
-                };
-            }
-        } else {
-            if (container) container.classList.remove('report-collapsed');
-            if (showMoreBtn) showMoreBtn.style.display = 'none';
-        }
-    } else {
-        if (infoSection) infoSection.style.display = 'none';
-        clearElement(infoEl);
-    }
+    setCollapsiblePanelText({
+        section: infoSection,
+        container: document.getElementById('panel-info-container'),
+        textElement: infoEl,
+        showMoreButton: document.getElementById('show-more-info'),
+        text: d.info,
+        showMoreLabel: 'Show Full Info ▾',
+        visible: Boolean(d.info)
+    });
 
     const historySection = document.getElementById('panel-history-section');
     const historyEl = document.getElementById('panel-history');
-    if (historySection && historyEl) {
-        historySection.style.display = 'block';
-        setTextWithLineBreaks(
-            historyEl,
-            d.historyTimelineInfo || 'Junior Ranger history notes have not been added for this location yet.'
-        );
-    }
+    setCollapsiblePanelText({
+        section: historySection,
+        container: document.getElementById('panel-history-container'),
+        textElement: historyEl,
+        showMoreButton: document.getElementById('show-more-history'),
+        text: d.historyTimelineInfo || 'Junior Ranger history notes have not been added for this location yet.',
+        showMoreLabel: 'Show Full History ▾',
+        visible: Boolean(historySection && historyEl)
+    });
 
     const videoUrl = getSafeHttpUrls(d.video || '')[0];
     const mediaLinks = document.getElementById('media-links');

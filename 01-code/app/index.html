@@ -17,7 +17,7 @@
 
     <!-- QRCode JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <link rel="stylesheet" href="styles.css?v=62">
+    <link rel="stylesheet" href="styles.css?v=63">
     <link rel="stylesheet" href="styles/mapStyles.css?v=9">
     <link rel="stylesheet" href="styles/trophyCase.css?v=3">
 
@@ -168,25 +168,6 @@
 
             <div id="panel-primary-actions" class="panel-primary-actions"></div>
 
-            <section id="panel-jr-summary" class="panel-card panel-jr-summary"></section>
-
-            <section id="panel-book-section" class="panel-card panel-book-section">
-                <div class="panel-card-heading">
-                    <span class="panel-card-title">Get The Book</span>
-                    <span id="panel-book-count" class="panel-card-chip">Book</span>
-                </div>
-                <div id="panel-book-links" class="panel-link-list"></div>
-            </section>
-
-            <section id="panel-pickup-section" class="panel-card panel-pickup-section">
-                <div class="panel-card-heading">
-                    <span class="panel-card-title">Pickup Locations</span>
-                    <span id="panel-pickup-chip" class="panel-card-chip">Location</span>
-                </div>
-                <p id="panel-pickup-copy" class="panel-card-copy"></p>
-                <button id="show-pickup-spots-btn" class="panel-inline-btn" type="button">Show Pickup Spots</button>
-            </section>
-
             <div class="panel-section" id="panel-info-section" style="display: none;">
                 <div class="panel-label">Park Info</div>
                 <div id="panel-info-container" class="report-container">
@@ -196,9 +177,32 @@
                 <button id="show-more-info" class="show-more-btn" style="display: none;">Show Full Info ▾</button>
             </div>
 
+            <section id="panel-book-section" class="panel-card panel-book-section">
+                <div class="panel-card-heading">
+                    <span class="panel-card-title">Get The Books</span>
+                    <span id="panel-book-count" class="panel-card-chip">Book</span>
+                </div>
+                <div id="panel-book-links" class="panel-link-list"></div>
+            </section>
+
+            <section id="panel-pickup-section" class="panel-card panel-pickup-section">
+                <div class="panel-card-heading">
+                    <span class="panel-card-title">Pick Up Locations</span>
+                    <span id="panel-pickup-chip" class="panel-card-chip">Location</span>
+                </div>
+                <p id="panel-pickup-copy" class="panel-card-copy"></p>
+                <button id="show-pickup-spots-btn" class="panel-inline-btn" type="button">Show Pickup Spots</button>
+            </section>
+
+            <section id="panel-jr-summary" class="panel-card panel-jr-summary"></section>
+
             <div class="panel-section" id="panel-history-section" style="display: none;">
                 <div class="panel-label">Junior Ranger History</div>
-                <div id="panel-history" class="panel-value"></div>
+                <div id="panel-history-container" class="report-container">
+                    <div id="panel-history" class="panel-value"></div>
+                    <div class="report-fade-overlay"></div>
+                </div>
+                <button id="show-more-history" class="show-more-btn" style="display: none;">Show Full History ▾</button>
             </div>
 
             <div id="media-links" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
@@ -1459,7 +1463,7 @@
     <script src="modules/TripLayerManager.js?v=7" defer></script>
     <script src="modules/mapEngine.js?v=3" defer></script>
     <script src="modules/renderEngine.js?v=9" defer></script>
-    <script src="renderers/panelRenderer.js?v=13" defer></script>
+    <script src="renderers/panelRenderer.js?v=14" defer></script>
     <script src="modules/searchEngine.js?v=6" defer></script>
     <script src="modules/dataService.js?v=11" defer></script>
     <script src="renderers/leaderboardRenderer.js?v=1" defer></script>

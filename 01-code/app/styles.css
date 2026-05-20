@@ -1365,7 +1365,8 @@ body.app-tab-active #slide-panel {
     margin: 0 0 12px;
 }
 
-#panel-info-container.report-collapsed {
+#panel-info-container.report-collapsed,
+#panel-history-container.report-collapsed {
     max-height: 170px;
     overflow: hidden;
     position: relative;
