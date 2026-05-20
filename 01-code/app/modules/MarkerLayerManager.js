@@ -79,7 +79,10 @@ class MarkerLayerManager {
             this.applyMarkerStyle(marker);
         });
 
-        marker.on('click', () => {
+        marker.on('click', (event) => {
+            if (event && event.originalEvent) {
+                L.DomEvent.stopPropagation(event.originalEvent);
+            }
             this.renderMarkerPanel(marker);
         });
     }
