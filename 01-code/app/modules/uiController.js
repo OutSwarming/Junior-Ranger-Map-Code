@@ -119,8 +119,8 @@ const leafletControls = document.querySelectorAll('.leaflet-control-container');
 const MOBILE_SHEET_TOP_GAP = 8;
 const MOBILE_SHEET_MODES = ['low', 'medium', 'high'];
 const MOBILE_SHEET_DEFAULT_MODE = 'medium';
-const MOBILE_SHEET_FLICK_MIN_DISTANCE = 18;
-const MOBILE_SHEET_FLICK_VELOCITY = 0.62;
+const MOBILE_SHEET_FLICK_MIN_DISTANCE = 16;
+const MOBILE_SHEET_FLICK_VELOCITY = 0.22;
 
 function findScrollableAncestorWithin(target, root) {
     let el = target;
