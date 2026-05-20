@@ -257,6 +257,8 @@ function setSlidePanelMode(mode, options = {}) {
     }
 }
 
+window.BARK.setSlidePanelMode = setSlidePanelMode;
+
 function snapSlidePanelToDefaultHeight() {
     setSlidePanelMode(MOBILE_SHEET_DEFAULT_MODE);
 }

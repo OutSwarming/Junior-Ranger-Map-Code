@@ -161,6 +161,11 @@ function createPanelButton({ text, className = '', href = '', onClick = null }) 
 
 function scrollPanelTo(element) {
     if (!element) return;
+    if (typeof window.BARK.setSlidePanelMode === 'function') {
+        window.BARK.setSlidePanelMode('high', { resetScroll: false });
+        setTimeout(() => element.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120);
+        return;
+    }
     element.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
