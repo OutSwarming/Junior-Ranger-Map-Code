@@ -196,6 +196,7 @@ function renderPanelActionSet(container, actions) {
     actions.forEach(action => {
         container.appendChild(createPanelButton(action));
     });
+    container.scrollLeft = 0;
 }
 
 function buildPrimaryActions(place, bookLinks) {
@@ -421,6 +422,11 @@ function renderMarkerClickPanel(context) {
 
     const panelScrollContainer = document.querySelector('.panel-content');
     if (panelScrollContainer && !refreshOnly) panelScrollContainer.scrollTop = 0;
+    if (!refreshOnly) {
+        document.querySelectorAll('#panel-primary-actions, #panel-sticky-footer').forEach(actionRail => {
+            actionRail.scrollLeft = 0;
+        });
+    }
 
     if (!refreshOnly) document.getElementById('filter-panel').classList.add('collapsed');
 

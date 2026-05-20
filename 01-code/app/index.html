@@ -17,7 +17,7 @@
 
     <!-- QRCode JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <link rel="stylesheet" href="styles.css?v=61">
+    <link rel="stylesheet" href="styles.css?v=62">
     <link rel="stylesheet" href="styles/mapStyles.css?v=9">
     <link rel="stylesheet" href="styles/trophyCase.css?v=3">
 
@@ -187,15 +187,6 @@
                 <button id="show-pickup-spots-btn" class="panel-inline-btn" type="button">Show Pickup Spots</button>
             </section>
 
-            <a id="suggest-edit-btn" href="mailto:usbarkrangers@gmail.com" class="glass-btn outline-btn panel-secondary-action">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 20h9"></path>
-                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-                </svg>
-                Suggest an Edit
-            </a>
-
             <div class="panel-section" id="panel-info-section" style="display: none;">
                 <div class="panel-label">Park Info</div>
                 <div id="panel-info-container" class="report-container">
@@ -235,6 +226,15 @@
                     <span id="mark-visited-text">Mark as Visited</span>
                 </button>
             </div>
+
+            <a id="suggest-edit-btn" href="mailto:usbarkrangers@gmail.com" class="glass-btn outline-btn panel-secondary-action">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 20h9"></path>
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                </svg>
+                Suggest an Edit
+            </a>
 
             <div id="panel-sticky-footer" class="panel-sticky-footer"></div>
         </div>
@@ -1459,7 +1459,7 @@
     <script src="modules/TripLayerManager.js?v=7" defer></script>
     <script src="modules/mapEngine.js?v=3" defer></script>
     <script src="modules/renderEngine.js?v=9" defer></script>
-    <script src="renderers/panelRenderer.js?v=12" defer></script>
+    <script src="renderers/panelRenderer.js?v=13" defer></script>
     <script src="modules/searchEngine.js?v=6" defer></script>
     <script src="modules/dataService.js?v=11" defer></script>
     <script src="renderers/leaderboardRenderer.js?v=1" defer></script>
@@ -1468,7 +1468,7 @@
     <script src="engines/tripPlannerCore.js?v=15" defer></script>
     <script src="modules/shareEngine.js?v=4" defer></script>
     <script src="modules/settingsController.js?v=9" defer></script>
-    <script src="modules/uiController.js?v=24" defer></script>
+    <script src="modules/uiController.js?v=25" defer></script>
 
     <!-- ENTRY POINT: Bootstrap Orchestrator (must load LAST) -->
     <script src="core/app.js?v=29" defer></script>
