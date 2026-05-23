@@ -7,7 +7,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
 # Initialize Geocoder
-geolocator = Nominatim(user_agent="BarkRanger_Final_Build")
+geolocator = Nominatim(user_agent="JuniorRanger_Final_Build")
 
 def get_coords(name, state):
     """6-Step Super-Scrubber Logic"""
@@ -37,8 +37,8 @@ def get_coords(name, state):
     return None, None
 
 def main():
-    input_file = REPO_ROOT / '01-code' / 'app' / 'data' / 'BARK Master List.csv'
-    output_file = REPO_ROOT / '02-data' / 'data' / 'BARK_Final_Map_Data.csv'
+    input_file = REPO_ROOT / '01-code' / 'app' / 'assets' / 'data' / 'jr-fallback.csv'
+    output_file = REPO_ROOT / '02-data' / 'data' / 'JR_Final_Map_Data.csv'
     
     if not os.path.exists(input_file):
         print(f"Error: {input_file} not found!")
@@ -46,24 +46,28 @@ def main():
 
     df = pd.read_csv(input_file)
     
-    # Create empty columns if they don't exist
-    if 'Lat' not in df.columns:
-        df['Lat'] = None
-    if 'Lng' not in df.columns:
-        df['Lng'] = None
+    name_col = 'siteName' if 'siteName' in df.columns else 'Location'
+    state_col = 'state' if 'state' in df.columns else 'State'
+    lat_col = 'latitude' if 'latitude' in df.columns else 'Lat'
+    lng_col = 'longitude' if 'longitude' in df.columns else 'Lng'
+
+    if lat_col not in df.columns:
+        df[lat_col] = None
+    if lng_col not in df.columns:
+        df[lng_col] = None
 
     print(f"Starting geocoding for {len(df)} rows. This will take ~10 minutes.")
 
     for index, row in df.iterrows():
         # Skip if already geocoded
-        if pd.notnull(row['Lat']) and pd.notnull(row['Lng']):
+        if pd.notnull(row[lat_col]) and pd.notnull(row[lng_col]):
             continue
             
-        print(f"[{index+1}/{len(df)}] Processing: {row['Location']}...")
-        lat, lng = get_coords(row['Location'], row['State'])
+        print(f"[{index+1}/{len(df)}] Processing: {row[name_col]}...")
+        lat, lng = get_coords(row[name_col], row[state_col])
         
-        df.at[index, 'Lat'] = lat
-        df.at[index, 'Lng'] = lng
+        df.at[index, lat_col] = lat
+        df.at[index, lng_col] = lng
         
         # Save progress every 10 rows in case of a crash
         if index % 10 == 0:

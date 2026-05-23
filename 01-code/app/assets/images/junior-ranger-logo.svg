@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Junior Ranger Map logo">
+  <rect width="512" height="512" rx="96" fill="#f8fafc"/>
+  <circle cx="256" cy="256" r="196" fill="#e8f5e9" stroke="#2e7d32" stroke-width="24"/>
+  <path d="M112 326c38-82 78-123 120-123 29 0 53 19 72 57 15-29 34-44 57-44 23 0 45 18 67 55v83H112z" fill="#43a047"/>
+  <path d="M112 354h316v34H112z" fill="#1b5e20"/>
+  <path d="M256 78l42 90 98 12-72 66 18 96-86-48-86 48 18-96-72-66 98-12z" fill="#fbc02d" stroke="#1e293b" stroke-width="16" stroke-linejoin="round"/>
+  <text x="256" y="286" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="118" font-weight="900" fill="#1e293b">JR</text>
+</svg>

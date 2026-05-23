@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 220" role="img" aria-label="Junior Ranger Map watermark">
+  <rect width="640" height="220" rx="44" fill="#f8fafc" fill-opacity="0.94"/>
+  <circle cx="106" cy="110" r="66" fill="#e8f5e9" stroke="#2e7d32" stroke-width="10"/>
+  <path d="M70 126c13-27 28-40 44-40 11 0 20 7 27 21 7-12 15-18 24-18 11 0 21 9 31 26v27H70z" fill="#43a047"/>
+  <path d="M106 42l15 31 34 5-25 24 6 34-30-17-30 17 6-34-25-24 34-5z" fill="#fbc02d" stroke="#1e293b" stroke-width="6" stroke-linejoin="round"/>
+  <text x="208" y="96" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="900" fill="#1e293b" letter-spacing="2">JUNIOR RANGER</text>
+  <text x="208" y="142" font-family="Inter, Arial, sans-serif" font-size="44" font-weight="900" fill="#2e7d32" letter-spacing="1">MAP</text>
+  <text x="208" y="176" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="700" fill="#64748b">junior-ranger-map-auth.web.app</text>
+</svg>

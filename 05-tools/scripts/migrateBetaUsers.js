@@ -16,7 +16,7 @@
 const admin = require('firebase-admin');
 const { google } = require('googleapis');
 
-const DEFAULT_PROJECT_ID = 'barkrangermap-auth';
+const DEFAULT_PROJECT_ID = 'junior-ranger-map-auth';
 const SPREADSHEET_ID = '1fnlZfRbfQIy-o2Df6FgEdTMw9OWTR3-JX011s-7oWlE';
 const SHEET_NAME = 'National B.A.R.K Ranger';
 const CANONICAL_PARK_ID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;

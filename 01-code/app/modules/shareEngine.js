@@ -112,11 +112,11 @@ window.shareVaultCard = async function () {
 
         const canvas = await html2canvas(document.getElementById('vault-export-template'), { scale: 2, useCORS: true, backgroundColor: '#0f172a' });
         canvas.toBlob(async (blob) => {
-            const file = new File([blob], "My_Bark_Ranger_Vault.png", { type: "image/png" });
+            const file = new File([blob], "My_Junior_Ranger_Vault.png", { type: "image/png" });
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
                 try { await navigator.share({ files: [file] }); } catch (err) {}
             } else {
-                const link = document.createElement('a'); link.download = 'My_Bark_Ranger_Vault.png'; link.href = canvas.toDataURL('image/png'); link.click();
+                const link = document.createElement('a'); link.download = 'My_Junior_Ranger_Vault.png'; link.href = canvas.toDataURL('image/png'); link.click();
             }
             btn.innerHTML = originalText; btn.disabled = false;
         }, 'image/png');
@@ -184,7 +184,7 @@ function initWatermarkTool() {
     if (!wmUpload) return;
 
     currentLogoImg = new Image();
-    currentLogoImg.src = 'assets/images/WatermarkBARK.PNG';
+    currentLogoImg.src = 'assets/images/junior-ranger-watermark.svg';
 
     function drawWatermark(logoScalePercent) {
         if (!currentPhotoImg || !currentLogoImg) return;
@@ -217,7 +217,7 @@ function initWatermarkTool() {
         img.onload = () => { currentPhotoImg = img; if (wmLogoSize) { wmLogoSize.value = 10; wmLogoSizeVal.textContent = '10%'; } drawWatermark(10); };
         img.src = URL.createObjectURL(file);
     });
-    wmDownload.addEventListener('click', () => { const link = document.createElement('a'); link.download = 'bark-ranger-swag-polaroid.jpg'; link.href = wmCanvas.toDataURL('image/jpeg', 1.0); link.click(); });
+    wmDownload.addEventListener('click', () => { const link = document.createElement('a'); link.download = 'junior-ranger-polaroid.jpg'; link.href = wmCanvas.toDataURL('image/jpeg', 1.0); link.click(); });
     if (wmHighRes) { wmHighRes.addEventListener('change', () => drawWatermark(parseInt(wmLogoSize.value, 10))); }
 
     const wmClearBtn = document.getElementById('wm-clear');
@@ -253,7 +253,7 @@ function initQRCode() {
                 let dataUrl = '';
                 if (img && img.src && img.src.startsWith('data:')) dataUrl = img.src;
                 else if (canvas) dataUrl = canvas.toDataURL("image/png");
-                if (dataUrl) { const link = document.createElement('a'); link.download = 'BarkRanger_QRCode.png'; link.href = dataUrl; document.body.appendChild(link); link.click(); document.body.removeChild(link); }
+                if (dataUrl) { const link = document.createElement('a'); link.download = 'JuniorRanger_QRCode.png'; link.href = dataUrl; document.body.appendChild(link); link.click(); document.body.removeChild(link); }
                 else alert('QR Code not ready yet.');
             });
         }
@@ -275,13 +275,13 @@ function initCSVExport() {
                 const isVisited = typeof window.BARK.isParkVisited === 'function'
                     ? window.BARK.isParkVisited(data)
                     : hasShareVisitedPlace(data);
-                return { Name: data.name, "Grid-Snap ID": data.id, State: data.state, Category: data.category || '', Cost: data.cost || '', "Swag Type": data.swagType || '', Latitude: data.lat, Longitude: data.lng, Visited: isVisited ? 1 : 0 };
+                return { Name: data.name, "Grid-Snap ID": data.id, State: data.state, Category: data.category || '', Cost: data.cost || '', "Program Type": data.swagType || '', Latitude: data.lat, Longitude: data.lng, Visited: isVisited ? 1 : 0 };
             });
             const csvString = Papa.unparse(exportData);
             const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
-            link.setAttribute('href', url); link.setAttribute('download', 'My_BarkRanger_Data.csv'); link.style.visibility = 'hidden';
+            link.setAttribute('href', url); link.setAttribute('download', 'My_JuniorRanger_Data.csv'); link.style.visibility = 'hidden';
             document.body.appendChild(link); link.click(); document.body.removeChild(link);
         });
     }

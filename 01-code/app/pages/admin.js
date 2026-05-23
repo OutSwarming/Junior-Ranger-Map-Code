@@ -62,17 +62,22 @@ auth.onAuthStateChanged(async (user) => {
     initAdminSetPoints();
 });
 
-// 2. Fetch and Parse BARK Master List.csv
+// 2. Fetch and parse the deployed Junior Ranger fallback CSV.
 async function loadMasterCSV() {
     try {
-        const response = await fetch('../data/BARK Master List.csv');
+        const response = await fetch('../assets/data/jr-fallback.csv');
         const csvText = await response.text();
         
         Papa.parse(csvText, {
             header: true,
             skipEmptyLines: true,
             complete: (results) => {
-                masterParks = results.data;
+                masterParks = results.data.map(row => ({
+                    ...row,
+                    name: row.siteName || row.Location || row.name || '',
+                    state: row.state || row.State || '',
+                    lat_lng: row.siteID || row.parkId || row['Park id'] || row.id || ''
+                }));
                 const options = {
                     keys: ['name'],
                     threshold: 0.3

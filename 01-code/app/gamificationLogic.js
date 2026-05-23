@@ -309,11 +309,11 @@ class GamificationEngine {
 
     calculatePaws(totalVisits, verifiedCount) {
         const thresholds = [
-            { id: 'bronzePaw', name: 'Bronze Paw', icon: '🐾', count: 10, criteria: 'Visit 10 Parks' },
-            { id: 'silverPaw', name: 'Silver Paw', icon: '🐾', count: 25, criteria: 'Visit 25 Parks' },
-            { id: 'goldPaw', name: 'Gold Paw', icon: '🏆', count: 50, criteria: 'Visit 50 Parks' },
-            { id: 'platinumPaw', name: 'Platinum Paw', icon: '💎', count: 100, criteria: 'Visit 100 Parks' },
-            { id: 'obsidianPaw', name: 'Obsidian Paw', icon: '🖤', count: 200, criteria: 'Visit 200 Parks' }
+            { id: 'bronzePaw', name: 'Bronze Badge', icon: '🥉', count: 10, criteria: 'Visit 10 Parks' },
+            { id: 'silverPaw', name: 'Silver Badge', icon: '🥈', count: 25, criteria: 'Visit 25 Parks' },
+            { id: 'goldPaw', name: 'Gold Badge', icon: '🏆', count: 50, criteria: 'Visit 50 Parks' },
+            { id: 'platinumPaw', name: 'Platinum Badge', icon: '💎', count: 100, criteria: 'Visit 100 Parks' },
+            { id: 'obsidianPaw', name: 'Obsidian Badge', icon: '🗻', count: 200, criteria: 'Visit 200 Parks' }
         ];
         return thresholds.map(t => {
             let status = (totalVisits >= t.count) ? 'unlocked' : 'locked';
@@ -392,11 +392,11 @@ class GamificationEngine {
         let loneW = vArray.some(p => { let d = new Date(p.ts || 0); return d.getMonth() === 11 && d.getDate() === 25; });
         
         return [
-            { id: 'alphaDog', name: 'The Alpha Dog', hint: 'Prove you are the true leader of the pack.', icon: '🐺', ...check(userRank === 1, userRank === 1), criteria: 'Reach #1 on Leaderboard', isMystery: true, dateEarnedTs: userRank === 1 ? this._getStableTimestamp('alphaDog') : 0 },
+            { id: 'alphaDog', name: 'The Trail Captain', hint: 'Prove you are the top explorer on the map.', icon: '🧭', ...check(userRank === 1, userRank === 1), criteria: 'Reach #1 on Leaderboard', isMystery: true, dateEarnedTs: userRank === 1 ? this._getStableTimestamp('alphaDog') : 0 },
             { id: 'nightRanger', name: 'The Night Ranger', hint: 'The best time to explore is when everyone else is asleep.', icon: '🦉', ...check(nightR, nightR), criteria: 'Visit after Midnight', isMystery: true, dateEarnedTs: nightR ? this._getStableTimestamp('nightRanger') : 0 },
             { id: 'earlyBird', name: 'The Early Bird', hint: 'The best trails belong to those who beat the sunrise.', icon: '🌅', ...check(earlyB, earlyB), criteria: 'Visit before 7 AM', isMystery: true, dateEarnedTs: earlyB ? this._getStableTimestamp('earlyBird') : 0 },
             { id: 'marathoner', name: 'The Marathoner', hint: 'Visit 4 parks in a single 24-hour window.', icon: '🏃', ...check(marathoner, marathoner), criteria: '4 Parks in 24 Hours', isMystery: true, dateEarnedTs: marathoner ? this._getStableTimestamp('marathoner') : 0 },
-            { id: 'loneWolf', name: 'The Lone Wolf', hint: 'Explore a park on the quietest day of the year.', icon: '❄️', ...check(loneW, loneW), criteria: 'Visit on Christmas Day', isMystery: true, dateEarnedTs: loneW ? this._getStableTimestamp('loneWolf') : 0 },
+            { id: 'loneWolf', name: 'The Snow Day Ranger', hint: 'Explore a park on the quietest day of the year.', icon: '❄️', ...check(loneW, loneW), criteria: 'Visit on Christmas Day', isMystery: true, dateEarnedTs: loneW ? this._getStableTimestamp('loneWolf') : 0 },
             { 
                 id: 'mapConqueror', 
                 name: 'The Map Conqueror', 

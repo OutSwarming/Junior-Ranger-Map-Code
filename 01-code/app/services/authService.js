@@ -848,7 +848,7 @@ function initFirebase() {
 
                     if (loginContainer) loginContainer.style.display = 'none';
                     if (offlineStatusContainer) offlineStatusContainer.style.display = 'block';
-                    if (profileName) profileName.textContent = user.displayName || user.email || 'Bark Ranger';
+                    if (profileName) profileName.textContent = user.displayName || user.email || 'Junior Ranger';
 
                     stopUserSnapshotSubscription();
                     if (isAuthenticatedUserChange) {

@@ -10,7 +10,7 @@ window.BARK.bootOrder.barkStateParsedAt = Date.now();
 
 // ====== APP VERSION ======
 let APP_VERSION = parseInt(localStorage.getItem('bark_seen_version') || '26');
-console.log(`B.A.R.K. Engine v${APP_VERSION}: Performance Optimized`);
+console.log(`Junior Ranger Engine v${APP_VERSION}: Performance Optimized`);
 window.BARK.APP_VERSION = APP_VERSION;
 window.BARK.setAppVersion = function (v) { APP_VERSION = v; window.BARK.APP_VERSION = v; };
 
@@ -34,7 +34,7 @@ const LAUNCH_FLAG_MESSAGES = Object.freeze({
     checkoutEnabled: 'Premium checkout is paused for this beta. Please try again after the next release update.',
     routePlannerEnabled: 'Route planner tools are paused for beta safety. Your saved map and visited places still work.',
     routeGenerationEnabled: 'Route generation is paused for beta safety. You can still plan stops manually.',
-    premiumGeocodeEnabled: 'Global town search is paused for beta safety. Local B.A.R.K. stop search still works.',
+    premiumGeocodeEnabled: 'Global town search is paused for beta safety. Local Junior Ranger stop search still works.',
     leaderboardDeepBrowsingEnabled: 'Leaderboard browsing is limited for beta safety. The top results and your rank are still available.',
     feedbackEnabled: 'In-app feedback is paused for beta safety. Use the email suggestion option above for now.',
     premiumRiskyToolsEnabled: 'Premium map tools are paused for beta safety. Your account and saved progress are unchanged.'

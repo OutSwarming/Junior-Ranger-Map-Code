@@ -3604,7 +3604,7 @@ input:checked+.slider:before {
     background-color: rgba(45, 52, 54, 0.7) !important;
     /* Dark slate background */
     border: 2px solid #fab1a0 !important;
-    /* B.A.R.K. peach border */
+    /* Junior Ranger peach border */
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
 }
@@ -3670,7 +3670,7 @@ body.reduce-pin-motion .leaflet-marker-shadow {
 }
 
 /* =========================================================
-   B.A.R.K. PERFORMANCE MODIFIERS (V24 — 4 Toggles)
+   JUNIOR RANGER PERFORMANCE MODIFIERS (V24 — 4 Toggles)
    ========================================================= */
 
 /* 1. STOP SPINNING: Bulletproof animation paralysis */

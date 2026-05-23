@@ -22,8 +22,10 @@ Date: 2026-05-23
 - Verified Google sign-in is enabled.
 - Smoke tested Email/Password account creation and deleted the temporary test user.
 - Pointed the repo default Firebase alias to `junior-ranger-map-auth`.
+- Removed the old BARK Firebase alias from `.firebaserc`.
 - Moved the public app and admin page SDK config off `barkrangermap-auth`.
-- Kept the old BARK project as an explicit `.firebaserc` alias named `bark` so it is not the default deploy target.
+- Removed legacy BARK static CSV/image assets from the deployed app surface.
+- Deployed the cleaned Junior Ranger Hosting release.
 
 ## Auth Verification
 

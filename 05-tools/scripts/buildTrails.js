@@ -91,7 +91,7 @@ function stitchMultiLineString(lines) {
 
 let masterTrailsDb = {};
 
-console.log("🎒 Packing the B.A.R.K. Ranger Trail Database...");
+console.log("🎒 Packing the Junior Ranger Trail Database...");
 
 // 2. Read the directory and process files
 const files = fs.readdirSync(rawDir);

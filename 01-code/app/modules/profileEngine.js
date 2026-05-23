@@ -742,7 +742,7 @@ function buildPersonalLeaderboardFallback(user, visitedPlaces, localScore, exact
     const scoreSummary = window.BARK.calculateVisitScore(visitedPlacesArray, window.currentWalkPoints);
     return {
         uid: user.uid,
-        displayName: user.displayName || 'Bark Ranger',
+        displayName: user.displayName || 'Junior Ranger',
         totalPoints: localScore,
         totalVisited: getProfileTotalVisitedCount(visitedPlacesArray, scoreSummary),
         hasVerified: hasProfileVerifiedVisit(visitedPlacesArray),
@@ -841,7 +841,7 @@ async function loadLeaderboard() {
 
         snapshot.forEach(doc => {
             const d = doc.data();
-            topUsers.push({ uid: doc.id, displayName: d.displayName || 'Bark Ranger', totalPoints: d.totalPoints !== undefined ? d.totalPoints : (d.totalVisited || 0), totalVisited: d.totalVisited || 0, hasVerified: !!d.hasVerified });
+            topUsers.push({ uid: doc.id, displayName: d.displayName || 'Junior Ranger', totalPoints: d.totalPoints !== undefined ? d.totalPoints : (d.totalVisited || 0), totalVisited: d.totalVisited || 0, hasVerified: !!d.hasVerified });
         });
 
         const user = firebase.auth().currentUser;
@@ -883,7 +883,7 @@ async function loadMoreLeaderboard() {
         snapshot.forEach(doc => {
             if (!cachedLeaderboardData.find(u => u.uid === doc.id)) {
                 const d = doc.data();
-                cachedLeaderboardData.push({ uid: doc.id, displayName: d.displayName || 'Bark Ranger', totalPoints: d.totalPoints !== undefined ? d.totalPoints : (d.totalVisited || 0), totalVisited: d.totalVisited || 0, hasVerified: !!d.hasVerified });
+                cachedLeaderboardData.push({ uid: doc.id, displayName: d.displayName || 'Junior Ranger', totalPoints: d.totalPoints !== undefined ? d.totalPoints : (d.totalVisited || 0), totalVisited: d.totalVisited || 0, hasVerified: !!d.hasVerified });
             }
         });
 

@@ -2,20 +2,18 @@ import csv
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-MASTER_LIST = REPO_ROOT / '01-code' / 'app' / 'data' / 'BARK Master List.csv'
+MASTER_LIST = REPO_ROOT / '01-code' / 'app' / 'assets' / 'data' / 'jr-fallback.csv'
 DATA_CSV = REPO_ROOT / '02-data' / 'data' / 'data.csv'
 
 def main():
     # 1. Load the original full descriptions
     master_info = {}
     with open(MASTER_LIST, 'r', encoding='utf-8') as f:
-        reader = csv.reader(f)
-        next(reader) # skip headers
+        reader = csv.DictReader(f)
         for row in reader:
-            if len(row) >= 5:
-                loc = row[0].strip()
-                # Preserve the newlines!
-                info = row[4].strip()
+            loc = (row.get('siteName') or row.get('Location') or '').strip()
+            if loc:
+                info = (row.get('siteInfo') or row.get('Useful/Important/Other Info') or '').strip()
                 master_info[loc] = info
 
     # 2. Update the existing data.csv with the full descriptions

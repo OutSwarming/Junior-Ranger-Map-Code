@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-input_file = REPO_ROOT / '01-code' / 'app' / 'data' / 'BARK Master List.csv'
+input_file = REPO_ROOT / '01-code' / 'app' / 'assets' / 'data' / 'jr-fallback.csv'
 output_file = REPO_ROOT / '02-data' / 'data' / 'data.json'
 
 def get_swag_type(info):
@@ -54,7 +54,7 @@ def geocode(location, state):
         (q6, "STEP 6 (SUPER-SCRUBBER)")
     ]
     
-    headers = {'User-Agent': 'BarkRangerExplorer_Carter'}
+    headers = {'User-Agent': 'JuniorRangerExplorer_Carter'}
     
     for q, step_name in queries:
         if not q.strip() or len(q) < 3: continue
@@ -83,8 +83,7 @@ def main():
     # Load existing data if any to avoid re-geocoding row 1-9
     # But for a clean start from 10 as requested:
     with open(input_file, 'r', encoding='utf-8') as f:
-        reader = csv.reader(f)
-        headers = next(reader)
+        reader = csv.DictReader(f)
         rows = list(reader)
         total = len(rows)
         
@@ -93,12 +92,10 @@ def main():
             if i < 9:
                 continue
             
-            if len(row) < 6:
-                continue
-            location = row[0].strip()
-            state = row[1].strip()
-            info = row[4].strip().replace('\n', ' ')
-            website = row[5].strip()
+            location = (row.get('siteName') or row.get('Location') or row.get('name') or '').strip()
+            state = (row.get('state') or row.get('State') or '').strip()
+            info = (row.get('siteInfo') or row.get('Useful/Important/Other Info') or row.get('info') or '').strip().replace('\n', ' ')
+            website = (row.get('officialGovWebsite') or row.get('websiteLinks') or row.get('Website') or '').strip()
             
             if not location:
                 continue

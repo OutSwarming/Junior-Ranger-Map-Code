@@ -181,7 +181,7 @@ async function expectAchievementRuntimeHealthy(page, label) {
     expect(result.tier).toBe('honor');
     expect(result.dateEarnedType).toBe('timestamp');
     expect(result.bronzePawStatus).toBe('unlocked');
-    await expect(page.locator('#paws-grid')).toContainText('Bronze Paw');
+    await expect(page.locator('#paws-grid')).toContainText('Bronze Badge');
 
     expect(errors, errors.join('\n')).toEqual([]);
 }

@@ -11,13 +11,15 @@ playwright-report/
 .env.*
 !.env.example
 serviceAccount*.json
-Bark Ranger Map Auth Service Account.json
-BarkRangerMap Auth.json
+*Auth Service Account.json
+*Auth.json
 *Service Account*.json
 *service-account*.json
 *service_account*.json
 *private-key*.json
 *private_key*.json
+__pycache__/
+*.pyc
 
 # Playwright login/session files - DO NOT COMMIT
 03-tests/.auth/

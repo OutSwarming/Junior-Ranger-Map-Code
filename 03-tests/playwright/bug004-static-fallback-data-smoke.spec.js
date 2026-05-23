@@ -16,10 +16,12 @@ test.describe('BUG-AUDIT-004 static data fallback', () => {
         await context.addInitScript(() => {
             localStorage.removeItem('barkCSV');
             localStorage.removeItem('barkCSV_time');
+            localStorage.removeItem('juniorRangerCSV');
+            localStorage.removeItem('juniorRangerCSV_time');
         });
 
         await context.route(GOOGLE_SHEET_PATTERN, route => route.abort('failed'));
-        await context.route('**/assets/data/bark-fallback.csv', route => {
+        await context.route('**/assets/data/jr-fallback.csv', route => {
             fallbackRequested = true;
             route.continue();
         });

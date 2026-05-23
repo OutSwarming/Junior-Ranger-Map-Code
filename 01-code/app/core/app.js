@@ -1,5 +1,5 @@
 /**
- * app.js - B.A.R.K. Ranger Map Bootstrap Orchestrator
+ * app.js - Junior Ranger Map Bootstrap Orchestrator
  * Owns boot order only. Feature logic lives in modules, engines, services, and state.
  */
 (function () {
@@ -57,7 +57,7 @@
         // Phase -1 guardrail: barkState owns runtime defaults and must parse before
         // settingsStore hydrates/publishes persistent setting mirrors.
         if (!barkStateReady || !settingsStoreReady || reversed) {
-            console.warn('[B.A.R.K. Boot] Settings startup order invariant failed. Expected barkState.js before settingsStore.js.', {
+            console.warn('[Junior Ranger Boot] Settings startup order invariant failed. Expected barkState.js before settingsStore.js.', {
                 barkStateReady,
                 settingsStoreReady,
                 bootOrder
@@ -135,13 +135,13 @@
             if (label) console.log(`  ✓ ${label}`);
         } catch (err) {
             _bootErrors.push(name);
-            console.error(`[B.A.R.K. Boot] "${name}" failed — this feature will be unavailable.`, err);
+            console.error(`[Junior Ranger Boot] "${name}" failed — this feature will be unavailable.`, err);
         }
     }
 
     // async so we can await each callInit and preserve boot order even for future async inits.
     document.addEventListener('DOMContentLoaded', async () => {
-        console.log('B.A.R.K. Boot Sequence: Initializing...');
+        console.log('Junior Ranger Boot Sequence: Initializing...');
         bindMapUnavailableActions();
         bindAuthFailureActions();
         assertSettingsStartupOrder();
@@ -155,7 +155,7 @@
         if (!window.map) {
             if (!_bootErrors.includes('initMap') && !_bootErrors.includes('initMapNoMap')) {
                 _bootErrors.push('initMapNoMap');
-                console.error('[B.A.R.K. Boot] "initMap" completed but window.map is unavailable — map feature unavailable.');
+                console.error('[Junior Ranger Boot] "initMap" completed but window.map is unavailable — map feature unavailable.');
             }
             checkMapAvailability('boot-complete');
         }
@@ -186,7 +186,7 @@
             }
         } catch (err) {
             _bootErrors.push('initFirebase');
-            console.error('[B.A.R.K. Boot] "initFirebase" failed — auth and cloud sync unavailable.', err);
+            console.error('[Junior Ranger Boot] "initFirebase" failed — auth and cloud sync unavailable.', err);
             showAuthFailure('Sign-in failed during startup. Cloud sync and saved progress are offline for this session.');
         }
 
@@ -195,21 +195,21 @@
             if (typeof window.BARK.loadData === 'function') window.BARK.loadData();
         } catch (err) {
             _bootErrors.push('loadData');
-            console.error('[B.A.R.K. Boot] "loadData" failed — map may be empty.', err);
+            console.error('[Junior Ranger Boot] "loadData" failed — map may be empty.', err);
         }
 
         // 6. Deferred non-critical initializations
         if (typeof window.BARK.safePoll === 'function') {
             setTimeout(() => {
                 try { window.BARK.safePoll(); }
-                catch (err) { console.error('[B.A.R.K. Boot] "safePoll" failed.', err); }
+                catch (err) { console.error('[Junior Ranger Boot] "safePoll" failed.', err); }
             }, 2000);
         }
 
         if (typeof window.BARK.updateTripUI === 'function') {
             setTimeout(() => {
                 try { window.BARK.updateTripUI(); }
-                catch (err) { console.error('[B.A.R.K. Boot] "updateTripUI" failed.', err); }
+                catch (err) { console.error('[Junior Ranger Boot] "updateTripUI" failed.', err); }
             }, 500);
         }
 
@@ -217,9 +217,9 @@
         checkMapAvailability('boot-complete');
 
         if (_bootErrors.length === 0) {
-            console.log('✅ B.A.R.K. Boot Sequence: Complete');
+            console.log('✅ Junior Ranger Boot Sequence: Complete');
         } else {
-            console.warn(`⚠️ B.A.R.K. Boot Sequence: Complete with ${_bootErrors.length} error(s): [${_bootErrors.join(', ')}]`);
+            console.warn(`⚠️ Junior Ranger Boot Sequence: Complete with ${_bootErrors.length} error(s): [${_bootErrors.join(', ')}]`);
         }
     });
 })();

@@ -50,7 +50,7 @@ const FUNCTION_FLAG_CONFIG = Object.freeze({
     },
     getPremiumGeocode: {
         envKey: "BARK_ENABLE_PREMIUM_GEOCODE",
-        message: "Global town search is paused for beta safety. Local B.A.R.K. stop search still works."
+        message: "Global town search is paused for beta safety. Local Junior Ranger stop search still works."
     },
     createCheckoutSession: {
         envKey: "BARK_ENABLE_CHECKOUT",
@@ -561,7 +561,7 @@ async function handleSyncLeaderboardScore(requestOrData, context, options = {}) 
             ? userSnap.data()
             : {};
         const score = calculateServerLeaderboardScore(userData);
-        const displayName = cleanLeaderboardString(userData.displayName, cleanLeaderboardString(token.name, "Bark Ranger"));
+        const displayName = cleanLeaderboardString(userData.displayName, cleanLeaderboardString(token.name, "Junior Ranger"));
         const photoURL = cleanLeaderboardString(userData.photoURL, cleanLeaderboardString(token.picture, "", 500), 500);
         const timestamp = FieldValue.serverTimestamp();
 
@@ -2391,16 +2391,16 @@ exports.extractParkData = functions
             const model = genAI.getGenerativeModel({ model: targetModelName });
 
             const prompt = `You are a strict data extraction parser for a National Park accessibility database. 
-            Analyze the provided text or sequence of images (labeled with their filenames) and extract the B.A.R.K. Ranger data.
+            Analyze the provided text or sequence of images (labeled with their filenames) and extract the Junior Ranger data.
             
             CRITICAL FILTERING RULES:
-            1. IGNORE restaurants, pubs, city dog parks, festivals, and personal side-trips.
-            2. ONLY extract official National Parks, State Parks, National Historic Sites, or locations explicitly stating they have a B.A.R.K. Ranger program.
+            1. IGNORE restaurants, pubs, city parks without official programs, festivals, and personal side-trips.
+            2. ONLY extract official National Parks, State Parks, National Historic Sites, or locations explicitly stating they have a Junior Ranger or special ranger program.
             
             DATA EXTRACTION RULES:
-            - approvedTrails: Specific trails or areas where dogs ARE allowed.
-            - strictRules: Where dogs are NOT allowed, stroller rules, and BARK Ranger tag requirements.
-            - hazards: Physical dangers or product issues (e.g., weak tag hooks).
+            - approvedTrails: Specific trails, visitor areas, or program locations where the activity can be completed.
+            - strictRules: Age rules, pickup rules, mail-in rules, stroller/accessibility notes, and book/badge requirements.
+            - hazards: Physical dangers, seasonal closures, or product issues.
 
             OUTPUT FORMAT:
             You must output an ARRAY of JSON objects. If the post mentions multiple valid parks, create an object for each. 

@@ -121,7 +121,7 @@ function getPremiumGeocodeDisabledMessage() {
         return window.BARK.getLaunchFlagMessage('premiumGeocodeEnabled');
     }
 
-    return 'Global town search is paused for beta safety. Local B.A.R.K. stop search still works.';
+    return 'Global town search is paused for beta safety. Local Junior Ranger stop search still works.';
 }
 
 function isSignedInForGlobalSearchPrompt() {
@@ -456,7 +456,7 @@ function renderInlinePlannerSuggestions(type, query, matches, options = {}) {
     if (matches.length === 0 && query.trim().length >= SEARCH_GLOBAL_MIN_LENGTH) {
         appendInlineStatus(
             suggestBox,
-            `No local B.A.R.K. matches for "${query}".`,
+            `No local Junior Ranger matches for "${query}".`,
             'background: #f8fafc; color: #475569; font-weight: 700; border-top: 1px solid #e2e8f0;'
         );
     }
@@ -852,7 +852,7 @@ function initSearchEngine() {
 
                 if (topMatches.length === 0) {
                     appendSearchStatus(
-                        `No local B.A.R.K. matches for "${activeQuery}".`,
+                        `No local Junior Ranger matches for "${activeQuery}".`,
                         'background: #f8fafc; color: #475569; font-weight: 700; border-top: 1px solid #e2e8f0;'
                     );
                 }
