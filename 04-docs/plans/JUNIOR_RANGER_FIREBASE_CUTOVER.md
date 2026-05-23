@@ -17,21 +17,19 @@ Date: 2026-05-23
 - Registered the Junior Ranger web app.
 - Created the default Cloud Firestore database in `nam5`.
 - Deployed the repo Firestore rules to the new project.
+- Initialized Firebase Authentication.
+- Enabled Email/Password sign-in.
+- Verified Google sign-in is enabled.
+- Smoke tested Email/Password account creation and deleted the temporary test user.
 - Pointed the repo default Firebase alias to `junior-ranger-map-auth`.
 - Moved the public app and admin page SDK config off `barkrangermap-auth`.
 - Kept the old BARK project as an explicit `.firebaserc` alias named `bark` so it is not the default deploy target.
 
-## Console Steps Still Needed
+## Auth Verification
 
-Firebase Authentication still needs to be initialized in the Firebase console because the public Identity Platform admin API requires billing before it can initialize Auth programmatically.
-
-1. Open `https://console.firebase.google.com/project/junior-ranger-map-auth/authentication/providers`.
-2. Click **Get started** if Authentication is not initialized yet.
-3. Enable **Email/Password**.
-4. Enable **Google** and set the project support email.
-5. Confirm authorized domains include the Firebase Hosting domains:
-   - `junior-ranger-map-auth.firebaseapp.com`
-   - `junior-ranger-map-auth.web.app`
+- Authorized domains include `junior-ranger-map-auth.firebaseapp.com` and `junior-ranger-map-auth.web.app`.
+- Email/Password sign-up returned an ID token during the smoke test.
+- The temporary smoke-test user was deleted immediately after the successful sign-up check.
 
 ## Billing-Gated Follow-Up
 
