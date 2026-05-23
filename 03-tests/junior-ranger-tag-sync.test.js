@@ -3,6 +3,7 @@ const test = require('node:test');
 const {
     buildTagPayload,
     extractSourceEntriesFromGrid,
+    extractSourceMembershipEntriesFromGrid,
     syncTagCatalog
 } = require('../05-tools/lib/junior-ranger-tag-sync');
 
@@ -61,6 +62,27 @@ test('buildTagPayload keeps every tag name and only writes linked entries to jrB
 
     assert.equal(payload.specialPrograms, 'Greatlands Junior Ranger Certificate | Museum Scavenger Hunt');
     assert.equal(payload.jrBooks, 'Greatlands Junior Ranger Certificate: https://example.com/greatlands.pdf');
+});
+
+test('extractSourceMembershipEntriesFromGrid keeps named parks even without book tags', () => {
+    const spreadsheet = {
+        sheets: [{
+            properties: { title: 'Alaska' },
+            data: [{
+                rowData: [
+                    { values: [cell('Master Map for Planning'), blank(), cell(''), cell('Track Trails')] },
+                    { values: [cell('Alaska'), blank(), cell('Tagged Park'), cell('Junior Ranger')] },
+                    { values: [cell('Across'), blank(), cell('Alabama, Arkansas, Georgia,'), blank()] },
+                    { values: [blank(), blank(), cell('No Tag Park'), blank()] }
+                ]
+            }]
+        }]
+    };
+
+    const entries = extractSourceMembershipEntriesFromGrid(spreadsheet);
+
+    assert.deepEqual(entries.map(entry => entry.name), ['Tagged Park', 'No Tag Park']);
+    assert.deepEqual(entries.map(entry => entry.state), ['Alaska', 'Alaska']);
 });
 
 test('syncTagCatalog updates only tag columns and appends new places', () => {

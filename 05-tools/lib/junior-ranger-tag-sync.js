@@ -4,6 +4,65 @@ const SOURCE_NAME_COLUMN = 2;
 const SOURCE_TAG_COLUMN = 3;
 const SOURCE_STATE_COLUMN = 0;
 const SOURCE_COLOR_COLUMN = 1;
+const SOURCE_JURISDICTION_NAMES = new Set([
+    'alabama',
+    'alaska',
+    'american samoa',
+    'arizona',
+    'arkansas',
+    'california',
+    'colorado',
+    'connecticut',
+    'delaware',
+    'district of columbia',
+    'florida',
+    'georgia',
+    'guam',
+    'hawaii',
+    'idaho',
+    'illinois',
+    'indiana',
+    'iowa',
+    'kansas',
+    'kentucky',
+    'louisiana',
+    'maine',
+    'maryland',
+    'massachusetts',
+    'michigan',
+    'minnesota',
+    'mississippi',
+    'missouri',
+    'montana',
+    'nebraska',
+    'nevada',
+    'new hampshire',
+    'new jersey',
+    'new mexico',
+    'new york',
+    'north carolina',
+    'north dakota',
+    'northern mariana islands',
+    'ohio',
+    'oklahoma',
+    'oregon',
+    'pennsylvania',
+    'puerto rico',
+    'rhode island',
+    'south carolina',
+    'south dakota',
+    'tennessee',
+    'texas',
+    'utah',
+    'vermont',
+    'virgin islands',
+    'virginia',
+    'washington',
+    'washington dc',
+    'west virginia',
+    'wisconsin',
+    'wyoming'
+]);
 
 const TARGET_COLUMNS = {
     siteId: ['siteID', 'Park ID', 'Park id'],
@@ -60,17 +119,28 @@ function normalizeName(value) {
     return cleanValue(value)
         .toLowerCase()
         .replace(/^\(?\s*\d+\s+of\s+\d+\)?\s*/i, '')
+        .replace(/\bhistorical\b/g, 'historic')
         .replace(/\([^)]*\)/g, ' ')
         .replace(/&/g, ' and ')
         .replace(/\bnational park and preserve\b/g, 'np pr')
         .replace(/\bnational parks?\b/g, 'np')
         .replace(/\bnational preserves?\b/g, 'npr')
         .replace(/\bnational monuments?\b/g, 'nm')
+        .replace(/\bnational military parks?\b/g, 'nmp')
         .replace(/\bnational historical parks?\b/g, 'nhp')
+        .replace(/\bnational historic parks?\b/g, 'nhp')
         .replace(/\bnational historic sites?\b/g, 'nhs')
         .replace(/\bnational battlefields?\b/g, 'nb')
         .replace(/\bnational recreation areas?\b/g, 'nra')
         .replace(/\bnational wildlife refuges?\b/g, 'nwr')
+        .replace(/\bnational scenic rivers?\b/g, 'nsr')
+        .replace(/\bnational seashores?\b/g, 'ns')
+        .replace(/\bnational forests?\b/g, 'nf')
+        .replace(/\bnational historic trails?\b/g, 'nht')
+        .replace(/\bnational scenic trails?\b/g, 'nst')
+        .replace(/\bnational heritage areas?\b/g, 'nha')
+        .replace(/\bstate parks?\b/g, 'sp')
+        .replace(/\bstate forests?\b/g, 'sf')
         .replace(/\s+/g, ' ')
         .replace(/[^a-z0-9 ]+/g, ' ')
         .replace(/\s+/g, ' ')
@@ -78,7 +148,7 @@ function normalizeName(value) {
 }
 
 function nameTokens(value) {
-    const stopWords = new Set(['and', 'at', 'for', 'jr', 'junior', 'of', 'ranger', 'the']);
+    const stopWords = new Set(['and', 'at', 'center', 'for', 'information', 'jr', 'junior', 'of', 'ranger', 'station', 'the', 'visitor']);
     return normalizeName(value).split(/\s+/).filter(token => token && !stopWords.has(token));
 }
 
@@ -115,6 +185,28 @@ function getHeaderIndex(headers, aliases) {
 
 function normalizeHeader(value) {
     return cleanValue(value).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+function normalizeJurisdictionName(value) {
+    return cleanValue(value)
+        .toLowerCase()
+        .replace(/\bd\.?c\.?\b/g, 'dc')
+        .replace(/[^a-z0-9]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
+function isSourceJurisdictionName(value) {
+    const normalized = normalizeJurisdictionName(value);
+    return SOURCE_JURISDICTION_NAMES.has(normalized);
+}
+
+function sourceNameLooksLikeStateList(value) {
+    const text = cleanValue(value);
+    if (isSourceJurisdictionName(text)) return true;
+    if (!text.includes(',')) return false;
+    const parts = text.split(',').map(part => part.trim()).filter(Boolean);
+    return parts.length > 1 && parts.every(isSourceJurisdictionName);
 }
 
 function findSourceColumnByHeader(rows, aliases) {
@@ -203,8 +295,9 @@ function extractSourceEntriesFromGrid(spreadsheet) {
             const state = getCellText(values[sourceColumns.state]);
             const name = getCellText(values[sourceColumns.name]);
             const tag = getCellText(values[sourceColumns.tag]);
-            if (state) currentState = state;
+            if (state && isSourceJurisdictionName(state)) currentState = state;
             if (rowIndex === 0 || sourceRowLooksLikeHeader(name, tag)) return;
+            if (sourceNameLooksLikeStateList(name)) return;
 
             if (name) {
                 currentEntry = {
@@ -226,6 +319,42 @@ function extractSourceEntriesFromGrid(spreadsheet) {
     });
 
     return entries.filter(entry => entry.name && (entry.tags.length || entry.siteInfo || entry.historyTimelineInfo));
+}
+
+function extractSourceMembershipEntriesFromGrid(spreadsheet) {
+    const entries = [];
+    const sheets = spreadsheet && Array.isArray(spreadsheet.sheets) ? spreadsheet.sheets : [];
+
+    sheets.forEach(sheet => {
+        const title = cleanValue(sheet.properties && sheet.properties.title);
+        let currentState = title;
+        const rows = sheet.data && sheet.data[0] && Array.isArray(sheet.data[0].rowData)
+            ? sheet.data[0].rowData
+            : [];
+        const sourceColumns = buildSourceColumnMap(rows);
+
+        rows.forEach((row, rowIndex) => {
+            const values = Array.isArray(row.values) ? row.values : [];
+            const state = getCellText(values[sourceColumns.state]);
+            const name = getCellText(values[sourceColumns.name]);
+            const tag = getCellText(values[sourceColumns.tag]);
+            if (state && isSourceJurisdictionName(state)) currentState = state;
+            if (rowIndex === 0 || sourceRowLooksLikeHeader(name, tag)) return;
+            if (sourceNameLooksLikeStateList(name)) return;
+
+            if (name) {
+                entries.push({
+                    state: currentState,
+                    name,
+                    sourceSheet: title,
+                    sourceRowNumber: rowIndex + 1,
+                    tags: []
+                });
+            }
+        });
+    });
+
+    return entries;
 }
 
 function buildTagPayload(tags) {
@@ -440,10 +569,12 @@ function syncTagCatalog({
 
 module.exports = {
     TARGET_COLUMNS,
+    buildTargetIndexes,
     buildSourceColumnMap,
     buildTagPayload,
     cleanValue,
     extractSourceEntriesFromGrid,
+    extractSourceMembershipEntriesFromGrid,
     findTargetRowIndex,
     getCellLink,
     getCellText,
