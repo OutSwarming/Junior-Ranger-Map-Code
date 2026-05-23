@@ -1222,6 +1222,19 @@ body.app-tab-active #slide-panel {
     font-size: 11px;
     font-weight: 700;
     white-space: nowrap;
+    text-decoration: none;
+}
+
+a.meta-pill {
+    cursor: pointer;
+}
+
+a.meta-pill:hover,
+a.meta-pill:focus-visible {
+    border-color: #38bdf8;
+    background: #e0f2fe;
+    color: #0c4a6e;
+    outline: none;
 }
 
 .panel-primary-actions {

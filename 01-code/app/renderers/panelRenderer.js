@@ -133,10 +133,15 @@ function createExternalLink(href, className, text) {
     return link;
 }
 
-function createMetaPill(icon, value, fallback) {
-    const pill = document.createElement('div');
+function createMetaPill(icon, value, fallback, href = '') {
+    const pill = href ? document.createElement('a') : document.createElement('div');
     pill.className = 'meta-pill';
     pill.textContent = icon ? `${icon} ${value || fallback}` : `${value || fallback}`;
+    if (href) {
+        configureExternalLink(pill, href);
+        pill.dataset.metaLink = 'book';
+        pill.setAttribute('aria-label', `Open ${value || fallback}`);
+    }
     return pill;
 }
 
@@ -147,23 +152,53 @@ function cleanMetaLabel(value) {
         .trim();
 }
 
-function addUniqueLabel(labels, seen, label) {
+function getMetaSearchTokens(value) {
+    const stopWords = new Set([
+        'a', 'an', 'and', 'book', 'badge', 'explorer', 'jr', 'junior', 'program', 'ranger', 'tag', 'the'
+    ]);
+    return cleanMetaLabel(value)
+        .toLowerCase()
+        .replace(/&/g, ' and ')
+        .replace(/[^a-z0-9]+/g, ' ')
+        .split(/\s+/)
+        .map(token => token.replace(/s$/, ''))
+        .filter(token => token && !stopWords.has(token));
+}
+
+function addUniqueLabel(labels, seen, label, url = '') {
     const cleaned = cleanMetaLabel(label);
     if (!cleaned) return;
     const key = cleaned.toLowerCase();
     if (seen.has(key)) return;
     seen.add(key);
-    labels.push(cleaned);
+    labels.push({ label: cleaned, url });
 }
 
-function getSpecialProgramLabels(value) {
+function findMatchingBookUrl(label, bookLinks) {
+    const labelTokens = getMetaSearchTokens(label);
+    if (!labelTokens.length) return '';
+
+    const exactMatch = bookLinks.find(link => {
+        const bookTokens = getMetaSearchTokens(link && link.label);
+        return labelTokens.every(token => bookTokens.includes(token));
+    });
+    if (exactMatch) return exactMatch.url;
+
+    const partialMatch = bookLinks.find(link => {
+        const bookTokens = getMetaSearchTokens(link && link.label);
+        return labelTokens.some(token => bookTokens.includes(token));
+    });
+    return partialMatch ? partialMatch.url : '';
+}
+
+function getSpecialProgramLabels(value, bookLinks) {
     const labels = [];
     const seen = new Set();
     String(value || '')
         .split(/[|\n;]+/)
         .map(part => part.replace(/^[-*\d.\s]+/, '').trim())
         .filter(Boolean)
-        .forEach(part => addUniqueLabel(labels, seen, `${part} Tag`));
+        .forEach(part => addUniqueLabel(labels, seen, `${part} Tag`, findMatchingBookUrl(part, bookLinks)));
     return labels;
 }
 
@@ -176,7 +211,7 @@ function getBookCatalogLabels(bookLinks) {
         const label = cleanMetaLabel(link && link.label);
         const key = label.toLowerCase();
         if (!label || genericLabels.has(key)) return;
-        addUniqueLabel(labels, seen, `${label} Book`);
+        addUniqueLabel(labels, seen, `${label} Book`, link.url);
     });
 
     return labels;
@@ -497,13 +532,13 @@ function renderMarkerClickPanel(context) {
     if (metaContainer) {
         clearElement(metaContainer);
         metaContainer.appendChild(createMetaPill('', d.swagType, 'Junior Ranger'));
-        getSpecialProgramLabels(d.specialPrograms).forEach(label => {
-            metaContainer.appendChild(createMetaPill('', label, label));
+        getSpecialProgramLabels(d.specialPrograms, bookLinks).forEach(({ label, url }) => {
+            metaContainer.appendChild(createMetaPill('', label, label, url));
         });
-        getBookCatalogLabels(bookLinks).forEach(label => {
-            metaContainer.appendChild(createMetaPill('', label, label));
+        getBookCatalogLabels(bookLinks).forEach(({ label, url }) => {
+            metaContainer.appendChild(createMetaPill('', label, label, url));
         });
-        metaContainer.appendChild(createMetaPill('', d.specialPrograms ? 'Special Program' : 'Site-Specific Book', 'Site-Specific Book'));
+        metaContainer.appendChild(createMetaPill('', d.specialPrograms ? 'Special Program' : 'Site-Specific Book', 'Site-Specific Book', d.specialPrograms ? '' : (bookLinks[0] && bookLinks[0].url)));
         metaContainer.appendChild(createMetaPill('', pickupPosition ? `${pickupPosition.index} of ${pickupPosition.total} pickup spots` : d.state, 'Location'));
         metaContainer.scrollLeft = 0;
     }
