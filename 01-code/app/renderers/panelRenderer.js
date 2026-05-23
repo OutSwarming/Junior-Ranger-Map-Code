@@ -140,6 +140,48 @@ function createMetaPill(icon, value, fallback) {
     return pill;
 }
 
+function cleanMetaLabel(value) {
+    return String(value || '')
+        .replace(/\.(pdf|docx?)$/i, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
+function addUniqueLabel(labels, seen, label) {
+    const cleaned = cleanMetaLabel(label);
+    if (!cleaned) return;
+    const key = cleaned.toLowerCase();
+    if (seen.has(key)) return;
+    seen.add(key);
+    labels.push(cleaned);
+}
+
+function getSpecialProgramLabels(value) {
+    const labels = [];
+    const seen = new Set();
+    String(value || '')
+        .split(/[|\n;]+/)
+        .map(part => part.replace(/^[-*\d.\s]+/, '').trim())
+        .filter(Boolean)
+        .forEach(part => addUniqueLabel(labels, seen, `${part} Tag`));
+    return labels;
+}
+
+function getBookCatalogLabels(bookLinks) {
+    const labels = [];
+    const seen = new Set();
+    const genericLabels = new Set(['book', 'download book', 'online books', 'official website', 'website']);
+
+    bookLinks.forEach(link => {
+        const label = cleanMetaLabel(link && link.label);
+        const key = label.toLowerCase();
+        if (!label || genericLabels.has(key)) return;
+        addUniqueLabel(labels, seen, `${label} Book`);
+    });
+
+    return labels;
+}
+
 function getAgencyLabel(agency) {
     const value = String(agency || '').trim();
     if (!value) return 'Agency not listed';
@@ -274,27 +316,6 @@ function buildPrimaryActions(place, bookLinks) {
     renderPanelActionSet(container, actions);
     renderPanelActionSet(stickyFooter, actions);
     syncTripActionButtons(place);
-}
-
-function renderJuniorRangerSummary(place, pickupPosition) {
-    const section = document.getElementById('panel-jr-summary');
-    if (!section) return;
-
-    clearElement(section);
-    const title = document.createElement('div');
-    title.className = 'panel-card-heading';
-    title.innerHTML = '<span class="panel-card-title">Junior Ranger</span><span class="panel-card-chip">Program</span>';
-    section.appendChild(title);
-
-    const lines = [];
-    lines.push(place.specialPrograms ? `Special program: ${place.specialPrograms}` : 'Site-specific Junior Ranger badge or booklet.');
-    if (place.jrBooks) lines.push('Book information is listed below.');
-    if (pickupPosition) lines.push(`This appears to be pickup location ${pickupPosition.index} of ${pickupPosition.total}.`);
-
-    const copy = document.createElement('p');
-    copy.className = 'panel-card-copy';
-    copy.textContent = lines.join(' ');
-    section.appendChild(copy);
 }
 
 function renderBookSection(place, bookLinks, websiteUrls) {
@@ -452,7 +473,7 @@ function renderMarkerClickPanel(context) {
     const panelScrollContainer = document.querySelector('.panel-content');
     if (panelScrollContainer && !refreshOnly) panelScrollContainer.scrollTop = 0;
     if (!refreshOnly) {
-        document.querySelectorAll('#panel-primary-actions, #panel-sticky-footer').forEach(actionRail => {
+        document.querySelectorAll('#panel-primary-actions, #panel-sticky-footer, #panel-meta-container').forEach(actionRail => {
             actionRail.scrollLeft = 0;
         });
     }
@@ -476,12 +497,18 @@ function renderMarkerClickPanel(context) {
     if (metaContainer) {
         clearElement(metaContainer);
         metaContainer.appendChild(createMetaPill('', d.swagType, 'Junior Ranger'));
-        metaContainer.appendChild(createMetaPill('', d.specialPrograms ? 'Special Program' : 'Site Program', 'Site Program'));
+        getSpecialProgramLabels(d.specialPrograms).forEach(label => {
+            metaContainer.appendChild(createMetaPill('', label, label));
+        });
+        getBookCatalogLabels(bookLinks).forEach(label => {
+            metaContainer.appendChild(createMetaPill('', label, label));
+        });
+        metaContainer.appendChild(createMetaPill('', d.specialPrograms ? 'Special Program' : 'Site-Specific Book', 'Site-Specific Book'));
         metaContainer.appendChild(createMetaPill('', pickupPosition ? `${pickupPosition.index} of ${pickupPosition.total} pickup spots` : d.state, 'Location'));
+        metaContainer.scrollLeft = 0;
     }
 
     buildPrimaryActions(d, bookLinks);
-    renderJuniorRangerSummary(d, pickupPosition);
     renderBookSection(d, bookLinks, websiteUrls);
     renderPickupSection(d, pickupPosition);
 
