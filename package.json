@@ -10,6 +10,7 @@
     "save:e2e:free": "node 05-tools/scripts/save-playwright-storage-state.js free",
     "save:e2e:free-b": "node 05-tools/scripts/save-playwright-storage-state.js free-b",
     "save:e2e:premium": "node 05-tools/scripts/save-playwright-storage-state.js premium",
+    "sync:jr-tags": "node 05-tools/scripts/sync-junior-ranger-tags.js",
     "test:unit": "node --test 03-tests/*.test.js",
     "test:functions": "npm --prefix 01-code/functions test",
     "test:e2e:auth-ui": "playwright test 03-tests/playwright/account-auth-smoke.spec.js --reporter=list",

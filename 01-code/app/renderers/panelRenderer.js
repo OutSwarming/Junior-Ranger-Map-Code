@@ -202,7 +202,15 @@ function getSpecialProgramLabels(value, bookLinks) {
     return labels;
 }
 
-function getBookCatalogLabels(bookLinks) {
+function metaLabelsOverlap(firstLabel, secondLabel) {
+    const firstTokens = getMetaSearchTokens(firstLabel);
+    const secondTokens = getMetaSearchTokens(secondLabel);
+    if (!firstTokens.length || !secondTokens.length) return false;
+    return firstTokens.every(token => secondTokens.includes(token))
+        || secondTokens.every(token => firstTokens.includes(token));
+}
+
+function getBookCatalogLabels(bookLinks, coveredLabels = []) {
     const labels = [];
     const seen = new Set();
     const genericLabels = new Set(['book', 'download book', 'online books', 'official website', 'website']);
@@ -211,6 +219,7 @@ function getBookCatalogLabels(bookLinks) {
         const label = cleanMetaLabel(link && link.label);
         const key = label.toLowerCase();
         if (!label || genericLabels.has(key)) return;
+        if (coveredLabels.some(coveredLabel => metaLabelsOverlap(label, coveredLabel))) return;
         addUniqueLabel(labels, seen, `${label} Book`, link.url);
     });
 
@@ -532,10 +541,11 @@ function renderMarkerClickPanel(context) {
     if (metaContainer) {
         clearElement(metaContainer);
         metaContainer.appendChild(createMetaPill('', d.swagType, 'Junior Ranger'));
-        getSpecialProgramLabels(d.specialPrograms, bookLinks).forEach(({ label, url }) => {
+        const specialProgramLabels = getSpecialProgramLabels(d.specialPrograms, bookLinks);
+        specialProgramLabels.forEach(({ label, url }) => {
             metaContainer.appendChild(createMetaPill('', label, label, url));
         });
-        getBookCatalogLabels(bookLinks).forEach(({ label, url }) => {
+        getBookCatalogLabels(bookLinks, specialProgramLabels.map(item => item.label)).forEach(({ label, url }) => {
             metaContainer.appendChild(createMetaPill('', label, label, url));
         });
         metaContainer.appendChild(createMetaPill('', d.specialPrograms ? 'Special Program' : 'Site-Specific Book', 'Site-Specific Book', d.specialPrograms ? '' : (bookLinks[0] && bookLinks[0].url)));

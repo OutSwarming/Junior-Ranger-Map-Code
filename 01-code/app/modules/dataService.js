@@ -29,7 +29,6 @@ const CSV_COLUMNS = {
 };
 
 const SWAG_TYPE_COLUMNS = ['Swag Type', 'Swag', 'Swag Available'];
-const LIVE_JUNIOR_RANGER_CSV_URL = 'https://docs.google.com/spreadsheets/d/1aKhDQYHN5TrZhkoa2bPd8IKNDsTIbvTdpaauhWsFBmI/export?format=csv&gid=311809418';
 const STATIC_FALLBACK_CSV_URL = 'assets/data/jr-fallback.csv';
 const DATA_CACHE_KEY = 'juniorRangerCSV';
 const DATA_CACHE_TIME_KEY = 'juniorRangerCSV_time';
@@ -329,7 +328,7 @@ function loadStaticFallbackData(reason = 'unknown') {
     if (hasAcceptedParkData()) return Promise.resolve(false);
     if (staticFallbackLoadInFlight) return staticFallbackLoadInFlight;
 
-    staticFallbackLoadInFlight = fetch(STATIC_FALLBACK_CSV_URL, { cache: 'force-cache' })
+    staticFallbackLoadInFlight = fetch(STATIC_FALLBACK_CSV_URL, { cache: 'no-cache' })
         .then(res => {
             if (!res.ok) throw new Error(`Static fallback response was not ok: ${res.status}`);
             return res.text();
@@ -340,6 +339,7 @@ function loadStaticFallbackData(reason = 'unknown') {
             const fallbackHash = quickHash(csvString);
             rememberDataHash(fallbackHash, 1);
             parseCSVString(csvString, {
+                cacheTime: Date.now(),
                 skipIfDataLoaded: true,
                 onAccepted: () => {
                     if (lastDataHash === null) lastDataHash = fallbackHash;
@@ -363,7 +363,7 @@ function loadStaticFallbackData(reason = 'unknown') {
 
 window.BARK.loadStaticFallbackData = loadStaticFallbackData;
 
-// ====== DATA POLLING ======
+// ====== STATIC DATA LOADING ======
 function quickHash(str) {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
@@ -375,16 +375,8 @@ function quickHash(str) {
 }
 
 let lastDataHash = null;
-let pollInFlight = false;
 let seenHashes = new Map();
 const MAX_SEEN_DATA_HASHES = 64;
-const DATA_POLL_INTERVAL_MS = 5 * 60 * 1000;
-const DATA_POLL_RETRY_INTERVAL_MS = 10 * 60 * 1000;
-const DATA_REFOCUS_MIN_INTERVAL_MS = 60 * 1000;
-let dataPollTimer = null;
-let dataPollLoopStarted = false;
-let dataPollStopped = false;
-let lastDataPollStartedAt = 0;
 
 function pruneSeenHashes() {
     while (seenHashes.size > MAX_SEEN_DATA_HASHES) {
@@ -405,123 +397,6 @@ function rememberDataHash(hash, revisionTime) {
     if (seenHashes.has(hash)) seenHashes.delete(hash);
     seenHashes.set(hash, revisionTime);
     pruneSeenHashes();
-}
-
-function pollForUpdates() {
-    if (!navigator.onLine || pollInFlight) return Promise.resolve(false);
-
-    try { window.BARK.incrementRequestCount(); }
-    catch (e) { return Promise.reject(e); }
-
-    pollInFlight = true;
-    lastDataPollStartedAt = Date.now();
-
-    const csvUrl = LIVE_JUNIOR_RANGER_CSV_URL;
-
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 6000);
-
-    return fetch(csvUrl + '&t=' + Date.now() + '&r=' + Math.random(), {
-        cache: 'no-store',
-        signal: controller.signal
-    })
-        .then(res => {
-            if (!res.ok) throw new Error('Network response was not ok');
-            return res.text().then(text => ({ newCsv: text, url: res.url }));
-        })
-        .then(({ newCsv, url }) => {
-            if (!newCsv || newCsv.trim().length < 10) return false;
-            const newHash = quickHash(newCsv);
-
-            if (!seenHashes.has(newHash)) {
-                let revisionTime = Date.now();
-                const match = /\/([0-9]{13})\//.exec(url);
-                if (match) revisionTime = parseInt(match[1], 10);
-                rememberDataHash(newHash, revisionTime);
-            }
-
-            if (newHash !== lastDataHash) {
-                const newHashTime = seenHashes.get(newHash);
-                const currentHashTime = lastDataHash && seenHashes.has(lastDataHash) ? seenHashes.get(lastDataHash) : 0;
-
-                if (lastDataHash !== null && newHashTime < currentHashTime) return false;
-
-                parseCSVString(newCsv, {
-                    cacheTime: newHashTime,
-                    onAccepted: () => { lastDataHash = newHash; }
-                });
-            }
-            return true;
-        })
-        .finally(() => {
-            clearTimeout(timeoutId);
-            pollInFlight = false;
-        });
-}
-
-let dataPollErrorCount = 0;
-
-function getPollInterval() {
-    return dataPollErrorCount > 5 ? DATA_POLL_RETRY_INTERVAL_MS : DATA_POLL_INTERVAL_MS;
-}
-
-async function runDataPollCycle() {
-    if (window.ultraLowEnabled) {
-        console.log("Ultra Low Mode: Background polling disabled.");
-        return false;
-    }
-
-    try {
-        await pollForUpdates();
-        dataPollErrorCount = 0;
-        return true;
-    } catch (err) {
-        if (err.message && err.message.includes("Safety Shutdown")) {
-            console.error("KILL SWITCH: Terminating Data Poll.");
-            dataPollStopped = true;
-            clearTimeout(dataPollTimer);
-            dataPollTimer = null;
-            return false;
-        }
-        dataPollErrorCount++;
-        if (err.name === 'AbortError') {
-            console.warn('Data poll timed out after 6s; backing off...');
-        } else {
-            console.error("Data poll failed, backing off...", err);
-        }
-        return false;
-    }
-}
-
-function scheduleNextDataPoll(delay = getPollInterval()) {
-    if (window.ultraLowEnabled || dataPollStopped) return;
-    clearTimeout(dataPollTimer);
-    dataPollTimer = setTimeout(runScheduledDataPoll, delay);
-}
-
-async function runScheduledDataPoll() {
-    if (dataPollTimer) clearTimeout(dataPollTimer);
-    dataPollTimer = null;
-    await runDataPollCycle();
-    scheduleNextDataPoll();
-}
-
-function bindDataPollVisibilityRefresh() {
-    if (bindDataPollVisibilityRefresh.bound) return;
-    bindDataPollVisibilityRefresh.bound = true;
-
-    document.addEventListener('visibilitychange', () => {
-        if (document.hidden || dataPollStopped || window.ultraLowEnabled) return;
-        if (Date.now() - lastDataPollStartedAt < DATA_REFOCUS_MIN_INTERVAL_MS) return;
-        runScheduledDataPoll();
-    });
-}
-
-function safeDataPoll() {
-    if (dataPollLoopStarted) return;
-    dataPollLoopStarted = true;
-    bindDataPollVisibilityRefresh();
-    scheduleNextDataPoll();
 }
 
 function clearLayerSafely(layer, label) {
@@ -549,48 +424,43 @@ function clearMarkerLayersSafely() {
     }
 }
 
-function loadData() {
-    LEGACY_DATA_CACHE_KEYS.forEach(key => localStorage.removeItem(key));
-
+function loadCachedData() {
     const cachedCsv = localStorage.getItem(DATA_CACHE_KEY);
     const cachedTime = localStorage.getItem(DATA_CACHE_TIME_KEY);
 
-    if (cachedCsv) {
-        lastDataHash = quickHash(cachedCsv);
-        if (cachedTime) {
-            rememberDataHash(lastDataHash, parseInt(cachedTime, 10));
-        } else {
-            rememberDataHash(lastDataHash, Date.now());
-        }
-        parseCSVString(cachedCsv);
-    } else {
-        loadStaticFallbackData('cold boot without local cache');
-    }
+    if (!cachedCsv) return false;
+    lastDataHash = quickHash(cachedCsv);
+    rememberDataHash(lastDataHash, cachedTime ? parseInt(cachedTime, 10) : Date.now());
+    parseCSVString(cachedCsv);
+    return true;
+}
 
-    safeDataPoll();
+function loadData() {
+    LEGACY_DATA_CACHE_KEYS.forEach(key => localStorage.removeItem(key));
 
     if (!navigator.onLine) {
+        const loadedCachedData = loadCachedData();
         const premiumService = window.BARK && window.BARK.services && window.BARK.services.premium;
         const isPremium = Boolean(
             premiumService &&
             typeof premiumService.isPremium === 'function' &&
             premiumService.isPremium()
         );
-        if (!isPremium && !cachedCsv) {
+        if (!isPremium && !loadedCachedData) {
             alert('Network disconnected. Log in via the Profile tab to enable Premium Offline Mode.');
             clearMarkerLayersSafely();
         }
         return;
     }
 
-    runDataPollCycle()
-        .then(() => {
-            if (!hasAcceptedParkData()) loadStaticFallbackData('live sheet poll returned no data');
+    loadStaticFallbackData('hosted static catalog')
+        .then(loadedStaticData => {
+            if (!loadedStaticData && !hasAcceptedParkData()) loadCachedData();
         });
 }
 
 window.BARK.loadData = loadData;
-window.BARK.safeDataPoll = safeDataPoll;
+window.BARK.safeDataPoll = () => false;
 window.BARK.clearMarkerLayersSafely = clearMarkerLayersSafely;
 
 // ====== VERSION CHECK ======
