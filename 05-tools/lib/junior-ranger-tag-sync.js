@@ -8,8 +8,10 @@ const SOURCE_COLOR_COLUMN = 1;
 const TARGET_COLUMNS = {
     siteId: ['siteID', 'Park ID', 'Park id'],
     name: ['siteName', 'Location'],
+    siteInfo: ['siteInfo', 'Site Info', 'Park Info', 'Park Information'],
     state: ['state', 'State'],
     jrBooks: ['jrBooks'],
+    historyTimelineInfo: ['historyTimelineInfo', 'JR History', 'Junior Ranger History', 'Junior Ranger history'],
     specialPrograms: ['specialPrograms'],
     lastUpdated: ['lastUpdated', 'Last Updated'],
     color: ['color', 'Color', 'markerColor', 'Marker Color']
@@ -111,9 +113,62 @@ function getHeaderIndex(headers, aliases) {
     return -1;
 }
 
+function normalizeHeader(value) {
+    return cleanValue(value).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+function findSourceColumnByHeader(rows, aliases) {
+    const aliasesNormalized = new Set(aliases.map(normalizeHeader));
+    const headerRowsToScan = Math.min(rows.length, 8);
+
+    for (let rowIndex = 0; rowIndex < headerRowsToScan; rowIndex++) {
+        const values = Array.isArray(rows[rowIndex].values) ? rows[rowIndex].values : [];
+        for (let columnIndex = 0; columnIndex < values.length; columnIndex++) {
+            if (aliasesNormalized.has(normalizeHeader(getCellText(values[columnIndex])))) {
+                return columnIndex;
+            }
+        }
+    }
+
+    return -1;
+}
+
+function buildSourceColumnMap(rows) {
+    return {
+        state: SOURCE_STATE_COLUMN,
+        color: SOURCE_COLOR_COLUMN,
+        name: SOURCE_NAME_COLUMN,
+        tag: SOURCE_TAG_COLUMN,
+        siteInfo: findSourceColumnByHeader(rows, TARGET_COLUMNS.siteInfo),
+        historyTimelineInfo: findSourceColumnByHeader(rows, TARGET_COLUMNS.historyTimelineInfo)
+    };
+}
+
 function sourceRowLooksLikeHeader(name, tag) {
     const combined = `${name} ${tag}`.toLowerCase();
     return combined.includes('master map') || combined.includes('track trails') || combined.includes('best contact');
+}
+
+function appendOptionalSourceValue(currentValue, nextValue) {
+    const current = cleanValue(currentValue);
+    const next = cleanValue(nextValue);
+    if (!next) return current;
+    if (!current) return next;
+    if (current.toLowerCase().includes(next.toLowerCase())) return current;
+    return `${current}\n${next}`;
+}
+
+function applySourceDetails(currentEntry, values, sourceColumns) {
+    if (!currentEntry) return;
+    if (sourceColumns.siteInfo > -1) {
+        currentEntry.siteInfo = appendOptionalSourceValue(currentEntry.siteInfo, getCellText(values[sourceColumns.siteInfo]));
+    }
+    if (sourceColumns.historyTimelineInfo > -1) {
+        currentEntry.historyTimelineInfo = appendOptionalSourceValue(
+            currentEntry.historyTimelineInfo,
+            getCellText(values[sourceColumns.historyTimelineInfo])
+        );
+    }
 }
 
 function addSourceTag(currentEntry, tagCell) {
@@ -141,12 +196,13 @@ function extractSourceEntriesFromGrid(spreadsheet) {
         const rows = sheet.data && sheet.data[0] && Array.isArray(sheet.data[0].rowData)
             ? sheet.data[0].rowData
             : [];
+        const sourceColumns = buildSourceColumnMap(rows);
 
         rows.forEach((row, rowIndex) => {
             const values = Array.isArray(row.values) ? row.values : [];
-            const state = getCellText(values[SOURCE_STATE_COLUMN]);
-            const name = getCellText(values[SOURCE_NAME_COLUMN]);
-            const tag = getCellText(values[SOURCE_TAG_COLUMN]);
+            const state = getCellText(values[sourceColumns.state]);
+            const name = getCellText(values[sourceColumns.name]);
+            const tag = getCellText(values[sourceColumns.tag]);
             if (state) currentState = state;
             if (rowIndex === 0 || sourceRowLooksLikeHeader(name, tag)) return;
 
@@ -154,7 +210,9 @@ function extractSourceEntriesFromGrid(spreadsheet) {
                 currentEntry = {
                     state: currentState,
                     name,
-                    color: getCellColor(values[SOURCE_COLOR_COLUMN]),
+                    siteInfo: '',
+                    historyTimelineInfo: '',
+                    color: getCellColor(values[sourceColumns.color]),
                     sourceSheet: title,
                     sourceRowNumber: rowIndex + 1,
                     tags: []
@@ -162,11 +220,12 @@ function extractSourceEntriesFromGrid(spreadsheet) {
                 entries.push(currentEntry);
             }
 
-            if (tag) addSourceTag(currentEntry, values[SOURCE_TAG_COLUMN]);
+            applySourceDetails(currentEntry, values, sourceColumns);
+            if (tag) addSourceTag(currentEntry, values[sourceColumns.tag]);
         });
     });
 
-    return entries.filter(entry => entry.name && entry.tags.length);
+    return entries.filter(entry => entry.name && (entry.tags.length || entry.siteInfo || entry.historyTimelineInfo));
 }
 
 function buildTagPayload(tags) {
@@ -273,11 +332,41 @@ function setIfColumn(row, headers, aliases, value) {
     if (index > -1) row[index] = value;
 }
 
-function syncTagCatalog({ sourceEntries, targetHeaders, targetRows, today = new Date().toISOString().slice(0, 10), appendNew = true }) {
+function setChangedValue(row, columnIndex, fieldName, value, changes) {
+    if (columnIndex < 0) return;
+    const cleanNextValue = cleanValue(value);
+    if (row[columnIndex] === cleanNextValue) return;
+    changes[fieldName] = {
+        before: row[columnIndex],
+        after: cleanNextValue,
+        columnIndex
+    };
+    row[columnIndex] = cleanNextValue;
+}
+
+function rowHasTargetIdentity(row, indexes, siteIdIndex) {
+    return Boolean(
+        cleanValue(row[indexes.nameIndex])
+        || cleanValue(row[indexes.stateIndex])
+        || cleanValue(row[siteIdIndex])
+    );
+}
+
+function syncTagCatalog({
+    sourceEntries,
+    targetHeaders,
+    targetRows,
+    today = new Date().toISOString().slice(0, 10),
+    appendNew = true,
+    removeMissing = true
+}) {
     const rows = targetRows.map(row => targetHeaders.map((_, index) => cleanValue(row[index])));
+    const originalRowCount = rows.length;
     const indexes = buildTargetIndexes(targetHeaders, rows);
     const jrBooksIndex = getHeaderIndex(targetHeaders, TARGET_COLUMNS.jrBooks);
     const specialProgramsIndex = getHeaderIndex(targetHeaders, TARGET_COLUMNS.specialPrograms);
+    const siteInfoIndex = getHeaderIndex(targetHeaders, TARGET_COLUMNS.siteInfo);
+    const historyTimelineInfoIndex = getHeaderIndex(targetHeaders, TARGET_COLUMNS.historyTimelineInfo);
     if (indexes.nameIndex < 0) throw new Error('Target sheet is missing a siteName/Location column.');
     if (indexes.stateIndex < 0) throw new Error('Target sheet is missing a state/State column.');
     if (jrBooksIndex < 0) throw new Error('Target sheet is missing a jrBooks column.');
@@ -289,26 +378,27 @@ function syncTagCatalog({ sourceEntries, targetHeaders, targetRows, today = new 
     const appends = [];
     const skipped = [];
     const unchanged = [];
+    const removals = [];
+    const matchedTargetRows = new Set();
 
     sourceEntries.forEach(sourceEntry => {
         const payload = buildTagPayload(sourceEntry.tags);
         const match = findTargetRowIndex(sourceEntry, targetHeaders, rows, indexes);
 
         if (match.index > -1) {
+            matchedTargetRows.add(match.index);
             const row = rows[match.index];
             const changes = {};
-            if (row[jrBooksIndex] !== payload.jrBooks) {
-                changes.jrBooks = { before: row[jrBooksIndex], after: payload.jrBooks };
-                row[jrBooksIndex] = payload.jrBooks;
-            }
-            if (row[specialProgramsIndex] !== payload.specialPrograms) {
-                changes.specialPrograms = { before: row[specialProgramsIndex], after: payload.specialPrograms };
-                row[specialProgramsIndex] = payload.specialPrograms;
+            setChangedValue(row, jrBooksIndex, 'jrBooks', payload.jrBooks, changes);
+            setChangedValue(row, specialProgramsIndex, 'specialPrograms', payload.specialPrograms, changes);
+            if (sourceEntry.siteInfo) setChangedValue(row, siteInfoIndex, 'siteInfo', sourceEntry.siteInfo, changes);
+            if (sourceEntry.historyTimelineInfo) {
+                setChangedValue(row, historyTimelineInfoIndex, 'historyTimelineInfo', sourceEntry.historyTimelineInfo, changes);
             }
             if (Object.keys(changes).length) {
-                updates.push({ sourceEntry, rowIndex: match.index, match, changes });
+                updates.push({ sourceEntry, rowIndex: match.index, row, match, changes });
             } else {
-                unchanged.push({ sourceEntry, rowIndex: match.index, match });
+                unchanged.push({ sourceEntry, rowIndex: match.index, row, match });
             }
             return;
         }
@@ -324,16 +414,33 @@ function syncTagCatalog({ sourceEntries, targetHeaders, targetRows, today = new 
         setIfColumn(newRow, targetHeaders, TARGET_COLUMNS.state, sourceEntry.state);
         setIfColumn(newRow, targetHeaders, TARGET_COLUMNS.jrBooks, payload.jrBooks);
         setIfColumn(newRow, targetHeaders, TARGET_COLUMNS.specialPrograms, payload.specialPrograms);
+        if (sourceEntry.siteInfo) setIfColumn(newRow, targetHeaders, TARGET_COLUMNS.siteInfo, sourceEntry.siteInfo);
+        if (sourceEntry.historyTimelineInfo) {
+            setIfColumn(newRow, targetHeaders, TARGET_COLUMNS.historyTimelineInfo, sourceEntry.historyTimelineInfo);
+        }
         setIfColumn(newRow, targetHeaders, TARGET_COLUMNS.lastUpdated, today);
         rows.push(newRow);
         appends.push({ sourceEntry, row: newRow, reason: match.reason });
     });
 
-    return { headers: targetHeaders, rows, updates, appends, skipped, unchanged };
+    if (removeMissing) {
+        for (let rowIndex = 0; rowIndex < originalRowCount; rowIndex++) {
+            if (matchedTargetRows.has(rowIndex)) continue;
+            const row = rows[rowIndex];
+            if (!rowHasTargetIdentity(row, indexes, siteIdIndex)) continue;
+            removals.push({ rowIndex, row });
+        }
+    }
+
+    const removedIndexes = new Set(removals.map(removal => removal.rowIndex));
+    const mirroredRows = rows.filter((_, rowIndex) => !removedIndexes.has(rowIndex));
+
+    return { headers: targetHeaders, rows: mirroredRows, updates, appends, removals, skipped, unchanged };
 }
 
 module.exports = {
     TARGET_COLUMNS,
+    buildSourceColumnMap,
     buildTagPayload,
     cleanValue,
     extractSourceEntriesFromGrid,

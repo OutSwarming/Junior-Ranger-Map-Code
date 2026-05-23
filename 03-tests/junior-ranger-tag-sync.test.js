@@ -26,9 +26,9 @@ test('extractSourceEntriesFromGrid groups state-sheet rows into place tags with 
             properties: { title: 'Alaska' },
             data: [{
                 rowData: [
-                    { values: [cell('Master Map for Planning'), blank(), cell(''), cell('Track Trails')] },
-                    { values: [cell('Alaska'), cell(''), cell('Alaska Public Lands Information Center'), cell('Greatlands Junior Ranger Certificate', 'https://example.com/greatlands.pdf')] },
-                    { values: [blank(), blank(), blank(), cell('Museum Scavenger Hunt')] },
+                    { values: [cell('Master Map for Planning'), blank(), cell(''), cell('Track Trails'), blank(), cell('Park Info'), cell('JR History')] },
+                    { values: [cell('Alaska'), cell(''), cell('Alaska Public Lands Information Center'), cell('Greatlands Junior Ranger Certificate', 'https://example.com/greatlands.pdf'), blank(), cell('Source park info'), cell('Source JR history')] },
+                    { values: [blank(), blank(), blank(), cell('Museum Scavenger Hunt'), blank(), cell('Extra park note'), blank()] },
                     { values: [blank(), blank(), blank(), cell('Aleutian Islands WW2 NHA Junior Ranger', 'https://example.com/aleutian.pdf')] },
                     { values: [blank(), blank(), cell('Eagle River Nature Center'), cell('Rodak Ranger')] }
                 ]
@@ -46,6 +46,8 @@ test('extractSourceEntriesFromGrid groups state-sheet rows into place tags with 
         { label: 'Museum Scavenger Hunt', url: '' },
         { label: 'Aleutian Islands WW2 NHA Junior Ranger', url: 'https://example.com/aleutian.pdf' }
     ]);
+    assert.equal(entries[0].siteInfo, 'Source park info\nExtra park note');
+    assert.equal(entries[0].historyTimelineInfo, 'Source JR history');
     assert.equal(entries[1].name, 'Eagle River Nature Center');
     assert.deepEqual(entries[1].tags, [{ label: 'Rodak Ranger', url: '' }]);
 });
@@ -136,4 +138,135 @@ test('syncTagCatalog updates only tag columns and appends new places', () => {
     assert.equal(appended[6], 'Alaska');
     assert.equal(appended[13], '2026-05-22');
     assert.equal(appended[14], 'Rodak Ranger');
+});
+
+test('syncTagCatalog QC mirrors source link, tag additions, tag removals, and deleted parks', () => {
+    const headers = [
+        'siteID',
+        'siteName',
+        'siteInfo',
+        'jrBooks',
+        'latitude',
+        'longitude',
+        'state',
+        'address',
+        'agency',
+        'historyTimelineInfo',
+        'badgePictures',
+        'officialGovWebsite',
+        'websiteLinks',
+        'lastUpdated',
+        'specialPrograms'
+    ];
+    const rows = [[
+        'jr_alaska_public_lands_information_center',
+        'Alaska Public Lands Information Center',
+        'Existing info should stay until source has info.',
+        'Greatlands Junior Ranger Certificate: https://example.com/old-greatlands.pdf\nMuseum Scavenger Hunt: https://example.com/museum.pdf',
+        '61.2181',
+        '-149.9003',
+        'Alaska',
+        'Anchorage',
+        'NPS',
+        'Existing history should stay until source has history.',
+        '',
+        '',
+        '',
+        '2026-05-01',
+        'Greatlands Junior Ranger Certificate | Museum Scavenger Hunt'
+    ], [
+        'jr_deleted_park',
+        'Deleted Park',
+        'This whole pin should disappear.',
+        'Deleted Book: https://example.com/deleted.pdf',
+        '1',
+        '2',
+        'Alaska',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '2026-05-01',
+        'Deleted Book'
+    ]];
+    const sourceEntries = [{
+        state: 'Alaska',
+        name: 'Alaska Public Lands Information Center',
+        siteInfo: '',
+        historyTimelineInfo: '',
+        tags: [
+            { label: 'Greatlands Junior Ranger Certificate', url: 'https://example.com/new-greatlands.pdf' },
+            { label: 'Night Ranger', url: 'https://example.com/night-ranger.pdf' }
+        ]
+    }];
+
+    const result = syncTagCatalog({
+        sourceEntries,
+        targetHeaders: headers,
+        targetRows: rows
+    });
+
+    assert.equal(result.updates.length, 1);
+    assert.equal(result.removals.length, 1);
+    assert.equal(result.rows.length, 1);
+    assert.equal(result.rows[0][1], 'Alaska Public Lands Information Center');
+    assert.equal(result.rows[0][2], 'Existing info should stay until source has info.');
+    assert.equal(result.rows[0][9], 'Existing history should stay until source has history.');
+    assert.equal(result.rows[0][3], 'Greatlands Junior Ranger Certificate: https://example.com/new-greatlands.pdf\nNight Ranger: https://example.com/night-ranger.pdf');
+    assert.equal(result.rows[0][14], 'Greatlands Junior Ranger Certificate | Night Ranger');
+    assert.equal(result.removals[0].row[1], 'Deleted Park');
+});
+
+test('syncTagCatalog writes source park info and JR history only when provided', () => {
+    const headers = [
+        'siteID',
+        'siteName',
+        'siteInfo',
+        'jrBooks',
+        'latitude',
+        'longitude',
+        'state',
+        'address',
+        'agency',
+        'historyTimelineInfo',
+        'badgePictures',
+        'officialGovWebsite',
+        'websiteLinks',
+        'lastUpdated',
+        'specialPrograms'
+    ];
+    const rows = [[
+        'jr_denali_np_pr',
+        'Denali NP & Pr',
+        '',
+        '',
+        '63.1148',
+        '-151.1926',
+        'Alaska',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '2026-05-01',
+        ''
+    ]];
+
+    const result = syncTagCatalog({
+        sourceEntries: [{
+            state: 'Alaska',
+            name: 'Denali NP & Pr',
+            siteInfo: 'Park info from the source tab.',
+            historyTimelineInfo: 'JR history from the source tab.',
+            tags: [{ label: 'Junior Ranger', url: 'https://example.com/denali.pdf' }]
+        }],
+        targetHeaders: headers,
+        targetRows: rows
+    });
+
+    assert.equal(result.rows[0][2], 'Park info from the source tab.');
+    assert.equal(result.rows[0][9], 'JR history from the source tab.');
 });

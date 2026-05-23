@@ -21,6 +21,7 @@ function parseArgs(argv) {
     const args = {
         apply: false,
         appendNew: true,
+        removeMissing: process.env.JR_TAG_REMOVE_MISSING === 'false' ? false : true,
         sourceSpreadsheetId: process.env.JR_TAG_SOURCE_SPREADSHEET_ID || DEFAULT_SOURCE_SPREADSHEET_ID,
         sourceSheetGid: process.env.JR_TAG_SOURCE_SHEET_GID || DEFAULT_SOURCE_SHEET_GID,
         targetCsv: process.env.JR_TAG_TARGET_CSV || DEFAULT_TARGET_CSV,
@@ -35,6 +36,7 @@ function parseArgs(argv) {
         const next = () => argv[++i];
         if (arg === '--apply') args.apply = true;
         else if (arg === '--no-append-new') args.appendNew = false;
+        else if (arg === '--keep-missing' || arg === '--no-remove-missing') args.removeMissing = false;
         else if (arg === '--json') args.json = true;
         else if (arg === '--source-spreadsheet-id') args.sourceSpreadsheetId = next();
         else if (arg === '--source-sheet-gid') args.sourceSheetGid = next();
@@ -60,7 +62,7 @@ function parseArgs(argv) {
 function printHelp() {
     console.log(`Usage: node 05-tools/scripts/sync-junior-ranger-tags.js [options]
 
-Reads the Junior Ranger planning spreadsheet and syncs only tag/book columns.
+Reads the Junior Ranger planning spreadsheet and mirrors map membership.
 
 Defaults:
   source spreadsheet: ${DEFAULT_SOURCE_SPREADSHEET_ID}
@@ -70,6 +72,7 @@ Defaults:
 Options:
   --apply                         Write changes. Without this, runs dry.
   --no-append-new                 Do not append source places missing from target.
+  --keep-missing                  Keep target places missing from the source.
   --source-spreadsheet-id <id>    Google Sheet to read rich tag/book cells from.
   --source-sheet-gid <gid>        Limit the source read to one tab gid.
   --target-csv <path>             Local target CSV to update.
@@ -139,8 +142,17 @@ async function readSourceSpreadsheet(sheets, spreadsheetId, gid) {
 }
 
 async function readTargetSpreadsheet(sheets, spreadsheetId, { sheetGid, sheetName }) {
-    const title = sheetName || await getSheetTitleByGid(sheets, spreadsheetId, sheetGid);
-    if (!title) throw new Error('Target spreadsheet needs --target-sheet-name or --target-sheet-gid.');
+    const metadata = await sheets.spreadsheets.get({
+        spreadsheetId,
+        fields: 'sheets.properties(sheetId,title)'
+    });
+    const sheet = metadata.data.sheets.find(item => {
+        const properties = item.properties || {};
+        if (sheetName && properties.title === sheetName) return true;
+        return sheetGid && String(properties.sheetId) === String(sheetGid);
+    });
+    if (!sheet) throw new Error('Target spreadsheet needs a valid --target-sheet-name or --target-sheet-gid.');
+    const title = sheet.properties.title;
     const response = await sheets.spreadsheets.values.get({
         spreadsheetId,
         range: `'${title.replace(/'/g, "''")}'`
@@ -149,7 +161,7 @@ async function readTargetSpreadsheet(sheets, spreadsheetId, { sheetGid, sheetNam
     if (!values.length) throw new Error(`Target sheet ${title} has no header row.`);
     const headers = values[0].map(value => String(value || '').trim());
     const rows = values.slice(1).map(row => headers.map((_, index) => row[index] || ''));
-    return { title, headers, rows };
+    return { title, sheetId: sheet.properties.sheetId, headers, rows };
 }
 
 function columnLetter(index) {
@@ -163,20 +175,17 @@ function columnLetter(index) {
     return letter;
 }
 
-async function writeTargetSpreadsheet(sheets, spreadsheetId, title, syncResult) {
-    const jrBooksIndex = getHeaderIndex(syncResult.headers, TARGET_COLUMNS.jrBooks);
-    const specialProgramsIndex = getHeaderIndex(syncResult.headers, TARGET_COLUMNS.specialPrograms);
+async function writeTargetSpreadsheet(sheets, spreadsheetId, target, syncResult) {
+    const title = target.title;
     const data = [];
 
     syncResult.updates.forEach(update => {
         const sheetRowNumber = update.rowIndex + 2;
-        data.push({
-            range: `'${title.replace(/'/g, "''")}'!${columnLetter(jrBooksIndex)}${sheetRowNumber}`,
-            values: [[syncResult.rows[update.rowIndex][jrBooksIndex]]]
-        });
-        data.push({
-            range: `'${title.replace(/'/g, "''")}'!${columnLetter(specialProgramsIndex)}${sheetRowNumber}`,
-            values: [[syncResult.rows[update.rowIndex][specialProgramsIndex]]]
+        Object.values(update.changes).forEach(change => {
+            data.push({
+                range: `'${title.replace(/'/g, "''")}'!${columnLetter(change.columnIndex)}${sheetRowNumber}`,
+                values: [[update.row[change.columnIndex]]]
+            });
         });
     });
 
@@ -187,6 +196,26 @@ async function writeTargetSpreadsheet(sheets, spreadsheetId, title, syncResult) 
                 valueInputOption: 'USER_ENTERED',
                 data
             }
+        });
+    }
+
+    if (syncResult.removals.length) {
+        const requests = syncResult.removals
+            .slice()
+            .sort((a, b) => b.rowIndex - a.rowIndex)
+            .map(removal => ({
+                deleteDimension: {
+                    range: {
+                        sheetId: target.sheetId,
+                        dimension: 'ROWS',
+                        startIndex: removal.rowIndex + 1,
+                        endIndex: removal.rowIndex + 2
+                    }
+                }
+            }));
+        await sheets.spreadsheets.batchUpdate({
+            spreadsheetId,
+            requestBody: { requests }
         });
     }
 
@@ -207,6 +236,7 @@ function buildSummary(syncResult) {
     return {
         updated: syncResult.updates.length,
         appended: syncResult.appends.length,
+        removed: syncResult.removals.length,
         unchanged: syncResult.unchanged.length,
         skipped: syncResult.skipped.length,
         updates: syncResult.updates.map(update => ({
@@ -221,6 +251,11 @@ function buildSummary(syncResult) {
             state: append.sourceEntry.state,
             siteID: append.row[getHeaderIndex(syncResult.headers, TARGET_COLUMNS.siteId)] || ''
         })),
+        removals: syncResult.removals.map(removal => ({
+            name: removal.row[getHeaderIndex(syncResult.headers, TARGET_COLUMNS.name)] || '',
+            state: removal.row[getHeaderIndex(syncResult.headers, TARGET_COLUMNS.state)] || '',
+            targetRow: removal.rowIndex + 2
+        })),
         skipped: syncResult.skipped.map(skip => ({
             name: skip.sourceEntry.name,
             state: skip.sourceEntry.state,
@@ -234,6 +269,9 @@ async function main() {
     const sheets = await getSheetsClient();
     const sourceSpreadsheet = await readSourceSpreadsheet(sheets, args.sourceSpreadsheetId, args.sourceSheetGid);
     const sourceEntries = extractSourceEntriesFromGrid(sourceSpreadsheet);
+    if (!sourceEntries.length) {
+        throw new Error('Source spreadsheet produced 0 mappable entries; refusing to mirror an empty catalog.');
+    }
 
     let target;
     if (args.targetSpreadsheetId) {
@@ -249,13 +287,14 @@ async function main() {
         sourceEntries,
         targetHeaders: target.headers,
         targetRows: target.rows,
-        appendNew: args.appendNew
+        appendNew: args.appendNew,
+        removeMissing: args.removeMissing
     });
     const summary = buildSummary(syncResult);
 
     if (args.apply) {
         if (args.targetSpreadsheetId) {
-            await writeTargetSpreadsheet(sheets, args.targetSpreadsheetId, target.title, syncResult);
+            await writeTargetSpreadsheet(sheets, args.targetSpreadsheetId, target, syncResult);
         } else {
             fs.writeFileSync(args.targetCsv, rowsToCsv(syncResult.headers, syncResult.rows), 'utf8');
         }
@@ -268,6 +307,7 @@ async function main() {
         console.log(`Source entries: ${sourceEntries.length}`);
         console.log(`Updated: ${summary.updated}`);
         console.log(`Appended: ${summary.appended}`);
+        console.log(`Removed: ${summary.removed}`);
         console.log(`Unchanged: ${summary.unchanged}`);
         console.log(`Skipped: ${summary.skipped}`);
         if (!args.apply) console.log('Run again with --apply to write these changes.');
