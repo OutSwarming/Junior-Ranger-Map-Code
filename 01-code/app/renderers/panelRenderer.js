@@ -236,17 +236,6 @@ function getAgencyLabel(agency) {
     return value;
 }
 
-function getPickupPosition(place = {}) {
-    const source = `${place.name || ''} ${place.info || ''}`;
-    const match = source.match(/\(?\s*(\d+)\s+of\s+(\d+)\s*\)?/i);
-    if (!match) return null;
-
-    const index = Number(match[1]);
-    const total = Number(match[2]);
-    if (!Number.isFinite(index) || !Number.isFinite(total) || total < 2) return null;
-    return { index, total };
-}
-
 function getDisplayPlaceName(name) {
     return String(name || 'Unknown Park').replace(/^\s*\(?\d+\s+of\s+\d+\)?\s*/i, '').trim() || 'Unknown Park';
 }
@@ -392,29 +381,6 @@ function renderBookSection(place, bookLinks, websiteUrls) {
     });
 }
 
-function renderPickupSection(place, pickupPosition) {
-    const section = document.getElementById('panel-pickup-section');
-    const chip = document.getElementById('panel-pickup-chip');
-    const copy = document.getElementById('panel-pickup-copy');
-    const button = document.getElementById('show-pickup-spots-btn');
-    if (!section || !copy) return;
-
-    section.style.display = 'block';
-    if (pickupPosition) {
-        if (chip) chip.textContent = `${pickupPosition.index} of ${pickupPosition.total}`;
-        copy.textContent = `This is one of ${pickupPosition.total} known places tied to this Junior Ranger badge or book. A future grouped map view can reveal the other pickup dots only while this park is selected.`;
-        if (button) {
-            button.style.display = 'inline-flex';
-            button.disabled = true;
-            button.textContent = 'Pickup Map Coming Next';
-        }
-    } else {
-        if (chip) chip.textContent = 'Primary';
-        copy.textContent = 'This pin is the listed Junior Ranger pickup or program location.';
-        if (button) button.style.display = 'none';
-    }
-}
-
 function openFreeAccountPrompt(source) {
     const accountUi = window.BARK && window.BARK.authAccountUi;
     if (accountUi && typeof accountUi.openAccountPrompt === 'function') {
@@ -525,7 +491,6 @@ function renderMarkerClickPanel(context) {
     if (!refreshOnly) document.getElementById('filter-panel').classList.add('collapsed');
 
     const d = marker._parkData;
-    const pickupPosition = getPickupPosition(d);
     const displayName = getDisplayPlaceName(d.name);
     const bookLinks = getBookLinks(d);
     const websiteUrls = getSafeHttpUrls(d.website || '');
@@ -549,13 +514,12 @@ function renderMarkerClickPanel(context) {
             metaContainer.appendChild(createMetaPill('', label, label, url));
         });
         metaContainer.appendChild(createMetaPill('', d.specialPrograms ? 'Special Program' : 'Site-Specific Book', 'Site-Specific Book', d.specialPrograms ? '' : (bookLinks[0] && bookLinks[0].url)));
-        metaContainer.appendChild(createMetaPill('', pickupPosition ? `${pickupPosition.index} of ${pickupPosition.total} pickup spots` : d.state, 'Location'));
+        metaContainer.appendChild(createMetaPill('', d.state, 'Location'));
         metaContainer.scrollLeft = 0;
     }
 
     buildPrimaryActions(d, bookLinks);
     renderBookSection(d, bookLinks, websiteUrls);
-    renderPickupSection(d, pickupPosition);
 
     const suggestEditBtn = document.getElementById('suggest-edit-btn');
     if (suggestEditBtn) {
