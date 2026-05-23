@@ -56,6 +56,8 @@
       "package.json",
       "package-lock.json",
       "BarkRangerMap Auth.json",
+      "data/BARK Master List.csv",
+      "assets/data/bark-fallback.csv",
       "*Service Account*.json",
       "*service-account*.json",
       "*service_account*.json",

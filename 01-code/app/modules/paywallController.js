@@ -259,7 +259,7 @@
             return {
                 title: 'Global towns and cities are a Premium feature',
                 eyebrow: 'Premium trip search',
-                body: 'Upgrade to search beyond B.A.R.K. stops, add any city or town to your trip, and build routes around real-world stops.',
+                body: 'Upgrade to search beyond Junior Ranger stops, add any city or town to your trip, and build routes around real-world stops.',
                 primaryText: 'Upgrade Now'
             };
         }
@@ -295,7 +295,7 @@
             return {
                 title: 'Adding more than 5 parks is a Premium feature',
                 eyebrow: 'Premium park tracking',
-                body: 'Free accounts can track up to 5 visited parks. Upgrade to keep adding visited parks, preserve your B.A.R.K. progress, and grow your passport without the free limit.',
+                body: 'Free accounts can track up to 5 visited parks. Upgrade to keep adding visited parks, preserve your Junior Ranger progress, and grow your passport without the free limit.',
                 primaryText: 'Upgrade Now'
             };
         }
@@ -318,7 +318,7 @@
             return {
                 title: featureCopy.title,
                 eyebrow: featureCopy.eyebrow,
-                body: `${featureCopy.body} Sign in first so premium can be attached to your BARK Ranger account.`,
+                body: `${featureCopy.body} Sign in first so premium can be attached to your Junior Ranger account.`,
                 primaryText: 'Sign in to upgrade'
             };
         }
@@ -326,7 +326,7 @@
         return {
             title: 'Sign in to upgrade',
             eyebrow: 'Account required',
-            body: 'Sign in first so premium can be attached to your BARK Ranger account. You can use Google or email/password.',
+            body: 'Sign in first so premium can be attached to your Junior Ranger account. You can use Google or email/password.',
             primaryText: 'Sign in to upgrade'
         };
     }
@@ -354,7 +354,7 @@
         }
 
         return {
-            title: 'Upgrade to BARK Ranger Premium',
+            title: 'Upgrade to Junior Ranger Premium',
             eyebrow: 'Annual plan',
             body: 'Unlock the premium map tools for one annual plan.',
             primaryText: 'Continue to secure checkout'

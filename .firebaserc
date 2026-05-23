@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "barkrangermap-auth"
+    "default": "junior-ranger-map-auth",
+    "bark": "barkrangermap-auth"
   }
 }

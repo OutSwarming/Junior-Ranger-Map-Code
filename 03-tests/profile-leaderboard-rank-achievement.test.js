@@ -74,7 +74,7 @@ function loadProfileEngineHarness() {
                 async evaluateAndStoreAchievements(userId, visits, userRank) {
                     receivedRank = userRank;
                     return {
-                        title: 'B.A.R.K. Trainee',
+                        title: 'Junior Ranger Trainee',
                         totalScore: 0,
                         rareFeats: [],
                         paws: [],

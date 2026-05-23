@@ -37,7 +37,7 @@ const config = {
     apiKey: "test-api-key",
     storeId: "363425",
     annualVariantId: "1604336",
-    appBaseUrl: "https://outswarming.github.io/bark-ranger-map/"
+    appBaseUrl: "https://junior-ranger-map-auth.web.app/"
 };
 
 function makeUserFirestore(userData = {}) {
@@ -146,11 +146,11 @@ describe("Lemon Squeezy checkout session helpers", () => {
     it("builds checkout return URLs from the app base URL", () => {
         assert.equal(
             buildCheckoutReturnUrl(config.appBaseUrl, "success"),
-            "https://outswarming.github.io/bark-ranger-map/?checkout=success&provider=lemonsqueezy"
+            "https://junior-ranger-map-auth.web.app/?checkout=success&provider=lemonsqueezy"
         );
         assert.equal(
             buildCheckoutReturnUrl(config.appBaseUrl, "canceled"),
-            "https://outswarming.github.io/bark-ranger-map/?checkout=canceled&provider=lemonsqueezy"
+            "https://junior-ranger-map-auth.web.app/?checkout=canceled&provider=lemonsqueezy"
         );
     });
 
@@ -221,7 +221,7 @@ describe("Lemon Squeezy checkout session helpers", () => {
         assert.deepEqual(payload.data.attributes.product_options.enabled_variants, [1604336]);
         assert.equal(
             payload.data.attributes.product_options.redirect_url,
-            "https://outswarming.github.io/bark-ranger-map/?checkout=success&provider=lemonsqueezy"
+            "https://junior-ranger-map-auth.web.app/?checkout=success&provider=lemonsqueezy"
         );
         assert.equal(payload.data.attributes.checkout_data.email, "ranger@example.test");
         assert.equal(payload.data.attributes.checkout_data.name, "Ranger Tester");
@@ -447,11 +447,11 @@ describe("Lemon Squeezy checkout session callable", () => {
         assert.deepEqual(capturedBody.data.attributes.product_options.enabled_variants, [1604336]);
         assert.equal(
             capturedBody.data.attributes.product_options.redirect_url,
-            "https://outswarming.github.io/bark-ranger-map/?checkout=success&provider=lemonsqueezy"
+            "https://junior-ranger-map-auth.web.app/?checkout=success&provider=lemonsqueezy"
         );
         assert.equal(
             capturedBody.data.attributes.checkout_data.custom.cancel_url,
-            "https://outswarming.github.io/bark-ranger-map/?checkout=canceled&provider=lemonsqueezy"
+            "https://junior-ranger-map-auth.web.app/?checkout=canceled&provider=lemonsqueezy"
         );
     });
 

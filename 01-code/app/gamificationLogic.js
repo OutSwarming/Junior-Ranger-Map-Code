@@ -301,10 +301,10 @@ class GamificationEngine {
         if (score >= 300) return 'National Treasure';
         if (score >= 200) return 'Apex Ranger';
         if (score >= 100) return 'Trail Legend';
-        if (score >= 50)  return 'B.A.R.K. Master';
+        if (score >= 50)  return 'Junior Ranger Master';
         if (score >= 25)  return 'Trail Blazer';
-        if (score >= 10)  return 'B.A.R.K. Ranger';
-        return 'B.A.R.K. Trainee';
+        if (score >= 10)  return 'Junior Ranger';
+        return 'Junior Ranger Trainee';
     }
 
     calculatePaws(totalVisits, verifiedCount) {

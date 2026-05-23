@@ -243,9 +243,9 @@ function initQRCode() {
     const downloadQrBtn = document.getElementById('download-qr-btn');
 
     if (shareSelect && qrContainer && typeof QRCode !== 'undefined') {
-        let qrcode = new QRCode(qrContainer, { text: "https://usbarkrangers.github.io/USBarkRangers/", width: 160, height: 160, colorDark: "#1976D2", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.H });
+        let qrcode = new QRCode(qrContainer, { text: "https://junior-ranger-map-auth.web.app/", width: 160, height: 160, colorDark: "#1976D2", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.H });
 
-        shareSelect.addEventListener('change', (e) => { let val = e.target.value; if (val === 'app') val = "https://usbarkrangers.github.io/USBarkRangers/"; qrcode.clear(); qrcode.makeCode(val); });
+        shareSelect.addEventListener('change', (e) => { let val = e.target.value; if (val === 'app') val = "https://junior-ranger-map-auth.web.app/"; qrcode.clear(); qrcode.makeCode(val); });
 
         if (downloadQrBtn) {
             downloadQrBtn.addEventListener('click', () => {

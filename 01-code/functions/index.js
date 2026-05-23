@@ -948,7 +948,7 @@ const LEMONSQUEEZY_SUBSCRIPTIONS_URL = `${LEMONSQUEEZY_API_ORIGIN}/v1/subscripti
 const LEMONSQUEEZY_CUSTOMERS_URL = `${LEMONSQUEEZY_API_ORIGIN}/v1/customers`;
 const DEFAULT_LEMONSQUEEZY_STORE_ID = "363425";
 const DEFAULT_LEMONSQUEEZY_ANNUAL_VARIANT_ID = "1604336";
-const DEFAULT_APP_BASE_URL = "https://outswarming.github.io/bark-ranger-map/";
+const DEFAULT_APP_BASE_URL = "https://junior-ranger-map-auth.web.app/";
 const LEMONSQUEEZY_LIVE_APPROVAL_ENV = "BARK_LEMON_LIVE_MODE_APPROVAL";
 const LEMONSQUEEZY_LIVE_APPROVAL_VALUE = "CARTER_APPROVED_LIVE_RC";
 const LEMONSQUEEZY_MODE_LOCK_REASON = "Lemon Squeezy live mode remains locked until Carter explicitly approves the final RC switch.";
@@ -1083,7 +1083,7 @@ function buildLemonSqueezyCheckoutPayload({ uid, token = {}, config }) {
     const checkoutData = {
         custom: {
             firebase_uid: uid,
-            source: "bark_ranger_map",
+            source: "junior_ranger_map",
             plan: "annual",
             cancel_url: cancelUrl
         }
@@ -1100,7 +1100,7 @@ function buildLemonSqueezyCheckoutPayload({ uid, token = {}, config }) {
                 product_options: {
                     enabled_variants: [Number(config.annualVariantId)],
                     redirect_url: successUrl,
-                    receipt_button_text: "Return to BARK Ranger Map",
+                    receipt_button_text: "Return to Junior Ranger Map",
                     receipt_link_url: successUrl
                 },
                 checkout_options: {

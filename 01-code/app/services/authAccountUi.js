@@ -33,7 +33,7 @@
     const ACCOUNT_PROMPT_COPY = {
         'mark-visited': {
             title: "Create a free account to save where you've been",
-            body: 'Mark parks visited, keep your B.A.R.K. passport backed up, and pick up on any device.',
+            body: 'Mark parks visited, keep your Junior Ranger passport backed up, and pick up on any device.',
             source: 'mark visited'
         },
         'verified-checkin': {
@@ -43,7 +43,7 @@
         },
         'saved-route': {
             title: 'Sign in to upgrade and save this trip',
-            body: 'Saved routes are a Premium feature. Sign in so Premium can be attached to your B.A.R.K. Ranger account.',
+            body: 'Saved routes are a Premium feature. Sign in so Premium can be attached to your Junior Ranger account.',
             source: 'saved route'
         },
         'load-route': {
@@ -53,7 +53,7 @@
         },
         expedition: {
             title: 'Create a free account to track walks',
-            body: 'Walk miles, virtual expeditions, and completed trails are saved to your B.A.R.K. profile.',
+            body: 'Walk miles, virtual expeditions, and completed trails are saved to your Junior Ranger profile.',
             source: 'expedition'
         },
         profile: {
@@ -63,7 +63,7 @@
         },
         default: {
             title: "Create a free account to save where you've been",
-            body: 'Your B.A.R.K. passport, visited parks, and verified check-ins stay with your account. Saved trips require Premium.',
+            body: 'Your Junior Ranger passport, visited parks, and verified check-ins stay with your account. Saved trips require Premium.',
             source: 'map'
         }
     };
@@ -209,7 +209,7 @@
         const code = error && error.code ? String(error.code) : '';
         switch (code) {
             case 'auth/email-already-in-use':
-                return 'That email already has a B.A.R.K. account. Sign in, use Continue with Google, or reset your password.';
+                return 'That email already has a Junior Ranger account. Sign in, use Continue with Google, or reset your password.';
             case 'auth/invalid-email':
                 return 'Enter a valid email address.';
             case 'auth/weak-password':
@@ -286,7 +286,7 @@
     }
 
     function getUserDisplayName(user) {
-        return cleanUsername(user && user.displayName) || 'Bark Ranger';
+        return cleanUsername(user && user.displayName) || 'Junior Ranger';
     }
 
     function getPremiumLabel() {
@@ -428,7 +428,7 @@
             copy: 'This account has a manual premium grant, so there is no Lemon Squeezy subscription to manage.',
             buttonText: 'Contact support',
             buttonMode: 'support',
-            url: `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent('B.A.R.K. Premium support')}`
+            url: `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent('Junior Ranger Premium support')}`
         };
     }
 
@@ -926,7 +926,7 @@
         try {
             setStatus('Sending reset email...', 'neutral');
             await getFirebaseAuth().sendPasswordResetEmail(email);
-            setStatus('If this email has a B.A.R.K. password account, a reset link will arrive shortly. Google accounts should use Continue with Google.', 'success');
+            setStatus('If this email has a Junior Ranger password account, a reset link will arrive shortly. Google accounts should use Continue with Google.', 'success');
         } catch (error) {
             console.error('[authAccountUi] sendPasswordResetEmail failed:', error);
             setStatus(getSafeAuthError(error), 'error');

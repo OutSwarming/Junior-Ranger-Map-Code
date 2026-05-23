@@ -444,7 +444,7 @@ function setAccountLockedCheckinButton(button, textEl, label, source) {
     button.classList.remove('visited');
     button.classList.add('account-locked');
     button.setAttribute('aria-disabled', 'true');
-    button.title = 'Create a free account to save this to your B.A.R.K. profile.';
+    button.title = 'Create a free account to save this to your Junior Ranger profile.';
     button.style.cursor = 'pointer';
     button.style.opacity = '';
     if (textEl) textEl.textContent = label;
@@ -559,7 +559,7 @@ function renderMarkerClickPanel(context) {
 
     const suggestEditBtn = document.getElementById('suggest-edit-btn');
     if (suggestEditBtn) {
-        const subject = encodeURIComponent(`B.A.R.K. Map Edit: ${d.name}`);
+        const subject = encodeURIComponent(`Junior Ranger Map Edit: ${d.name}`);
         const body = encodeURIComponent(`Park Name: ${d.name}\nID: ${d.id}\n\n--- Please describe the update below ---\n`);
         suggestEditBtn.href = `mailto:usbarkrangers@gmail.com?subject=${subject}&body=${body}`;
     }

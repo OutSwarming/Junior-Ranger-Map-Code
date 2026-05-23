@@ -1,12 +1,11 @@
 // admin.js
 const firebaseConfig = {
-    apiKey: "AIzaSyDcBn2YQCAFrAjN27gIM9lBiu0PZsComO4",
-    authDomain: "barkrangermap-auth.firebaseapp.com",
-    projectId: "barkrangermap-auth",
-    storageBucket: "barkrangermap-auth.firebasestorage.app",
-    messagingSenderId: "564465144962",
-    appId: "1:564465144962:web:9e43dbc993b93a33d5d09b",
-    measurementId: "G-V2QCN2MFBZ"
+    apiKey: "AIzaSyCaZhU1iKkHYHjG7jzalQG8rvUvpEky0gc",
+    authDomain: "junior-ranger-map-auth.firebaseapp.com",
+    projectId: "junior-ranger-map-auth",
+    storageBucket: "junior-ranger-map-auth.firebasestorage.app",
+    messagingSenderId: "937801458577",
+    appId: "1:937801458577:web:56bc917b26d3ea4c2a3030"
 };
 
 // Initialize Firebase

@@ -22,9 +22,9 @@ async function newBarkContext(browser, options = {}) {
 }
 
 async function expectBarkAppIdentity(page, expect) {
-    await expect(page).toHaveTitle(/US BARK Rangers/);
+    await expect(page).toHaveTitle(/Junior Ranger Map/);
     await expect(page.locator('body')).not.toContainText(/Just Dee Dee|JDDM|Music Live Map/i);
-    await expect(page.locator('#filter-panel h1')).toContainText(/US BARK RANGERS/i);
+    await expect(page.locator('#filter-panel h1')).toContainText(/Junior Ranger Map/i);
 }
 
 module.exports = {

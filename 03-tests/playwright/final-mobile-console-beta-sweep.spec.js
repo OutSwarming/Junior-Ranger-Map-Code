@@ -279,7 +279,7 @@ test.describe('final mobile and console beta sweep', () => {
             });
 
             await openPaywall(page, 'manual');
-            await expect(page.locator('#paywall-title')).toHaveText('Upgrade to BARK Ranger Premium');
+            await expect(page.locator('#paywall-title')).toHaveText('Upgrade to Junior Ranger Premium');
             await expectBoxWithinViewport(page, '.paywall-modal', 'free paywall modal');
             await closePaywall(page);
 

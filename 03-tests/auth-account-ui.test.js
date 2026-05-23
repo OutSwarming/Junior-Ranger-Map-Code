@@ -236,7 +236,7 @@ function loadAuthAccountUi(overrides = {}) {
                 incrementRequestCount() {}
             },
             location: {
-                href: 'https://outswarming.github.io/bark-ranger-map/',
+                href: 'https://junior-ranger-map-auth.web.app/',
                 assign(url) {
                     locationAssignCalls.push(url);
                 }
@@ -341,7 +341,7 @@ test('duplicate signup email points users back to existing account paths', async
     await harness.element('account-create-form').dispatch('submit');
 
     assert.equal(harness.element('account-auth-message').dataset.tone, 'error');
-    assert.match(harness.element('account-auth-message').textContent, /already has a B\.A\.R\.K\. account/);
+    assert.match(harness.element('account-auth-message').textContent, /already has a Junior Ranger account/);
     assert.equal(harness.element('account-signin-email').value, 'taken@example.com');
     assert.equal(harness.element('account-reset-email').value, 'taken@example.com');
     assert.equal(harness.updateProfileCalls.length, 0);
