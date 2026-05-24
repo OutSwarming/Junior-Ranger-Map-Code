@@ -6,19 +6,25 @@
 class MapMarkerConfig {
     static getPinIconUrl(style = {}, options = {}) {
         const fill = style.pinColor || '#2563EB';
+        const isVisited = options.isVisited === true || style.ringColor === '#22C55E';
         const isActive = options.isActive === true;
         const stroke = isActive
             ? '#FBBF24'
             : (style.ringColor && style.ringColor !== fill ? style.ringColor : '#FFFFFF');
         const strokeWidth = isActive ? 3.75 : (stroke === '#FFFFFF' ? 2.25 : 3);
-        const cacheKey = `${fill}|${stroke}|${strokeWidth}`;
+        const centerFill = isVisited ? '#22C55E' : '#FFFFFF';
+        const centerRadius = isVisited ? 6.4 : 5.1;
+        const visitedGlyph = isVisited
+            ? '<path d="M16 11.1l1.5 3.1 3.4.5-2.45 2.4.58 3.38L16 18.86l-3.03 1.62.58-3.38-2.45-2.4 3.4-.5L16 11.1Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width=".45" stroke-linejoin="round"/>'
+            : '';
+        const cacheKey = `${fill}|${stroke}|${strokeWidth}|${centerFill}|${centerRadius}`;
 
         MapMarkerConfig._pinIconUrlCache = MapMarkerConfig._pinIconUrlCache || new Map();
         if (MapMarkerConfig._pinIconUrlCache.has(cacheKey)) {
             return MapMarkerConfig._pinIconUrlCache.get(cacheKey);
         }
 
-        const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="44" viewBox="0 0 32 44"><path d="M16 42S4 28.4 4 16.4C4 9.6 9.4 4 16 4s12 5.6 12 12.4C28 28.4 16 42 16 42Z" fill="${fill}" stroke="${stroke}" stroke-width="${strokeWidth}" stroke-linejoin="round"/><circle cx="16" cy="16.5" r="5.1" fill="#fff"/></svg>`;
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="44" viewBox="0 0 32 44"><path d="M16 42S4 28.4 4 16.4C4 9.6 9.4 4 16 4s12 5.6 12 12.4C28 28.4 16 42 16 42Z" fill="${fill}" stroke="${stroke}" stroke-width="${strokeWidth}" stroke-linejoin="round"/><circle cx="16" cy="16.5" r="${centerRadius}" fill="${centerFill}" stroke="#FFFFFF" stroke-width="${isVisited ? 1.2 : 0}"/>${visitedGlyph}</svg>`;
         const url = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
         MapMarkerConfig._pinIconUrlCache.set(cacheKey, url);
         return url;
@@ -40,7 +46,7 @@ class MapMarkerConfig {
 
         return L.icon({
             className: `custom-bark-marker jr-svg-pin ${stateClass} ${catClass} ${agencyClass} ${activeClass}`.trim(),
-            iconUrl: MapMarkerConfig.getPinIconUrl(style, { isActive }),
+            iconUrl: MapMarkerConfig.getPinIconUrl(style, { isVisited, isActive }),
             iconSize,
             iconAnchor,
             popupAnchor: [0, -40]
