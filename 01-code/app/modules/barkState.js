@@ -26,6 +26,7 @@ const DEFAULT_LAUNCH_FLAGS = Object.freeze({
     routeGenerationEnabled: true,
     premiumGeocodeEnabled: true,
     leaderboardDeepBrowsingEnabled: true,
+    leaderboardScoreSyncEnabled: false,
     feedbackEnabled: true,
     premiumRiskyToolsEnabled: true
 });
@@ -36,6 +37,7 @@ const LAUNCH_FLAG_MESSAGES = Object.freeze({
     routeGenerationEnabled: 'Route generation is paused for beta safety. You can still plan stops manually.',
     premiumGeocodeEnabled: 'Global town search is paused for beta safety. Local Junior Ranger stop search still works.',
     leaderboardDeepBrowsingEnabled: 'Leaderboard browsing is limited for beta safety. The top results and your rank are still available.',
+    leaderboardScoreSyncEnabled: 'Leaderboard score sync is paused until Cloud Functions are enabled. Saved visits still work.',
     feedbackEnabled: 'In-app feedback is paused for beta safety. Use the email suggestion option above for now.',
     premiumRiskyToolsEnabled: 'Premium map tools are paused for beta safety. Your account and saved progress are unchanged.'
 });

@@ -294,6 +294,14 @@ function syncTripActionButtons(place) {
     });
 }
 
+function syncVisitedActionButtons(place) {
+    const isVisited = Boolean(getPanelVisitEntry(place));
+    document.querySelectorAll('[data-panel-action="mark-visited"]').forEach(button => {
+        button.textContent = isVisited ? 'Visited' : 'Mark as Visited';
+        button.classList.toggle('is-added', isVisited);
+    });
+}
+
 function renderPanelActionSet(container, actions) {
     if (!container) return;
     clearElement(container);
@@ -349,6 +357,7 @@ function buildPrimaryActions(place, bookLinks) {
     renderPanelActionSet(container, actions);
     renderPanelActionSet(stickyFooter, actions);
     syncTripActionButtons(place);
+    syncVisitedActionButtons(place);
 }
 
 function renderBookSection(place, bookLinks, websiteUrls) {
@@ -666,6 +675,7 @@ function renderMarkerClickPanel(context) {
 
                         window.syncState();
                         window.BARK.updateStatsUI();
+                        syncVisitedActionButtons(d);
                     } else {
                         const radiusKm = window.BARK.config && window.BARK.config.CHECKIN_RADIUS_KM;
                         if (checkinResult.error === 'OUT_OF_RANGE' && Number.isFinite(checkinResult.distance)) {
@@ -716,6 +726,7 @@ function renderMarkerClickPanel(context) {
                         markVisitedBtn.onmouseleave = null;
 
                         window.syncState();
+                        syncVisitedActionButtons(d);
                         return;
                     }
 
@@ -726,6 +737,7 @@ function renderMarkerClickPanel(context) {
                     markVisitedBtn.style.opacity = '1';
 
                     window.syncState();
+                    syncVisitedActionButtons(d);
                 } catch (error) {
                     console.error("[panelRenderer] mark visited failed:", error);
                     alert("Check-in service is unavailable. Try again later.");

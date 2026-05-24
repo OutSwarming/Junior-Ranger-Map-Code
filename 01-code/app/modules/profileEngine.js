@@ -244,6 +244,13 @@ function scheduleQueuedLeaderboardSync(delayMs = 0) {
 async function syncScoreToLeaderboard() {
     const now = Date.now();
 
+    if (
+        typeof window.BARK.isLaunchFlagEnabled === 'function' &&
+        !window.BARK.isLaunchFlagEnabled('leaderboardScoreSyncEnabled')
+    ) {
+        return;
+    }
+
     const user = getCurrentFirebaseUser();
     if (!user) return;
 
