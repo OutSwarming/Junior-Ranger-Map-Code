@@ -22,7 +22,7 @@ window.BARK.normalizationDict = {
 // ====== FIREBASE CONFIG ======
 window.BARK.firebaseConfig = {
     apiKey: "AIzaSyCaZhU1iKkHYHjG7jzalQG8rvUvpEky0gc",
-    authDomain: "junior-ranger-map-auth.firebaseapp.com",
+    authDomain: "junior-ranger-map-auth.web.app",
     projectId: "junior-ranger-map-auth",
     storageBucket: "junior-ranger-map-auth.firebasestorage.app",
     messagingSenderId: "937801458577",
