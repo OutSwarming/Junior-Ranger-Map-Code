@@ -36,6 +36,31 @@ function createGoogleProvider(options = {}) {
     return provider;
 }
 
+function isStandaloneAppMode() {
+    return Boolean(
+        window.navigator.standalone === true ||
+        (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches)
+    );
+}
+
+function shouldUseGoogleRedirectSignIn() {
+    const userAgent = window.navigator && window.navigator.userAgent
+        ? window.navigator.userAgent
+        : '';
+    const mobileBrowser = /Android|iPhone|iPad|iPod/i.test(userAgent);
+    return mobileBrowser || isStandaloneAppMode();
+}
+
+function shouldFallbackToRedirect(error) {
+    const code = error && error.code;
+    return [
+        'auth/popup-blocked',
+        'auth/popup-closed-by-user',
+        'auth/cancelled-popup-request',
+        'auth/web-storage-unsupported'
+    ].includes(code);
+}
+
 function showAuthFailureNotice(message) {
     if (typeof window.BARK.showAuthFailure === 'function') {
         window.BARK.showAuthFailure(message || 'Sign-in failed. Cloud sync and saved progress are offline for this session.');
@@ -814,6 +839,12 @@ function initFirebase() {
         throw error;
     }
 
+    firebase.auth().getRedirectResult()
+        .catch((error) => {
+            console.error("[authService] getRedirectResult failed:", error);
+            alert("Login Error: " + error.message);
+        });
+
     try {
         firebase.auth().onAuthStateChanged((user) => {
             try {
@@ -983,9 +1014,24 @@ function initFirebase() {
                     forceAccountChooser: consumeGoogleAccountChooserRequest()
                 });
                 window.BARK.incrementRequestCount();
+                if (shouldUseGoogleRedirectSignIn()) {
+                    await firebase.auth().signInWithRedirect(provider);
+                    return;
+                }
                 await firebase.auth().signInWithPopup(provider);
             } catch (error) {
                 console.error("[authService] signInWithPopup failed:", error);
+                if (shouldFallbackToRedirect(error)) {
+                    try {
+                        const provider = createGoogleProvider({ forceAccountChooser: true });
+                        await firebase.auth().signInWithRedirect(provider);
+                        return;
+                    } catch (redirectError) {
+                        console.error("[authService] signInWithRedirect fallback failed:", redirectError);
+                        alert("Login Error: " + redirectError.message);
+                        return;
+                    }
+                }
                 alert("Login Error: " + error.message);
             }
         });
