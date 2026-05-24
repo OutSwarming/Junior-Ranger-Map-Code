@@ -2461,7 +2461,7 @@ exports.extractParkData = functions
 // 2. SPREADSHEET BRIDGE: THE NEW SITE GUARDRAIL
 // ============================================================================
 exports.syncToSpreadsheet = functions
-    .runWith(ADMIN_CALLABLE_OPTIONS)
+    .runWith({ ...ADMIN_CALLABLE_OPTIONS, secrets: ["GOOGLE_MAPS_API_KEY"] })
     .https.onCall(async (data, context) => {
         await requireAdminCallable(context, "syncToSpreadsheet");
 
