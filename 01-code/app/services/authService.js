@@ -43,7 +43,16 @@ function isStandaloneAppMode() {
     );
 }
 
+function isGitHubPagesOrigin() {
+    return window.location && window.location.hostname === 'outswarming.github.io';
+}
+
 function shouldUseGoogleRedirectSignIn() {
+    // GitHub Pages cannot host/proxy Firebase's /__/auth helper on the same
+    // origin, so redirect sign-in can return to the app with no auth result on
+    // Safari/iOS. Popup sign-in is the Firebase-supported fallback there.
+    if (isGitHubPagesOrigin()) return false;
+
     const userAgent = window.navigator && window.navigator.userAgent
         ? window.navigator.userAgent
         : '';
@@ -52,6 +61,8 @@ function shouldUseGoogleRedirectSignIn() {
 }
 
 function shouldFallbackToRedirect(error) {
+    if (isGitHubPagesOrigin()) return false;
+
     const code = error && error.code;
     return [
         'auth/popup-blocked',
