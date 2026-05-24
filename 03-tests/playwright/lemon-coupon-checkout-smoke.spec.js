@@ -1,7 +1,7 @@
 const { test, expect } = require('@playwright/test');
 
 const BASE_URL = process.env.BARK_E2E_BASE_URL || 'http://localhost:4173/index.html';
-const CHECKOUT_URL = 'https://usbarkrangers.lemonsqueezy.com/checkout/test-session';
+const CHECKOUT_URL = 'https://carter-swarm-maps.lemonsqueezy.com/checkout/test-session';
 
 async function openApp(page) {
     await page.goto(BASE_URL);
@@ -41,7 +41,7 @@ async function installCheckoutHarness(page, options = {}) {
                     window.__checkoutCalls.push({ name, payload });
                     return {
                         data: {
-                            checkoutUrl: `https://usbarkrangers.lemonsqueezy.com/checkout/test-session?payload=${encodeURIComponent(JSON.stringify(payload || {}))}`
+                            checkoutUrl: `https://carter-swarm-maps.lemonsqueezy.com/checkout/test-session?payload=${encodeURIComponent(JSON.stringify(payload || {}))}`
                         }
                     };
                 };
@@ -86,7 +86,7 @@ test.describe('Lemon-only coupon checkout flow', () => {
     });
 
     test('signed-in user goes straight to Lemon checkout without app-side discount payload', async ({ page }) => {
-        await page.route('https://usbarkrangers.lemonsqueezy.com/**', route => route.fulfill({
+        await page.route('https://carter-swarm-maps.lemonsqueezy.com/**', route => route.fulfill({
             status: 200,
             contentType: 'text/html',
             body: '<!doctype html><title>Lemon Checkout</title><h1>Lemon Checkout</h1>'

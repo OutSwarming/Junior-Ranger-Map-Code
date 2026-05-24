@@ -78,7 +78,7 @@ describe("Lemon checkout discount support", () => {
                         data: {
                             data: {
                                 attributes: {
-                                    url: "https://usbarkrangers.lemonsqueezy.com/checkout/test-session"
+                                    url: "https://carter-swarm-maps.lemonsqueezy.com/checkout/test-session"
                                 }
                             }
                         }
@@ -107,7 +107,7 @@ describe("Lemon checkout discount support", () => {
                         data: {
                             data: {
                                 attributes: {
-                                    url: "https://usbarkrangers.lemonsqueezy.com/checkout/test-session"
+                                    url: "https://carter-swarm-maps.lemonsqueezy.com/checkout/test-session"
                                 }
                             }
                         }

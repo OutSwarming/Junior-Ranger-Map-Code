@@ -24,7 +24,7 @@ function loadPremiumService() {
 
 test('premiumService does not retain signed Lemon customer portal URLs', () => {
     const premiumService = loadPremiumService();
-    const portalUrl = 'https://usbarkrangers.lemonsqueezy.com/billing?expires=2099999999&signature=stored';
+    const portalUrl = 'https://carter-swarm-maps.lemonsqueezy.com/billing?expires=2099999999&signature=stored';
     const endsAt = '2027-05-09T12:00:00.000Z';
 
     const entitlement = premiumService.setEntitlement({

@@ -16,7 +16,7 @@
     const BILLING_SYNC_COOLDOWN_MS = 5 * 60 * 1000;
     const BILLING_RETURN_SYNC_MIN_INTERVAL_MS = 5 * 1000;
     const BILLING_FIX_BUILD = 'billing-fix-build: 2026-05-11-1345';
-    const LEMON_SQUEEZY_STORE_HOST = 'usbarkrangers.lemonsqueezy.com';
+    const LEMON_SQUEEZY_STORE_HOST = 'carter-swarm-maps.lemonsqueezy.com';
     const TEST_MODE_PORTAL_UNAVAILABLE_MESSAGE = 'Customer portal is unavailable while the Lemon Squeezy store is not activated. Manage this test subscription from the Lemon Squeezy dashboard.';
 
     console.log(BILLING_FIX_BUILD);

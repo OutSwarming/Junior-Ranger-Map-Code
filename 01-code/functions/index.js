@@ -946,12 +946,12 @@ const LEMONSQUEEZY_API_ORIGIN = "https://api.lemonsqueezy.com";
 const LEMONSQUEEZY_CHECKOUTS_URL = `${LEMONSQUEEZY_API_ORIGIN}/v1/checkouts`;
 const LEMONSQUEEZY_SUBSCRIPTIONS_URL = `${LEMONSQUEEZY_API_ORIGIN}/v1/subscriptions`;
 const LEMONSQUEEZY_CUSTOMERS_URL = `${LEMONSQUEEZY_API_ORIGIN}/v1/customers`;
-const DEFAULT_LEMONSQUEEZY_STORE_ID = "363425";
-const DEFAULT_LEMONSQUEEZY_ANNUAL_VARIANT_ID = "1604336";
+const DEFAULT_LEMONSQUEEZY_STORE_ID = "386224";
+const DEFAULT_LEMONSQUEEZY_ANNUAL_VARIANT_ID = "1699350";
 const DEFAULT_APP_BASE_URL = "https://junior-ranger-map-auth.web.app/";
-const LEMONSQUEEZY_LIVE_APPROVAL_ENV = "BARK_LEMON_LIVE_MODE_APPROVAL";
-const LEMONSQUEEZY_LIVE_APPROVAL_VALUE = "CARTER_APPROVED_LIVE_RC";
-const LEMONSQUEEZY_MODE_LOCK_REASON = "Lemon Squeezy live mode remains locked until Carter explicitly approves the final RC switch.";
+const LEMONSQUEEZY_LIVE_APPROVAL_ENV = "JUNIOR_LEMON_LIVE_MODE_APPROVAL";
+const LEMONSQUEEZY_LIVE_APPROVAL_VALUE = "CARTER_APPROVED_JUNIOR_LIVE_RC";
+const LEMONSQUEEZY_MODE_LOCK_REASON = "Lemon Squeezy live mode remains locked until Carter explicitly approves the Junior Ranger final RC switch.";
 const LEMONSQUEEZY_SUPPORTED_EVENTS = new Set([
     "subscription_created",
     "subscription_updated",

@@ -351,7 +351,7 @@ test('duplicate signup email points users back to existing account paths', async
 test('lemon squeezy premium account opens a fresh customer portal URL', async () => {
     const harness = loadAuthAccountUi({
         premiumActive: true,
-        customerPortalUrl: 'https://usbarkrangers.lemonsqueezy.com/billing?expires=2100000000&signature=fresh',
+        customerPortalUrl: 'https://carter-swarm-maps.lemonsqueezy.com/billing?expires=2100000000&signature=fresh',
         premiumEntitlement: {
             premium: true,
             status: 'active',
@@ -382,10 +382,10 @@ test('lemon squeezy premium account opens a fresh customer portal URL', async ()
     assert.equal(harness.portalCalls.at(-1).name, 'getCustomerPortalUrl');
     assert.equal(Object.keys(harness.portalCalls.at(-1).payload).length, 0);
     assert.deepEqual(harness.locationAssignCalls, [
-        'https://usbarkrangers.lemonsqueezy.com/billing?expires=2100000000&signature=fresh'
+        'https://carter-swarm-maps.lemonsqueezy.com/billing?expires=2100000000&signature=fresh'
     ]);
     assert.deepEqual(harness.alertCalls, [
-        'Billing portal URL:\nhttps://usbarkrangers.lemonsqueezy.com/billing?expires=2100000000&signature=fresh'
+        'Billing portal URL:\nhttps://carter-swarm-maps.lemonsqueezy.com/billing?expires=2100000000&signature=fresh'
     ]);
 });
 
@@ -401,7 +401,7 @@ test('active lemon account refresh syncs cancelled billing status from callable'
     const setEntitlementCalls = [];
     const harness = loadAuthAccountUi({
         premiumActive: true,
-        customerPortalUrl: 'https://usbarkrangers.lemonsqueezy.com/billing?expires=2100000000&signature=fresh',
+        customerPortalUrl: 'https://carter-swarm-maps.lemonsqueezy.com/billing?expires=2100000000&signature=fresh',
         customerPortalEntitlement: {
             premium: true,
             status: 'cancelled_active',
@@ -451,7 +451,7 @@ test('cancelled lemon account refresh syncs resumed billing status from callable
     const setEntitlementCalls = [];
     const harness = loadAuthAccountUi({
         premiumActive: true,
-        customerPortalUrl: 'https://usbarkrangers.lemonsqueezy.com/billing?expires=2100000000&signature=fresh',
+        customerPortalUrl: 'https://carter-swarm-maps.lemonsqueezy.com/billing?expires=2100000000&signature=fresh',
         customerPortalEntitlement: {
             premium: true,
             status: 'active',
@@ -499,10 +499,10 @@ test('cancelled Lemon subscription shows access end date and no auto-renew', asy
             providerCustomerId: 'cus_cancelled',
             providerSubscriptionId: 'sub_cancelled',
             currentPeriodEnd: '2027-05-09T12:00:00.000Z',
-            customerPortalUrl: 'https://usbarkrangers.lemonsqueezy.com/billing?expires=2099999999&signature=stored',
+            customerPortalUrl: 'https://carter-swarm-maps.lemonsqueezy.com/billing?expires=2099999999&signature=stored',
             autoRenew: false
         },
-        customerPortalUrl: 'https://usbarkrangers.lemonsqueezy.com/billing?expires=2100000000&signature=fresh'
+        customerPortalUrl: 'https://carter-swarm-maps.lemonsqueezy.com/billing?expires=2100000000&signature=fresh'
     });
     harness.auth.currentUser = {
         ...harness.user,
@@ -532,10 +532,10 @@ test('cancelled Lemon subscription shows access end date and no auto-renew', asy
     assert.equal(harness.portalCalls[1].name, 'getCustomerPortalUrl');
     assert.deepEqual(Object.keys(harness.portalCalls[1].payload), []);
     assert.deepEqual(harness.locationAssignCalls, [
-        'https://usbarkrangers.lemonsqueezy.com/billing?expires=2100000000&signature=fresh'
+        'https://carter-swarm-maps.lemonsqueezy.com/billing?expires=2100000000&signature=fresh'
     ]);
     assert.deepEqual(harness.alertCalls, [
-        'Billing portal URL:\nhttps://usbarkrangers.lemonsqueezy.com/billing?expires=2100000000&signature=fresh'
+        'Billing portal URL:\nhttps://carter-swarm-maps.lemonsqueezy.com/billing?expires=2100000000&signature=fresh'
     ]);
 });
 
@@ -576,7 +576,7 @@ test('manage subscription does not fall back to a stored portal URL when callabl
             providerCustomerId: 'cus_cancelled',
             providerSubscriptionId: 'sub_cancelled',
             currentPeriodEnd: '2027-05-09T12:00:00.000Z',
-            customerPortalUrl: 'https://usbarkrangers.lemonsqueezy.com/billing?expires=2099999999&signature=stored'
+            customerPortalUrl: 'https://carter-swarm-maps.lemonsqueezy.com/billing?expires=2099999999&signature=stored'
         },
         customerPortalData: { entitlement: null }
     });
@@ -612,7 +612,7 @@ test('manage subscription rejects Lemon storefront root URL before redirect', as
             providerCustomerId: 'cus_root',
             providerSubscriptionId: 'sub_root'
         },
-        customerPortalUrl: 'https://usbarkrangers.lemonsqueezy.com/'
+        customerPortalUrl: 'https://carter-swarm-maps.lemonsqueezy.com/'
     });
     harness.auth.currentUser = {
         ...harness.user,
@@ -626,7 +626,7 @@ test('manage subscription rejects Lemon storefront root URL before redirect', as
     await harness.element('account-manage-subscription-btn').dispatch('click');
 
     assert.deepEqual(harness.locationAssignCalls, []);
-    assert.deepEqual(harness.alertCalls, ['Billing portal URL:\nhttps://usbarkrangers.lemonsqueezy.com/']);
+    assert.deepEqual(harness.alertCalls, ['Billing portal URL:\nhttps://carter-swarm-maps.lemonsqueezy.com/']);
     assert.equal(
         harness.element('account-auth-message').textContent,
         'Billing portal returned an invalid store URL. Please contact support.'
@@ -634,7 +634,7 @@ test('manage subscription rejects Lemon storefront root URL before redirect', as
 });
 
 test('manage subscription shows dashboard message for blocked Lemon test portal', async () => {
-    const testPortalUrl = 'https://usbarkrangers.lemonsqueezy.com/billing?expires=2100000000&signature=fresh&store_domain=usbarkrangers.lemonsqueezy.com&test_mode=1&user=123';
+    const testPortalUrl = 'https://carter-swarm-maps.lemonsqueezy.com/billing?expires=2100000000&signature=fresh&store_domain=carter-swarm-maps.lemonsqueezy.com&test_mode=1&user=123';
     const harness = loadAuthAccountUi({
         premiumActive: true,
         premiumEntitlement: {

@@ -41,7 +41,7 @@ function makePayload({
             id: dataId,
             attributes: {
                 test_mode: true,
-                store_id: 363425,
+                store_id: 386224,
                 customer_id: 7022381,
                 status: "active",
                 renews_at: "2099-01-01T00:00:00.000Z",
@@ -458,7 +458,7 @@ describe("Lemon Squeezy webhook entitlement mapping", () => {
             eventId: "evt_subscription_plan_changed",
             attributes: {
                 status: "active",
-                variant_id: 1604336
+                variant_id: 1699350
             }
         });
         const { res, firestore } = await invoke({ req: signedReq(payload) });
@@ -677,7 +677,7 @@ describe("Lemon Squeezy webhook entitlement mapping", () => {
                 ends_at: "2099-02-01T00:00:00.000Z",
                 renews_at: null,
                 urls: {
-                    customer_portal: "https://usbarkrangers.lemonsqueezy.com/billing?expires=2099999999&signature=test"
+                    customer_portal: "https://carter-swarm-maps.lemonsqueezy.com/billing?expires=2099999999&signature=test"
                 }
             }
         });
