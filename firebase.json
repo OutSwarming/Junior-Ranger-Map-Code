@@ -87,6 +87,12 @@
           }
         ]
       }
+    ],
+    "rewrites": [
+      {
+        "source": "/api/junior-ranger-catalog",
+        "function": "getJuniorRangerCatalog"
+      }
     ]
   }
 }

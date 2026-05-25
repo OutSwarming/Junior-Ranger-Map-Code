@@ -5,6 +5,13 @@ const axios = require("axios");
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { google } = require('googleapis');
 const { createHash, createHmac, randomUUID, timingSafeEqual } = require("crypto");
+const {
+    DEFAULT_STATE: JUNIOR_RANGER_DEFAULT_STATE,
+    SPREADSHEET_ID: JUNIOR_RANGER_SPREADSHEET_ID,
+    buildSheetRange,
+    catalogRowsToCsv,
+    extractCatalogRowsFromGrid
+} = require('./lib/juniorRangerSourceCatalog');
 
 // Initialize Firebase Admin SDK
 admin.initializeApp();
@@ -2256,6 +2263,60 @@ exports.submitFeedback = functions.https.onCall(async (requestOrData, context) =
     return handleSubmitFeedback(requestOrData, context);
 });
 
+async function handleJuniorRangerCatalogRequest(req, res) {
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.set('Access-Control-Allow-Headers', 'Content-Type');
+
+    if (req.method === 'OPTIONS') {
+        res.status(204).send('');
+        return;
+    }
+
+    if (req.method !== 'GET') {
+        res.status(405).send('Method not allowed');
+        return;
+    }
+
+    const state = String((req.query && req.query.state) || JUNIOR_RANGER_DEFAULT_STATE).trim() || JUNIOR_RANGER_DEFAULT_STATE;
+
+    try {
+        const auth = new google.auth.GoogleAuth({
+            scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly']
+        });
+        const sheets = google.sheets({ version: 'v4', auth });
+        const response = await sheets.spreadsheets.get({
+            spreadsheetId: JUNIOR_RANGER_SPREADSHEET_ID,
+            ranges: [buildSheetRange(state)],
+            includeGridData: true,
+            fields: [
+                'sheets(properties(sheetId,title),data(rowData(values(',
+                'formattedValue,hyperlink,userEnteredValue,effectiveValue,textFormatRuns(format(link(uri))),',
+                'userEnteredFormat(backgroundColor,textFormat(link(uri))),effectiveFormat(backgroundColor)',
+                '))))'
+            ].join('')
+        });
+        const rows = extractCatalogRowsFromGrid(response.data, { state });
+        if (!rows.length) {
+            throw new Error(`No publishable Junior Ranger rows found for ${state}.`);
+        }
+        const csv = catalogRowsToCsv(rows);
+        res.set('Cache-Control', 'no-store, max-age=0');
+        res.type('text/csv; charset=utf-8').status(200).send(csv);
+    } catch (error) {
+        console.error('[juniorRangerCatalog] Failed to read source sheet:', {
+            state,
+            message: error && error.message,
+            code: error && error.code
+        });
+        res.status(500).type('text/plain').send('Unable to load Junior Ranger source catalog.');
+    }
+}
+
+exports.getJuniorRangerCatalog = functions
+    .runWith({ timeoutSeconds: 30, memory: '256MB' })
+    .https.onRequest(handleJuniorRangerCatalogRequest);
+
 if (process.env.NODE_ENV === "test") {
     exports.__test = {
         normalizeEntitlement,
@@ -2300,7 +2361,8 @@ if (process.env.NODE_ENV === "test") {
         processLemonSqueezyWebhookEntitlement,
         handleLemonSqueezyWebhook,
         calculateServerLeaderboardScore,
-        handleSyncLeaderboardScore
+        handleSyncLeaderboardScore,
+        handleJuniorRangerCatalogRequest
     };
 }
 

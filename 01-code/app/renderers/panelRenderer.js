@@ -174,7 +174,23 @@ function addUniqueLabel(labels, seen, label, url = '') {
     labels.push({ label: cleaned, url });
 }
 
+function getComparableMetaLabel(value) {
+    return cleanMetaLabel(value)
+        .toLowerCase()
+        .replace(/\s+tag$/i, '')
+        .replace(/\s+book$/i, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
 function findMatchingBookUrl(label, bookLinks) {
+    const comparableLabel = getComparableMetaLabel(label);
+    const directMatch = bookLinks.find(link => {
+        const comparableBookLabel = getComparableMetaLabel(link && link.label);
+        return comparableLabel && comparableBookLabel === comparableLabel;
+    });
+    if (directMatch) return directMatch.url;
+
     const labelTokens = getMetaSearchTokens(label);
     if (!labelTokens.length) return '';
 

@@ -29,10 +29,14 @@ const CSV_COLUMNS = {
 };
 
 const SWAG_TYPE_COLUMNS = ['Swag Type', 'Swag', 'Swag Available'];
+const LIVE_SOURCE_CSV_URL = '/api/junior-ranger-catalog?state=Alabama';
 const STATIC_FALLBACK_CSV_URL = 'assets/data/jr-source-alabama.csv';
+const DATA_REFRESH_INTERVAL_MS = 5 * 60 * 1000;
 const DATA_CACHE_KEY = 'juniorRangerCSV';
 const DATA_CACHE_TIME_KEY = 'juniorRangerCSV_time';
 const LEGACY_DATA_CACHE_KEYS = ['barkCSV', 'barkCSV_time'];
+let liveDataRefreshInFlight = null;
+let dataRefreshTimer = null;
 let staticFallbackLoadInFlight = null;
 
 function cleanCSVValue(value) {
@@ -317,12 +321,85 @@ function parseCSVString(csvString, options = {}) {
         },
         error: function (err) {
             console.error('Error parsing CSV data:', err);
+            if (typeof options.onRejected === 'function') options.onRejected(err);
             isRendering = false;
         }
     });
 }
 
 window.BARK.parseCSVString = parseCSVString;
+
+function parseCSVStringAsPromise(csvString, options = {}) {
+    return new Promise(resolve => {
+        parseCSVString(csvString, {
+            ...options,
+            onAccepted: () => {
+                if (typeof options.onAccepted === 'function') options.onAccepted();
+                resolve(true);
+            },
+            onRejected: () => {
+                if (typeof options.onRejected === 'function') options.onRejected();
+                resolve(false);
+            }
+        });
+    });
+}
+
+function buildLiveSourceUrl() {
+    const separator = LIVE_SOURCE_CSV_URL.includes('?') ? '&' : '?';
+    return `${LIVE_SOURCE_CSV_URL}${separator}cache_bypass=${Date.now()}`;
+}
+
+function startDataRefreshTimer() {
+    if (dataRefreshTimer || window.location.protocol === 'file:') return;
+    dataRefreshTimer = setInterval(() => {
+        if (document.hidden || !navigator.onLine) return;
+        loadLiveSourceData('scheduled sheet refresh');
+    }, DATA_REFRESH_INTERVAL_MS);
+}
+
+function loadLiveSourceData(reason = 'live sheet source') {
+    if (window.location.protocol === 'file:' || !navigator.onLine) return Promise.resolve(false);
+    if (liveDataRefreshInFlight) return liveDataRefreshInFlight;
+
+    liveDataRefreshInFlight = fetch(buildLiveSourceUrl(), { cache: 'no-store' })
+        .then(res => {
+            if (!res.ok) throw new Error(`Live source response was not ok: ${res.status}`);
+            return res.text();
+        })
+        .then(csvString => {
+            if (!csvString || csvString.trim().length < 10) throw new Error('Live source returned an empty catalog.');
+
+            const liveHash = quickHash(csvString);
+            if (hasAcceptedParkData() && liveHash === lastDataHash) return false;
+
+            return parseCSVStringAsPromise(csvString, {
+                cacheTime: Date.now(),
+                onAccepted: () => {
+                    lastDataHash = liveHash;
+                    rememberDataHash(liveHash, Date.now());
+                    if (window.BARK.debugDataRefresh === true) {
+                        console.info(`[dataService] Loaded live Junior Ranger sheet data (${reason}).`);
+                    }
+                }
+            }).then(accepted => {
+                if (!accepted) throw new Error('Live source data was rejected by the park repository.');
+                return true;
+            });
+        })
+        .catch(error => {
+            console.warn('[dataService] Live Junior Ranger sheet data unavailable; keeping current data.', error);
+            return false;
+        })
+        .finally(() => {
+            liveDataRefreshInFlight = null;
+        });
+
+    return liveDataRefreshInFlight;
+}
+
+window.BARK.loadLiveSourceData = loadLiveSourceData;
+window.BARK.startDataRefreshTimer = startDataRefreshTimer;
 
 function loadStaticFallbackData(reason = 'unknown') {
     if (hasAcceptedParkData()) return Promise.resolve(false);
@@ -437,6 +514,7 @@ function loadCachedData() {
 
 function loadData() {
     LEGACY_DATA_CACHE_KEYS.forEach(key => localStorage.removeItem(key));
+    startDataRefreshTimer();
 
     if (!navigator.onLine) {
         const loadedCachedData = loadCachedData();
@@ -453,9 +531,13 @@ function loadData() {
         return;
     }
 
-    loadStaticFallbackData('hosted static catalog')
-        .then(loadedStaticData => {
-            if (!loadedStaticData && !hasAcceptedParkData()) loadCachedData();
+    loadLiveSourceData('initial sheet load')
+        .then(loadedLiveData => {
+            if (loadedLiveData || hasAcceptedParkData()) return true;
+            return loadStaticFallbackData('hosted static catalog');
+        })
+        .then(loadedFallbackData => {
+            if (!loadedFallbackData && !hasAcceptedParkData()) loadCachedData();
         });
 }
 
