@@ -43,6 +43,19 @@ const AGENCY_BY_COLOR = Object.freeze({
 });
 
 const IGNORED_COLORS = new Set(['#9900ff']);
+const US_STATE_NAMES = Object.freeze([
+    'alabama', 'alaska', 'american samoa', 'arizona', 'arkansas', 'california',
+    'colorado', 'connecticut', 'delaware', 'district of columbia', 'florida',
+    'georgia', 'guam', 'hawaii', 'idaho', 'illinois', 'indiana', 'iowa',
+    'kansas', 'kentucky', 'louisiana', 'maine', 'maryland', 'massachusetts',
+    'michigan', 'minnesota', 'mississippi', 'missouri', 'montana', 'nebraska',
+    'nevada', 'new hampshire', 'new jersey', 'new mexico', 'new york',
+    'north carolina', 'north dakota', 'northern mariana islands', 'ohio',
+    'oklahoma', 'oregon', 'pennsylvania', 'puerto rico', 'rhode island',
+    'south carolina', 'south dakota', 'tennessee', 'texas', 'utah', 'vermont',
+    'virgin islands', 'virginia', 'washington', 'washington dc',
+    'west virginia', 'wisconsin', 'wyoming'
+]);
 
 function cleanValue(value) {
     if (value === undefined || value === null) return '';
@@ -88,6 +101,56 @@ function normalizeStateName(value) {
         .trim();
 }
 
+function titleCaseState(value) {
+    return cleanValue(value)
+        .split(' ')
+        .map(part => part ? part.charAt(0).toUpperCase() + part.slice(1) : '')
+        .join(' ')
+        .replace(/\bDc\b/g, 'DC');
+}
+
+function extractExplicitState(value) {
+    const text = cleanValue(value);
+    if (!text.includes(',')) return '';
+
+    const candidate = normalizeStateName(text.split(',').pop());
+    return US_STATE_NAMES.includes(candidate) ? titleCaseState(candidate) : '';
+}
+
+function stripExplicitState(value) {
+    const text = cleanValue(value);
+    if (!extractExplicitState(text)) return text;
+    return cleanValue(text.split(',').slice(0, -1).join(','));
+}
+
+function slugifyIdPart(value) {
+    return cleanValue(value)
+        .toLowerCase()
+        .replace(/&/g, ' and ')
+        .replace(/\bnational park and preserve\b/g, 'np pr')
+        .replace(/\bnational parks?\b/g, 'np')
+        .replace(/\bnational preserves?\b/g, 'npr')
+        .replace(/\bnational monuments?\b/g, 'nm')
+        .replace(/\bnational military parks?\b/g, 'nmp')
+        .replace(/\bnational historical parks?\b/g, 'nhp')
+        .replace(/\bnational historic parks?\b/g, 'nhp')
+        .replace(/\bnational historic sites?\b/g, 'nhs')
+        .replace(/\bnational recreation areas?\b/g, 'nra')
+        .replace(/\bnational heritage areas?\b/g, 'nha')
+        .replace(/\bnational forests?\b/g, 'nf')
+        .replace(/\bstate parks?\b/g, 'sp')
+        .replace(/[^a-z0-9]+/g, '_')
+        .replace(/^_+|_+$/g, '')
+        .replace(/_+/g, '_');
+}
+
+function buildGeneratedSiteId(state, name) {
+    const stateSlug = slugifyIdPart(state);
+    const nameSlug = slugifyIdPart(name);
+    if (!stateSlug || !nameSlug) return '';
+    return `jr_${stateSlug}_${nameSlug}`;
+}
+
 function sourceRowLooksLikeHeader(name, tag) {
     const combined = `${name} ${tag}`.toLowerCase();
     return combined.includes('master map') || combined.includes('track trails') || combined.includes('best contact');
@@ -102,7 +165,9 @@ function stripParenthetical(value) {
 }
 
 function isFiniteCoordinate(value) {
-    const number = Number(cleanValue(value));
+    const text = cleanValue(value);
+    if (!text) return false;
+    const number = Number(text);
     return Number.isFinite(number);
 }
 
@@ -180,20 +245,23 @@ function createEntry({
     siteId,
     parentName = ''
 }) {
-    const placeName = parentName && isParentheticalLocation(name)
+    const rawPlaceName = parentName && isParentheticalLocation(name)
         ? `${parentName} - ${stripParenthetical(name)}`
         : cleanValue(name);
+    const explicitState = extractExplicitState(rawPlaceName);
+    const placeName = stripExplicitState(rawPlaceName);
+    const resolvedState = explicitState || cleanValue(state);
 
     return {
         rowNumber,
-        state: cleanValue(state),
+        state: resolvedState,
         name: placeName,
         parentName: cleanValue(parentName),
         color,
         agency: AGENCY_BY_COLOR[color] || '',
         latitude: cleanValue(latitude),
         longitude: cleanValue(longitude),
-        siteId: cleanValue(siteId),
+        siteId: cleanValue(siteId) || buildGeneratedSiteId(resolvedState, placeName),
         isTradingCardsBlock: false,
         tags: []
     };

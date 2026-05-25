@@ -52,6 +52,10 @@ function onOpen() {
     .addToUi();
 }
 
+function onEdit(e) {
+  juniorRangerAutoFillOnEdit(e);
+}
+
 function installJuniorRangerAutoFillTrigger() {
   const spreadsheet = SpreadsheetApp.getActive();
   const handler = 'juniorRangerAutoFillOnEdit';
@@ -162,7 +166,7 @@ function fillJuniorRangerRow_(sheet, row) {
 
   if (shouldSkipJuniorRangerPlaceRow_(sheet, row, placeName)) return { skipped: true };
 
-  const stateName = getJuniorRangerStateForRow_(sheet, row);
+  const stateName = getJuniorRangerStateForPlace_(sheet, row, placeName);
   const siteIdCell = sheet.getRange(row, config.siteIdColumn);
   const latitudeCell = sheet.getRange(row, config.latitudeColumn);
   const longitudeCell = sheet.getRange(row, config.longitudeColumn);
@@ -231,9 +235,28 @@ function getJuniorRangerStateForRow_(sheet, row) {
   return cleanJuniorRangerValue_(sheet.getName());
 }
 
+function getJuniorRangerStateForPlace_(sheet, row, placeName) {
+  return extractJuniorRangerExplicitState_(placeName) || getJuniorRangerStateForRow_(sheet, row);
+}
+
+function extractJuniorRangerExplicitState_(placeName) {
+  const text = cleanJuniorRangerValue_(placeName);
+  if (text.indexOf(',') === -1) return '';
+
+  const stateText = normalizeJuniorRangerStateText_(text.split(',').pop());
+  const matchedState = JR_US_STATE_NAMES.filter(state => state === stateText)[0];
+  return matchedState ? toJuniorRangerTitleCase_(matchedState) : '';
+}
+
+function stripJuniorRangerExplicitState_(placeName) {
+  const text = cleanJuniorRangerValue_(placeName);
+  if (!extractJuniorRangerExplicitState_(text)) return text;
+  return cleanJuniorRangerValue_(text.split(',').slice(0, -1).join(','));
+}
+
 function buildUniqueJuniorRangerSiteId_(sheet, row, stateName, placeName) {
   const spreadsheet = sheet.getParent();
-  const displayName = buildJuniorRangerDisplayNameForRow_(sheet, row, placeName);
+  const displayName = stripJuniorRangerExplicitState_(buildJuniorRangerDisplayNameForRow_(sheet, row, placeName));
   const stateSlug = slugifyJuniorRangerIdPart_(stateName || sheet.getName());
   const placeSlug = slugifyJuniorRangerIdPart_(displayName);
   const baseId = `${JR_AUTOFILL_CONFIG.idPrefix}_${stateSlug}_${placeSlug || 'new_place'}`;
@@ -273,7 +296,7 @@ function collectExistingJuniorRangerSiteIds_(spreadsheet, currentSheetId, curren
 }
 
 function buildJuniorRangerGeocodeQuery_(sheet, row, stateName, placeName) {
-  const displayName = buildJuniorRangerDisplayNameForRow_(sheet, row, placeName);
+  const displayName = stripJuniorRangerExplicitState_(buildJuniorRangerDisplayNameForRow_(sheet, row, placeName));
   return [displayName, stateName, JR_AUTOFILL_CONFIG.geocodeCountry]
     .map(cleanJuniorRangerValue_)
     .filter(Boolean)
@@ -375,4 +398,12 @@ function slugifyJuniorRangerIdPart_(value) {
 function cleanJuniorRangerValue_(value) {
   if (value === null || value === undefined) return '';
   return String(value).replace(/\r\n/g, '\n').trim();
+}
+
+function toJuniorRangerTitleCase_(value) {
+  return cleanJuniorRangerValue_(value)
+    .split(' ')
+    .map(part => part ? part.charAt(0).toUpperCase() + part.slice(1) : '')
+    .join(' ')
+    .replace(/\bDc\b/g, 'DC');
 }

@@ -150,6 +150,30 @@ test('extractCatalogRowsFromGrid skips parenthesized trading card names without 
     assert.doesNotMatch(rows[0].specialPrograms, /Brown Chapel|Edmund Pettus/);
 });
 
+test('extractCatalogRowsFromGrid honors explicit state suffixes and generates a temporary site id', () => {
+    const spreadsheet = sheet([
+        row([cell('Master Map for Planning'), {}, {}, cell('Track Trails')]),
+        row([
+            cell('Alabama'),
+            cell('', { color: { blue: 1 } }),
+            cell('Hinckley, Ohio'),
+            cell('Junior Ranger Adventure Guide', { link: 'https://example.com/hinckley.pdf' }),
+            {},
+            cell('41.2383874'),
+            cell('-81.7451298'),
+            {}
+        ])
+    ]);
+
+    const rows = extractCatalogRowsFromGrid(spreadsheet, { state: 'Alabama', today: '2026-05-25' });
+
+    assert.equal(rows.length, 1);
+    assert.equal(rows[0].siteName, 'Hinckley');
+    assert.equal(rows[0].state, 'Ohio');
+    assert.equal(rows[0].siteID, 'jr_ohio_hinckley');
+    assert.equal(rows[0].jrBooks, 'Junior Ranger Adventure Guide: https://example.com/hinckley.pdf');
+});
+
 test('catalogRowsToCsv preserves multi-line book links as quoted CSV fields', () => {
     const csv = catalogRowsToCsv([
         {
