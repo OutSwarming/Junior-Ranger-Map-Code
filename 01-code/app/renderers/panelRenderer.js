@@ -530,7 +530,9 @@ function renderMarkerClickPanel(context) {
     const metaContainer = document.getElementById('panel-meta-container');
     if (metaContainer) {
         clearElement(metaContainer);
-        metaContainer.appendChild(createMetaPill('', d.swagType, 'Junior Ranger'));
+        if (d.swagType && d.swagType !== 'Special Programs') {
+            metaContainer.appendChild(createMetaPill('', d.swagType, 'Junior Ranger'));
+        }
         const specialProgramLabels = getSpecialProgramLabels(d.specialPrograms, bookLinks);
         specialProgramLabels.forEach(({ label, url }) => {
             metaContainer.appendChild(createMetaPill('', label, label, url));
@@ -538,8 +540,10 @@ function renderMarkerClickPanel(context) {
         getBookCatalogLabels(bookLinks, specialProgramLabels.map(item => item.label)).forEach(({ label, url }) => {
             metaContainer.appendChild(createMetaPill('', label, label, url));
         });
-        metaContainer.appendChild(createMetaPill('', d.specialPrograms ? 'Special Program' : 'Site-Specific Book', 'Site-Specific Book', d.specialPrograms ? '' : (bookLinks[0] && bookLinks[0].url)));
-        metaContainer.appendChild(createMetaPill('', d.state, 'Location'));
+        if (!d.specialPrograms) {
+            metaContainer.appendChild(createMetaPill('', 'Site-Specific Book', 'Site-Specific Book', bookLinks[0] && bookLinks[0].url));
+            metaContainer.appendChild(createMetaPill('', d.state, 'Location'));
+        }
         metaContainer.scrollLeft = 0;
     }
 
