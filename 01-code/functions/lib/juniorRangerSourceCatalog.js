@@ -110,7 +110,16 @@ function normalizeTagLabel(value) {
     return cleanValue(value)
         .replace(/\s+/g, ' ')
         .replace(/\s+\*+$/g, '')
+        .replace(/:\s*$/, '')
         .trim();
+}
+
+function isParentheticalTag(value) {
+    return /^\s*\([^)]+\)\s*$/.test(normalizeTagLabel(value));
+}
+
+function isTradingCardsTag(value) {
+    return /^trading cards?:?$/i.test(normalizeTagLabel(value));
 }
 
 function addTag(entry, tagCell) {
@@ -123,7 +132,9 @@ function addTag(entry, tagCell) {
         .map(normalizeTagLabel)
         .filter(Boolean)
         .forEach(label => {
+            if (entry.isTradingCardsBlock && isParentheticalTag(label)) return;
             entry.tags.push({ label, url });
+            entry.isTradingCardsBlock = isTradingCardsTag(label);
         });
 }
 
@@ -183,6 +194,7 @@ function createEntry({
         latitude: cleanValue(latitude),
         longitude: cleanValue(longitude),
         siteId: cleanValue(siteId),
+        isTradingCardsBlock: false,
         tags: []
     };
 }

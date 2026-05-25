@@ -120,6 +120,36 @@ test('extractCatalogRowsFromGrid treats parenthesized pickup locations as separa
     assert.equal(rows[0].jrBooks, 'Mendenhall Glacier Junior Ranger: https://example.com/mendenhall.pdf');
 });
 
+test('extractCatalogRowsFromGrid skips parenthesized trading card names without dropping later tags', () => {
+    const spreadsheet = sheet([
+        row([cell('Master Map for Planning'), {}, {}, cell('Track Trails')]),
+        row([
+            cell('Alabama'),
+            cell('', { color: { blue: 1 } }),
+            cell('Selma to Montgomery NHT'),
+            cell('Junior Ranger', { link: 'https://example.com/selma-jr.pdf' }),
+            {},
+            cell('32.407'),
+            cell('-86.918'),
+            cell('jr_selma_to_montgomery_nht')
+        ]),
+        row([{}, cell('', { color: { blue: 1 } }), {}, cell('Trading Cards:', { link: 'https://example.com/trading-cards.pdf' })]),
+        row([{}, cell('', { color: { blue: 1 } }), {}, cell('(Brown Chapel, African Methodist Episcopal Church)')]),
+        row([{}, cell('', { color: { blue: 1 } }), {}, cell('(Edmund Pettus Bridge, "Bloody Sunday")')]),
+        row([{}, cell('', { color: { blue: 1 } }), {}, cell('Civil Rights Explorer', { link: 'https://example.com/explorer.pdf' })])
+    ]);
+
+    const rows = extractCatalogRowsFromGrid(spreadsheet, { state: 'Alabama', today: '2026-05-25' });
+
+    assert.equal(rows.length, 1);
+    assert.equal(rows[0].specialPrograms, 'Junior Ranger | Trading Cards | Civil Rights Explorer');
+    assert.equal(
+        rows[0].jrBooks,
+        'Junior Ranger: https://example.com/selma-jr.pdf\nTrading Cards: https://example.com/trading-cards.pdf\nCivil Rights Explorer: https://example.com/explorer.pdf'
+    );
+    assert.doesNotMatch(rows[0].specialPrograms, /Brown Chapel|Edmund Pettus/);
+});
+
 test('catalogRowsToCsv preserves multi-line book links as quoted CSV fields', () => {
     const csv = catalogRowsToCsv([
         {
