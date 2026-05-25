@@ -29,7 +29,7 @@ const CSV_COLUMNS = {
 };
 
 const SWAG_TYPE_COLUMNS = ['Swag Type', 'Swag', 'Swag Available'];
-const STATIC_FALLBACK_CSV_URL = 'assets/data/jr-fallback.csv';
+const STATIC_FALLBACK_CSV_URL = 'assets/data/jr-source-alabama.csv';
 const DATA_CACHE_KEY = 'juniorRangerCSV';
 const DATA_CACHE_TIME_KEY = 'juniorRangerCSV_time';
 const LEGACY_DATA_CACHE_KEYS = ['barkCSV', 'barkCSV_time'];
