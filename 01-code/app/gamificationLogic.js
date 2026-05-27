@@ -94,7 +94,11 @@ class GamificationEngine {
     getCanonicalPointForVisit(visit) {
         const parkRepo = window.BARK && window.BARK.repos && window.BARK.repos.ParkRepo;
         if (!visit || !visit.id || !parkRepo || typeof parkRepo.getById !== 'function') return null;
-        return parkRepo.getById(visit.id);
+        const point = parkRepo.getById(visit.id);
+        if (point && point._isPickupLocation && point._pickupParentId) {
+            return parkRepo.getById(point._pickupParentId) || point;
+        }
+        return point;
     }
 
     getVisitSiteIdentityKey(visit) {
@@ -151,6 +155,7 @@ class GamificationEngine {
         const nextParkSiteKeyById = new Map();
 
         points.forEach(p => {
+            if (p && p._isPickupLocation) return;
             const siteKey = this.getSiteIdentityKey(p);
             if (!siteKey) return;
 

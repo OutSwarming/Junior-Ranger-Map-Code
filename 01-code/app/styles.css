@@ -1279,6 +1279,11 @@ a.meta-pill:focus-visible {
     color: #06252a !important;
 }
 
+.panel-action-btn.pickup-locations {
+    background: #22c55e;
+    color: #ffffff !important;
+}
+
 .panel-action-btn.is-added {
     background: #d1fae5;
     color: #065f46 !important;

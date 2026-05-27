@@ -43,6 +43,7 @@ const AGENCY_BY_COLOR = Object.freeze({
 });
 
 const IGNORED_COLORS = new Set(['#9900ff']);
+const ACROSS_SECTION_NAME = 'across';
 const US_STATE_NAMES = Object.freeze([
     'alabama', 'alaska', 'american samoa', 'arizona', 'arkansas', 'california',
     'colorado', 'connecticut', 'delaware', 'district of columbia', 'florida',
@@ -109,6 +110,28 @@ function titleCaseState(value) {
         .replace(/\bDc\b/g, 'DC');
 }
 
+function isJuniorRangerStateSheetTitle(value) {
+    const normalized = normalizeStateName(value);
+    const withoutCommas = normalized.replace(/,/g, '');
+    return US_STATE_NAMES.includes(normalized)
+        || US_STATE_NAMES.includes(withoutCommas)
+        || withoutCommas === 'washington dc';
+}
+
+function isAcrossStateSection(value) {
+    return normalizeStateName(value) === ACROSS_SECTION_NAME;
+}
+
+function resolveStateLabel(value, fallback) {
+    const text = cleanValue(value);
+    const fallbackText = cleanValue(fallback);
+    if (!isJuniorRangerStateSheetTitle(text)) return fallbackText;
+
+    const normalizedText = normalizeStateName(text);
+    if (normalizedText === normalizeStateName(fallbackText)) return fallbackText;
+    return titleCaseState(normalizedText);
+}
+
 function extractExplicitState(value) {
     const text = cleanValue(value);
     if (!text.includes(',')) return '';
@@ -149,6 +172,10 @@ function buildGeneratedSiteId(state, name) {
     const nameSlug = slugifyIdPart(name);
     if (!stateSlug || !nameSlug) return '';
     return `jr_${stateSlug}_${nameSlug}`;
+}
+
+function buildDeduplicationNameKey(name) {
+    return slugifyIdPart(name);
 }
 
 function sourceRowLooksLikeHeader(name, tag) {
@@ -243,7 +270,8 @@ function createEntry({
     latitude,
     longitude,
     siteId,
-    parentName = ''
+    parentName = '',
+    isAcrossSection = false
 }) {
     const rawPlaceName = parentName && isParentheticalLocation(name)
         ? `${parentName} - ${stripParenthetical(name)}`
@@ -262,6 +290,7 @@ function createEntry({
         latitude: cleanValue(latitude),
         longitude: cleanValue(longitude),
         siteId: cleanValue(siteId) || buildGeneratedSiteId(resolvedState, placeName),
+        isAcrossSection: isAcrossSection === true,
         isTradingCardsBlock: false,
         tags: []
     };
@@ -278,16 +307,20 @@ function shouldPublishEntry(entry) {
 }
 
 function extractCatalogRowsFromGrid(spreadsheet, options = {}) {
-    const requestedState = cleanValue(options.state || DEFAULT_STATE);
+    const requestedStateOption = cleanValue(options.state);
+    const requestedState = /^all$/i.test(requestedStateOption) ? '' : requestedStateOption;
     const requestedStateKey = normalizeStateName(requestedState);
     const entries = [];
+    const seenPublishedNames = new Map();
     const sheets = spreadsheet && Array.isArray(spreadsheet.sheets) ? spreadsheet.sheets : [];
 
     sheets.forEach(sheet => {
         const sheetTitle = cleanValue(sheet.properties && sheet.properties.title);
+        if (!isJuniorRangerStateSheetTitle(sheetTitle)) return;
         if (requestedStateKey && normalizeStateName(sheetTitle) !== requestedStateKey) return;
 
-        let currentState = requestedState || sheetTitle;
+        let currentState = sheetTitle;
+        let isAcrossSection = false;
         let currentEntry = null;
         let currentParentName = '';
         const rows = sheet.data && sheet.data[0] && Array.isArray(sheet.data[0].rowData)
@@ -305,7 +338,16 @@ function extractCatalogRowsFromGrid(spreadsheet, options = {}) {
             const longitude = getCellText(values[SOURCE_COLUMNS.longitude]);
             const siteId = getCellText(values[SOURCE_COLUMNS.siteId]);
 
-            if (stateText) currentState = stateText;
+            if (stateText) {
+                if (isAcrossStateSection(stateText)) {
+                    isAcrossSection = true;
+                    currentEntry = null;
+                    currentParentName = '';
+                } else if (isJuniorRangerStateSheetTitle(stateText)) {
+                    currentState = resolveStateLabel(stateText, sheetTitle);
+                    isAcrossSection = false;
+                }
+            }
             if (rowIndex === 0 || sourceRowLooksLikeHeader(name, tag)) return;
             if (IGNORED_COLORS.has(color)) {
                 currentEntry = null;
@@ -322,7 +364,8 @@ function extractCatalogRowsFromGrid(spreadsheet, options = {}) {
                     latitude,
                     longitude,
                     siteId,
-                    parentName
+                    parentName,
+                    isAcrossSection
                 });
                 entries.push(currentEntry);
                 if (!isParentheticalLocation(name)) currentParentName = name;
@@ -336,7 +379,15 @@ function extractCatalogRowsFromGrid(spreadsheet, options = {}) {
         });
     });
 
-    return entries.filter(shouldPublishEntry).map(entry => {
+    return entries.filter(entry => {
+        if (!shouldPublishEntry(entry)) return false;
+        const nameKey = buildDeduplicationNameKey(entry.name);
+        if (!nameKey) return true;
+        const previous = seenPublishedNames.get(nameKey);
+        if (previous && (previous.isAcrossSection || entry.isAcrossSection)) return false;
+        seenPublishedNames.set(nameKey, { isAcrossSection: entry.isAcrossSection });
+        return true;
+    }).map(entry => {
         const tagPayload = buildTagPayload(entry.tags);
         return {
             siteID: entry.siteId,
@@ -377,10 +428,18 @@ function buildSheetRange(state = DEFAULT_STATE) {
     return `'${safeState}'!${SOURCE_RANGE_COLUMNS}`;
 }
 
+function buildStateSheetRanges(sheetTitles) {
+    return (Array.isArray(sheetTitles) ? sheetTitles : [])
+        .map(cleanValue)
+        .filter(isJuniorRangerStateSheetTitle)
+        .map(title => buildSheetRange(title));
+}
+
 module.exports = {
     SPREADSHEET_ID,
     DEFAULT_STATE,
     TARGET_HEADERS,
+    buildStateSheetRanges,
     buildSheetRange,
     catalogRowsToCsv,
     extractCatalogRowsFromGrid,

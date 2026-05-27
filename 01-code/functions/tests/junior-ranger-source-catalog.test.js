@@ -3,6 +3,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const {
+    buildStateSheetRanges,
     buildSheetRange,
     catalogRowsToCsv,
     extractCatalogRowsFromGrid
@@ -30,8 +31,24 @@ function sheet(rows) {
     };
 }
 
+function workbook(sheetDefinitions) {
+    return {
+        sheets: sheetDefinitions.map(([title, rows]) => ({
+            properties: { title },
+            data: [{ rowData: rows }]
+        }))
+    };
+}
+
 test('buildSheetRange quotes the requested state tab', () => {
     assert.equal(buildSheetRange('Alabama'), "'Alabama'!A:H");
+});
+
+test('buildStateSheetRanges includes state tabs and skips non-source tabs', () => {
+    assert.deepEqual(
+        buildStateSheetRanges(['Alabama', 'Canada', 'Color Coding', 'Washington, DC', 'Wyoming']),
+        ["'Alabama'!A:H", "'Washington, DC'!A:H", "'Wyoming'!A:H"]
+    );
 });
 
 test('extractCatalogRowsFromGrid publishes Alabama rows with tag links and skips purple trail rows', () => {
@@ -89,6 +106,174 @@ test('extractCatalogRowsFromGrid publishes Alabama rows with tag links and skips
         'Junior Ranger: https://example.com/birmingham-book.pdf\nCivil Rights Explorer: https://example.com/civil-rights-explorer.pdf'
     );
     assert.equal(rows[1].agency, 'US Fish & Wildlife Service');
+});
+
+test('extractCatalogRowsFromGrid publishes every state tab when no state is requested', () => {
+    const spreadsheet = workbook([
+        ['Alabama', [
+            row([cell('Master Map for Planning'), {}, {}, cell('Track Trails')]),
+            row([
+                cell('Alabama'),
+                cell('', { color: { blue: 1 } }),
+                cell('Birmingham Civil Rights NM'),
+                cell('Junior Ranger'),
+                {},
+                cell('33.515'),
+                cell('-86.809'),
+                cell('jr_alabama_birmingham_civil_rights_nm')
+            ])
+        ]],
+        ['Montana', [
+            row([cell('Master Map for Planning'), {}, {}, cell('Track Trails')]),
+            row([
+                cell('Montana'),
+                cell('', { color: { blue: 1 } }),
+                cell('Glacier NP'),
+                cell('Junior Ranger'),
+                {},
+                cell('48.7596'),
+                cell('-113.7870'),
+                cell('jr_montana_glacier_np')
+            ])
+        ]],
+        ['Canada', [
+            row([cell('Canada'), cell('', { color: { blue: 1 } }), cell('Banff'), cell('Junior Ranger'), {}, cell('51.4968'), cell('-115.9281'), cell('jr_canada_banff')])
+        ]]
+    ]);
+
+    const rows = extractCatalogRowsFromGrid(spreadsheet, { today: '2026-05-25' });
+
+    assert.deepEqual(rows.map(item => item.siteID), [
+        'jr_alabama_birmingham_civil_rights_nm',
+        'jr_montana_glacier_np'
+    ]);
+    assert.deepEqual(rows.map(item => item.state), ['Alabama', 'Montana']);
+});
+
+test('extractCatalogRowsFromGrid publishes non-purple Across rows and still ignores purple Across rows', () => {
+    const spreadsheet = workbook([
+        ['North Carolina', [
+            row([cell('Master Map for Planning'), {}, {}, cell('Track Trails')]),
+            row([
+                cell('North Carolina'),
+                cell('', { color: { blue: 1 } }),
+                cell('Salem Lake Park'),
+                cell('Junior Ranger'),
+                {},
+                cell('35.0862583'),
+                cell('-80.6350681'),
+                cell('jr_north_carolina_salem_lake_park')
+            ]),
+            row([
+                cell('Across'),
+                cell('', { color: { blue: 1 } }),
+                cell('Great Smoky Mountains NP'),
+                cell('Junior Ranger'),
+                {},
+                cell('35.6531943'),
+                cell('-83.5070203'),
+                cell('jr_across_great_smoky_mountains_np')
+            ]),
+            row([
+                {},
+                cell('', { color: { blue: 1 } }),
+                {},
+                cell('Junior Angler')
+            ]),
+            row([
+                {},
+                cell('', { color: { red: 0.6, blue: 1 } }),
+                cell('Appalachian NST'),
+                cell('Junior Ranger'),
+                {},
+                cell('36.2679'),
+                cell('-112.3535'),
+                cell('jr_across_appalachian_nst')
+            ])
+        ]]
+    ]);
+
+    const rows = extractCatalogRowsFromGrid(spreadsheet, { today: '2026-05-25' });
+
+    assert.deepEqual(rows.map(item => item.siteID), [
+        'jr_north_carolina_salem_lake_park',
+        'jr_across_great_smoky_mountains_np'
+    ]);
+    assert.equal(rows[1].state, 'North Carolina');
+    assert.equal(rows[1].agency, 'NPS');
+    assert.equal(rows[1].specialPrograms, 'Junior Ranger | Junior Angler');
+});
+
+test('extractCatalogRowsFromGrid skips later duplicate names when either copy is from Across', () => {
+    const spreadsheet = workbook([
+        ['Tennessee', [
+            row([cell('Master Map for Planning'), {}, {}, cell('Track Trails')]),
+            row([
+                cell('Tennessee'),
+                cell('', { color: { blue: 1 } }),
+                cell('Great Smoky Mountains NP'),
+                cell('Junior Ranger'),
+                {},
+                cell('35.6118'),
+                cell('-83.4895'),
+                cell('jr_tennessee_great_smoky_mountains_np')
+            ])
+        ]],
+        ['North Carolina', [
+            row([cell('Master Map for Planning'), {}, {}, cell('Track Trails')]),
+            row([
+                cell('Across'),
+                cell('', { color: { blue: 1 } }),
+                cell('Great Smoky Mountains NP'),
+                cell('Junior Ranger'),
+                {},
+                cell('35.6531943'),
+                cell('-83.5070203'),
+                cell('jr_across_great_smoky_mountains_np')
+            ]),
+            row([
+                {},
+                cell('', { color: { blue: 1 } }),
+                cell('Blue Ridge Parkway'),
+                cell('Junior Ranger'),
+                {},
+                cell('35.5656'),
+                cell('-82.4865'),
+                cell('jr_across_blue_ridge_parkway')
+            ])
+        ]]
+    ]);
+
+    const rows = extractCatalogRowsFromGrid(spreadsheet, { today: '2026-05-25' });
+
+    assert.deepEqual(rows.map(item => item.siteID), [
+        'jr_tennessee_great_smoky_mountains_np',
+        'jr_across_blue_ridge_parkway'
+    ]);
+});
+
+test('extractCatalogRowsFromGrid ignores punctuation-only state cells and keeps the sheet state', () => {
+    const spreadsheet = workbook([
+        ['Maryland', [
+            row([cell('Master Map for Planning'), {}, {}, cell('Track Trails')]),
+            row([
+                cell(':'),
+                cell('', { color: { blue: 1 } }),
+                cell('Clara Barton NHS'),
+                cell('Junior Ranger'),
+                {},
+                cell('38.9672859'),
+                cell('-77.1407718'),
+                {}
+            ])
+        ]]
+    ]);
+
+    const rows = extractCatalogRowsFromGrid(spreadsheet, { today: '2026-05-25' });
+
+    assert.equal(rows.length, 1);
+    assert.equal(rows[0].state, 'Maryland');
+    assert.equal(rows[0].siteID, 'jr_maryland_clara_barton_nhs');
 });
 
 test('extractCatalogRowsFromGrid treats parenthesized pickup locations as separate pins', () => {

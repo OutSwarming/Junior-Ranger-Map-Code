@@ -56,6 +56,27 @@ function getSwagType(info) {
     return 'Other';
 }
 
+function getParkAgencyFilterKey(parkData = {}) {
+    if (window.MapMarkerConfig && typeof window.MapMarkerConfig.getAgencyKey === 'function') {
+        return window.MapMarkerConfig.getAgencyKey(parkData);
+    }
+    if (typeof MapMarkerConfig !== 'undefined' && typeof MapMarkerConfig.getAgencyKey === 'function') {
+        return MapMarkerConfig.getAgencyKey(parkData);
+    }
+    return 'other';
+}
+
+function matchesParkTypeFilter(parkData, activeTypeFilter) {
+    const filter = activeTypeFilter || 'all';
+    if (filter === 'all') return true;
+
+    if (filter === 'National') return getParkAgencyFilterKey(parkData) === 'nps';
+    if (filter === 'State') return getParkAgencyFilterKey(parkData) === 'state-park';
+    if (filter === 'Other') return getParkAgencyFilterKey(parkData) === 'other';
+
+    return getParkAgencyFilterKey(parkData) === filter;
+}
+
 function formatSwagLinks(text) {
     if (!text) return '';
     const urlRegex = /(https?:\/\/[^\s]+)/g;
@@ -78,6 +99,8 @@ function formatSwagLinks(text) {
 window.BARK.getColor = getColor;
 window.BARK.getBadgeClass = getBadgeClass;
 window.BARK.getParkCategory = getParkCategory;
+window.BARK.getParkAgencyFilterKey = getParkAgencyFilterKey;
+window.BARK.matchesParkTypeFilter = matchesParkTypeFilter;
 window.BARK.getSwagType = getSwagType;
 window.BARK.formatSwagLinks = formatSwagLinks;
 
@@ -143,6 +166,68 @@ function getTripRouteParkIds() {
 
 function getTripRouteParkIdsCacheKey() {
     return Array.from(getTripRouteParkIds()).sort().join(',');
+}
+
+function getExpandedPickupParentIds() {
+    if (!(window.BARK.expandedPickupParentIds instanceof Set)) {
+        window.BARK.expandedPickupParentIds = new Set();
+    }
+    return window.BARK.expandedPickupParentIds;
+}
+
+function serializeExpandedPickupParentIds() {
+    return serializeSet(getExpandedPickupParentIds());
+}
+
+function isPickupGroupExpanded(parentId) {
+    return Boolean(parentId && getExpandedPickupParentIds().has(parentId));
+}
+
+function isPickupLocationVisible(parkData) {
+    if (!parkData || !parkData._isPickupLocation) return true;
+    return isPickupGroupExpanded(parkData._pickupParentId);
+}
+
+function getPickupGroupPoints(parentId) {
+    const parkRepo = getParkRepo();
+    const allPoints = parkRepo ? parkRepo.getAll() : [];
+    return allPoints.filter(point => point && (point.id === parentId || point._pickupParentId === parentId));
+}
+
+function framePickupGroup(parentId) {
+    const map = getUsableMap();
+    if (!map || window.stopAutoMovements) return;
+
+    const bounds = L.latLngBounds();
+    getPickupGroupPoints(parentId).forEach(point => {
+        const lat = Number(point.lat);
+        const lng = Number(point.lng);
+        if (Number.isFinite(lat) && Number.isFinite(lng)) bounds.extend([lat, lng]);
+    });
+    if (!bounds.isValid()) return;
+
+    map.flyToBounds(bounds, {
+        padding: [50, 90],
+        maxZoom: 11,
+        duration: window.lowGfxEnabled ? 0 : 0.6,
+        animate: !window.lowGfxEnabled
+    });
+}
+
+function setPickupGroupExpanded(parentId, expanded, options = {}) {
+    if (!parentId) return false;
+    const expandedIds = getExpandedPickupParentIds();
+    const wasExpanded = expandedIds.has(parentId);
+    if (expanded) expandedIds.add(parentId);
+    else expandedIds.delete(parentId);
+    if (wasExpanded === expandedIds.has(parentId)) return false;
+
+    window.BARK.invalidateMarkerVisibility();
+    if (typeof window.syncState === 'function') window.syncState();
+    if (expanded && options.frame !== false) {
+        window.setTimeout(() => framePickupGroup(parentId), 80);
+    }
+    return true;
 }
 
 function getTargetMarkerLayerType(zoom) {
@@ -247,6 +332,7 @@ function getMarkerVisibilityStateKey() {
         window.BARK.visitedFilterState || 'all',
         routeParkIds,
         visitedIds,
+        serializeExpandedPickupParentIds(),
         searchCache.query || '',
         searchCacheStatus,
         searchCacheIds,
@@ -274,6 +360,15 @@ window.BARK.invalidateMarkerDataSync = function () {
 window.BARK.invalidateVisitedIdsCache = function () {
     window.BARK._visitedIdsCacheKey = null;
     window.BARK.invalidateMarkerVisibility();
+};
+window.BARK.isPickupGroupExpanded = isPickupGroupExpanded;
+window.BARK.isPickupLocationVisible = isPickupLocationVisible;
+window.BARK.setPickupGroupExpanded = setPickupGroupExpanded;
+window.BARK.showPickupGroup = function (parentId, options = {}) {
+    return setPickupGroupExpanded(parentId, true, options);
+};
+window.BARK.hidePickupGroup = function (parentId, options = {}) {
+    return setPickupGroupExpanded(parentId, false, options);
 };
 window.BARK.isMapVisibleByDefaultViewState = isMapVisibleByDefaultViewState;
 window.BARK.isMapViewActive = isMapVisibleByDefaultViewState;
@@ -377,7 +472,10 @@ function updateMarkers() {
 
     allPoints.forEach(item => {
         const matchesSwag = activeSwagFilters.size === 0 || activeSwagFilters.has(item.swagType);
-        const nameNorm = item._cachedNormalizedName || window.BARK.normalizeText(item.name);
+        const nameNorm = [
+            item._cachedNormalizedName || window.BARK.normalizeText(item.name),
+            item._cachedPickupSearchText || ''
+        ].filter(Boolean).join(' ');
         let matchesSearch = true;
 
         if (activeSearchQuery) {
@@ -390,7 +488,7 @@ function updateMarkers() {
             }
         }
 
-        const matchesType = activeTypeFilter === 'all' || item.category === activeTypeFilter;
+        const matchesType = matchesParkTypeFilter(item, activeTypeFilter);
         let matchesVisited = true;
         const isVisited = typeof window.BARK.isParkVisited === 'function'
             ? window.BARK.isParkVisited(item)
@@ -403,6 +501,10 @@ function updateMarkers() {
         // overlay layer renders badges independently. Removing this OR-clause +
         // per-park tripDays scan is a real RAF perf win.
         let isVisible = matchesSwag && matchesSearch && matchesType && matchesVisited;
+
+        if (isVisible && !isPickupLocationVisible(item)) {
+            isVisible = false;
+        }
 
         // 🎯 VIEWPORT CULLING: Skip off-screen pins entirely
         if (isVisible && shouldCull && !screenBounds.contains([item.lat, item.lng])) {

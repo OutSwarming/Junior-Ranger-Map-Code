@@ -8,6 +8,7 @@ const { createHash, createHmac, randomUUID, timingSafeEqual } = require("crypto"
 const {
     DEFAULT_STATE: JUNIOR_RANGER_DEFAULT_STATE,
     SPREADSHEET_ID: JUNIOR_RANGER_SPREADSHEET_ID,
+    buildStateSheetRanges,
     buildSheetRange,
     catalogRowsToCsv,
     extractCatalogRowsFromGrid
@@ -15,6 +16,9 @@ const {
 
 // Initialize Firebase Admin SDK
 admin.initializeApp();
+
+const JUNIOR_RANGER_CATALOG_CACHE_TTL_MS = 4 * 60 * 1000;
+const juniorRangerCatalogCache = new Map();
 
 // Keep admin callables compatible with the current admin page. The backend
 // still enforces signed-in admin status plus per-admin rate limits.
@@ -2278,16 +2282,42 @@ async function handleJuniorRangerCatalogRequest(req, res) {
         return;
     }
 
-    const state = String((req.query && req.query.state) || JUNIOR_RANGER_DEFAULT_STATE).trim() || JUNIOR_RANGER_DEFAULT_STATE;
+    const stateQuery = String((req.query && req.query.state) || '').trim();
+    const requestedState = stateQuery && !/^all$/i.test(stateQuery) ? stateQuery : '';
+    const cacheKey = requestedState ? `state:${requestedState.toLowerCase()}` : 'all';
+    const cached = juniorRangerCatalogCache.get(cacheKey);
+
+    if (cached && cached.expiresAt > Date.now()) {
+        res.set('Cache-Control', 'public, max-age=60');
+        res.set('X-Junior-Ranger-Catalog-Source', 'master-spreadsheet');
+        res.set('X-Junior-Ranger-Catalog-Cache', 'hit');
+        res.type('text/csv; charset=utf-8').status(200).send(cached.csv);
+        return;
+    }
 
     try {
         const auth = new google.auth.GoogleAuth({
             scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly']
         });
         const sheets = google.sheets({ version: 'v4', auth });
+        let ranges = [];
+
+        if (requestedState) {
+            ranges = [buildSheetRange(requestedState)];
+        } else {
+            const metadata = await sheets.spreadsheets.get({
+                spreadsheetId: JUNIOR_RANGER_SPREADSHEET_ID,
+                fields: 'sheets(properties(title))'
+            });
+            const titles = (metadata.data.sheets || []).map(sheet => sheet.properties && sheet.properties.title);
+            ranges = buildStateSheetRanges(titles);
+        }
+
+        if (!ranges.length) throw new Error('No Junior Ranger state tabs found.');
+
         const response = await sheets.spreadsheets.get({
             spreadsheetId: JUNIOR_RANGER_SPREADSHEET_ID,
-            ranges: [buildSheetRange(state)],
+            ranges,
             includeGridData: true,
             fields: [
                 'sheets(properties(sheetId,title),data(rowData(values(',
@@ -2296,16 +2326,22 @@ async function handleJuniorRangerCatalogRequest(req, res) {
                 '))))'
             ].join('')
         });
-        const rows = extractCatalogRowsFromGrid(response.data, { state });
+        const rows = extractCatalogRowsFromGrid(response.data, { state: requestedState });
         if (!rows.length) {
-            throw new Error(`No publishable Junior Ranger rows found for ${state}.`);
+            throw new Error(`No publishable Junior Ranger rows found${requestedState ? ` for ${requestedState}` : ''}.`);
         }
         const csv = catalogRowsToCsv(rows);
-        res.set('Cache-Control', 'no-store, max-age=0');
+        juniorRangerCatalogCache.set(cacheKey, {
+            csv,
+            expiresAt: Date.now() + JUNIOR_RANGER_CATALOG_CACHE_TTL_MS
+        });
+        res.set('Cache-Control', 'public, max-age=60');
+        res.set('X-Junior-Ranger-Catalog-Source', 'master-spreadsheet');
+        res.set('X-Junior-Ranger-Catalog-Cache', 'miss');
         res.type('text/csv; charset=utf-8').status(200).send(csv);
     } catch (error) {
         console.error('[juniorRangerCatalog] Failed to read source sheet:', {
-            state,
+            state: requestedState || 'all',
             message: error && error.message,
             code: error && error.code
         });
@@ -2314,7 +2350,7 @@ async function handleJuniorRangerCatalogRequest(req, res) {
 }
 
 exports.getJuniorRangerCatalog = functions
-    .runWith({ timeoutSeconds: 30, memory: '256MB' })
+    .runWith({ timeoutSeconds: 60, memory: '1GB' })
     .https.onRequest(handleJuniorRangerCatalogRequest);
 
 if (process.env.NODE_ENV === "test") {

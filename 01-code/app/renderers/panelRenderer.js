@@ -212,13 +212,17 @@ function getSpecialProgramLabels(value, bookLinks) {
     const seen = new Set();
     String(value || '')
         .split(/[|\n;]+/)
-        .map(part => part.replace(/^[-*\d.\s]+/, '').trim())
+        .map(part => part.replace(/^\s*[-*]\s+/, '').replace(/^\s*\d+[.)]\s+/, '').trim())
         .filter(Boolean)
         .forEach(part => addUniqueLabel(labels, seen, `${part} Tag`, findMatchingBookUrl(part, bookLinks)));
     return labels;
 }
 
 function metaLabelsOverlap(firstLabel, secondLabel) {
+    const firstComparable = getComparableMetaLabel(firstLabel);
+    const secondComparable = getComparableMetaLabel(secondLabel);
+    if (firstComparable && secondComparable && firstComparable === secondComparable) return true;
+
     const firstTokens = getMetaSearchTokens(firstLabel);
     const secondTokens = getMetaSearchTokens(secondLabel);
     if (!firstTokens.length || !secondTokens.length) return false;
@@ -252,8 +256,22 @@ function getAgencyLabel(agency) {
     return value;
 }
 
-function getDisplayPlaceName(name) {
-    return String(name || 'Unknown Park').replace(/^\s*\(?\d+\s+of\s+\d+\)?\s*/i, '').trim() || 'Unknown Park';
+function stripOuterLocationParens(value) {
+    const text = String(value || '').trim();
+    return text.length > 2 && text.startsWith('(') && text.endsWith(')')
+        ? text.slice(1, -1).trim()
+        : text;
+}
+
+function getDisplayPlaceName(placeOrName) {
+    const rawName = placeOrName && typeof placeOrName === 'object'
+        ? placeOrName.name
+        : placeOrName;
+    const cleaned = String(rawName || 'Unknown Park').replace(/^\s*\(?\d+\s+of\s+\d+\)?\s*/i, '').trim();
+    const displayName = placeOrName && typeof placeOrName === 'object' && placeOrName._isPickupLocation
+        ? stripOuterLocationParens(cleaned)
+        : cleaned;
+    return displayName || 'Unknown Park';
 }
 
 function getBookLinks(place = {}) {
@@ -318,6 +336,12 @@ function syncVisitedActionButtons(place) {
     });
 }
 
+function getPickupLocations(place) {
+    return Array.isArray(place && place.pickupLocations)
+        ? place.pickupLocations.filter(location => location && location.id)
+        : [];
+}
+
 function renderPanelActionSet(container, actions) {
     if (!container) return;
     clearElement(container);
@@ -347,12 +371,33 @@ function buildPrimaryActions(place, bookLinks) {
         const button = document.getElementById(buttonId);
         if (button && typeof button.click === 'function') button.click();
     };
+    const pickupLocations = getPickupLocations(place);
+    const isPickupGroupExpanded = typeof window.BARK.isPickupGroupExpanded === 'function'
+        ? window.BARK.isPickupGroupExpanded(place.id)
+        : false;
     const actions = [{
         text: 'Directions',
         className: 'primary',
         href: buildMapSearchUrl(place.name, place.lat, place.lng, 'google'),
         actionKey: 'directions'
-    }, {
+    }];
+
+    if (pickupLocations.length > 0) {
+        actions.push({
+            text: isPickupGroupExpanded ? 'Hide Pickup Pins' : `Show All (${pickupLocations.length})`,
+            className: 'pickup-locations',
+            onClick: () => {
+                const nextExpanded = !(typeof window.BARK.isPickupGroupExpanded === 'function'
+                    && window.BARK.isPickupGroupExpanded(place.id));
+                const toggle = nextExpanded ? window.BARK.showPickupGroup : window.BARK.hidePickupGroup;
+                if (typeof toggle === 'function') toggle(place.id);
+                buildPrimaryActions(place, bookLinks);
+            },
+            actionKey: 'pickup-locations'
+        });
+    }
+
+    actions.push({
         text: 'Park Info',
         onClick: () => scrollPanelTo(document.getElementById('panel-info-section')),
         actionKey: 'park-info'
@@ -368,7 +413,7 @@ function buildPrimaryActions(place, bookLinks) {
         text: 'Verified Check In',
         onClick: () => clickPanelButton('verify-checkin-btn'),
         actionKey: 'verify-checkin'
-    }];
+    });
 
     renderPanelActionSet(container, actions);
     renderPanelActionSet(stickyFooter, actions);
@@ -472,7 +517,10 @@ function buildMapSearchUrl(name, lat, lng, provider) {
 }
 
 window.BARK.panelRendererSafety = {
+    getBookCatalogLabels,
+    getBookLinks,
     getSafeHttpUrls,
+    getSpecialProgramLabels,
     openFreeVisitLimitPaywall,
     setTextWithLineBreaks
 };
@@ -516,15 +564,20 @@ function renderMarkerClickPanel(context) {
     if (!refreshOnly) document.getElementById('filter-panel').classList.add('collapsed');
 
     const d = marker._parkData;
-    const displayName = getDisplayPlaceName(d.name);
+    const displayName = getDisplayPlaceName(d);
     const bookLinks = getBookLinks(d);
     const websiteUrls = getSafeHttpUrls(d.website || '');
 
     if (titleEl) titleEl.textContent = displayName;
     const subtitleEl = document.getElementById('panel-subtitle');
     if (subtitleEl) {
-        const subtitleParts = [getAgencyLabel(d.agency), d.state].filter(Boolean);
-        subtitleEl.textContent = subtitleParts.length ? `${subtitleParts.join(' • ')} • Junior Ranger` : 'Junior Ranger program';
+        if (d._isPickupLocation && d._pickupParentName) {
+            const subtitleParts = [`Pickup location for ${getDisplayPlaceName(d._pickupParentName)}`, d.state].filter(Boolean);
+            subtitleEl.textContent = subtitleParts.join(' • ');
+        } else {
+            const subtitleParts = [getAgencyLabel(d.agency), d.state].filter(Boolean);
+            subtitleEl.textContent = subtitleParts.length ? `${subtitleParts.join(' • ')} • Junior Ranger` : 'Junior Ranger program';
+        }
     }
 
     const metaContainer = document.getElementById('panel-meta-container');
