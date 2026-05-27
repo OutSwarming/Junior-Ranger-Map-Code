@@ -305,6 +305,80 @@ test('extractCatalogRowsFromGrid treats parenthesized pickup locations as separa
     assert.equal(rows[0].jrBooks, 'Mendenhall Glacier Junior Ranger: https://example.com/mendenhall.pdf');
 });
 
+test('extractCatalogRowsFromGrid keeps non-purple Across pickup rows and ignores state-list note rows', () => {
+    const spreadsheet = workbook([
+        ['Arizona', [
+            row([cell('Master Map for Planning'), {}, {}, cell('Track Trails')]),
+            row([
+                cell('Across'),
+                cell('', { color: { blue: 1 } }),
+                cell('Glen Canyon NRA'),
+                cell('Junior Ranger', { link: 'https://example.com/glen-canyon.pdf' }),
+                {},
+                cell('37.3867256'),
+                cell('-110.8424257'),
+                cell('jr_across_glen_canyon_nra')
+            ]),
+            row([
+                {},
+                cell('', { color: { blue: 1 } }),
+                cell('(Carl Hayden Visitor Center)'),
+                cell('50th Birthday Scavenger Hunt'),
+                {},
+                cell('36.9357176'),
+                cell('-111.4858141'),
+                cell('jr_across_glen_canyon_nra_carl_hayden_visitor_center')
+            ]),
+            row([
+                {},
+                cell('', { color: { blue: 1 } }),
+                cell('(Glen Canyon Conservancy)'),
+                {},
+                {},
+                cell('38.7945952'),
+                cell('-106.5348379'),
+                cell('jr_across_glen_canyon_nra_glen_canyon_conservancy')
+            ]),
+            row([
+                {},
+                cell('', { color: { blue: 1 } }),
+                cell('Arizona, Utah'),
+                cell('Junior Angler')
+            ]),
+            row([
+                {},
+                cell('', { color: { blue: 1 } }),
+                cell('(Navajo Bridge Interpretive Center)'),
+                {},
+                {},
+                cell('36.8181296'),
+                cell('-111.6334439'),
+                cell('jr_across_glen_canyon_nra_navajo_bridge_interpretive_center')
+            ])
+        ]]
+    ]);
+
+    const rows = extractCatalogRowsFromGrid(spreadsheet, { today: '2026-05-25' });
+
+    assert.deepEqual(rows.map(item => item.siteID), [
+        'jr_across_glen_canyon_nra',
+        'jr_across_glen_canyon_nra_carl_hayden_visitor_center',
+        'jr_across_glen_canyon_nra_glen_canyon_conservancy',
+        'jr_across_glen_canyon_nra_navajo_bridge_interpretive_center'
+    ]);
+    assert.deepEqual(rows.map(item => item.siteName), [
+        'Glen Canyon NRA',
+        'Glen Canyon NRA - Carl Hayden Visitor Center',
+        'Glen Canyon NRA - Glen Canyon Conservancy',
+        'Glen Canyon NRA - Navajo Bridge Interpretive Center'
+    ]);
+    assert.ok(rows.every(item => item.agency === 'NPS'));
+    assert.equal(rows[0].specialPrograms, 'Junior Ranger');
+    assert.equal(rows[2].latitude, '36.9193756');
+    assert.equal(rows[2].longitude, '-111.4602113');
+    assert.equal(rows[2].specialPrograms, 'Junior Angler');
+});
+
 test('extractCatalogRowsFromGrid skips parenthesized trading card names without dropping later tags', () => {
     const spreadsheet = sheet([
         row([cell('Master Map for Planning'), {}, {}, cell('Track Trails')]),

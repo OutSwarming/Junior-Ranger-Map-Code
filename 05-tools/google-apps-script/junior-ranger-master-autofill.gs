@@ -69,7 +69,11 @@ const JR_GEOCODE_FALLBACKS = Object.freeze([
   { match: 'wilbur d may arboretum nevada', lat: 39.5462, lng: -119.8253 },
   { match: 'new hampshire lake association new hampshire', lat: 43.2111415, lng: -71.496077 },
   { match: 'lost river gorge and boulder caves new hampshire', lat: 44.0372352, lng: -71.7837698 },
-  { match: 'quincy bog natural area new hampshire', lat: 43.792608, lng: -71.7748117 }
+  { match: 'quincy bog natural area new hampshire', lat: 43.792608, lng: -71.7748117 },
+  { match: 'glen canyon nra carl hayden visitor center', lat: 36.9357176, lng: -111.4858141 },
+  { match: 'glen canyon nra glen canyon conservancy', lat: 36.9193756, lng: -111.4602113 },
+  { match: 'glen canyon nra bullfrog visitor center', lat: 37.5287243, lng: -110.718687 },
+  { match: 'glen canyon nra navajo bridge interpretive center', lat: 36.8181296, lng: -111.6334439 }
 ]);
 
 function onOpen() {
@@ -629,7 +633,12 @@ const JR_GENERATED_AK_AS_AZ_BACKFILL = Object.freeze([
       [142, 33.3220647, -112.3535591, 'jr_arizona_estrella_mountain_regional_park'],
       [143, 33.4942189, -111.926018, 'jr_arizona_city_of_scottsdale'],
       [144, 33.8590011, -109.1698232, 'jr_arizona_san_francisco_river_of_eastern_arizona'],
-      [145, 31.9026682, -110.999218, 'jr_arizona_titan_missile_museum_nhl']
+      [145, 31.9026682, -110.999218, 'jr_arizona_titan_missile_museum_nhl'],
+      [146, 37.3867256, -110.8424257, 'jr_across_glen_canyon_nra'],
+      [147, 36.9357176, -111.4858141, 'jr_across_glen_canyon_nra_carl_hayden_visitor_center'],
+      [148, 36.9193756, -111.4602113, 'jr_across_glen_canyon_nra_glen_canyon_conservancy'],
+      [149, 37.5287243, -110.718687, 'jr_across_glen_canyon_nra_bullfrog_visitor_center'],
+      [150, 36.8181296, -111.6334439, 'jr_across_glen_canyon_nra_navajo_bridge_interpretive_center']
     ])
   }
 ]);

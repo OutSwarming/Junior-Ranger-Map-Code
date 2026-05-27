@@ -44,6 +44,12 @@ const AGENCY_BY_COLOR = Object.freeze({
 
 const IGNORED_COLORS = new Set(['#9900ff']);
 const ACROSS_SECTION_NAME = 'across';
+const COORDINATE_OVERRIDES_BY_SITE_ID = Object.freeze({
+    jr_across_glen_canyon_nra_glen_canyon_conservancy: {
+        latitude: '36.9193756',
+        longitude: '-111.4602113'
+    }
+});
 const US_STATE_NAMES = Object.freeze([
     'alabama', 'alaska', 'american samoa', 'arizona', 'arkansas', 'california',
     'colorado', 'connecticut', 'delaware', 'district of columbia', 'florida',
@@ -183,6 +189,20 @@ function sourceRowLooksLikeHeader(name, tag) {
     return combined.includes('master map') || combined.includes('track trails') || combined.includes('best contact');
 }
 
+function sourceTextLooksLikeStateList(value) {
+    const text = cleanValue(value);
+    if (!text) return false;
+
+    if (US_STATE_NAMES.includes(normalizeStateName(text))) return true;
+    if (!text.includes(',')) return false;
+
+    return text
+        .split(',')
+        .map(normalizeStateName)
+        .filter(Boolean)
+        .every(part => US_STATE_NAMES.includes(part));
+}
+
 function isParentheticalLocation(value) {
     return /^\s*\([^)]+\)\s*$/.test(cleanValue(value));
 }
@@ -279,6 +299,8 @@ function createEntry({
     const explicitState = extractExplicitState(rawPlaceName);
     const placeName = stripExplicitState(rawPlaceName);
     const resolvedState = explicitState || cleanValue(state);
+    const resolvedSiteId = cleanValue(siteId) || buildGeneratedSiteId(resolvedState, placeName);
+    const coordinateOverride = COORDINATE_OVERRIDES_BY_SITE_ID[resolvedSiteId] || null;
 
     return {
         rowNumber,
@@ -287,9 +309,9 @@ function createEntry({
         parentName: cleanValue(parentName),
         color,
         agency: AGENCY_BY_COLOR[color] || '',
-        latitude: cleanValue(latitude),
-        longitude: cleanValue(longitude),
-        siteId: cleanValue(siteId) || buildGeneratedSiteId(resolvedState, placeName),
+        latitude: coordinateOverride ? coordinateOverride.latitude : cleanValue(latitude),
+        longitude: coordinateOverride ? coordinateOverride.longitude : cleanValue(longitude),
+        siteId: resolvedSiteId,
         isAcrossSection: isAcrossSection === true,
         isTradingCardsBlock: false,
         tags: []
@@ -351,6 +373,10 @@ function extractCatalogRowsFromGrid(spreadsheet, options = {}) {
             if (rowIndex === 0 || sourceRowLooksLikeHeader(name, tag)) return;
             if (IGNORED_COLORS.has(color)) {
                 currentEntry = null;
+                return;
+            }
+            if (name && sourceTextLooksLikeStateList(name)) {
+                if (tag) addTag(currentEntry, values[SOURCE_COLUMNS.tag]);
                 return;
             }
 
