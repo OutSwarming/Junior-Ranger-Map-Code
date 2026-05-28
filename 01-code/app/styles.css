@@ -861,7 +861,8 @@ textarea,
     gap: 4px;
 }
 
-#type-filter {
+#type-filter,
+#program-filter {
     width: 100%;
     padding: 10px 14px;
     border-radius: 10px;
@@ -873,15 +874,23 @@ textarea,
     outline: none;
 }
 
-#type-filter:focus {
+#type-filter:focus,
+#program-filter:focus {
     border-color: var(--color-tag);
 }
 
 .filter-toggles {
     display: flex;
     gap: 12px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
+}
+
+.filter-toggles .filter-btn {
+    flex: 1 1 0;
+    justify-content: center;
+    min-width: 0;
+    white-space: nowrap;
 }
 
 .filter-btn {

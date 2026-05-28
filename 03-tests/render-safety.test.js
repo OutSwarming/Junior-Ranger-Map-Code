@@ -192,6 +192,25 @@ test('park type filter supports expanded agency categories', () => {
     assert.equal(bark.matchesParkTypeFilter(localOther, 'State'), false);
 });
 
+test('program filter uses regional and national tags from specialPrograms', () => {
+    const bark = loadRenderEngineHelpers();
+    const points = [
+        { specialPrograms: 'Night Explorer | Junior Angler' },
+        { specialPrograms: 'Underwater Explorer\nJunior Forest Ranger' },
+        { specialPrograms: 'Junior Ranger' }
+    ];
+
+    assert.deepEqual(bark.getAvailableProgramFilters(points), [
+        'Junior Angler',
+        'Junior Forest Ranger',
+        'Night Explorer',
+        'Underwater Explorer'
+    ]);
+    assert.equal(bark.matchesProgramFilter(points[0], 'Night Explorer'), true);
+    assert.equal(bark.matchesProgramFilter(points[0], 'Underwater Explorer'), false);
+    assert.equal(bark.matchesProgramFilter(points[1], 'all'), true);
+});
+
 test('pickup location pins stay hidden until their master park group is expanded', () => {
     const bark = loadRenderEngineHelpers();
     const childPickup = { _isPickupLocation: true, _pickupParentId: 'jr_denali' };

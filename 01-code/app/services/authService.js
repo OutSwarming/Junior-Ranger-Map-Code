@@ -650,6 +650,7 @@ function resetMapStyleToDefault() {
 function resetSearchAndFilterState() {
     window.BARK.activeSearchQuery = '';
     window.BARK.activeTypeFilter = 'all';
+    window.BARK.activeProgramFilter = 'all';
     if (window.BARK.activeSwagFilters && typeof window.BARK.activeSwagFilters.clear === 'function') {
         window.BARK.activeSwagFilters.clear();
     } else {
@@ -672,6 +673,7 @@ function resetSearchAndFilterState() {
     const clearSearchBtn = document.getElementById('clear-search-btn');
     const searchSuggestions = document.getElementById('search-suggestions');
     const typeFilter = document.getElementById('type-filter');
+    const programFilter = document.getElementById('program-filter');
     const visitedFilter = document.getElementById('visited-filter');
 
     if (searchInput) searchInput.value = '';
@@ -681,6 +683,7 @@ function resetSearchAndFilterState() {
         searchSuggestions.innerHTML = '';
     }
     if (typeFilter) typeFilter.value = 'all';
+    if (programFilter) programFilter.value = 'all';
     if (visitedFilter) visitedFilter.value = 'all';
 
     document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));

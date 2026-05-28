@@ -307,6 +307,10 @@ function processParsedResults(results, options = {}) {
     });
     if (!replaceResult.accepted) return false;
 
+    if (typeof window.BARK.populateProgramFilterOptions === 'function') {
+        window.BARK.populateProgramFilterOptions(newAllPoints);
+    }
+
     // Hydrate canonical counts for gamification
     if (window.gamificationEngine && newAllPoints.length > 0) {
         window.gamificationEngine.updateCanonicalCountsFromPoints(newAllPoints);

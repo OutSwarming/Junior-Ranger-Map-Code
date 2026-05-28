@@ -77,6 +77,80 @@ function matchesParkTypeFilter(parkData, activeTypeFilter) {
     return getParkAgencyFilterKey(parkData) === filter;
 }
 
+function getSpecialProgramFilterLabels(value) {
+    const seen = new Set();
+    return String(value || '')
+        .split(/[|\n;]+/)
+        .map(part => part.replace(/^\s*[-*]\s+/, '').replace(/^\s*\d+[.)]\s+/, '').trim())
+        .filter(Boolean)
+        .filter(label => {
+            const key = getProgramFilterKey(label);
+            if (!key || seen.has(key)) return false;
+            seen.add(key);
+            return true;
+        });
+}
+
+function getProgramFilterKey(label) {
+    return String(label || '').trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+function shouldShowProgramFilterLabel(label) {
+    const key = getProgramFilterKey(label);
+    return Boolean(key && key !== 'junior ranger');
+}
+
+function matchesProgramFilter(parkData, activeProgramFilter) {
+    const filterKey = getProgramFilterKey(activeProgramFilter || 'all');
+    if (!filterKey || filterKey === 'all') return true;
+
+    return getSpecialProgramFilterLabels(parkData && parkData.specialPrograms)
+        .some(label => getProgramFilterKey(label) === filterKey);
+}
+
+function getAvailableProgramFilters(points = []) {
+    const labelsByKey = new Map();
+    points.forEach(point => {
+        getSpecialProgramFilterLabels(point && point.specialPrograms).forEach(label => {
+            if (!shouldShowProgramFilterLabel(label)) return;
+            const key = getProgramFilterKey(label);
+            if (!labelsByKey.has(key)) labelsByKey.set(key, label);
+        });
+    });
+
+    return Array.from(labelsByKey.values()).sort((a, b) => a.localeCompare(b));
+}
+
+function populateProgramFilterOptions(points) {
+    const select = document.getElementById('program-filter');
+    if (!select) return;
+
+    const parkRepo = getParkRepo();
+    const sourcePoints = Array.isArray(points)
+        ? points
+        : (parkRepo && typeof parkRepo.getAll === 'function' ? parkRepo.getAll() : []);
+    const labels = getAvailableProgramFilters(sourcePoints);
+    const previousValue = select.value || window.BARK.activeProgramFilter || 'all';
+    const previousKey = getProgramFilterKey(previousValue);
+
+    select.innerHTML = '';
+    const allOption = document.createElement('option');
+    allOption.value = 'all';
+    allOption.textContent = 'All Regional/National Programs';
+    select.appendChild(allOption);
+
+    labels.forEach(label => {
+        const option = document.createElement('option');
+        option.value = label;
+        option.textContent = label;
+        select.appendChild(option);
+    });
+
+    const stillAvailable = previousKey === 'all' || labels.some(label => getProgramFilterKey(label) === previousKey);
+    select.value = stillAvailable ? previousValue : 'all';
+    window.BARK.activeProgramFilter = select.value;
+}
+
 function formatSwagLinks(text) {
     if (!text) return '';
     const urlRegex = /(https?:\/\/[^\s]+)/g;
@@ -101,6 +175,10 @@ window.BARK.getBadgeClass = getBadgeClass;
 window.BARK.getParkCategory = getParkCategory;
 window.BARK.getParkAgencyFilterKey = getParkAgencyFilterKey;
 window.BARK.matchesParkTypeFilter = matchesParkTypeFilter;
+window.BARK.getSpecialProgramFilterLabels = getSpecialProgramFilterLabels;
+window.BARK.matchesProgramFilter = matchesProgramFilter;
+window.BARK.getAvailableProgramFilters = getAvailableProgramFilters;
+window.BARK.populateProgramFilterOptions = populateProgramFilterOptions;
 window.BARK.getSwagType = getSwagType;
 window.BARK.formatSwagLinks = formatSwagLinks;
 
@@ -329,6 +407,7 @@ function getMarkerVisibilityStateKey() {
         serializeSet(window.BARK.activeSwagFilters),
         window.BARK.activeSearchQuery || '',
         window.BARK.activeTypeFilter || 'all',
+        window.BARK.activeProgramFilter || 'all',
         window.BARK.visitedFilterState || 'all',
         routeParkIds,
         visitedIds,
@@ -445,6 +524,7 @@ function updateMarkers() {
     const activeSwagFilters = window.BARK.activeSwagFilters;
     const activeSearchQuery = window.BARK.activeSearchQuery;
     const activeTypeFilter = window.BARK.activeTypeFilter;
+    const activeProgramFilter = window.BARK.activeProgramFilter;
     const visitedFilterState = window.BARK.visitedFilterState;
     const tripRouteParkIds = visitedFilterState === 'route' ? getTripRouteParkIds() : null;
     const _searchResultCache = window.BARK._searchResultCache;
@@ -489,6 +569,7 @@ function updateMarkers() {
         }
 
         const matchesType = matchesParkTypeFilter(item, activeTypeFilter);
+        const matchesProgram = matchesProgramFilter(item, activeProgramFilter);
         let matchesVisited = true;
         const isVisited = typeof window.BARK.isParkVisited === 'function'
             ? window.BARK.isParkVisited(item)
@@ -500,7 +581,7 @@ function updateMarkers() {
         // Trip stops no longer force park-marker visibility (Fix #19); the trip
         // overlay layer renders badges independently. Removing this OR-clause +
         // per-park tripDays scan is a real RAF perf win.
-        let isVisible = matchesSwag && matchesSearch && matchesType && matchesVisited;
+        let isVisible = matchesSwag && matchesSearch && matchesType && matchesProgram && matchesVisited;
 
         if (isVisible && !isPickupLocationVisible(item)) {
             isVisible = false;
@@ -556,6 +637,7 @@ function updateMarkers() {
     const currentFilterState = [
         activeSearchQuery,
         Array.from(activeSwagFilters).join(','),
+        activeProgramFilter || 'all',
         hasLongSearchQuery && searchCacheMatchesQuery && !searchCacheComplete ? 'search-partial' : 'search-complete'
     ].join('|');
 
@@ -566,7 +648,7 @@ function updateMarkers() {
         if (
             !window.stopAutoMovements &&
             searchCacheComplete &&
-            (activeSwagFilters.size > 0 || hasLongSearchQuery) &&
+            (activeSwagFilters.size > 0 || (activeProgramFilter && activeProgramFilter !== 'all') || hasLongSearchQuery) &&
             canAutoFrameBounds(map, visibleBounds, autoFramePadding)
         ) {
             map.flyToBounds(visibleBounds, {
