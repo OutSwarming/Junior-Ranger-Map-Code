@@ -119,7 +119,7 @@ window.BARK.SETTINGS_REGISTRY = Object.freeze({
     viewportCulling: {
         storageKey: 'barkViewportCulling',
         cloudKey: 'viewportCulling',
-        defaultValue: false,
+        defaultValue: true,
         label: 'Viewport Culling',
         description: 'Only attaches visible plain pins to the map layer.',
         elementId: 'toggle-viewport-culling',
