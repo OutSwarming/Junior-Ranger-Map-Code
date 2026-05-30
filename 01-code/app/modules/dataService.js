@@ -163,6 +163,13 @@ function isCanonicalParkId(id) {
     return Boolean(value && value.toLowerCase() !== 'unknown' && !isLegacyParkId(value));
 }
 
+function stripSpecialProgramInfoSection(info) {
+    return String(info || '')
+        .split(/\n{2,}/)
+        .filter(section => !/^Special programs:/i.test(String(section || '').trim()))
+        .join('\n\n');
+}
+
 function processParsedResults(results, options = {}) {
     const newAllPoints = [];
     const seenParkIds = new Set();
@@ -205,7 +212,8 @@ function processParsedResults(results, options = {}) {
                 return;
             }
 
-            const swagType = item.swagType;
+            let swagType = item.swagType;
+            let specialPrograms = item.specialPrograms;
             const parkCategory = window.BARK.getParkCategory(category);
 
             if (!id) {
@@ -243,12 +251,17 @@ function processParsedResults(results, options = {}) {
                 lat,
                 lng,
                 parkCategory,
-                specialPrograms: item.specialPrograms,
+                specialPrograms,
                 jrBooks: item.jrBooks,
                 pickupLocations: []
             };
 
             if (isPickupLocation && currentPickupParent) {
+                swagType = currentPickupParent.swagType;
+                specialPrograms = '';
+                parkData.swagType = swagType;
+                parkData.specialPrograms = specialPrograms;
+                parkData.info = stripSpecialProgramInfoSection(parkData.info);
                 parkData._isPickupLocation = true;
                 parkData._pickupParentId = currentPickupParent.id;
                 parkData._pickupParentName = currentPickupParent.name;

@@ -583,21 +583,25 @@ function renderMarkerClickPanel(context) {
     const metaContainer = document.getElementById('panel-meta-container');
     if (metaContainer) {
         clearElement(metaContainer);
-        if (d.swagType && d.swagType !== 'Special Programs') {
-            metaContainer.appendChild(createMetaPill('', d.swagType, 'Junior Ranger'));
+        if (d._isPickupLocation) {
+            metaContainer.scrollLeft = 0;
+        } else {
+            if (d.swagType && d.swagType !== 'Special Programs') {
+                metaContainer.appendChild(createMetaPill('', d.swagType, 'Junior Ranger'));
+            }
+            const specialProgramLabels = getSpecialProgramLabels(d.specialPrograms, bookLinks);
+            specialProgramLabels.forEach(({ label, url }) => {
+                metaContainer.appendChild(createMetaPill('', label, label, url));
+            });
+            getBookCatalogLabels(bookLinks, specialProgramLabels.map(item => item.label)).forEach(({ label, url }) => {
+                metaContainer.appendChild(createMetaPill('', label, label, url));
+            });
+            if (!d.specialPrograms) {
+                metaContainer.appendChild(createMetaPill('', 'Site-Specific Book', 'Site-Specific Book', bookLinks[0] && bookLinks[0].url));
+                metaContainer.appendChild(createMetaPill('', d.state, 'Location'));
+            }
+            metaContainer.scrollLeft = 0;
         }
-        const specialProgramLabels = getSpecialProgramLabels(d.specialPrograms, bookLinks);
-        specialProgramLabels.forEach(({ label, url }) => {
-            metaContainer.appendChild(createMetaPill('', label, label, url));
-        });
-        getBookCatalogLabels(bookLinks, specialProgramLabels.map(item => item.label)).forEach(({ label, url }) => {
-            metaContainer.appendChild(createMetaPill('', label, label, url));
-        });
-        if (!d.specialPrograms) {
-            metaContainer.appendChild(createMetaPill('', 'Site-Specific Book', 'Site-Specific Book', bookLinks[0] && bookLinks[0].url));
-            metaContainer.appendChild(createMetaPill('', d.state, 'Location'));
-        }
-        metaContainer.scrollLeft = 0;
     }
 
     buildPrimaryActions(d, bookLinks);

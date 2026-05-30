@@ -100,17 +100,27 @@ function shouldShowProgramFilterLabel(label) {
     return Boolean(key && key !== 'junior ranger');
 }
 
+function getProgramFilterSourcePoint(parkData) {
+    if (!parkData || !parkData._isPickupLocation || !parkData._pickupParentId) return parkData;
+    const parkRepo = getParkRepo();
+    return parkRepo && typeof parkRepo.getById === 'function'
+        ? (parkRepo.getById(parkData._pickupParentId) || parkData)
+        : parkData;
+}
+
 function matchesProgramFilter(parkData, activeProgramFilter) {
     const filterKey = getProgramFilterKey(activeProgramFilter || 'all');
     if (!filterKey || filterKey === 'all') return true;
 
-    return getSpecialProgramFilterLabels(parkData && parkData.specialPrograms)
+    const sourcePoint = getProgramFilterSourcePoint(parkData);
+    return getSpecialProgramFilterLabels(sourcePoint && sourcePoint.specialPrograms)
         .some(label => getProgramFilterKey(label) === filterKey);
 }
 
 function getAvailableProgramFilters(points = []) {
     const labelsByKey = new Map();
     points.forEach(point => {
+        if (point && point._isPickupLocation) return;
         getSpecialProgramFilterLabels(point && point.specialPrograms).forEach(label => {
             if (!shouldShowProgramFilterLabel(label)) return;
             const key = getProgramFilterKey(label);

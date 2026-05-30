@@ -156,9 +156,9 @@ test('data service groups parenthesized rows as hidden pickup locations under th
 
     harness.sandbox.window.BARK.parseCSVString([
         'siteID,siteName,siteInfo,jrBooks,latitude,longitude,state,agency,officialGovWebsite,badgePictures,specialPrograms',
-        'jr_denali,Denali NP & Pr,Main book,Junior Ranger,63.7281,-148.8860,Alaska,NPS,https://www.nps.gov/dena,,',
-        'jr_denali_visitor,(Denali Visitor Center),Pickup spot,Junior Ranger,63.7300,-148.9190,Alaska,NPS,https://www.nps.gov/dena,,',
-        'jr_denali_talkeetna,(Walter Harper Talkeetna Ranger Station),Pickup spot,Junior Ranger,62.3230,-150.1090,Alaska,NPS,https://www.nps.gov/dena,,',
+        'jr_denali,Denali NP & Pr,Main book,Junior Ranger,63.7281,-148.8860,Alaska,NPS,https://www.nps.gov/dena,,Night Explorer',
+        'jr_denali_visitor,(Denali Visitor Center),Pickup spot,Junior Ranger,63.7300,-148.9190,Alaska,NPS,https://www.nps.gov/dena,,Night Explorer',
+        'jr_denali_talkeetna,(Walter Harper Talkeetna Ranger Station),Pickup spot,Junior Ranger,62.3230,-150.1090,Alaska,NPS,https://www.nps.gov/dena,,Junior Angler',
         'jr_eagle,Eagle River Nature Center,Separate place,Rodak Ranger,61.2360,-149.2700,Alaska,State,https://example.test,,'
     ].join('\n'));
 
@@ -175,7 +175,12 @@ test('data service groups parenthesized rows as hidden pickup locations under th
     ]);
     assert.equal(visitorCenter._isPickupLocation, true);
     assert.equal(visitorCenter._pickupParentId, 'jr_denali');
+    assert.equal(visitorCenter.swagType, 'Special Programs');
+    assert.equal(visitorCenter.specialPrograms, '');
+    assert.doesNotMatch(visitorCenter.info, /Special programs:/);
     assert.equal(talkeetna._pickupParentName, 'Denali NP & Pr');
+    assert.equal(talkeetna.specialPrograms, '');
+    assert.equal(denali.specialPrograms, 'Night Explorer');
     assert.match(denali._cachedPickupSearchText, /talkeetna/);
     assert.deepEqual(eagleRiver.pickupLocations, []);
 });
