@@ -195,11 +195,14 @@ test('park type filter supports expanded agency categories', () => {
 test('program filter uses regional and national tags from specialPrograms', () => {
     const bark = loadRenderEngineHelpers();
     const masterPoint = { id: 'jr_denali', specialPrograms: 'Night Explorer | Junior Angler' };
-    const childPickup = { _isPickupLocation: true, _pickupParentId: 'jr_denali', specialPrograms: '' };
+    const childPickup = { _isPickupLocation: true, _pickupParentId: 'jr_denali', specialPrograms: 'Junior Angler' };
     const points = [
         masterPoint,
         childPickup,
-        { specialPrograms: 'Underwater Explorer\nJunior Forest Ranger' },
+        { id: 'jr_big_bend', specialPrograms: 'Night Explorer\nUnderwater Explorer' },
+        { id: 'jr_biscayne', specialPrograms: 'Night Explorer\nUnderwater Explorer' },
+        { id: 'jr_channel_islands', specialPrograms: 'Underwater Explorer' },
+        { id: 'jr_single_forest', specialPrograms: 'Junior Forest Ranger' },
         { specialPrograms: 'Junior Ranger' }
     ];
     bark.repos = {
@@ -211,13 +214,12 @@ test('program filter uses regional and national tags from specialPrograms', () =
     };
 
     assert.deepEqual(bark.getAvailableProgramFilters(points), [
-        'Junior Angler',
-        'Junior Forest Ranger',
         'Night Explorer',
         'Underwater Explorer'
     ]);
     assert.equal(bark.matchesProgramFilter(points[0], 'Night Explorer'), true);
     assert.equal(bark.matchesProgramFilter(childPickup, 'Night Explorer'), true);
+    assert.equal(bark.matchesProgramFilter(childPickup, 'Junior Angler'), true);
     assert.equal(bark.matchesProgramFilter(childPickup, 'Underwater Explorer'), false);
     assert.equal(bark.matchesProgramFilter(points[2], 'all'), true);
 });

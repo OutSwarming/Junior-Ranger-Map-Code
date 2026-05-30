@@ -100,6 +100,8 @@ function shouldShowProgramFilterLabel(label) {
     return Boolean(key && key !== 'junior ranger');
 }
 
+const MIN_PROGRAM_FILTER_PARKS = 3;
+
 function getProgramFilterSourcePoint(parkData) {
     if (!parkData || !parkData._isPickupLocation || !parkData._pickupParentId) return parkData;
     const parkRepo = getParkRepo();
@@ -119,16 +121,28 @@ function matchesProgramFilter(parkData, activeProgramFilter) {
 
 function getAvailableProgramFilters(points = []) {
     const labelsByKey = new Map();
+    const parkIdsByKey = new Map();
     points.forEach(point => {
         if (point && point._isPickupLocation) return;
+        const pointProgramKeys = new Set();
         getSpecialProgramFilterLabels(point && point.specialPrograms).forEach(label => {
             if (!shouldShowProgramFilterLabel(label)) return;
             const key = getProgramFilterKey(label);
             if (!labelsByKey.has(key)) labelsByKey.set(key, label);
+            pointProgramKeys.add(key);
+        });
+
+        const pointId = (point && point.id) || point;
+        pointProgramKeys.forEach(key => {
+            if (!parkIdsByKey.has(key)) parkIdsByKey.set(key, new Set());
+            parkIdsByKey.get(key).add(pointId);
         });
     });
 
-    return Array.from(labelsByKey.values()).sort((a, b) => a.localeCompare(b));
+    return Array.from(labelsByKey.entries())
+        .filter(([key]) => (parkIdsByKey.get(key) || new Set()).size >= MIN_PROGRAM_FILTER_PARKS)
+        .map(([, label]) => label)
+        .sort((a, b) => a.localeCompare(b));
 }
 
 function populateProgramFilterOptions(points) {
