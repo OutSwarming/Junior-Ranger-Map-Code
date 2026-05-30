@@ -177,9 +177,12 @@ test('data service groups parenthesized rows as hidden pickup locations under th
     assert.equal(visitorCenter._pickupParentId, 'jr_denali');
     assert.equal(visitorCenter.swagType, 'Special Programs');
     assert.equal(visitorCenter.specialPrograms, '');
+    assert.equal(visitorCenter.jrBooks, '');
     assert.doesNotMatch(visitorCenter.info, /Special programs:/);
+    assert.doesNotMatch(visitorCenter.info, /Junior Ranger books:/);
     assert.equal(talkeetna._pickupParentName, 'Denali NP & Pr');
     assert.equal(talkeetna.specialPrograms, '');
+    assert.equal(talkeetna.jrBooks, '');
     assert.equal(denali.specialPrograms, 'Night Explorer');
     assert.match(denali._cachedPickupSearchText, /talkeetna/);
     assert.deepEqual(eagleRiver.pickupLocations, []);
@@ -190,9 +193,9 @@ test('data service groups live catalog child names generated from parenthetical 
 
     harness.sandbox.window.BARK.parseCSVString([
         'siteID,siteName,siteInfo,jrBooks,latitude,longitude,state,agency,officialGovWebsite,badgePictures,specialPrograms',
-        'jr_alaska_denali_np_and_pr,Denali NP & Pr,Main book,Junior Ranger,63.0691689,-151.0069842,Alaska,NPS,https://www.nps.gov/dena,,',
-        'jr_alaska_denali_np_and_pr_denali_visitor_center,Denali NP & Pr - Denali Visitor Center,Pickup spot,Junior Ranger,63.7308550,-148.9170622,Alaska,NPS,https://www.nps.gov/dena,,',
-        'jr_alaska_denali_np_and_pr_eielson_visitor_center,Denali NP & Pr - Eielson Visitor Center,Pickup spot,Junior Ranger,63.4309992,-150.3114272,Alaska,NPS,https://www.nps.gov/dena,,'
+        'jr_alaska_denali_np_and_pr,Denali NP & Pr,Main book,Junior Ranger,63.0691689,-151.0069842,Alaska,NPS,https://www.nps.gov/dena,,Night Explorer',
+        'jr_alaska_denali_np_and_pr_denali_visitor_center,Denali NP & Pr - Denali Visitor Center,Pickup spot,Ocean Stewards Junior Ranger: https://example.test/ocean.pdf,63.7308550,-148.9170622,Alaska,NPS,https://www.nps.gov/dena,,Ocean Stewards Junior Ranger',
+        'jr_alaska_denali_np_and_pr_eielson_visitor_center,Denali NP & Pr - Eielson Visitor Center,Pickup spot,World Heritage Junior Ranger: https://example.test/world.pdf,63.4309992,-150.3114272,Alaska,NPS,https://www.nps.gov/dena,,World Heritage Junior Ranger'
     ].join('\n'));
 
     const publishedPoints = harness.getPublishedPoints();
@@ -203,8 +206,12 @@ test('data service groups live catalog child names generated from parenthetical 
         'Denali Visitor Center',
         'Eielson Visitor Center'
     ]);
+    assert.equal(denali.specialPrograms, 'Night Explorer');
     assert.equal(eielson._isPickupLocation, true);
     assert.equal(eielson._pickupParentId, 'jr_alaska_denali_np_and_pr');
+    assert.equal(eielson.specialPrograms, '');
+    assert.equal(eielson.jrBooks, '');
+    assert.doesNotMatch(eielson.info, /World Heritage/);
 });
 
 test('data service caches only authoritative Junior Ranger master spreadsheet data', () => {

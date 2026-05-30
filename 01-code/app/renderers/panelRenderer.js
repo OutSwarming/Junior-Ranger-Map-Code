@@ -287,6 +287,10 @@ function getBookLinks(place = {}) {
     });
 }
 
+function getRenderableBookLinks(place = {}) {
+    return place && place._isPickupLocation ? [] : getBookLinks(place);
+}
+
 function createPanelButton({ text, className = '', href = '', onClick = null, actionKey = '' }) {
     const element = href ? document.createElement('a') : document.createElement('button');
     element.className = `panel-action-btn ${className}`.trim();
@@ -427,6 +431,13 @@ function renderBookSection(place, bookLinks, websiteUrls) {
     const linksContainer = document.getElementById('panel-book-links');
     if (!section || !linksContainer) return;
 
+    if (place && place._isPickupLocation) {
+        section.style.display = 'none';
+        clearElement(linksContainer);
+        if (count) count.textContent = '';
+        return;
+    }
+
     section.style.display = 'block';
     clearElement(linksContainer);
     if (count) count.textContent = bookLinks.length ? `${bookLinks.length} Link${bookLinks.length === 1 ? '' : 's'}` : 'Needed';
@@ -519,6 +530,7 @@ function buildMapSearchUrl(name, lat, lng, provider) {
 window.BARK.panelRendererSafety = {
     getBookCatalogLabels,
     getBookLinks,
+    getRenderableBookLinks,
     getSafeHttpUrls,
     getSpecialProgramLabels,
     openFreeVisitLimitPaywall,
@@ -565,7 +577,7 @@ function renderMarkerClickPanel(context) {
 
     const d = marker._parkData;
     const displayName = getDisplayPlaceName(d);
-    const bookLinks = getBookLinks(d);
+    const bookLinks = getRenderableBookLinks(d);
     const websiteUrls = getSafeHttpUrls(d.website || '');
 
     if (titleEl) titleEl.textContent = displayName;

@@ -139,6 +139,21 @@ test('marker panel does not duplicate generic Junior Ranger book and tag pills',
     assert.deepEqual(catalogLabels, []);
 });
 
+test('pickup location panel helpers suppress child book and tag links', () => {
+    const safety = loadPanelRendererSafety();
+    const pickupLinks = safety.getRenderableBookLinks({
+        _isPickupLocation: true,
+        jrBooks: 'Ocean Stewards Junior Ranger: https://example.test/ocean.pdf'
+    });
+    const masterLinks = safety.getRenderableBookLinks({
+        jrBooks: 'Ocean Stewards Junior Ranger: https://example.test/ocean.pdf'
+    });
+
+    assert.deepEqual(pickupLinks, []);
+    assert.equal(masterLinks.length, 1);
+    assert.equal(masterLinks[0].label, 'Ocean Stewards Junior Ranger');
+});
+
 test('free visit limit uses premium paywall modal instead of browser alert when available', () => {
     const safety = loadPanelRendererSafety();
 

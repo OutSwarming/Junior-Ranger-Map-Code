@@ -163,10 +163,13 @@ function isCanonicalParkId(id) {
     return Boolean(value && value.toLowerCase() !== 'unknown' && !isLegacyParkId(value));
 }
 
-function stripSpecialProgramInfoSection(info) {
+function stripPickupLocationInfoSections(info) {
     return String(info || '')
         .split(/\n{2,}/)
-        .filter(section => !/^Special programs:/i.test(String(section || '').trim()))
+        .filter(section => {
+            const text = String(section || '').trim();
+            return !/^Special programs:/i.test(text) && !/^Junior Ranger books:/i.test(text);
+        })
         .join('\n\n');
 }
 
@@ -261,7 +264,8 @@ function processParsedResults(results, options = {}) {
                 specialPrograms = '';
                 parkData.swagType = swagType;
                 parkData.specialPrograms = specialPrograms;
-                parkData.info = stripSpecialProgramInfoSection(parkData.info);
+                parkData.jrBooks = '';
+                parkData.info = stripPickupLocationInfoSections(parkData.info);
                 parkData._isPickupLocation = true;
                 parkData._pickupParentId = currentPickupParent.id;
                 parkData._pickupParentName = currentPickupParent.name;
