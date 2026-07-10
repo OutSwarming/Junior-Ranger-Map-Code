@@ -20,6 +20,10 @@ admin.initializeApp();
 const JUNIOR_RANGER_CATALOG_CACHE_TTL_MS = 4 * 60 * 1000;
 const juniorRangerCatalogCache = new Map();
 
+function shouldBypassJuniorRangerCatalogCache(query = {}) {
+    return Boolean(query && (query.cache_bypass || query.no_cache || query.refresh));
+}
+
 // Keep admin callables compatible with the current admin page. The backend
 // still enforces signed-in admin status plus per-admin rate limits.
 const ADMIN_CALLABLE_OPTIONS = {};
@@ -2285,9 +2289,10 @@ async function handleJuniorRangerCatalogRequest(req, res) {
     const stateQuery = String((req.query && req.query.state) || '').trim();
     const requestedState = stateQuery && !/^all$/i.test(stateQuery) ? stateQuery : '';
     const cacheKey = requestedState ? `state:${requestedState.toLowerCase()}` : 'all';
+    const shouldBypassCache = shouldBypassJuniorRangerCatalogCache(req.query);
     const cached = juniorRangerCatalogCache.get(cacheKey);
 
-    if (cached && cached.expiresAt > Date.now()) {
+    if (!shouldBypassCache && cached && cached.expiresAt > Date.now()) {
         res.set('Cache-Control', 'public, max-age=60');
         res.set('X-Junior-Ranger-Catalog-Source', 'master-spreadsheet');
         res.set('X-Junior-Ranger-Catalog-Cache', 'hit');
@@ -2335,9 +2340,9 @@ async function handleJuniorRangerCatalogRequest(req, res) {
             csv,
             expiresAt: Date.now() + JUNIOR_RANGER_CATALOG_CACHE_TTL_MS
         });
-        res.set('Cache-Control', 'public, max-age=60');
+        res.set('Cache-Control', shouldBypassCache ? 'no-store' : 'public, max-age=60');
         res.set('X-Junior-Ranger-Catalog-Source', 'master-spreadsheet');
-        res.set('X-Junior-Ranger-Catalog-Cache', 'miss');
+        res.set('X-Junior-Ranger-Catalog-Cache', shouldBypassCache ? 'bypass' : 'miss');
         res.type('text/csv; charset=utf-8').status(200).send(csv);
     } catch (error) {
         console.error('[juniorRangerCatalog] Failed to read source sheet:', {
@@ -2398,6 +2403,7 @@ if (process.env.NODE_ENV === "test") {
         handleLemonSqueezyWebhook,
         calculateServerLeaderboardScore,
         handleSyncLeaderboardScore,
+        shouldBypassJuniorRangerCatalogCache,
         handleJuniorRangerCatalogRequest
     };
 }

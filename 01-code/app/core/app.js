@@ -139,6 +139,21 @@
         }
     }
 
+    function startDataLoadEarly() {
+        if (window.BARK._dataLoadStarted) return;
+        window.BARK._dataLoadStarted = true;
+
+        try {
+            if (typeof window.BARK.loadData === 'function') {
+                window.BARK.loadData();
+                console.log('  ✓ Pin data loading started');
+            }
+        } catch (err) {
+            _bootErrors.push('loadData');
+            console.error('[Junior Ranger Boot] "loadData" failed — map may be empty.', err);
+        }
+    }
+
     // async so we can await each callInit and preserve boot order even for future async inits.
     document.addEventListener('DOMContentLoaded', async () => {
         console.log('Junior Ranger Boot Sequence: Initializing...');
@@ -164,7 +179,11 @@
         //    updateTripUI() call has a sync target. No-ops cleanly if map failed.
         await callInit('initTripLayer', 'Trip overlay layer initialized');
 
-        // 3. Controllers and UI
+        // 3. Start pin data immediately after map layers exist. This lets cached
+        //    or bundled pins paint while auth/UI features continue booting.
+        startDataLoadEarly();
+
+        // 4. Controllers and UI
         await callInit('initSettings', 'Settings initialized');
         await callInit('initUI', 'UI initialized');
         await callInit('initSearchEngine', 'Search engine bound');
@@ -177,7 +196,7 @@
         await callInit('initQRCode', 'QR code initialized');
         await callInit('initCSVExport', 'Share engine initialized');
 
-        // 4. Firebase — separate try/catch because a throw here means auth is gone,
+        // 5. Firebase — separate try/catch because a throw here means auth is gone,
         //    not just one feature. Named clearly so the console error is unambiguous.
         try {
             if (window.BARK.services && window.BARK.services.auth) {
@@ -188,14 +207,6 @@
             _bootErrors.push('initFirebase');
             console.error('[Junior Ranger Boot] "initFirebase" failed — auth and cloud sync unavailable.', err);
             showAuthFailure('Sign-in failed during startup. Cloud sync and saved progress are offline for this session.');
-        }
-
-        // 5. Data loading — loadData handles cache hydration, immediate fetch, and polling schedule
-        try {
-            if (typeof window.BARK.loadData === 'function') window.BARK.loadData();
-        } catch (err) {
-            _bootErrors.push('loadData');
-            console.error('[Junior Ranger Boot] "loadData" failed — map may be empty.', err);
         }
 
         // 6. Deferred non-critical initializations

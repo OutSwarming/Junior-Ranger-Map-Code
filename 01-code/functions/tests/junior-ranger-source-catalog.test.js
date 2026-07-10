@@ -8,6 +8,11 @@ const {
     catalogRowsToCsv,
     extractCatalogRowsFromGrid
 } = require('../lib/juniorRangerSourceCatalog');
+const {
+    __test: {
+        shouldBypassJuniorRangerCatalogCache
+    }
+} = require('../index');
 
 function cell(value, options = {}) {
     const out = { formattedValue: value };
@@ -49,6 +54,14 @@ test('buildStateSheetRanges includes state tabs and skips non-source tabs', () =
         buildStateSheetRanges(['Alabama', 'Canada', 'Color Coding', 'Washington, DC', 'Wyoming']),
         ["'Alabama'!A:H", "'Washington, DC'!A:H", "'Wyoming'!A:H"]
     );
+});
+
+test('shouldBypassJuniorRangerCatalogCache treats refresh query params as cache bypasses', () => {
+    assert.equal(shouldBypassJuniorRangerCatalogCache({}), false);
+    assert.equal(shouldBypassJuniorRangerCatalogCache({ state: 'Alabama' }), false);
+    assert.equal(shouldBypassJuniorRangerCatalogCache({ cache_bypass: '123' }), true);
+    assert.equal(shouldBypassJuniorRangerCatalogCache({ no_cache: '1' }), true);
+    assert.equal(shouldBypassJuniorRangerCatalogCache({ refresh: 'true' }), true);
 });
 
 test('extractCatalogRowsFromGrid publishes Alabama rows with tag links and skips purple trail rows', () => {
