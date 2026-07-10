@@ -68,7 +68,7 @@
 
     function dismissLoaderForMapFailure() {
         if (typeof window.dismissBarkLoader === 'function') {
-            window.dismissBarkLoader();
+            window.dismissBarkLoader({ force: true });
             return;
         }
 

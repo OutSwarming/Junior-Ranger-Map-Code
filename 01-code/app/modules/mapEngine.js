@@ -7,17 +7,62 @@ window.BARK = window.BARK || {};
 
 // ====== LOADER DISMISSAL — MODULE SCOPE ======
 // Defined here, outside initMap(), so it is always available even if initMap() throws
-// (e.g. Leaflet CDN failure). authService.js calls this after Firebase auth resolves.
-window.dismissBarkLoader = function () {
+// (e.g. Leaflet CDN failure). Keep the loader up until pins exist so users do
+// not see an empty map while the sheet/fallback race is still in flight.
+const BARK_LOADER_MAX_WAIT_MS = 45000;
+const BARK_LOADER_CHECK_MS = 250;
+let barkLoaderStartedAt = Date.now();
+let barkLoaderDismissPending = false;
+let barkLoaderCheckTimer = null;
+
+function hasRenderablePins() {
+    const markerManager = window.BARK && window.BARK.markerManager;
+    if (markerManager && markerManager.markers instanceof Map && markerManager.markers.size > 0) return true;
+
+    const parkRepo = window.BARK && window.BARK.repos && window.BARK.repos.ParkRepo;
+    return Boolean(parkRepo && typeof parkRepo.getAll === 'function' && parkRepo.getAll().length > 0);
+}
+
+function removeBarkLoader() {
     const loader = document.getElementById('bark-loader');
     if (loader && loader.style.opacity !== '0') {
         loader.style.opacity = '0';
         setTimeout(() => loader.remove(), 600);
     }
+}
+
+function scheduleBarkLoaderCheck() {
+    if (barkLoaderCheckTimer) return;
+    barkLoaderCheckTimer = setTimeout(() => {
+        barkLoaderCheckTimer = null;
+        window.dismissBarkLoader();
+    }, BARK_LOADER_CHECK_MS);
+}
+
+window.dismissBarkLoader = function (options = {}) {
+    const force = options.force === true;
+    if (force || hasRenderablePins()) {
+        removeBarkLoader();
+        return;
+    }
+
+    barkLoaderDismissPending = true;
+    if (Date.now() - barkLoaderStartedAt >= BARK_LOADER_MAX_WAIT_MS) {
+        removeBarkLoader();
+        return;
+    }
+
+    scheduleBarkLoaderCheck();
 };
 
-// Safety fallback: if Firebase auth never resolves, dismiss after 8s unconditionally.
-setTimeout(() => window.dismissBarkLoader(), 8000);
+window.BARK.notifyPinsRendered = function () {
+    if (barkLoaderDismissPending || document.getElementById('bark-loader')) {
+        window.dismissBarkLoader();
+    }
+};
+
+// Safety fallback: keep the loader longer than the old 8s, but do not trap users forever.
+setTimeout(() => window.dismissBarkLoader({ force: true }), BARK_LOADER_MAX_WAIT_MS);
 
 // ====== BATCH CSS CLASS APPLICATION ======
 /**

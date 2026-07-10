@@ -643,6 +643,10 @@ function updateMarkers() {
         window.BARK.markerManager.applyVisibility(allPoints, { forceReset: forceLayerReset });
     }
 
+    if (allPoints.length > 0 && typeof window.BARK.notifyPinsRendered === 'function') {
+        window.BARK.notifyPinsRendered();
+    }
+
     // 🏭 BATCH: Apply visited-pin class (avoids interleaved read/write layout thrash)
     markerClassUpdates.forEach(({ icon, isVisited }) => {
         icon.classList.toggle('visited-pin', isVisited);
