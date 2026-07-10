@@ -59,7 +59,7 @@ test('extractCatalogRowsFromGrid publishes Alabama rows with tag links and skips
             cell('', { color: { blue: 1 } }),
             cell('Birmingham Civil Rights NM'),
             cell('Junior Ranger', { link: 'https://example.com/birmingham-book.pdf' }),
-            {},
+            cell('Yes'),
             cell('33.515'),
             cell('-86.809'),
             cell('jr_birmingham_civil_rights_nm')
@@ -85,7 +85,7 @@ test('extractCatalogRowsFromGrid publishes Alabama rows with tag links and skips
             cell('', { color: { green: 1 } }),
             cell('Wheeler NWR'),
             cell('Junior Ranger'),
-            {},
+            cell('No'),
             cell('34.548'),
             cell('-86.951'),
             cell('jr_wheeler_nwr')
@@ -100,12 +100,14 @@ test('extractCatalogRowsFromGrid publishes Alabama rows with tag links and skips
         'jr_wheeler_nwr'
     ]);
     assert.equal(rows[0].agency, 'NPS');
+    assert.equal(rows[0].siteSpecific, 'Yes');
     assert.equal(rows[0].specialPrograms, 'Junior Ranger | Civil Rights Explorer');
     assert.equal(
         rows[0].jrBooks,
         'Junior Ranger: https://example.com/birmingham-book.pdf\nCivil Rights Explorer: https://example.com/civil-rights-explorer.pdf'
     );
     assert.equal(rows[1].agency, 'US Fish & Wildlife Service');
+    assert.equal(rows[1].siteSpecific, 'No');
 });
 
 test('extractCatalogRowsFromGrid publishes every state tab when no state is requested', () => {

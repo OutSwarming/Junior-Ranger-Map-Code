@@ -9,6 +9,7 @@ const SOURCE_COLUMNS = Object.freeze({
     color: 1,
     name: 2,
     tag: 3,
+    siteSpecific: 4,
     latitude: 5,
     longitude: 6,
     siteId: 7
@@ -29,6 +30,7 @@ const TARGET_HEADERS = Object.freeze([
     'officialGovWebsite',
     'websiteLinks',
     'lastUpdated',
+    'siteSpecific',
     'specialPrograms'
 ]);
 
@@ -218,6 +220,13 @@ function isFiniteCoordinate(value) {
     return Number.isFinite(number);
 }
 
+function normalizeSiteSpecificValue(value) {
+    const normalized = cleanValue(value).toLowerCase();
+    if (normalized === 'yes' || normalized === 'y' || normalized === 'true') return 'Yes';
+    if (normalized === 'no' || normalized === 'n' || normalized === 'false') return 'No';
+    return '';
+}
+
 function normalizeTagLabel(value) {
     return cleanValue(value)
         .replace(/\s+/g, ' ')
@@ -290,6 +299,7 @@ function createEntry({
     latitude,
     longitude,
     siteId,
+    siteSpecific,
     parentName = '',
     isAcrossSection = false
 }) {
@@ -312,6 +322,7 @@ function createEntry({
         latitude: coordinateOverride ? coordinateOverride.latitude : cleanValue(latitude),
         longitude: coordinateOverride ? coordinateOverride.longitude : cleanValue(longitude),
         siteId: resolvedSiteId,
+        siteSpecific: normalizeSiteSpecificValue(siteSpecific),
         isAcrossSection: isAcrossSection === true,
         isTradingCardsBlock: false,
         tags: []
@@ -355,6 +366,7 @@ function extractCatalogRowsFromGrid(spreadsheet, options = {}) {
             const stateText = getCellText(values[SOURCE_COLUMNS.state]);
             const name = getCellText(values[SOURCE_COLUMNS.name]);
             const tag = getCellText(values[SOURCE_COLUMNS.tag]);
+            const siteSpecific = getCellText(values[SOURCE_COLUMNS.siteSpecific]);
             const color = getCellColor(values[SOURCE_COLUMNS.color]);
             const latitude = getCellText(values[SOURCE_COLUMNS.latitude]);
             const longitude = getCellText(values[SOURCE_COLUMNS.longitude]);
@@ -390,6 +402,7 @@ function extractCatalogRowsFromGrid(spreadsheet, options = {}) {
                     latitude,
                     longitude,
                     siteId,
+                    siteSpecific,
                     parentName,
                     isAcrossSection
                 });
@@ -430,6 +443,7 @@ function extractCatalogRowsFromGrid(spreadsheet, options = {}) {
             officialGovWebsite: '',
             websiteLinks: '',
             lastUpdated: options.today || new Date().toISOString().slice(0, 10),
+            siteSpecific: entry.siteSpecific,
             specialPrograms: tagPayload.specialPrograms
         };
     });

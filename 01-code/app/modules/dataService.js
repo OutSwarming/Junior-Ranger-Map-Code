@@ -18,6 +18,7 @@ const CSV_COLUMNS = {
     TYPE: ['agency', 'Type'],
     INFO: ['siteInfo', 'Useful/Important/Other Info'],
     JR_BOOKS: ['jrBooks'],
+    SITE_SPECIFIC: ['siteSpecific', 'Site Specific'],
     SPECIAL_PROGRAMS: ['specialPrograms'],
     WEBSITE: ['officialGovWebsite', 'websiteLinks', 'Website'],
     PICS: ['badgePictures', 'Swag Pics - If available, and may not be current.'],
@@ -30,7 +31,9 @@ const CSV_COLUMNS = {
 
 const SWAG_TYPE_COLUMNS = ['Swag Type', 'Swag', 'Swag Available'];
 const LIVE_SOURCE_CSV_URL = '/api/junior-ranger-catalog';
+const STATIC_FALLBACK_CSV_URL = 'assets/data/jr-fallback.csv';
 const AUTHORITATIVE_DATA_SOURCE = 'junior-ranger-master-spreadsheet';
+const STATIC_FALLBACK_DATA_SOURCE = 'bundled-static-fallback';
 const DATA_REFRESH_INTERVAL_MS = 5 * 60 * 1000;
 const DATA_CACHE_KEY = 'juniorRangerCSV';
 const DATA_CACHE_TIME_KEY = 'juniorRangerCSV_time';
@@ -83,6 +86,13 @@ function normalizeSwagType(value) {
     return window.BARK.getSwagType(value);
 }
 
+function normalizeSiteSpecificFlag(value) {
+    const normalized = cleanCSVValue(value).toLowerCase();
+    if (['yes', 'y', 'true'].includes(normalized)) return 'Yes';
+    if (['no', 'n', 'false'].includes(normalized)) return 'No';
+    return '';
+}
+
 function isJuniorRangerRow(row) {
     return Boolean(getCSVColumnKey(row, 'siteID') || getCSVColumnKey(row, 'siteName'));
 }
@@ -125,7 +135,8 @@ function normalizeCSVRow(rawItem) {
     const info = isJuniorRanger ? buildJuniorRangerInfo(row) : getCSVValue(row, CSV_COLUMNS.INFO);
     const explicitSwag = getFirstPresentCSVValue(row, SWAG_TYPE_COLUMNS);
     const specialPrograms = getCSVValue(row, CSV_COLUMNS.SPECIAL_PROGRAMS);
-    const jrSwagType = specialPrograms ? 'Special Programs' : 'Junior Ranger';
+    const siteSpecific = normalizeSiteSpecificFlag(getCSVValue(row, CSV_COLUMNS.SITE_SPECIFIC));
+    const jrSwagType = siteSpecific === 'Yes' ? 'Junior Ranger' : 'Special Programs';
 
     return {
         parkId: getCSVValue(row, CSV_COLUMNS.PARK_ID),
@@ -141,6 +152,7 @@ function normalizeCSVRow(rawItem) {
         lng: getCSVValue(row, CSV_COLUMNS.LNG),
         address: getCSVValue(row, CSV_COLUMNS.ADDRESS),
         historyTimelineInfo: getCSVValue(row, CSV_COLUMNS.HISTORY),
+        siteSpecific,
         specialPrograms,
         jrBooks: getCSVValue(row, CSV_COLUMNS.JR_BOOKS),
         swagType: isJuniorRanger
@@ -254,6 +266,7 @@ function processParsedResults(results, options = {}) {
                 lat,
                 lng,
                 parkCategory,
+                siteSpecific: item.siteSpecific,
                 specialPrograms,
                 jrBooks: item.jrBooks,
                 pickupLocations: []
@@ -263,6 +276,7 @@ function processParsedResults(results, options = {}) {
                 swagType = currentPickupParent.swagType;
                 specialPrograms = '';
                 parkData.swagType = swagType;
+                parkData.siteSpecific = currentPickupParent.siteSpecific;
                 parkData.specialPrograms = specialPrograms;
                 parkData.jrBooks = '';
                 parkData.info = stripPickupLocationInfoSections(parkData.info);
@@ -420,7 +434,8 @@ function parseCSVStringAsPromise(csvString, options = {}) {
     });
 }
 
-function buildLiveSourceUrl() {
+function buildLiveSourceUrl(options = {}) {
+    if (options.cacheBypass !== true) return LIVE_SOURCE_CSV_URL;
     const separator = LIVE_SOURCE_CSV_URL.includes('?') ? '&' : '?';
     return `${LIVE_SOURCE_CSV_URL}${separator}cache_bypass=${Date.now()}`;
 }
@@ -429,15 +444,15 @@ function startDataRefreshTimer() {
     if (dataRefreshTimer || window.location.protocol === 'file:') return;
     dataRefreshTimer = setInterval(() => {
         if (document.hidden || !navigator.onLine) return;
-        loadLiveSourceData('scheduled sheet refresh');
+        loadLiveSourceData('scheduled sheet refresh', { cacheBypass: true, requestCache: 'no-store' });
     }, DATA_REFRESH_INTERVAL_MS);
 }
 
-function loadLiveSourceData(reason = 'live sheet source') {
+function loadLiveSourceData(reason = 'live sheet source', options = {}) {
     if (window.location.protocol === 'file:' || !navigator.onLine) return Promise.resolve(false);
     if (liveDataRefreshInFlight) return liveDataRefreshInFlight;
 
-    liveDataRefreshInFlight = fetch(buildLiveSourceUrl(), { cache: 'no-store' })
+    liveDataRefreshInFlight = fetch(buildLiveSourceUrl(options), { cache: options.requestCache || 'default' })
         .then(res => {
             if (!res.ok) throw new Error(`Live source response was not ok: ${res.status}`);
             return res.text();
@@ -477,9 +492,31 @@ function loadLiveSourceData(reason = 'live sheet source') {
 window.BARK.loadLiveSourceData = loadLiveSourceData;
 window.BARK.startDataRefreshTimer = startDataRefreshTimer;
 
-function loadStaticFallbackData(reason = 'unknown') {
-    console.warn(`[dataService] Static fallback disabled (${reason}); the Junior Ranger map uses only the master spreadsheet feed.`);
-    return Promise.resolve(false);
+function loadStaticFallbackData(reason = 'startup fallback') {
+    if (window.location.protocol === 'file:') return Promise.resolve(false);
+    if (hasAcceptedParkData()) return Promise.resolve(false);
+
+    return fetch(STATIC_FALLBACK_CSV_URL, { cache: 'force-cache' })
+        .then(res => {
+            if (!res.ok) throw new Error(`Static fallback response was not ok: ${res.status}`);
+            return res.text();
+        })
+        .then(csvString => {
+            if (!csvString || csvString.trim().length < 10) throw new Error('Static fallback returned an empty catalog.');
+            return parseCSVStringAsPromise(csvString, {
+                source: STATIC_FALLBACK_DATA_SOURCE,
+                skipIfDataLoaded: true,
+                onAccepted: () => {
+                    if (window.BARK.debugDataRefresh === true) {
+                        console.info(`[dataService] Loaded bundled Junior Ranger fallback data (${reason}).`);
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.warn('[dataService] Bundled Junior Ranger fallback data unavailable; waiting for live source.', error);
+            return false;
+        });
 }
 
 window.BARK.loadStaticFallbackData = loadStaticFallbackData;
@@ -587,10 +624,15 @@ function loadData() {
         return;
     }
 
+    const loadedCachedData = loadCachedData();
+    const fallbackDataPromise = loadedCachedData
+        ? Promise.resolve(true)
+        : loadStaticFallbackData('initial startup');
+
     loadLiveSourceData('initial sheet load')
         .then(loadedLiveData => {
             if (loadedLiveData || hasAcceptedParkData()) return true;
-            return false;
+            return fallbackDataPromise;
         })
         .then(loadedAuthoritativeData => {
             if (!loadedAuthoritativeData && !hasAcceptedParkData()) loadCachedData();

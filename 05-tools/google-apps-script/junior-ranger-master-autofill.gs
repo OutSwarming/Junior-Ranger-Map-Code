@@ -18,9 +18,11 @@ const JR_AUTOFILL_CONFIG = Object.freeze({
   stateColumn: 1,
   agencyColorColumn: 2,
   placeColumn: 3,
+  siteSpecificColumn: 5,
   latitudeColumn: 6,
   longitudeColumn: 7,
   siteIdColumn: 8,
+  bestContactColumn: 9,
   idPrefix: 'jr',
   geocodeCountry: 'USA',
   geocodeRegion: 'us',
@@ -34,6 +36,7 @@ const JR_OVERNIGHT_CONFIG = Object.freeze({
   activeKey: 'jrOvernightActive',
   sheetIndexKey: 'jrOvernightSheetIndex',
   rowKey: 'jrOvernightRow',
+  stateOnlyKey: 'jrOvernightStateOnly',
   startedAtKey: 'jrOvernightStartedAt',
   processedKey: 'jrOvernightProcessedRows',
   maxRuntimeMs: 4.5 * 60 * 1000
@@ -83,8 +86,11 @@ function onOpen() {
     .addSeparator()
     .addItem('Fill selected rows', 'fillSelectedJuniorRangerRows')
     .addItem('Fill active sheet missing rows', 'fillActiveJuniorRangerSheetMissingRows')
+    .addItem('Start Alabama resumable fill', 'startAlabamaJuniorRangerResumableFill')
     .addItem('Fill AK/AS/AZ missing rows', 'fillRequestedJuniorRangerStateSheets')
     .addItem('Backfill AK/AS/AZ generated data', 'backfillGeneratedAkAsAzJuniorRangerRows')
+    .addSeparator()
+    .addItem('Prepare Site Specific column', 'prepareJuniorRangerSiteSpecificColumn')
     .addSeparator()
     .addItem('Start overnight all states', 'startJuniorRangerOvernightFill')
     .addItem('Continue overnight all states now', 'continueJuniorRangerOvernightFill')
@@ -95,15 +101,32 @@ function onOpen() {
 function doGet(event) {
   const params = event && event.parameter ? event.parameter : {};
   const action = String(params.action || 'kick').toLowerCase();
-  const result = action === 'start'
-    ? startJuniorRangerOvernightFill({
-      runNow: false,
+  let result;
+
+  if (action === 'status') {
+    result = getJuniorRangerOvernightStatus_();
+  } else if (action === 'start') {
+    result = startJuniorRangerOvernightFill({
+      runNow: params.runNow === 'true',
       state: params.state || '',
-      row: params.row || ''
-    })
-    : action === 'stop'
-      ? stopJuniorRangerOvernightFill()
-      : kickJuniorRangerOvernightFill();
+      row: params.row || '',
+      stateOnly: String(params.stateOnly || '').toLowerCase() === 'true'
+    });
+  } else if (action === 'start-alabama') {
+    result = startJuniorRangerOvernightFill({
+      runNow: params.runNow !== 'false',
+      state: 'Alabama',
+      row: params.row || '',
+      stateOnly: true
+    });
+  } else if (action === 'continue') {
+    continueJuniorRangerOvernightFill();
+    result = getJuniorRangerOvernightStatus_();
+  } else if (action === 'stop') {
+    result = stopJuniorRangerOvernightFill();
+  } else {
+    result = kickJuniorRangerOvernightFill();
+  }
 
   return ContentService
     .createTextOutput(JSON.stringify(result))
@@ -115,7 +138,7 @@ function onEdit(e) {
 }
 
 function installJuniorRangerAutoFillTrigger() {
-  const spreadsheet = SpreadsheetApp.getActive();
+  const spreadsheet = SpreadsheetApp.getActive() || SpreadsheetApp.openById(JR_AUTOFILL_CONFIG.spreadsheetId);
   const handler = 'juniorRangerAutoFillOnEdit';
 
   ScriptApp.getProjectTriggers()
@@ -142,7 +165,7 @@ function juniorRangerAutoFillOnEdit(e) {
   if (!shouldProcessJuniorRangerSheet_(sheet)) return;
 
   const lock = LockService.getDocumentLock();
-  if (!lock.tryLock(500)) return;
+  if (!lock.tryLock(10000)) return;
 
   try {
     const rowCount = Math.min(range.getNumRows(), config.maxRowsPerAutoEdit);
@@ -195,6 +218,17 @@ function fillRequestedJuniorRangerStateSheets() {
   });
 }
 
+function fillAlabamaJuniorRangerSheetMissingRows() {
+  fillJuniorRangerSheetMissingRowsByName('Alabama');
+}
+
+function startAlabamaJuniorRangerResumableFill() {
+  return startJuniorRangerOvernightFill({
+    state: 'Alabama',
+    stateOnly: true
+  });
+}
+
 function fillAlaskaJuniorRangerSheetMissingRows() {
   fillJuniorRangerSheetMissingRowsByName('Alaska');
 }
@@ -220,6 +254,89 @@ function fillJuniorRangerSheetMissingRowsByName(sheetName) {
     fillJuniorRangerRows_(sheet, JR_AUTOFILL_CONFIG.firstDataRow, sheet.getLastRow(), { toast: true });
   } finally {
     lock.releaseLock();
+  }
+}
+
+function prepareJuniorRangerSiteSpecificColumn() {
+  const spreadsheet = SpreadsheetApp.getActive() || SpreadsheetApp.openById(JR_AUTOFILL_CONFIG.spreadsheetId);
+  const config = JR_AUTOFILL_CONFIG;
+  const sheets = getJuniorRangerOvernightStateSheets_(spreadsheet);
+  const validation = buildJuniorRangerSiteSpecificValidation_();
+  const summary = {
+    sheetsPrepared: 0,
+    rowsPrepared: 0,
+    dropdownRowsPrepared: 0,
+    yesNoValuesPreserved: 0,
+    oldValuesCleared: 0
+  };
+
+  sheets.forEach(sheet => {
+    const maxRows = sheet.getMaxRows();
+    sheet.getRange(1, config.siteSpecificColumn).setValue('Site Specific');
+
+    if (maxRows < config.firstDataRow) return;
+
+    const rowCount = maxRows - config.firstDataRow + 1;
+    const range = sheet.getRange(config.firstDataRow, config.siteSpecificColumn, rowCount, 1);
+    const placeValues = sheet.getRange(config.firstDataRow, config.placeColumn, rowCount, 1).getDisplayValues();
+    const agencyBackgrounds = sheet.getRange(config.firstDataRow, config.agencyColorColumn, rowCount, 1).getBackgrounds();
+    const dropdownRows = [];
+    const values = range.getDisplayValues().map((rowValues, index) => {
+      const originalValue = cleanJuniorRangerValue_(rowValues[0]);
+      const normalizedValue = normalizeJuniorRangerSiteSpecificValue_(originalValue);
+      const placeName = cleanJuniorRangerValue_(placeValues[index][0]);
+      const agencyBackground = cleanJuniorRangerValue_(agencyBackgrounds[index][0]).toLowerCase();
+      const shouldShowDropdown = shouldShowJuniorRangerSiteSpecificDropdown_(placeName, agencyBackground);
+
+      if (normalizedValue && shouldShowDropdown) summary.yesNoValuesPreserved++;
+      if (originalValue && (!normalizedValue || !shouldShowDropdown)) summary.oldValuesCleared++;
+      if (shouldShowDropdown) dropdownRows.push(config.firstDataRow + index);
+
+      return [shouldShowDropdown ? normalizedValue : ''];
+    });
+
+    range.setValues(values);
+    range.clearDataValidations();
+    applyJuniorRangerSiteSpecificValidation_(sheet, dropdownRows, validation);
+    summary.sheetsPrepared++;
+    summary.rowsPrepared += rowCount;
+    summary.dropdownRowsPrepared += dropdownRows.length;
+  });
+
+  Logger.log(JSON.stringify(summary, null, 2));
+  spreadsheet.toast(
+    `Site Specific column ready on ${summary.sheetsPrepared} tabs. Preserved Yes/No: ${summary.yesNoValuesPreserved}, cleared old values: ${summary.oldValuesCleared}.`,
+    'Junior Ranger Tools',
+    10
+  );
+  return summary;
+}
+
+function shouldShowJuniorRangerSiteSpecificDropdown_(placeName, agencyBackground) {
+  if (!placeName) return false;
+  if (isParentheticalJuniorRangerValue_(placeName)) return false;
+  if (sourceTextLooksLikeHeader_(placeName)) return false;
+  if (sourceTextLooksLikeStateList_(placeName)) return false;
+  return JR_AUTOFILL_CONFIG.ignoredAgencyColors.indexOf(agencyBackground) === -1;
+}
+
+function applyJuniorRangerSiteSpecificValidation_(sheet, rows, validation) {
+  if (!rows.length) return;
+
+  let rangeStart = rows[0];
+  let previousRow = rows[0];
+  for (let index = 1; index <= rows.length; index++) {
+    const row = rows[index];
+    if (row === previousRow + 1) {
+      previousRow = row;
+      continue;
+    }
+
+    sheet
+      .getRange(rangeStart, JR_AUTOFILL_CONFIG.siteSpecificColumn, previousRow - rangeStart + 1, 1)
+      .setDataValidation(validation);
+    rangeStart = row;
+    previousRow = row;
   }
 }
 
@@ -250,20 +367,24 @@ function startJuniorRangerOvernightFill(options) {
     [JR_OVERNIGHT_CONFIG.activeKey]: 'true',
     [JR_OVERNIGHT_CONFIG.sheetIndexKey]: String(start.sheetIndex),
     [JR_OVERNIGHT_CONFIG.rowKey]: String(start.row),
+    [JR_OVERNIGHT_CONFIG.stateOnlyKey]: options && options.stateOnly ? start.sheetName : '',
     [JR_OVERNIGHT_CONFIG.startedAtKey]: new Date().toISOString(),
     [JR_OVERNIGHT_CONFIG.processedKey]: '0'
   }, false);
 
   installJuniorRangerOvernightTrigger_();
-  spreadsheet.toast(`Overnight all-state fill started at ${start.sheetName}. It will keep resuming itself.`, 'Junior Ranger Tools', 8);
+  spreadsheet.toast(`Resumable fill started at ${start.sheetName}. It will keep resuming itself.`, 'Junior Ranger Tools', 8);
   if (shouldRunNow) continueJuniorRangerOvernightFill();
   return getJuniorRangerOvernightStatus_();
 }
 
 function stopJuniorRangerOvernightFill() {
-  PropertiesService.getScriptProperties().setProperty(JR_OVERNIGHT_CONFIG.activeKey, 'false');
+  PropertiesService.getScriptProperties().setProperties({
+    [JR_OVERNIGHT_CONFIG.activeKey]: 'false',
+    [JR_OVERNIGHT_CONFIG.stateOnlyKey]: ''
+  }, false);
   deleteJuniorRangerOvernightTriggers_();
-  getJuniorRangerSpreadsheet_().toast('Overnight all-state fill stopped.', 'Junior Ranger Tools', 6);
+  getJuniorRangerSpreadsheet_().toast('Resumable fill stopped.', 'Junior Ranger Tools', 6);
   return getJuniorRangerOvernightStatus_();
 }
 
@@ -288,6 +409,7 @@ function continueJuniorRangerOvernightFill() {
     let skipped = 0;
     let errors = 0;
     let consecutiveGeocodeErrors = 0;
+    const stateOnlySheetName = cleanJuniorRangerValue_(properties.getProperty(JR_OVERNIGHT_CONFIG.stateOnlyKey));
 
     while (sheetIndex < sheets.length && Date.now() < deadline) {
       const sheet = sheets[sheetIndex];
@@ -354,6 +476,19 @@ function continueJuniorRangerOvernightFill() {
       }
 
       if (row > lastRow) {
+        if (stateOnlySheetName) {
+          properties.setProperties({
+            [JR_OVERNIGHT_CONFIG.activeKey]: 'false',
+            [JR_OVERNIGHT_CONFIG.stateOnlyKey]: ''
+          }, false);
+          deleteJuniorRangerOvernightTriggers_();
+          spreadsheet.toast(
+            `${sheet.getName()} finished. IDs: ${filledIds}, coordinates: ${filledCoordinates}, skipped: ${skipped}, errors: ${errors}`,
+            'Junior Ranger resumable fill',
+            10
+          );
+          return;
+        }
         sheetIndex++;
         row = JR_AUTOFILL_CONFIG.firstDataRow;
       }
@@ -364,7 +499,10 @@ function continueJuniorRangerOvernightFill() {
     properties.setProperty(JR_OVERNIGHT_CONFIG.processedKey, String(processedRows));
 
     if (sheetIndex >= sheets.length) {
-      properties.setProperty(JR_OVERNIGHT_CONFIG.activeKey, 'false');
+      properties.setProperties({
+        [JR_OVERNIGHT_CONFIG.activeKey]: 'false',
+        [JR_OVERNIGHT_CONFIG.stateOnlyKey]: ''
+      }, false);
       deleteJuniorRangerOvernightTriggers_();
       spreadsheet.toast(
         `All state tabs finished. IDs: ${filledIds}, coordinates: ${filledCoordinates}, skipped: ${skipped}, errors: ${errors}`,
@@ -406,7 +544,8 @@ function getJuniorRangerOvernightStatus_() {
     sheetName: sheets[sheetIndex] ? sheets[sheetIndex].getName() : null,
     row: Number(properties.getProperty(JR_OVERNIGHT_CONFIG.rowKey) || JR_AUTOFILL_CONFIG.firstDataRow),
     processedRows: Number(properties.getProperty(JR_OVERNIGHT_CONFIG.processedKey) || 0),
-    startedAt: properties.getProperty(JR_OVERNIGHT_CONFIG.startedAtKey) || null
+    startedAt: properties.getProperty(JR_OVERNIGHT_CONFIG.startedAtKey) || null,
+    stateOnly: properties.getProperty(JR_OVERNIGHT_CONFIG.stateOnlyKey) || ''
   };
 }
 
@@ -649,12 +788,14 @@ function fillJuniorRangerRows_(sheet, firstRow, lastRow, options) {
   const startRow = Math.max(config.firstDataRow, firstRow);
   const endRow = Math.max(startRow, lastRow);
   const usedIds = collectExistingJuniorRangerSiteIds_(spreadsheet);
+  const siteSpecificValidation = buildJuniorRangerSiteSpecificValidation_();
   let filledIds = 0;
   let filledCoordinates = 0;
   let skipped = 0;
   let errors = 0;
 
   for (let row = startRow; row <= endRow; row++) {
+    syncJuniorRangerSiteSpecificDropdownForRow_(sheet, row, siteSpecificValidation);
     const result = fillJuniorRangerRow_(sheet, row, { usedIds });
     if (result.idFilled) filledIds++;
     if (result.coordinatesFilled) filledCoordinates++;
@@ -741,6 +882,34 @@ function fillJuniorRangerRow_(sheet, row, context) {
   }
 
   return result;
+}
+
+function buildJuniorRangerSiteSpecificValidation_() {
+  return SpreadsheetApp.newDataValidation()
+    .requireValueInList(['Yes', 'No'], true)
+    .setAllowInvalid(false)
+    .build();
+}
+
+function syncJuniorRangerSiteSpecificDropdownForRow_(sheet, row, validation) {
+  if (row < JR_AUTOFILL_CONFIG.firstDataRow) return;
+
+  const config = JR_AUTOFILL_CONFIG;
+  const placeName = cleanJuniorRangerValue_(sheet.getRange(row, config.placeColumn).getDisplayValue());
+  const agencyBackground = cleanJuniorRangerValue_(sheet.getRange(row, config.agencyColorColumn).getBackground()).toLowerCase();
+  const siteSpecificCell = sheet.getRange(row, config.siteSpecificColumn);
+  const originalValue = cleanJuniorRangerValue_(siteSpecificCell.getDisplayValue());
+  const normalizedValue = normalizeJuniorRangerSiteSpecificValue_(originalValue);
+
+  if (shouldShowJuniorRangerSiteSpecificDropdown_(placeName, agencyBackground)) {
+    if (originalValue && !normalizedValue) siteSpecificCell.clearContent();
+    if (normalizedValue && normalizedValue !== originalValue) siteSpecificCell.setValue(normalizedValue);
+    siteSpecificCell.setDataValidation(validation || buildJuniorRangerSiteSpecificValidation_());
+    return;
+  }
+
+  siteSpecificCell.clearDataValidations();
+  if (originalValue) siteSpecificCell.clearContent();
 }
 
 function shouldProcessJuniorRangerSheet_(sheet) {
@@ -1075,6 +1244,13 @@ function slugifyJuniorRangerIdPart_(value) {
 function cleanJuniorRangerValue_(value) {
   if (value === null || value === undefined) return '';
   return String(value).replace(/\r\n/g, '\n').trim();
+}
+
+function normalizeJuniorRangerSiteSpecificValue_(value) {
+  const normalized = cleanJuniorRangerValue_(value).toLowerCase();
+  if (normalized === 'yes' || normalized === 'y' || normalized === 'true') return 'Yes';
+  if (normalized === 'no' || normalized === 'n' || normalized === 'false') return 'No';
+  return '';
 }
 
 function isFiniteJuniorRangerCoordinate_(value) {
