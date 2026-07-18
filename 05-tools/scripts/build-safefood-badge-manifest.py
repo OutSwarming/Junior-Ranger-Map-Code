@@ -269,42 +269,108 @@ BAD_SITE_NAMES = {
 
 FUZZY_TOKEN_STOP_WORDS = STOP_WORDS | {
     "agency",
+    "agent",
     "arch",
     "army",
     "bad",
     "badge1",
     "badge2",
     "br",
+    "bryan",
     "button",
+    "caribbeanisland",
+    "casey",
     "center",
+    "complex",
     "corps",
     "department",
+    "discovery",
+    "duck",
+    "ed",
     "engineer",
     "engineers",
+    "fws",
     "gen",
     "generic",
+    "gov",
     "green",
+    "has",
     "hat",
     "jr",
     "jun",
     "mv2",
     "office",
+    "officer",
     "outdoor",
     "pat",
     "pl",
+    "police",
     "plastic",
     "project",
+    "ref",
+    "refuge",
+    "research",
     "programs",
+    "sam",
     "silver",
     "sp",
     "shp",
     "sra",
     "stic",
     "stick",
+    "stamps",
+    "swag",
+    "training",
     "us",
     "visitor",
     "visitors",
+    "vc",
+    "wildlife",
     "wooden",
+}
+FUZZY_TOKEN_ALIASES = {
+    "chincotteague": "chincoteague",
+    "louisanna": "louisiana",
+    "lou": "louisiana",
+    "neil": "neal",
+    "ohn": "john",
+    "roman": "romain",
+    "rvier": "river",
+    "se": "southeast",
+}
+FUZZY_SINGLE_MATCH_ALLOWED_EXTRAS = {
+    "ed",
+    "jn",
+    "mt",
+    "outdoor",
+    "pat",
+    "st",
+}
+NWR_MANUAL_PIN_OVERRIDES = [
+    (("wertheim",), "jr_new_york_wertheim_nwr"),
+    (("patuxent",), "jr__patuxent_research_refuge"),
+    (("caddo", "lake"), "jr_texas_caddo_lake_nwr"),
+    (("desoto",), "jr_iowa_desoto_nwr"),
+    (("neal", "smith"), "jr_iowa_neal_smith_nwr"),
+    (("ash", "meadows"), "jr_nevada_southern_nevada_s_nwr_ash_meadows_nwr"),
+    (("moapa",), "jr_nevada_southern_nevada_s_nwr_moapa_valley_nwr"),
+    (("bitter", "lake"), "jr_new_mexico_bitter_lake_nwr"),
+    (("bos",), "jr_new_mexico_bosque_del_apache_nwr"),
+    (("valle", "oro"), "jr_new_mexico_valle_de_oro_nwr"),
+    (("valley", "oro"), "jr_new_mexico_valle_de_oro_nwr"),
+    (("cape", "romain"), "jr_south_carolina_cape_romain_nwr"),
+    (("willapa",), "jr_washington_willapa_national_wildlife_refuge_headquarters"),
+    (("bear", "river"), "jr_utah_bear_river_migratory_bird_refuge"),
+    (("chincoteague",), "jr_virginia_chincoteague_nwr"),
+    (("southeast", "louisiana"), "jr_louisiana_southeast_louisiana_nwr"),
+    (("trempealeau",), "jr_wisconsin_whittlesey_creel_nwr"),
+    (("nec",), "jr_wisconsin_necedah_nwr"),
+]
+BLOCKED_SOURCE_IMAGE_HASHES = {
+    "12913e7f86": "Visitor-center sign/header image, not a badge",
+}
+SOURCE_IMAGE_TITLE_OVERRIDES = {
+    "450db6ba39": "Whittlesey Creek National Wildlife Refuge",
 }
 GENERIC_IMAGE_TITLES = {
     "agency header",
@@ -358,7 +424,7 @@ def canonical_site(value: object) -> str:
 def matchable_tokens(value: object) -> list[str]:
     tokens = []
     for token in canonical_site(value).split():
-        normalized = re.sub(r"\d+$", "", token)
+        normalized = FUZZY_TOKEN_ALIASES.get(re.sub(r"\d+$", "", token), re.sub(r"\d+$", "", token))
         if normalized and normalized not in FUZZY_TOKEN_STOP_WORDS and len(normalized) > 1:
             tokens.append(normalized)
     return tokens
@@ -370,7 +436,7 @@ def tokens_match(left: str, right: str) -> bool:
     if min(len(left), len(right)) >= 3 and (left.startswith(right) or right.startswith(left)):
         return True
     if min(len(left), len(right)) >= 5:
-        return difflib.SequenceMatcher(None, left, right).ratio() >= 0.82
+        return difflib.SequenceMatcher(None, left, right).ratio() >= 0.80
     return False
 
 
@@ -386,6 +452,14 @@ def token_match_counts(source_tokens: list[str], target_tokens: list[str]) -> tu
                 source_matches += 1
                 break
     return source_matches, len(used_target_indexes)
+
+
+def unmatched_source_tokens(source_tokens: list[str], target_tokens: list[str]) -> list[str]:
+    return [
+        source_token
+        for source_token in source_tokens
+        if not any(tokens_match(source_token, target_token) for target_token in target_tokens)
+    ]
 
 
 def image_title_matches_site(title: object, site_names: list[str]) -> bool:
@@ -454,6 +528,32 @@ def agency_compatible(source_agency: object, pin_agency: object) -> bool:
     if pin == "state parks" and source.startswith("state"):
         return True
     return False
+
+
+def is_wildlife_refuge_source(row: dict[str, str]) -> bool:
+    return canonical_agency(row.get("Agency")) == "national wildlife refuge"
+
+
+def is_wildlife_refuge_pin(pin: dict[str, str]) -> bool:
+    agency = canonical_agency(pin.get("agency"))
+    normalized_name = normalize_text(pin.get("name"))
+    has_refuge_name = (
+        "national wildlife refuge" in normalized_name
+        or "wildlife refuge" in normalized_name
+        or re.search(r"\bnwr\b", normalized_name) is not None
+        or "migratory bird refuge" in normalized_name
+        or "national elk refuge" in normalized_name
+        or "research refuge" in normalized_name
+    )
+    if agency == "national wildlife refuge":
+        return has_refuge_name
+    return has_refuge_name
+
+
+def pin_compatible(row: dict[str, str], pin: dict[str, str]) -> bool:
+    if agency_compatible(row.get("Agency"), pin.get("agency")):
+        return True
+    return is_wildlife_refuge_source(row) and is_wildlife_refuge_pin(pin)
 
 
 def is_state_park_pin(pin: dict[str, str]) -> bool:
@@ -587,6 +687,8 @@ def load_pins(rows: list[dict[str, str]]) -> list[dict[str, str]]:
 
 def build_pin_indexes(pins: list[dict[str, str]]) -> dict[str, defaultdict]:
     indexes = {
+        "all": [],
+        "by_id": {},
         "by_state_name": defaultdict(list),
         "by_state_canonical": defaultdict(list),
         "by_name": defaultdict(list),
@@ -595,6 +697,8 @@ def build_pin_indexes(pins: list[dict[str, str]]) -> dict[str, defaultdict]:
     }
     for pin in pins:
         state = normalize_text(pin["state"])
+        indexes["all"].append(pin)
+        indexes["by_id"][pin["id"]] = pin
         indexes["by_state_name"][(state, pin["normalized_name"])].append(pin)
         indexes["by_state_canonical"][(state, pin["canonical_name"])].append(pin)
         indexes["by_name"][pin["normalized_name"]].append(pin)
@@ -637,7 +741,7 @@ def find_contains_match(
 
     candidates = []
     for pin in indexes["by_state"].get(state, []):
-        if not agency_compatible(row.get("Agency"), pin["agency"]):
+        if not pin_compatible(row, pin):
             continue
         pin_tokens = matchable_tokens(pin["name"])
         if not pin_tokens:
@@ -656,7 +760,11 @@ def find_contains_match(
         elif row_matches >= 2 and row_coverage >= 0.5 and pin_coverage >= 0.5:
             confident = True
         elif row_matches == 1 and len(row_tokens) == 2 and pin_coverage >= 0.45:
-            confident = True
+            unmatched_tokens = unmatched_source_tokens(row_tokens, pin_tokens)
+            confident = all(
+                len(token) <= 3 or token in FUZZY_SINGLE_MATCH_ALLOWED_EXTRAS
+                for token in unmatched_tokens
+            )
 
         if confident:
             score = (row_coverage * 2) + pin_coverage + (row_matches * 0.1)
@@ -671,12 +779,79 @@ def find_contains_match(
     return None
 
 
+def find_manual_nwr_match(
+    row: dict[str, str],
+    names: list[str],
+    indexes: dict[str, defaultdict],
+) -> tuple[dict[str, str] | None, str]:
+    if not is_wildlife_refuge_source(row):
+        return None, ""
+
+    search_tokens = set()
+    for name in names:
+        search_tokens.update(matchable_tokens(name))
+
+    for required_tokens, pin_id in NWR_MANUAL_PIN_OVERRIDES:
+        if all(token in search_tokens for token in required_tokens):
+            pin = indexes["by_id"].get(pin_id)
+            if pin:
+                return pin, " ".join(required_tokens)
+    return None, ""
+
+
+def find_cross_state_nwr_match(
+    row: dict[str, str],
+    name: str,
+    indexes: dict[str, defaultdict],
+) -> dict[str, str] | None:
+    if not is_wildlife_refuge_source(row):
+        return None
+
+    row_tokens = matchable_tokens(name)
+    if not row_tokens:
+        return None
+
+    candidates = []
+    for pin in indexes["all"]:
+        if not is_wildlife_refuge_pin(pin):
+            continue
+        pin_tokens = matchable_tokens(pin["name"])
+        if not pin_tokens:
+            continue
+        row_matches, pin_matches = token_match_counts(row_tokens, pin_tokens)
+        if not row_matches:
+            continue
+
+        row_coverage = row_matches / len(row_tokens)
+        pin_coverage = pin_matches / len(pin_tokens)
+        confident = False
+        if row_matches >= 2 and row_coverage >= 0.8 and pin_coverage >= 0.6:
+            confident = True
+
+        if confident:
+            same_state_bonus = 0.25 if normalize_text(row.get("State/Region")) == normalize_text(pin["state"]) else 0
+            score = (row_coverage * 2) + pin_coverage + (row_matches * 0.1) + same_state_bonus
+            candidates.append((score, pin))
+
+    if not candidates:
+        return None
+
+    candidates.sort(key=lambda item: (-item[0], item[1]["state"].lower(), item[1]["name"].lower()))
+    if len(candidates) == 1 or candidates[0][0] - candidates[1][0] >= 0.35:
+        return candidates[0][1]
+    return None
+
+
 def map_row_to_pin(
     row: dict[str, str],
     indexes: dict[str, defaultdict],
 ) -> tuple[dict[str, str] | None, str, str]:
     state = normalize_text(row.get("State/Region"))
     names = candidate_names(row)
+
+    manual_match, manual_label = find_manual_nwr_match(row, names, indexes)
+    if manual_match:
+        return manual_match, "nwr_manual_override", manual_label
 
     for name in names:
         normalized_name = normalize_text(name)
@@ -686,7 +861,7 @@ def map_row_to_pin(
             return exact_matches[0], "state_name_exact", name
 
         core_matches = indexes["by_state_canonical"].get((state, canonical_name), [])
-        if len(core_matches) == 1 and agency_compatible(row.get("Agency"), core_matches[0]["agency"]):
+        if len(core_matches) == 1 and pin_compatible(row, core_matches[0]):
             return core_matches[0], "state_core_exact", name
 
     for name in names:
@@ -697,13 +872,18 @@ def map_row_to_pin(
             return exact_matches[0], "unique_name_exact", name
 
         core_matches = indexes["by_canonical"].get(canonical_name, [])
-        if len(core_matches) == 1 and agency_compatible(row.get("Agency"), core_matches[0]["agency"]):
+        if len(core_matches) == 1 and pin_compatible(row, core_matches[0]):
             return core_matches[0], "unique_core_exact", name
 
     for name in names:
         match = find_contains_match(row, name, indexes)
         if match:
             return match, "state_core_fuzzy", name
+
+    for name in names:
+        match = find_cross_state_nwr_match(row, name, indexes)
+        if match:
+            return match, "nwr_cross_state_fuzzy", name
 
     return None, "", names[0] if names else ""
 
@@ -953,6 +1133,12 @@ def build_manifest(args: argparse.Namespace) -> dict[str, object]:
 
         row_badges = []
         for image_number, (image_path, title, keep_image) in enumerate(zip(image_paths, titles, keep_decisions), start=1):
+            image_hash = source_image_hash(image_path)
+            badge_title = SOURCE_IMAGE_TITLE_OVERRIDES.get(image_hash, title)
+            blocked_reason = BLOCKED_SOURCE_IMAGE_HASHES.get(image_hash)
+            if blocked_reason:
+                keep_image = False
+
             if not keep_image:
                 filtered_rows.append(
                     {
@@ -960,14 +1146,13 @@ def build_manifest(args: argparse.Namespace) -> dict[str, object]:
                         "sourceState": clean(row.get("State/Region")),
                         "sourceAgency": clean(row.get("Agency")),
                         "sourceSiteName": clean(row.get("Site Name")),
-                        "imageTitle": title,
+                        "imageTitle": badge_title,
                         "imagePath": str(image_path),
-                        "reason": "Image title did not match mapped site tokens",
+                        "reason": blocked_reason or "Image title did not match mapped site tokens",
                     }
                 )
                 continue
 
-            image_hash = source_image_hash(image_path)
             output_relative = asset_cache.get(image_hash)
             if not output_relative:
                 output_path = badge_asset_dir / f"{image_hash}.webp"
@@ -986,7 +1171,7 @@ def build_manifest(args: argparse.Namespace) -> dict[str, object]:
             row_badges.append(
                 {
                     "id": badge_id,
-                    "title": title,
+                    "title": badge_title,
                     "type": "Badge",
                     "imageUrl": output_relative,
                     "thumbnailUrl": output_relative,

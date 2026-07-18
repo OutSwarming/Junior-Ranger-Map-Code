@@ -2,7 +2,7 @@
     window.BARK = window.BARK || {};
     window.BARK.services = window.BARK.services || {};
 
-    const BADGE_MANIFEST_URL = 'assets/data/badge-manifest.json?v=safefood-20260718-2';
+    const BADGE_MANIFEST_URL = 'assets/data/badge-manifest.json?v=safefood-20260718-3';
     const FALLBACK_CSV_URL = 'assets/data/jr-fallback.csv';
     const PROXIED_IMAGE_HOSTS = new Set([
         'mymaps.usercontent.google.com',

@@ -1,7 +1,6 @@
 pinId,pinState,pinName,pinAgency,sourceState,sourceAgency,sourceSiteName,matchedLabel,matchType,badgeCount
 jr_alaska_campbell_creek_science_center,Alaska,Campbell Creek Science Center,BLM,,Bureau of Land Management,Campbell Creek Science Center,Campbell Creek Science Center,unique_name_exact,1
 jr_alaska_iditarod_nht,Alaska,Iditarod NHT,BLM,,Bureau of Land Management,Iditarod NHT,Iditarod NHT,unique_name_exact,2
-jr_arizona_sonoran_desert_nm_phoenix_district_office,Arizona,Sonoran Desert NM (Phoenix District Office),BLM,Arizona,Bureau of Land Management,Desert Fishes,Desert Fishes,state_core_fuzzy,1
 jr_arizona_gila_box_riparian_nca,Arizona,Gila Box Riparian NCA,BLM,Arizona,Bureau of Land Management,Gila Box Riparian National Conservation Area,Gila Box Riparian National Conservation Area,state_core_exact,1
 jr_arizona_grand_canyon_parashant_nm,Arizona,Grand Canyon-Parashant NM,BLM,Arizona,Bureau of Land Management,Grand Canyon-Parashant National Monument,Grand Canyon-Parashant National Monument,state_core_exact,9
 jr_arizona_ironwood_forest_nm,Arizona,Ironwood Forest NM,BLM,Arizona,Bureau of Land Management,Ironwood Forest National Monument,Ironwood Forest National Monument,state_core_exact,1
@@ -29,7 +28,6 @@ jr_new_mexico_organ_mountains_desert_peaks_nm,New Mexico,Organ Mountains-Desert 
 jr_oregon_cascade_siskiyou_nm,Oregon,Cascade-Siskiyou NM,BLM,Oregon,Bureau of Land Management,Cascade-Siskiyou National Monument,Cascade-Siskiyou National Monument,state_core_exact,2
 jr_oregon_oregon_trail_interpretive_center,Oregon,Oregon Trail Interpretive Center,BLM,Oregon,Bureau of Land Management,National Historic Oregon Trail Interpretive Center,National Historic Oregon Trail Interpretive Center,state_core_fuzzy,2
 jr_oregon_new_river_nature_center,Oregon,New River Nature Center,BLM,Oregon,Bureau of Land Management,New River Nature Center,New River Nature Center,state_name_exact,1
-jr_oregon_provolt_recreation_area,Oregon,Provolt Recreation Area,BLM,Oregon,Bureau of Land Management,Provolt Recreation Site,Provolt Recreation Site,state_core_fuzzy,1
 jr_oregon_wildwood_recreation_center,Oregon,Wildwood Recreation Center,BLM,Oregon,Bureau of Land Management,Wildwood Recreation Site,Wildwood Recreation Site,state_core_fuzzy,4
 jr_oregon_yaquina_head_ona,Oregon,Yaquina Head ONA,BLM,Oregon,Bureau of Land Management,Yaquina Head Outstanding Natural Area,Yaquina Head Outstanding Natural Area,state_core_exact,10
 jr_utah_grand_staircase_escalante,Utah,Grand Staircase - Escalante,BLM,Utah,Bureau of Land Management,Grand Staircase-Escalante National Monument,Grand Staircase-Escalante National Monument,state_core_exact,5
@@ -59,7 +57,7 @@ jr_alabama_tuskegee_airmen_nhs,Alabama,Tuskegee Airmen NHS,NPS,Alabama,National 
 jr_alabama_tuskegee_institute_nhs,Alabama,Tuskegee Institute NHS,NPS,Alabama,National Park Service,Tuskegee Institute National Historic Site,Tuskegee Institute National Historic Site,state_core_exact,6
 jr_alaska_alaska_public_lands_information_center,Alaska,Alaska Public Lands Information Center,NPS,Alaska,National Park Service,Alaska Public Lands Information Center,Alaska Public Lands Information Center,state_name_exact,6
 jr_alaska_aniakchak_nm_and_pr,Alaska,Aniakchak NM & Pr,NPS,Alaska,National Park Service,Aniakchak National Monument and Preserve,Aniakchak National Monument and Preserve,state_core_exact,1
-jr_alaska_gates_of_the_arctic_np_and_pr_arctic_interagency_visitor_center,Alaska,Gates of the Arctic NP & Pr - Arctic Interagency Visitor Center,NPS,Alaska,National Park Service,Arctic Interagency Visitor Center,Arctic Interagency Visitor Center,state_core_fuzzy,2
+jr_alaska_gates_of_the_arctic_np_and_pr_arctic_interagency_visitor_center,Alaska,Gates of the Arctic NP & Pr - Arctic Interagency Visitor Center,NPS,Alaska,National Park Service,Arctic Interagency Visitor Center,Arctic Interagency Visitor Center,state_core_fuzzy,1
 jr_alaska_bering_land_bridge_npr,Alaska,Bering Land Bridge NPr,NPS,Alaska,National Park Service,Bering Land Bridge National Preserve,Bering Land Bridge National Preserve,state_core_exact,5
 jr_alaska_denali_np_and_pr,Alaska,Denali NP & Pr,NPS,Alaska,National Park Service,Denali National Park and Preserve,Denali National Park and Preserve,state_core_exact,12
 jr_alaska_gates_of_the_arctic_np_and_pr,Alaska,Gates of the Arctic NP & Pr,NPS,Alaska,National Park Service,Gates Of The Arctic National Park and Preserve,Gates Of The Arctic National Park and Preserve,state_core_exact,7
@@ -81,7 +79,6 @@ jr_across_glen_canyon_nra,Arizona,Glen Canyon NRA,NPS,Arizona,National Park Serv
 jr_arizona_grand_canyon_np,Arizona,Grand Canyon NP,NPS,Arizona,National Park Service,Grand Canyon National Park,Grand Canyon National Park,state_core_exact,11
 jr_arizona_hubbell_trading_post_nhs,Arizona,Hubbell Trading Post NHS,NPS,Arizona,National Park Service,Hubbell Trading Post National Historic Site,Hubbell Trading Post National Historic Site,state_core_exact,4
 jr_arizona_montezuma_castle_nm,Arizona,Montezuma Castle NM,NPS,Arizona,National Park Service,Montezuma Castle National Monument,Montezuma Castle National Monument,state_core_exact,8
-jr_arizona_montezuma_castle_nm,Arizona,Montezuma Castle NM,NPS,Arizona,National Park Service,Montezuma Well,Montezuma Well,state_core_fuzzy,4
 jr_arizona_navajo_nm,Arizona,Navajo NM,NPS,Arizona,National Park Service,Navajo National Monument,Navajo National Monument,state_core_exact,10
 jr_arizona_organ_pipe_cactus_nm,Arizona,Organ Pipe Cactus NM,NPS,Arizona,National Park Service,Organ Pipe Cactus National Monument,Organ Pipe Cactus National Monument,state_core_exact,11
 jr_arizona_petrified_forest_np,Arizona,Petrified Forest NP,NPS,Arizona,National Park Service,Petrified Forest National Park,Petrified Forest National Park,state_core_exact,8
@@ -89,7 +86,6 @@ jr_arizona_pipe_spring_nm,Arizona,Pipe Spring NM,NPS,Arizona,National Park Servi
 jr_arizona_saguaro_np,Arizona,Saguaro NP,NPS,Arizona,National Park Service,Saguaro National Park,Saguaro National Park,state_core_exact,12
 jr_arizona_sunset_crater_volcano_nm,Arizona,Sunset Crater Volcano NM,NPS,Arizona,National Park Service,Sunset Crater Volcano National Monument,Sunset Crater Volcano National Monument,state_core_exact,4
 jr_arizona_tonto_nm,Arizona,Tonto NM,NPS,Arizona,National Park Service,Tonto National Monument,Tonto National Monument,state_core_fuzzy,7
-jr_arizona_tumacacori_nhp,Arizona,Tumacacori NHP,NPS,Arizona,National Park Service,Tumacácori National Historical Park,Tumacácori National Historical Park,state_core_fuzzy,4
 jr_arizona_tuzigoot_nm,Arizona,Tuzigoot NM,NPS,Arizona,National Park Service,Tuzigoot National Monument,Tuzigoot National Monument,state_core_exact,8
 jr_arizona_walnut_canyon_nm,Arizona,Walnut Canyon NM,NPS,Arizona,National Park Service,Walnut Canyon National Monument,Walnut Canyon National Monument,state_core_exact,6
 jr_arizona_wupatki_nm,Arizona,Wupatki NM,NPS,Arizona,National Park Service,Wupatki National Monument,Wupatki National Monument,state_core_exact,6
@@ -148,7 +144,6 @@ jr_florida_everglades_np,Florida,Everglades NP,NPS,Florida,National Park Service
 jr_florida_fort_caroline_nm,Florida,Fort Caroline NM,NPS,Florida,National Park Service,Fort Caroline National Memorial,Fort Caroline National Memorial,state_core_exact,5
 jr_florida_fort_matanzas_nm,Florida,Fort Matanzas NM,NPS,Florida,National Park Service,Fort Matanzas National Monument,Fort Matanzas National Monument,state_core_exact,8
 jr_across_gulf_islands_ns,Florida,Gulf Islands NS,NPS,Florida,National Park Service,"Gulf Islands National Seashore , FL,MS","Gulf Islands National Seashore , FL,MS",state_core_fuzzy,10
-jr_florida_timucuan_ehp,Florida,Timucuan EHP,NPS,Florida,National Park Service,Timucuan Trail,Timucuan Trail,state_core_fuzzy,2
 jr_georgia_andersonville_nhs,Georgia,Andersonville NHS,NPS,Georgia,National Park Service,Andersonville National Historic Site,Andersonville National Historic Site,state_core_exact,4
 jr_georgia_arabia_mountain_nha,Georgia,Arabia Mountain NHA,NPS,Georgia,National Park Service,Arabia Mountain National Heritage Area,Arabia Mountain National Heritage Area,state_core_exact,2
 jr_georgia_chattahoochee_river_nra,Georgia,Chattahoochee River NRA,NPS,Georgia,National Park Service,Chattahoochee River National Recreation Area,Chattahoochee River National Recreation Area,state_core_exact,7
@@ -283,7 +278,7 @@ jr_new_york_hamilton_grange_nm,New York,Hamilton Grange NM,NPS,New York,National
 jr_new_york_harriet_tubman_nhp,New York,Harriet Tubman NHP,NPS,New York,National Park Service,Harriet Tubman National Historical Park,Harriet Tubman National Historical Park,state_core_exact,2
 jr_new_york_home_of_franklin_d_roosevelt_nhs,New York,Home of Franklin D. Roosevelt NHS,NPS,New York,National Park Service,Home Of Franklin D Roosevelt National Historic Site,Home Of Franklin D Roosevelt National Historic Site,state_core_exact,2
 jr_new_york_martin_van_buren_nhs,New York,Martin Van Buren NHS,NPS,New York,National Park Service,Martin Van Buren National Historic Site,Martin Van Buren National Historic Site,state_core_exact,2
-jr_new_york_niagara_falls_nha,New York,Niagara Falls National Heritage Area,NPS,New York,National Park Service,Niagara Falls National Heritage Area,Niagara Falls National Heritage Area,state_name_exact,2
+jr_new_york_niagara_falls_nha,New York,Niagara Falls National Heritage Area,NPS,New York,National Park Service,Niagara Falls National Heritage Area,Niagara Falls National Heritage Area,state_name_exact,3
 jr_new_york_sagamore_hill_nhs,New York,Sagamore Hill NHS,NPS,New York,National Park Service,Sagamore Hill National Historic Site,Sagamore Hill National Historic Site,state_core_exact,8
 jr_new_york_saint_paul_s_church_nhs,New York,Saint Paul's Church NHS,NPS,New York,National Park Service,Saint Paul's Church National Historic Site,Saint Paul's Church National Historic Site,state_core_exact,4
 jr_new_york_saratoga_nhp,New York,Saratoga NHP,NPS,New York,National Park Service,Saratoga National Historical Park,Saratoga National Historical Park,state_core_exact,8
@@ -366,7 +361,7 @@ jr_texas_palo_alto_battlefield_nhp,Texas,Palo Alto Battlefield NHP,NPS,Texas,Nat
 jr_texas_san_antonio_missions_nhp,Texas,San Antonio Missions NHP,NPS,Texas,National Park Service,San Antonio Missions National Historical Park,San Antonio Missions National Historical Park,state_core_exact,12
 jr_texas_waco_mammoth_nm,Texas,Waco Mammoth NM,NPS,Texas,National Park Service,Waco Mammoth National Monument,Waco Mammoth National Monument,state_core_exact,4
 jr_utah_arches_np,Utah,Arches NP,NPS,Utah,National Park Service,Arches National Park,Arches National Park,state_core_exact,12
-jr_utah_bryce_canyon_np,Utah,Bryce Canyon NP,NPS,Utah,National Park Service,Bryce Canyon National Park,Bryce Canyon National Park,state_core_exact,11
+jr_utah_bryce_canyon_np,Utah,Bryce Canyon NP,NPS,Utah,National Park Service,Bryce Canyon National Park,Bryce Canyon National Park,state_core_exact,12
 jr_utah_canyonlands_np,Utah,Canyonlands NP,NPS,Utah,National Park Service,Canyonlands National Park,Canyonlands National Park,state_core_exact,10
 jr_utah_capitol_reef_np,Utah,Capitol Reef NP,NPS,Utah,National Park Service,Capitol Reef National Park,Capitol Reef National Park,state_core_exact,7
 jr_utah_cedar_breaks_nm,Utah,Cedar Breaks NM,NPS,Utah,National Park Service,Cedar Breaks National Monument,Cedar Breaks National Monument,state_core_exact,6
@@ -416,7 +411,6 @@ jr_alaska_kodiak_nwr,Alaska,Kodiak NWR,US Fish & Wildlife Service,Alaska,Nationa
 jr_alaska_selawik_nwr,Alaska,Selawik NWR,US Fish & Wildlife Service,Alaska,National Wildlife Refuge,Selawik National Wildlife Refuge,Selawik National Wildlife Refuge,state_core_exact,1
 jr_alaska_tetlin_nwr,Alaska,Tetlin NWR,US Fish & Wildlife Service,Alaska,National Wildlife Refuge,Tet National Wildlife Refuge,Tet National Wildlife Refuge,state_core_fuzzy,1
 jr_alaska_yukon_delta_nwr,Alaska,Yukon Delta NWR,US Fish & Wildlife Service,Alaska,National Wildlife Refuge,Yukon Delta National Wildlife Refuge,Yukon Delta National Wildlife Refuge,state_core_exact,1
-jr_alaska_yukon_delta_nwr,Alaska,Yukon Delta NWR,US Fish & Wildlife Service,Alaska,National Wildlife Refuge,Yukon Flats National Wildlife Refuge,Yukon Flats National Wildlife Refuge,state_core_fuzzy,1
 jr_arizona_cabeza_pieta_nwr,Arizona,Cabeza Pieta NWR,US Fish & Wildlife Service,Arizona,National Wildlife Refuge,Cabeza National Wildlife Refuge,Cabeza National Wildlife Refuge,state_core_fuzzy,1
 jr_california_hopper_mountain_nwr,California,Hopper Mountain NWR,US Fish & Wildlife Service,California,National Wildlife Refuge,Hopper National Wildlife Refuge,Hopper National Wildlife Refuge,state_core_fuzzy,1
 jr_california_klamath_basin_nwr,California,Klamath Basin NWR,US Fish & Wildlife Service,California,National Wildlife Refuge,Klamath Basin National Wildlife Refuge,Klamath Basin National Wildlife Refuge,state_core_exact,1
@@ -439,14 +433,19 @@ jr_illinois_crab_orchard_nwr,Illinois,Crab Orchard NWR,US Fish & Wildlife Servic
 jr_indiana_muscatatuck_national_wildlife_refuge,Indiana,Muscatatuck National Wildlife Refuge,,Indiana,National Wildlife Refuge,Muscatatuck National Wildlife Refuge,Muscatatuck National Wildlife Refuge,state_name_exact,1
 jr_kansas_quivira_nwr,Kansas,Quivira NWR,US Fish & Wildlife Service,Kansas,National Wildlife Refuge,Quivira National Wildlife Refuge,Quivira National Wildlife Refuge,state_core_exact,2
 jr_louisiana_bayou_sauvage_nwr,Louisiana,Bayou Sauvage NWR,US Fish & Wildlife Service,Louisiana,National Wildlife Refuge,Bay Sau National Wildlife Refuge,Bay Sau National Wildlife Refuge,state_core_fuzzy,1
+jr_texas_caddo_lake_nwr,Texas,Caddo Lake NWR,US Fish & Wildlife Service,Louisiana,National Wildlife Refuge,Caddo Lake National Wildlife Refuge,caddo lake,nwr_manual_override,1
 jr_louisiana_cameron_prairie_nwr,Louisiana,Cameron Prairie NWR,US Fish & Wildlife Service,Louisiana,National Wildlife Refuge,Cameron Prairie National Wildlife Refuge,Cameron Prairie National Wildlife Refuge,state_core_exact,1
 jr_louisiana_lacassine_nwr,Louisiana,Lacassine NWR,US Fish & Wildlife Service,Louisiana,National Wildlife Refuge,Lacassine National Wildlife Refuge,Lacassine National Wildlife Refuge,state_core_exact,1
+jr_louisiana_southeast_louisiana_nwr,Louisiana,Southeast Louisiana NWR,US Fish & Wildlife Service,Louisiana,National Wildlife Refuge,SE Lou National Wildlife Refuge,southeast louisiana,nwr_manual_override,1
 jr_louisiana_bogue_chitto_nwr,Louisiana,Bogue Chitto NWR,US Fish & Wildlife Service,Louisiana,National Wildlife Refuge,bog chit National Wildlife Refuge,bog chit National Wildlife Refuge,state_core_fuzzy,1
+jr__patuxent_research_refuge,Maryland,Patuxent Research Refuge,US Fish & Wildlife Service,Maryland,National Wildlife Refuge,Agent of Discovery Patuxent National Wildlife Refuge,patuxent,nwr_manual_override,2
 jr__blackwater_nwr,Maryland,Blackwater NWR,US Fish & Wildlife Service,Maryland,National Wildlife Refuge,Bla Pat National Wildlife Refuge,Bla Pat National Wildlife Refuge,state_core_fuzzy,1
 jr__blackwater_nwr,Maryland,Blackwater NWR,US Fish & Wildlife Service,Maryland,National Wildlife Refuge,Bla Wat bad National Wildlife Refuge,Bla Wat bad National Wildlife Refuge,state_core_fuzzy,1
-jr__patuxent_research_refuge,Maryland,Patuxent Research Refuge,US Fish & Wildlife Service,Maryland,National Wildlife Refuge,Patuxent National Wildlife Refuge,Patuxent National Wildlife Refuge,state_core_fuzzy,1
-jr__patuxent_research_refuge,Maryland,Patuxent Research Refuge,US Fish & Wildlife Service,Maryland,National Wildlife Refuge,Patuxent2 National Wildlife Refuge,Patuxent2 National Wildlife Refuge,state_core_fuzzy,1
+jr__patuxent_research_refuge,Maryland,Patuxent Research Refuge,US Fish & Wildlife Service,Maryland,National Wildlife Refuge,Patuxent National Wildlife Refuge,patuxent,nwr_manual_override,1
+jr__patuxent_research_refuge,Maryland,Patuxent Research Refuge,US Fish & Wildlife Service,Maryland,National Wildlife Refuge,Patuxent2 National Wildlife Refuge,patuxent,nwr_manual_override,1
 jr_massachusetts_parker_river_nwr,Massachusetts,Parker River NWR,US Fish & Wildlife Service,Massachusetts,National Wildlife Refuge,Parker National Wildlife Refuge,Parker River ​(978),state_core_exact,1
+jr_iowa_desoto_nwr,Iowa,Desoto NWR,US Fish & Wildlife Service,Michigan,National Wildlife Refuge,Desoto National Wildlife Refuge,desoto,nwr_manual_override,1
+jr_iowa_neal_smith_nwr,Iowa,Neal Smith NWR,US Fish & Wildlife Service,Michigan,National Wildlife Refuge,Neil Smith National Wildlife Refuge,neal smith,nwr_manual_override,1
 jr_michigan_seney_nwr,Michigan,Seney NWR,US Fish & Wildlife Service,Michigan,National Wildlife Refuge,Seney National Wildlife Refuge,Seney National Wildlife Refuge,state_core_exact,1
 jr_minnesota_minnesota_valley_nwr_bloomington_educational_and_visitor_center,Minnesota,Minnesota Valley NWR-Bloomington Educational & Visitor Center,US Fish & Wildlife Service,Minnesota,National Wildlife Refuge,EXPLORER Minnesota Vailey National Wildlife Refuge,EXPLORER Minnesota Vailey National Wildlife Refuge,state_core_fuzzy,1
 jr_minnesota_minnesota_valley_nwr_bloomington_educational_and_visitor_center,Minnesota,Minnesota Valley NWR-Bloomington Educational & Visitor Center,US Fish & Wildlife Service,Minnesota,National Wildlife Refuge,Minn Valley National Wildlife Refuge,Minn Valley National Wildlife Refuge,state_core_fuzzy,1
@@ -455,21 +454,31 @@ jr_minnesota_minnesota_valley_nwr_bloomington_educational_and_visitor_center,Min
 jr_minnesota_minnesota_valley_nwr_bloomington_educational_and_visitor_center,Minnesota,Minnesota Valley NWR-Bloomington Educational & Visitor Center,US Fish & Wildlife Service,Minnesota,National Wildlife Refuge,OUTDOOR EXPLORER Minnesota Valley National Wildlife Refuge,OUTDOOR EXPLORER Minnesota Valley National Wildlife Refuge,state_core_fuzzy,1
 jr_mississippi_mississippi_sandhill_crane_nwr,Mississippi,Mississippi Sandhill Crane NWR,US Fish & Wildlife Service,Mississippi,National Wildlife Refuge,Sandhill Crane National Wildlife Refuge,Sandhill Crane National Wildlife Refuge,state_core_fuzzy,1
 jr_mississippi_theodore_roosevelt_nwr,Mississippi,Theodore Roosevelt NWR,US Fish & Wildlife Service,Mississippi,National Wildlife Refuge,The Roo National Wildlife Refuge,The Roo National Wildlife Refuge,state_core_fuzzy,1
-jr_new_mexico_bitter_lake_nwr,New Mexico,Bitter Lake NWR,US Fish & Wildlife Service,Nebraska,National Wildlife Refuge,Bitter Lake National Wildlife Refuge,Bitter Lake National Wildlife Refuge,unique_core_exact,1
+jr_nevada_southern_nevada_s_nwr_ash_meadows_nwr,Nevada,Southern Nevada's NWR - Ash Meadows NWR,US Fish & Wildlife Service,Montana,National Wildlife Refuge,Ash Meadows National Wildlife Refuge,ash meadows,nwr_manual_override,1
+jr_nevada_southern_nevada_s_nwr_moapa_valley_nwr,Nevada,Southern Nevada's NWR - Moapa Valley NWR,US Fish & Wildlife Service,Montana,National Wildlife Refuge,Moapa National Wildlife Refuge,moapa,nwr_manual_override,1
+jr_new_mexico_bitter_lake_nwr,New Mexico,Bitter Lake NWR,US Fish & Wildlife Service,Nebraska,National Wildlife Refuge,Bitter Lake National Wildlife Refuge,bitter lake,nwr_manual_override,1
+jr_new_mexico_bitter_lake_nwr,New Mexico,Bitter Lake NWR,US Fish & Wildlife Service,Nebraska,National Wildlife Refuge,Bitter Lake1 National Wildlife Refuge,bitter lake,nwr_manual_override,1
+jr_new_mexico_bitter_lake_nwr,New Mexico,Bitter Lake NWR,US Fish & Wildlife Service,Nebraska,National Wildlife Refuge,Bitter Lake2 National Wildlife Refuge,bitter lake,nwr_manual_override,1
+jr_new_mexico_bosque_del_apache_nwr,New Mexico,Bosque del Apache NWR,US Fish & Wildlife Service,Nebraska,National Wildlife Refuge,Bos National Wildlife Refuge,bos,nwr_manual_override,1
+jr_iowa_desoto_nwr,Iowa,Desoto NWR,US Fish & Wildlife Service,Nebraska,National Wildlife Refuge,Desoto National Wildlife Refuge,desoto,nwr_manual_override,1
 jr_nebraska_fort_niobrara_nwr,Nebraska,Fort Niobrara NWR,US Fish & Wildlife Service,Nebraska,National Wildlife Refuge,Fort Niobrara National Wildlife Refuge,Fort Niobrara National Wildlife Refuge,state_core_exact,3
 jr_new_mexico_sevilleta_nwr,New Mexico,Sevilleta NWR,US Fish & Wildlife Service,Nebraska,National Wildlife Refuge,Sevilleta National Wildlife Refuge,Sevilleta National Wildlife Refuge,unique_core_exact,1
+jr_new_mexico_valle_de_oro_nwr,New Mexico,Valle de Oro NWR,US Fish & Wildlife Service,Nebraska,National Wildlife Refuge,valley de oro National Wildlife Refuge,valley oro,nwr_manual_override,1
 jr_nevada_desert_national_wildlife_refuge,Nevada,Desert National Wildlife Refuge,BLM,Nevada,National Wildlife Refuge,Desert National Wildlife Refuge,Desert National Wildlife Refuge,state_name_exact,1
 jr_new_jersey_edwin_b_forsythe_nwr,New Jersey,Edwin B. Forsythe NWR,US Fish & Wildlife Service,New Jersey,National Wildlife Refuge,Edwin B Forsythe National Wildlife Refuge,Edwin B Forsythe National Wildlife Refuge,state_core_exact,1
 jr_new_jersey_great_swamp_nwr,New Jersey,Great Swamp NWR,US Fish & Wildlife Service,New Jersey,National Wildlife Refuge,Great Swamp National Wildlife Refuge,Great Swamp National Wildlife Refuge,state_core_exact,1
 jr_new_jersey_wallkill_river_nwr,New Jersey,Wallkill River NWR,US Fish & Wildlife Service,New Jersey,National Wildlife Refuge,Wallkill River National Wildlife Refuge,Wallkill River National Wildlife Refuge,state_core_exact,1
 jr_new_jersey_cape_may_nwr,New Jersey,Cape May NWR,US Fish & Wildlife Service,New Jersey,National Wildlife Refuge,capemay National Wildlife Refuge,capemay National Wildlife Refuge,state_core_fuzzy,1
 jr_new_york_montezuma_nwr,New York,Montezuma NWR,US Fish & Wildlife Service,New York,National Wildlife Refuge,Mont National Wildlife Refuge,Mont National Wildlife Refuge,state_core_fuzzy,1
-jr_new_york_wertheim_nwr,New York,Wertheim NWR,US Fish & Wildlife Service,New York,National Wildlife Refuge,Wertheim National Wildlife Refuge,Wertheim National Wildlife Refuge,state_core_exact,1
+jr_new_york_wertheim_nwr,New York,Wertheim NWR,US Fish & Wildlife Service,New York,National Wildlife Refuge,O Long Island National Wildlife Refuge,wertheim,nwr_manual_override,1
+jr_new_york_wertheim_nwr,New York,Wertheim NWR,US Fish & Wildlife Service,New York,National Wildlife Refuge,Wertheim National Wildlife Refuge,wertheim,nwr_manual_override,1
 jr_north_dakota_audubon_nwr,North Dakota,Audubon NWR,US Fish & Wildlife Service,North Dakota,National Wildlife Refuge,Audubon National Wildlife Refuge,Audubon National Wildlife Refuge,state_core_exact,1
 jr_ohio_ottawa_nwr,Ohio,Ottawa NWR,US Fish & Wildlife Service,Ohio,National Wildlife Refuge,Ottawa National Wildlife Refuge,Ottawa National Wildlife Refuge,state_core_exact,1
+jr_south_carolina_cape_romain_nwr,South Carolina,Cape Romain NWR,US Fish & Wildlife Service,Oklahoma,National Wildlife Refuge,Cape Roman National Wildlife Refuge,cape romain,nwr_manual_override,1
 jr_south_carolina_pinckney_island_nwr,South Carolina,Pinckney Island NWR,US Fish & Wildlife Service,Oklahoma,National Wildlife Refuge,Pinckney Island National Wildlife Refuge,Pinckney Island National Wildlife Refuge,unique_core_exact,2
 jr_across_savannah_nwr,Georgia,Savannah NWR,US Fish & Wildlife Service,Oklahoma,National Wildlife Refuge,Savannah National Wildlife Refuge,Savannah National Wildlife Refuge,unique_core_exact,2
 jr_virginia_eastern_shore_of_virginia_nwr,Virginia,Eastern Shore of Virginia NWR,US Fish & Wildlife Service,Pennsylvania,National Wildlife Refuge,Eastern Shore of Virginia National Wildlife Refuge,Eastern Shore of Virginia National Wildlife Refuge,unique_core_exact,1
+jr_washington_willapa_national_wildlife_refuge_headquarters,Washington,Willapa National Wildlife Refuge Headquarters,US Fish & Wildlife Service,Pennsylvania,National Wildlife Refuge,Willapa National Wildlife Refuge,willapa,nwr_manual_override,1
 jr_tennessee_cross_creeks_nwr,Tennessee,Cross Creeks NWR,US Fish & Wildlife Service,Tennessee,National Wildlife Refuge,Cross Creeks National Wildlife Refuge,Cross Creeks National Wildlife Refuge,state_core_exact,1
 jr_tennessee_reelfoot_nwr,Tennessee,Reelfoot NWR,US Fish & Wildlife Service,Tennessee,National Wildlife Refuge,Ree National Wildlife Refuge,Ree National Wildlife Refuge,state_core_fuzzy,1
 jr_texas_santa_ana_nwr,Texas,Santa Ana NWR,US Fish & Wildlife Service,Texas,National Wildlife Refuge,Ana National Wildlife Refuge,Ana National Wildlife Refuge,state_core_fuzzy,1
@@ -477,15 +486,24 @@ jr_texas_aransas_nwr,Texas,Aransas NWR,US Fish & Wildlife Service,Texas,National
 jr_texas_balcones_canyonlands_nwr,Texas,Balcones Canyonlands NWR,US Fish & Wildlife Service,Texas,National Wildlife Refuge,Balcones National Wildlife Refuge,Balcones National Wildlife Refuge,state_core_fuzzy,1
 jr_texas_hagerman_nwr,Texas,Hagerman NWR,US Fish & Wildlife Service,Texas,National Wildlife Refuge,Hagerman National Wildlife Refuge,Hagerman National Wildlife Refuge,state_core_exact,1
 jr_texas_santa_ana_nwr,Texas,Santa Ana NWR,US Fish & Wildlife Service,Texas,National Wildlife Refuge,Santa Ana National Wildlife Refuge,Santa Ana National Wildlife Refuge,state_core_exact,1
+jr_utah_bear_river_migratory_bird_refuge,Utah,Bear River Migratory Bird Refuge,US Fish & Wildlife Service,Utah,National Wildlife Refuge,Bear Rvier National Wildlife Refuge,bear river,nwr_manual_override,1
 jr_virginia_back_bay_nwr,Virginia,Back Bay NWR,US Fish & Wildlife Service,Vermont,National Wildlife Refuge,Back Bay National Wildlife Refuge,Back Bay National Wildlife Refuge,unique_core_exact,2
+jr_virginia_chincoteague_nwr,Virginia,Chincoteague NWR,US Fish & Wildlife Service,Vermont,National Wildlife Refuge,Chincotteague National Wildlife Refuge,chincoteague,nwr_manual_override,2
+jr_virginia_chincoteague_nwr,Virginia,Chincoteague NWR,US Fish & Wildlife Service,Vermont,National Wildlife Refuge,Chincotteague patch2 National Wildlife Refuge,chincoteague,nwr_manual_override,1
 jr_virginia_eastern_shore_of_virginia_nwr,Virginia,Eastern Shore of Virginia NWR,US Fish & Wildlife Service,Vermont,National Wildlife Refuge,Eastern Shore of Virginia National Wildlife Refuge,Eastern Shore of Virginia National Wildlife Refuge,unique_core_exact,1
+jr_virginia_chincoteague_nwr,Virginia,Chincoteague NWR,US Fish & Wildlife Service,Vermont,National Wildlife Refuge,Vermont Chincoteague National Wildlife Refuge,chincoteague,nwr_manual_override,1
 jr_washington_billy_frank_jr_nisqually_nwr,Washington,Billy Frank Jr. Nisqually NWR,US Fish & Wildlife Service,Washington,National Wildlife Refuge,Billy Frank National Wildlife Refuge,Billy Frank National Wildlife Refuge,state_core_fuzzy,1
 jr_washington_leavenworth_national_fish_hatchery,Washington,Leavenworth National Fish Hatchery,US Fish & Wildlife Service,Washington,National Wildlife Refuge,Leaven National Wildlife Refuge,Leaven National Wildlife Refuge,state_core_fuzzy,1
 jr_washington_billy_frank_jr_nisqually_nwr,Washington,Billy Frank Jr. Nisqually NWR,US Fish & Wildlife Service,Washington,National Wildlife Refuge,Nisqually National Wildlife Refuge,Nisqually National Wildlife Refuge,state_core_fuzzy,1
-jr_washington_willapa_national_wildlife_refuge_headquarters,Washington,Willapa National Wildlife Refuge Headquarters,US Fish & Wildlife Service,Washington,National Wildlife Refuge,Willapa National Wildlife Refuge,Willapa National Wildlife Refuge,state_core_fuzzy,1
+jr_washington_willapa_national_wildlife_refuge_headquarters,Washington,Willapa National Wildlife Refuge Headquarters,US Fish & Wildlife Service,Washington,National Wildlife Refuge,Willapa National Wildlife Refuge,willapa,nwr_manual_override,1
 jr_west_virginia_canaan_valley_nwr,West Virginia,Canaan Valley NWR,US Fish & Wildlife Service,West Virginia,National Wildlife Refuge,Canaan Valley National Wildlife Refuge,Canaan Valley National Wildlife Refuge,state_core_exact,1
 jr_west_virginia_ohio_river_islands_nwr,West Virginia,Ohio River Islands NWR,US Fish & Wildlife Service,West Virginia,National Wildlife Refuge,Ohio Riv National Wildlife Refuge,Ohio Riv National Wildlife Refuge,state_core_fuzzy,1
+jr_louisiana_southeast_louisiana_nwr,Louisiana,Southeast Louisiana NWR,US Fish & Wildlife Service,Wisconsin,National Wildlife Refuge,SE Louisanna National Wildlife Refuge,southeast louisiana,nwr_manual_override,1
+jr_wisconsin_whittlesey_creel_nwr,Wisconsin,Whittlesey Creel NWR,US Fish & Wildlife Service,Wisconsin,National Wildlife Refuge,Trempealeau 608 539 2311 SaM 2 23 26 Casey Bryan No program National Wildlife Refuge,trempealeau,nwr_manual_override,1
 jr_wyoming_national_elk_refuge,Wyoming,National Elk Refuge,US Fish & Wildlife Service,Wyoming,National Wildlife Refuge,Elk Refuge,Elk Refuge,state_core_exact,1
+jr_wisconsin_necedah_nwr,Wisconsin,Necedah NWR,US Fish & Wildlife Service,Wyoming,National Wildlife Refuge,Nec But National Wildlife Refuge,nec,nwr_manual_override,1
+jr_wisconsin_necedah_nwr,Wisconsin,Necedah NWR,US Fish & Wildlife Service,Wyoming,National Wildlife Refuge,Nec flo National Wildlife Refuge,nec,nwr_manual_override,1
+jr_wisconsin_necedah_nwr,Wisconsin,Necedah NWR,US Fish & Wildlife Service,Wyoming,National Wildlife Refuge,Nec pri National Wildlife Refuge,nec,nwr_manual_override,1
 jr_wyoming_national_elk_refuge,Wyoming,National Elk Refuge,US Fish & Wildlife Service,Wyoming,National Wildlife Refuge,elk pat National Wildlife Refuge,elk pat National Wildlife Refuge,state_core_fuzzy,1
 jr_nebraska_midwest_archeological_center,Nebraska,Midwest Archeological Center,Other,,Other,Midwest Archeological Center,Midwest Archeological Center,unique_name_exact,3
 jr_arizona_titan_missile_museum_nhl,Arizona,Titan Missile Museum NHL,Other,,Other,Titan Missile Museum,Titan Missile Museum,unique_core_exact,1
@@ -567,10 +585,8 @@ jr_arizona_tombstone_courthouse_shp,Arizona,Tombstone Courthouse SHP,State,Arizo
 jr_california_anza_borrego_desert_sp,California,Anza-Borrego Desert SP,State,California,State Parks,Anza-Borrego Desert SP,Anza-Borrego Desert SP,state_name_exact,1
 jr_california_auburn_sra,California,Auburn SRA,State,California,State Parks,Auburn SRA,Auburn SRA,state_name_exact,2
 jr_california_california_s_sp_joint_program,California,California's State Parks Joint Program,State,California,State Parks,California State Parks,California State Parks,state_program_broad,13
-jr_california_refugio_state_beach,California,Refugio State Beach,State,California,State Parks,Harbors Beach,Harbors Beach,state_core_fuzzy,1
 jr_california_caswell_memorial_sp,California,Caswell Memorial State Park,State,California,State Parks,Hea Cas,Hea Cas,state_core_fuzzy,1
 jr_california_hollister_hills_svra,California,Hollister Hills SVRA,State,California,State Parks,Hollister Hills SVRA,Hollister Hills SVRA,state_name_exact,1
-jr_california_candlestick_point_state_recreation_area,California,Candlestick Point State Recreation Area,State,California,State Parks,Indian CAn,Indian CAn,state_core_fuzzy,1
 jr_california_limekiln_sp,California,Limekiln SP,State,California,State Parks,Limekiln State Park,Limekiln State Park,state_core_exact,1
 jr_california_marshall_gold_discovery_shp,California,Marshall Gold Discovery SHP,State,California,State Parks,Marshall Gold Discovery,Marshall Gold Discovery,state_core_exact,1
 jr_california_natural_bridges_state_beach,California,Natural Bridges State Beach,State,California,State Parks,Nat Bri,Nat Bri,state_core_fuzzy,1
@@ -595,7 +611,6 @@ jr_colorado_durango_parks_and_recreation,Colorado,Durango Parks and Recreation,O
 jr_colorado_garden_of_the_gods,Colorado,Garden of the Gods,Other,Colorado,State Parks,Garden of the Gods,Garden of the Gods,state_name_exact,2
 jr_colorado_lory_sp,Colorado,Lory SP,State,Colorado,State Parks,Lory State Park,Lory State Park,state_core_exact,1
 jr_colorado_pikes_peak,Colorado,Pikes Peak,Other,Colorado,State Parks,Pikes Peak,Pikes Peak,state_name_exact,1
-jr_colorado_cheyenne_mountain_sp,Colorado,Cheyenne Mountain SP,State,Colorado,State Parks,Pountain Creek,Pountain Creek,state_core_fuzzy,1
 jr_colorado_royal_gorge_bridge_and_park,Colorado,Royal Gorge Bridge & Park,State,Colorado,State Parks,Roy Gor,Roy Gor,state_core_fuzzy,1
 jr_florida_bahia_honda_sp,Florida,Bahia Honda SP,State,Florida,State Parks,Bahia Honda State Park,Bahia Honda State Park,state_core_exact,1
 jr_florida_florida_s_sp,Florida,Florida's State Parks,State,Florida,State Parks,Florida State Parks,Florida State Parks,state_program_broad,5
@@ -629,7 +644,6 @@ jr_georgia_hamburg_sp,Georgia,Hamburg SP,State,Georgia,State Parks,Hamburg State
 jr_georgia_hard_labor_creek_sp,Georgia,Hard Labor Creek SP,State,Georgia,State Parks,Hard Labor Creek State Park,Hard Labor Creek State Park,state_core_exact,2
 jr_georgia_high_falls_sp,Georgia,High Falls SP,State,Georgia,State Parks,High Falls State Park,High Falls State Park,state_core_exact,1
 jr_georgia_hofwyl_broadfield_plantation_shs,Georgia,Hofwyl-Broadfield Plantation SHS,State,Georgia,State Parks,Hofwyl-Broadfield Plantation State Historic Site,Hofwyl-Broadfield Plantation State Historic Site,state_core_exact,1
-jr_georgia_magnolia_springs_sp,Georgia,Magnolia Springs SP,State,Georgia,State Parks,Indian Springs State Park,Indian Springs State Park,state_core_fuzzy,1
 jr_georgia_james_h_floyd_sp,Georgia,James H. Floyd SP,State,Georgia,State Parks,James H. Floyd State Park,James H. Floyd State Park,state_core_exact,1
 jr_georgia_jarrell_plantation_shs,Georgia,Jarrell Plantation SHS,State,Georgia,State Parks,Jarrell Plantation State Historic Site,Jarrell Plantation State Historic Site,state_core_exact,1
 jr_georgia_kolomoki_mounds_sp,Georgia,Kolomoki Mounds SP,State,Georgia,State Parks,Kolomoki Mounds State Park,Kolomoki Mounds State Park,state_core_exact,1
@@ -719,9 +733,8 @@ jr_maine_rangeley_lake_sp,Maine,Rangeley Lake SP,State,Maine,State Parks,Maine S
 jr_maine_sebago_lake_sp,Maine,Sebago Lake SP,State,Maine,State Parks,Maine State Parks,Maine State Parks,state_program_broad,8
 jr_maine_warren_island_sp,Maine,Warren Island SP,State,Maine,State Parks,Maine State Parks,Maine State Parks,state_program_broad,8
 jr__maryland_sp,Maryland,Maryland State Parks,State,Maryland,State Parks,Maryland State Parks,Maryland State Parks,state_program_broad,12
-jr__maryland_sp,Maryland,Maryland State Parks,State,Maryland,State Parks,Maryland squirrel,Maryland squirrel,state_core_fuzzy,1
+jr_massachusetts_natural_bridge_sp,Massachusetts,Natural Bridge SP,State,Massachusetts,State Parks,Cambridge,Cambridge,state_core_fuzzy,1
 jr_michigan_michigan_s_sp,Michigan,Michigan's State Parks,State,Michigan,State Parks,Michigan State Parks,Michigan State Parks,state_program_broad,7
-jr_michigan_michigan_s_sp,Michigan,Michigan's State Parks,State,Michigan,State Parks,Portage Parks,Portage Parks,state_core_fuzzy,8
 jr_montana_bannack_sp,Montana,Bannack State Park,State,Montana,State Parks,Bannack Badge,Bannack Badge,state_core_exact,1
 jr_montana_montana_s_sp,Montana,Montana's State Parks,State,Montana,State Parks,Montana State Parks,Montana State Parks,state_program_broad,3
 jr_nevada_cathedral_gorge,Nevada,Cathedral Gorge,State,Nevada,State Parks,Cat Gor,Cat Gor,state_core_fuzzy,1
@@ -806,7 +819,6 @@ jr_south_carolina_table_rock_sp,South Carolina,Table Rock State Park,State,South
 jr_south_dakota_custer_sp,South Dakota,Custer SP,State,South Dakota,State Parks,Custer,Custer,state_core_exact,4
 jr_south_dakota_south_dakota_s_sp,South Dakota,South Dakota's SP,State,South Dakota,State Parks,South Dakota State Parks,South Dakota State Parks,state_program_broad,12
 jr_tennessee_tennessee_s_sp,Tennessee,Tennessee's State Parks,State,Tennessee,State Parks,Tennessee State Parks,Tennessee State Parks,state_program_broad,2
-jr_tennessee_tennessee_s_sp,Tennessee,Tennessee's State Parks,State,Tennessee,State Parks,Warner Parks,Warner Parks,state_core_fuzzy,1
 jr_texas_brazos_bend_sp,Texas,Brazos Bend SP,State,Texas,State Parks,Brazos Bend SP,Brazos Bend SP,state_name_exact,3
 jr_texas_eisenhower_sp,Texas,Eisenhower SP,State,Texas,State Parks,Eisenho wer SP,Eisenhower Badge,state_core_exact,1
 jr_texas_hueco_tanks_sp_and_hs,Texas,Hueco Tanks SP & HS,State,Texas,State Parks,Hueco Tanks SP,Hueco Tanks SP,state_core_fuzzy,1
@@ -856,7 +868,6 @@ jr_california_stanislaus_river_parks,California,Stanislaus River Parks,US Army C
 jr_georgia_carters_lake,Georgia,Carters Lake,US Army Corps of Engineers,Georgia,U.S. Army Corps of Engineers,craters lake,craters lake,state_core_fuzzy,1
 jr_iowa_lake_red_rock,Iowa,Lake Red Rock,US Army Corps of Engineers,Iowa,U.S. Army Corps of Engineers,Lake Rock,Lake Rock,state_core_fuzzy,1
 jr_iowa_saylorville_lake,Iowa,Saylorville Lake,US Army Corps of Engineers,Iowa,U.S. Army Corps of Engineers,Saylorville Lake,Saylorville Lake,state_name_exact,1
-jr_pentathlon_card_green_river_lake,Kentucky,Green River Lake,US Army Corps of Engineers,Kentucky,U.S. Army Corps of Engineers,Gren Riv,Gren Riv,state_core_fuzzy,1
 jr_pentathlon_card_lake_cumberland_project,Kentucky,Lake Cumberland Project,US Army Corps of Engineers,Kentucky,U.S. Army Corps of Engineers,Lake Cum,Lake Cum,state_core_fuzzy,1
 jr_massachusetts_us_corps_of_engineers_cape_cod,Massachusetts,US Corps of Engineers Cape Cod,US Army Corps of Engineers,Massachusetts,U.S. Army Corps of Engineers,Cap Cod2,Cap Cod2,state_core_fuzzy,1
 jr_mississippi_tennessee_tombigbee_waterway,Mississippi,Tennessee-Tombigbee Waterway,US Army Corps of Engineers,Mississippi,U.S. Army Corps of Engineers,Tenn,Tenn,state_core_fuzzy,1
@@ -872,11 +883,12 @@ jr_ohio_delaware_creek_us_army_corps_of_engineers,Ohio,"Delaware Creek, US Army 
 jr_oklahoma_keystone_lake_project_office_usace,Oklahoma,Keystone Lake Project Office USACE,US Army Corps of Engineers,Oklahoma,U.S. Army Corps of Engineers,Keysto,Keysto,state_core_fuzzy,1
 jr_oregon_bonneville_lock_and_dam,Oregon,Bonneville Lock & Dam,US Army Corps of Engineers,Oregon,U.S. Army Corps of Engineers,Bonneville badge2,Bonneville badge2,state_core_fuzzy,1
 jr_pennsylvania_raystown_lake,Pennsylvania,Raystown Lake,US Army Corps of Engineers,Pennsylvania,U.S. Army Corps of Engineers,Raystown,Raystown,state_core_fuzzy,1
+jr_pennsylvania_tioga_hammond_lakes_recreation_area_visitor_center,Pennsylvania,Tioga-Hammond Lakes Recreation Area visitor center,US Army Corps of Engineers,Pennsylvania,U.S. Army Corps of Engineers,Tigoa,Tigoa,state_core_fuzzy,1
 jr_tennessee_j_percy_priest_lake,Tennessee,J. Percy Priest Lake,US Army Corps of Engineers,Tennessee,U.S. Army Corps of Engineers,J Per,J Per,state_core_fuzzy,1
 jr_virginia_philpott_dam,Virginia,PhilPott Dam,US Army Corps of Engineers,Virginia,U.S. Army Corps of Engineers,phil,phil,state_core_fuzzy,1
 jr_washington_ballard_locks,Washington,Ballard Locks,US Army Corps of Engineers,Washington,U.S. Army Corps of Engineers,Ballard Locks,Ballard Locks,state_name_exact,1
 jr_alaska_chugach_nf,Alaska,Chugach NF,US Forest Service - National Forest,Alaska,U.S. Forest Service,Chugach National Forest,Chugach National Forest,state_core_exact,3
-jr_alaska_tongass_nf,Alaska,Tongass NF,US Forest Service - National Forest,Alaska,U.S. Forest Service,Tongass National Forest,Tongass National Forest,state_core_exact,4
+jr_alaska_tongass_nf,Alaska,Tongass NF,US Forest Service - National Forest,Alaska,U.S. Forest Service,Tongass National Forest,Tongass National Forest,state_core_exact,5
 jr_arizona_apache_sitgreaves_nf,Arizona,Apache-SitGreaves NF,US Forest Service - National Forest,Arizona,U.S. Forest Service,Apache Sitgreaves National Forest,Apache Sitgreaves National Forest,state_core_exact,1
 jr_arizona_red_rock_ranger_district_coconino_nf,Arizona,"Red Rock Ranger District, Coconino NF",US Forest Service - National Forest,Arizona,U.S. Forest Service,Coconino National Forest,Coconino National Forest,state_core_fuzzy,3
 jr_arizona_coronado_nf,Arizona,Coronado NF,US Forest Service - National Forest,Arizona,U.S. Forest Service,Coronado National Forest,Coronado National Forest,state_core_fuzzy,3
@@ -889,7 +901,6 @@ jr_pentathlon_card_daniel_boone_nf,Kentucky,Daniel Boone NF,US Forest Service - 
 jr_pentathlon_card_land_between_the_lakes_nra,Kentucky,Land Between the Lakes NRA,US Forest Service - National Forest,Kentucky,U.S. Forest Service,Land Between the Lakes National Recreation Area,Land Between the Lakes National Recreation Area,state_core_exact,2
 jr_montana_custer_gallatin_nf,Montana,Custer Gallatin NF,US Forest Service - National Forest,Montana,U.S. Forest Service,Custer Gallatin National Forest,Custer Gallatin National Forest,state_core_exact,3
 jr_montana_helena_lewis_and_clark_nf,Montana,Helena-Lewis and Clark NF,US Forest Service - National Forest,Montana,U.S. Forest Service,Lewis and Clark National Forest,Lewis and Clark National Forest,state_core_fuzzy,3
-jr_nebraska_hudson_meng,Nebraska,Hudson-Meng,US Forest Service - National Forest,Nebraska,U.S. Forest Service,Hudson Ming,Hudson Ming,state_core_fuzzy,1
 jr_nebraska_pine_ridge_ranger_district,Nebraska,Pine Ridge Ranger District,US Forest Service - National Forest,Nebraska,U.S. Forest Service,Pine Ridge,Pine Ridge,state_core_fuzzy,1
 jr_new_hampshire_white_mountain_nf,New Hampshire,White Mountain NF,US Forest Service - National Forest,New Hampshire,U.S. Forest Service,Whi Mou,Whi Mou,state_core_fuzzy,1
 jr_new_mexico_cibola_nf,New Mexico,Cibola NF,US Forest Service - National Forest,New Mexico,U.S. Forest Service,Cibola National Forest,Cibola National Forest,state_core_exact,1

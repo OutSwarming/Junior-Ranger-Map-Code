@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "updatedAt": "2026-07-18T04:29:23.895092+00:00",
+  "updatedAt": "2026-07-18T13:05:42.666837+00:00",
   "source": {
     "name": "SafeFoodCert_Badges corrected folder master",
     "folder": "/Users/carterswarm/Downloads/SafeFoodCert_Badges",
@@ -9,22 +9,23 @@
   "summary": {
     "livePinsWithCoordinates": 2104,
     "safefoodRowsWithResolvedImages": 1307,
-    "matchedRows": 774,
-    "matchedPinMappings": 902,
-    "unmatchedRows": 533,
-    "filteredImages": 143,
-    "pinsWithBadges": 834,
+    "matchedRows": 785,
+    "matchedPinMappings": 913,
+    "unmatchedRows": 522,
+    "filteredImages": 141,
+    "pinsWithBadges": 842,
     "badgesMappedToPins": 3944,
     "uniqueBadgeAssets": 3047,
     "sourceImageCountFromRows": 5624,
     "resolvedSourceImages": 4582,
     "writtenBadgeAssets": 3047,
     "matchTypes": {
-      "state_core_exact": 498,
-      "state_core_fuzzy": 170,
+      "nwr_manual_override": 29,
+      "state_core_exact": 497,
+      "state_core_fuzzy": 154,
       "state_name_exact": 42,
       "state_program_broad": 28,
-      "unique_core_exact": 27,
+      "unique_core_exact": 26,
       "unique_name_exact": 9
     }
   },
@@ -375,14 +376,6 @@
     ],
     "jr__maryland_sp": [
       {
-        "id": "safefood-138ac8e0f1",
-        "title": "SJR-Northeast-022 - Maryland squirrel",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/138ac8e0f1.webp",
-        "thumbnailUrl": "assets/badges/safefood/138ac8e0f1.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
         "id": "safefood-7f96e756fc",
         "title": "SJR-Northeast-023 - 4a3b09 3eddc49e119b4d3ea3b58d8c1fda5901 mv2",
         "type": "Badge",
@@ -598,6 +591,22 @@
       }
     ],
     "jr__patuxent_research_refuge": [
+      {
+        "id": "safefood-edc4b167f6",
+        "title": "Agent of Discovery Patuxent",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/edc4b167f6.webp",
+        "thumbnailUrl": "assets/badges/safefood/edc4b167f6.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-7c5a71cade",
+        "title": "Agent of Discovery Patuxent Pin",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/7c5a71cade.webp",
+        "thumbnailUrl": "assets/badges/safefood/7c5a71cade.webp",
+        "source": "safefood-corrected-master"
+      },
       {
         "id": "safefood-cfcd65ab2a",
         "title": "Patuxent",
@@ -3111,14 +3120,6 @@
         "imageUrl": "assets/badges/safefood/d1d0d3a0e2.webp",
         "thumbnailUrl": "assets/badges/safefood/d1d0d3a0e2.webp",
         "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-12913e7f86",
-        "title": "National Trails",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12913e7f86.webp",
-        "thumbnailUrl": "assets/badges/safefood/12913e7f86.webp",
-        "source": "safefood-corrected-master"
       }
     ],
     "jr_alaska_glacier_bay_np_and_pr": [
@@ -3595,6 +3596,14 @@
     ],
     "jr_alaska_tongass_nf": [
       {
+        "id": "safefood-93d441f21b",
+        "title": "Discovery",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/93d441f21b.webp",
+        "thumbnailUrl": "assets/badges/safefood/93d441f21b.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
         "id": "safefood-b010cc5b52",
         "title": "tongass",
         "type": "Badge",
@@ -3824,14 +3833,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/ba20aa0933.webp",
         "thumbnailUrl": "assets/badges/safefood/ba20aa0933.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-38d0af0251",
-        "title": "Yukon Flats",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/38d0af0251.webp",
-        "thumbnailUrl": "assets/badges/safefood/38d0af0251.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -5763,22 +5764,6 @@
         "source": "safefood-corrected-master"
       },
       {
-        "id": "safefood-a3c71b22e2",
-        "title": "Mont Well",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/a3c71b22e2.webp",
-        "thumbnailUrl": "assets/badges/safefood/a3c71b22e2.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-be4bce2fe8",
-        "title": "Mont well badge",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/be4bce2fe8.webp",
-        "thumbnailUrl": "assets/badges/safefood/be4bce2fe8.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
         "id": "safefood-6af091faca",
         "title": "Mont wooden Badge",
         "type": "Badge",
@@ -5832,22 +5817,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/e39044059b.webp",
         "thumbnailUrl": "assets/badges/safefood/e39044059b.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-6003118d10",
-        "title": "Montezuma Well",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/6003118d10.webp",
-        "thumbnailUrl": "assets/badges/safefood/6003118d10.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-c1c678e15c",
-        "title": "Montezuma Well",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/c1c678e15c.webp",
-        "thumbnailUrl": "assets/badges/safefood/c1c678e15c.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -7091,14 +7060,6 @@
     ],
     "jr_arizona_sonoran_desert_nm_phoenix_district_office": [
       {
-        "id": "safefood-72a80447b2",
-        "title": "Sesert Fishes",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/72a80447b2.webp",
-        "thumbnailUrl": "assets/badges/safefood/72a80447b2.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
         "id": "safefood-c956cb6659",
         "title": "Sonoran Desert NM patch",
         "type": "Badge",
@@ -7524,40 +7485,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/94d398d30b.webp",
         "thumbnailUrl": "assets/badges/safefood/94d398d30b.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "jr_arizona_tumacacori_nhp": [
-      {
-        "id": "safefood-bc691d27e4",
-        "title": "Tum",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/bc691d27e4.webp",
-        "thumbnailUrl": "assets/badges/safefood/bc691d27e4.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-7278162ef8",
-        "title": "Tumacacori badge",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/7278162ef8.webp",
-        "thumbnailUrl": "assets/badges/safefood/7278162ef8.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-7c8d1fab78",
-        "title": "Tumac\u00e1cori National Historical Park",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/7c8d1fab78.webp",
-        "thumbnailUrl": "assets/badges/safefood/7c8d1fab78.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-854490cacd",
-        "title": "Tumac\u00e1cori National Historical Park",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/854490cacd.webp",
-        "thumbnailUrl": "assets/badges/safefood/854490cacd.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -8532,16 +8459,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/ac5a933d74.webp",
         "thumbnailUrl": "assets/badges/safefood/ac5a933d74.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "jr_california_candlestick_point_state_recreation_area": [
-      {
-        "id": "safefood-aa184a64ca",
-        "title": "SJR-Alaska-012 - Indian CAn",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/aa184a64ca.webp",
-        "thumbnailUrl": "assets/badges/safefood/aa184a64ca.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -9637,16 +9554,6 @@
         "source": "safefood-corrected-master"
       }
     ],
-    "jr_california_refugio_state_beach": [
-      {
-        "id": "safefood-ac259bb076",
-        "title": "SJR-Alaska-200 - Harbors Beach",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/ac259bb076.webp",
-        "thumbnailUrl": "assets/badges/safefood/ac259bb076.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
     "jr_california_rosie_the_riveter_ww2_home_front_nhp": [
       {
         "id": "safefood-b5545c1f95",
@@ -10508,14 +10415,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/d5446397ce.webp",
         "thumbnailUrl": "assets/badges/safefood/d5446397ce.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-1527e34285",
-        "title": "SJR-Intermountain-071 - Pountain Creek",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/1527e34285.webp",
-        "thumbnailUrl": "assets/badges/safefood/1527e34285.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -12539,24 +12438,6 @@
         "source": "safefood-corrected-master"
       }
     ],
-    "jr_florida_timucuan_ehp": [
-      {
-        "id": "safefood-2c9fcb32fa",
-        "title": "Tim1",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/2c9fcb32fa.webp",
-        "thumbnailUrl": "assets/badges/safefood/2c9fcb32fa.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-324dbd30fc",
-        "title": "Timucuan",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/324dbd30fc.webp",
-        "thumbnailUrl": "assets/badges/safefood/324dbd30fc.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
     "jr_georgia_a_h_stephens_sp": [
       {
         "id": "safefood-8db35e0701",
@@ -13542,14 +13423,6 @@
       }
     ],
     "jr_georgia_magnolia_springs_sp": [
-      {
-        "id": "safefood-871b431d31",
-        "title": "SJR-Southeast-070 - Indian Springs State Park",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/871b431d31.webp",
-        "thumbnailUrl": "assets/badges/safefood/871b431d31.webp",
-        "source": "safefood-corrected-master"
-      },
       {
         "id": "safefood-19c8c79b6a",
         "title": "SJR-Southeast-077 - Magnolia Springs State Park",
@@ -17205,6 +17078,16 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "jr_iowa_desoto_nwr": [
+      {
+        "id": "safefood-4171af6472",
+        "title": "Desoto",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/4171af6472.webp",
+        "thumbnailUrl": "assets/badges/safefood/4171af6472.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "jr_iowa_effigy_mounds_nm": [
       {
         "id": "safefood-8da7334c6b",
@@ -17434,6 +17317,16 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/5eeb0961d9.webp",
         "thumbnailUrl": "assets/badges/safefood/5eeb0961d9.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "jr_iowa_neal_smith_nwr": [
+      {
+        "id": "safefood-9f7d4a19fe",
+        "title": "Neil Smith",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/9f7d4a19fe.webp",
+        "thumbnailUrl": "assets/badges/safefood/9f7d4a19fe.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -17892,6 +17785,24 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/691eef8548.webp",
         "thumbnailUrl": "assets/badges/safefood/691eef8548.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "jr_louisiana_southeast_louisiana_nwr": [
+      {
+        "id": "safefood-281fab9af5",
+        "title": "SE Lou",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/281fab9af5.webp",
+        "thumbnailUrl": "assets/badges/safefood/281fab9af5.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-b75ccd0838",
+        "title": "SE Louisanna",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/b75ccd0838.webp",
+        "thumbnailUrl": "assets/badges/safefood/b75ccd0838.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -19389,6 +19300,16 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "jr_massachusetts_natural_bridge_sp": [
+      {
+        "id": "safefood-cffb7d479b",
+        "title": "SJR-Northeast-048 - Cambridge",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/cffb7d479b.webp",
+        "thumbnailUrl": "assets/badges/safefood/cffb7d479b.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "jr_massachusetts_new_bedford_whaling_nhp": [
       {
         "id": "safefood-f5b9d66eb1",
@@ -19727,43 +19648,11 @@
         "source": "safefood-corrected-master"
       },
       {
-        "id": "safefood-12e3497bb1",
-        "title": "SJR-Midwest-058 - portage ebdurance",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "thumbnailUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-89d6abbdf7",
-        "title": "SJR-Midwest-059 - portage arts",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "thumbnailUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
         "id": "safefood-5c6ffbcb46",
         "title": "SJR-Midwest-060 - 4a3b09 b59d9e1d211141bf9d5e4313784a6c89 mv2",
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/5c6ffbcb46.webp",
         "thumbnailUrl": "assets/badges/safefood/5c6ffbcb46.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-4385ac500e",
-        "title": "SJR-Midwest-061 - portage service",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/4385ac500e.webp",
-        "thumbnailUrl": "assets/badges/safefood/4385ac500e.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-54d0f1e90d",
-        "title": "SJR-Midwest-062 - portage history",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "thumbnailUrl": "assets/badges/safefood/54d0f1e90d.webp",
         "source": "safefood-corrected-master"
       },
       {
@@ -19775,43 +19664,11 @@
         "source": "safefood-corrected-master"
       },
       {
-        "id": "safefood-fb405739cb",
-        "title": "SJR-Midwest-064 - portage survival",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/fb405739cb.webp",
-        "thumbnailUrl": "assets/badges/safefood/fb405739cb.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-8ea56ff861",
-        "title": "SJR-Midwest-065 - portage heath",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "thumbnailUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
         "id": "safefood-7e7df64b69",
         "title": "SJR-Midwest-066 - 4a3b09 f6f666caa1ff4de0bc489ca73cdeaf21 mv2",
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/7e7df64b69.webp",
         "thumbnailUrl": "assets/badges/safefood/7e7df64b69.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-07f20b1a68",
-        "title": "SJR-Midwest-067 - portage Science",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "thumbnailUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-29e8768583",
-        "title": "SJR-Midwest-068 - portage nature",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/29e8768583.webp",
-        "thumbnailUrl": "assets/badges/safefood/29e8768583.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -21079,16 +20936,6 @@
         "source": "safefood-corrected-master"
       }
     ],
-    "jr_nebraska_hudson_meng": [
-      {
-        "id": "safefood-7f02066bf3",
-        "title": "Hudson Ming",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/7f02066bf3.webp",
-        "thumbnailUrl": "assets/badges/safefood/7f02066bf3.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
     "jr_nebraska_midwest_archeological_center": [
       {
         "id": "safefood-2788fbbd27",
@@ -21474,6 +21321,26 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/c9847257d9.webp",
         "thumbnailUrl": "assets/badges/safefood/c9847257d9.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "jr_nevada_southern_nevada_s_nwr_ash_meadows_nwr": [
+      {
+        "id": "safefood-faca8b72f4",
+        "title": "Ash Meadows pin",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/faca8b72f4.webp",
+        "thumbnailUrl": "assets/badges/safefood/faca8b72f4.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "jr_nevada_southern_nevada_s_nwr_moapa_valley_nwr": [
+      {
+        "id": "safefood-fa8fd6ac78",
+        "title": "Moapa",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/fa8fd6ac78.webp",
+        "thumbnailUrl": "assets/badges/safefood/fa8fd6ac78.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -21920,6 +21787,32 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/ea9cb02386.webp",
         "thumbnailUrl": "assets/badges/safefood/ea9cb02386.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-24156d25ae",
+        "title": "Bitter Lake1",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/24156d25ae.webp",
+        "thumbnailUrl": "assets/badges/safefood/24156d25ae.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-bec23f6c4e",
+        "title": "Bitter Lake2",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/bec23f6c4e.webp",
+        "thumbnailUrl": "assets/badges/safefood/bec23f6c4e.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "jr_new_mexico_bosque_del_apache_nwr": [
+      {
+        "id": "safefood-f81fdf94b3",
+        "title": "Bos",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/f81fdf94b3.webp",
+        "thumbnailUrl": "assets/badges/safefood/f81fdf94b3.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -22825,6 +22718,16 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "jr_new_mexico_valle_de_oro_nwr": [
+      {
+        "id": "safefood-90d0f21902",
+        "title": "valley de oro",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/90d0f21902.webp",
+        "thumbnailUrl": "assets/badges/safefood/90d0f21902.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "jr_new_mexico_valles_caldera_npr": [
       {
         "id": "safefood-d2d8c0ee3b",
@@ -23473,6 +23376,14 @@
         "imageUrl": "assets/badges/safefood/bb6134e049.webp",
         "thumbnailUrl": "assets/badges/safefood/bb6134e049.webp",
         "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-2ec5b1911b",
+        "title": "Niagiria Badge",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/2ec5b1911b.webp",
+        "thumbnailUrl": "assets/badges/safefood/2ec5b1911b.webp",
+        "source": "safefood-corrected-master"
       }
     ],
     "jr_new_york_sagamore_hill_nhs": [
@@ -23768,6 +23679,14 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/ec14f76b68.webp",
         "thumbnailUrl": "assets/badges/safefood/ec14f76b68.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-94a4c6f5cf",
+        "title": "Wertheim \u200b( 631) 286-0485 C-O Long Island NWR Complex . Has a VC, longis",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/94a4c6f5cf.webp",
+        "thumbnailUrl": "assets/badges/safefood/94a4c6f5cf.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -26045,16 +25964,6 @@
         "source": "safefood-corrected-master"
       }
     ],
-    "jr_oregon_provolt_recreation_area": [
-      {
-        "id": "safefood-0282a65960",
-        "title": "Provolt Recreation Site",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/0282a65960.webp",
-        "thumbnailUrl": "assets/badges/safefood/0282a65960.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
     "jr_oregon_siuslaw_nf_cape_perpetua_sa": [
       {
         "id": "safefood-caa43afc4c",
@@ -26891,6 +26800,16 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "jr_pennsylvania_tioga_hammond_lakes_recreation_area_visitor_center": [
+      {
+        "id": "safefood-e5fed4c838",
+        "title": "Tigoa",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/e5fed4c838.webp",
+        "thumbnailUrl": "assets/badges/safefood/e5fed4c838.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "jr_pennsylvania_valley_forge_nhp": [
       {
         "id": "safefood-6f5490b0af",
@@ -27038,16 +26957,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/27e3b4f666.webp",
         "thumbnailUrl": "assets/badges/safefood/27e3b4f666.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "jr_pentathlon_card_green_river_lake": [
-      {
-        "id": "safefood-64f5ec92c5",
-        "title": "Gren Riv",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/64f5ec92c5.webp",
-        "thumbnailUrl": "assets/badges/safefood/64f5ec92c5.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -27240,6 +27149,16 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/e340e0bcf6.webp",
         "thumbnailUrl": "assets/badges/safefood/e340e0bcf6.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "jr_south_carolina_cape_romain_nwr": [
+      {
+        "id": "safefood-a64f69a3b5",
+        "title": "Cape Roman",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/a64f69a3b5.webp",
+        "thumbnailUrl": "assets/badges/safefood/a64f69a3b5.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -28603,14 +28522,6 @@
         "imageUrl": "assets/badges/safefood/24544b7144.webp",
         "thumbnailUrl": "assets/badges/safefood/24544b7144.webp",
         "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-6fd5738f1d",
-        "title": "SJR-Southeast-192 - Warner Parks",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/6fd5738f1d.webp",
-        "thumbnailUrl": "assets/badges/safefood/6fd5738f1d.webp",
-        "source": "safefood-corrected-master"
       }
     ],
     "jr_texas_alibates_flint_quarries_nm": [
@@ -28864,6 +28775,16 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/d38eb244f5.webp",
         "thumbnailUrl": "assets/badges/safefood/d38eb244f5.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "jr_texas_caddo_lake_nwr": [
+      {
+        "id": "safefood-ae46dd4b46",
+        "title": "Caddo Lake",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/ae46dd4b46.webp",
+        "thumbnailUrl": "assets/badges/safefood/ae46dd4b46.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -29637,7 +29558,25 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "jr_utah_bear_river_migratory_bird_refuge": [
+      {
+        "id": "safefood-8c94c036f4",
+        "title": "Bear Rvier",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/8c94c036f4.webp",
+        "thumbnailUrl": "assets/badges/safefood/8c94c036f4.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "jr_utah_bryce_canyon_np": [
+      {
+        "id": "safefood-1d3a1c934e",
+        "title": "Brice wooden badge",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/1d3a1c934e.webp",
+        "thumbnailUrl": "assets/badges/safefood/1d3a1c934e.webp",
+        "source": "safefood-corrected-master"
+      },
       {
         "id": "safefood-ec7e57a4cc",
         "title": "bry pla",
@@ -30714,6 +30653,40 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/79a21382b4.webp",
         "thumbnailUrl": "assets/badges/safefood/79a21382b4.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "jr_virginia_chincoteague_nwr": [
+      {
+        "id": "safefood-df62ae8cbc",
+        "title": "Chincoteague National Wildlife Refuge pa",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/df62ae8cbc.webp",
+        "thumbnailUrl": "assets/badges/safefood/df62ae8cbc.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-3b340a2791",
+        "title": "Chincotteague National Wildlife Refuge",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/3b340a2791.webp",
+        "thumbnailUrl": "assets/badges/safefood/3b340a2791.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-e09fbcc2d4",
+        "title": "Chincotteague patch",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/e09fbcc2d4.webp",
+        "thumbnailUrl": "assets/badges/safefood/e09fbcc2d4.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-8779279d66",
+        "title": "Chincotteague patch2",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/8779279d66.webp",
+        "thumbnailUrl": "assets/badges/safefood/8779279d66.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -32583,6 +32556,14 @@
         "imageUrl": "assets/badges/safefood/67f7a04841.webp",
         "thumbnailUrl": "assets/badges/safefood/67f7a04841.webp",
         "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-a136529dcb",
+        "title": "Willapa patch",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/a136529dcb.webp",
+        "thumbnailUrl": "assets/badges/safefood/a136529dcb.webp",
+        "source": "safefood-corrected-master"
       }
     ],
     "jr_west_virginia_canaan_valley_nwr": [
@@ -32844,6 +32825,42 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/9b04f4ccf8.webp",
         "thumbnailUrl": "assets/badges/safefood/9b04f4ccf8.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "jr_wisconsin_necedah_nwr": [
+      {
+        "id": "safefood-9b1f8df815",
+        "title": "Nec But",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/9b1f8df815.webp",
+        "thumbnailUrl": "assets/badges/safefood/9b1f8df815.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-76f8af504f",
+        "title": "Nec flo",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/76f8af504f.webp",
+        "thumbnailUrl": "assets/badges/safefood/76f8af504f.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-0b412778a0",
+        "title": "Nec pri",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/0b412778a0.webp",
+        "thumbnailUrl": "assets/badges/safefood/0b412778a0.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "jr_wisconsin_whittlesey_creel_nwr": [
+      {
+        "id": "safefood-450db6ba39",
+        "title": "Whittlesey Creek National Wildlife Refuge",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/450db6ba39.webp",
+        "thumbnailUrl": "assets/badges/safefood/450db6ba39.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -35235,14 +35252,6 @@
         "imageUrl": "assets/badges/safefood/d1d0d3a0e2.webp",
         "thumbnailUrl": "assets/badges/safefood/d1d0d3a0e2.webp",
         "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-12913e7f86",
-        "title": "National Trails",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12913e7f86.webp",
-        "thumbnailUrl": "assets/badges/safefood/12913e7f86.webp",
-        "source": "safefood-corrected-master"
       }
     ],
     "alaska|bering land bridge national preserve": [
@@ -35804,14 +35813,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/d1d0d3a0e2.webp",
         "thumbnailUrl": "assets/badges/safefood/d1d0d3a0e2.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-12913e7f86",
-        "title": "National Trails",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12913e7f86.webp",
-        "thumbnailUrl": "assets/badges/safefood/12913e7f86.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -36789,14 +36790,6 @@
         "source": "safefood-corrected-master"
       },
       {
-        "id": "safefood-12913e7f86",
-        "title": "National Trails",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12913e7f86.webp",
-        "thumbnailUrl": "assets/badges/safefood/12913e7f86.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
         "id": "safefood-03885f0d79",
         "title": "Western Arctic National Parklands",
         "type": "Badge",
@@ -37065,6 +37058,14 @@
     ],
     "alaska|tongass national forest": [
       {
+        "id": "safefood-93d441f21b",
+        "title": "Discovery",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/93d441f21b.webp",
+        "thumbnailUrl": "assets/badges/safefood/93d441f21b.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
         "id": "safefood-b010cc5b52",
         "title": "tongass",
         "type": "Badge",
@@ -37098,6 +37099,14 @@
       }
     ],
     "alaska|tongass nf": [
+      {
+        "id": "safefood-93d441f21b",
+        "title": "Discovery",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/93d441f21b.webp",
+        "thumbnailUrl": "assets/badges/safefood/93d441f21b.webp",
+        "source": "safefood-corrected-master"
+      },
       {
         "id": "safefood-b010cc5b52",
         "title": "tongass",
@@ -37522,34 +37531,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/ba20aa0933.webp",
         "thumbnailUrl": "assets/badges/safefood/ba20aa0933.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-38d0af0251",
-        "title": "Yukon Flats",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/38d0af0251.webp",
-        "thumbnailUrl": "assets/badges/safefood/38d0af0251.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "alaska|yukon flats 907": [
-      {
-        "id": "safefood-38d0af0251",
-        "title": "Yukon Flats",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/38d0af0251.webp",
-        "thumbnailUrl": "assets/badges/safefood/38d0af0251.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "alaska|yukon flats national wildlife refuge": [
-      {
-        "id": "safefood-38d0af0251",
-        "title": "Yukon Flats",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/38d0af0251.webp",
-        "thumbnailUrl": "assets/badges/safefood/38d0af0251.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -40173,16 +40154,6 @@
         "source": "safefood-corrected-master"
       }
     ],
-    "arizona|desert fishes": [
-      {
-        "id": "safefood-72a80447b2",
-        "title": "Sesert Fishes",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/72a80447b2.webp",
-        "thumbnailUrl": "assets/badges/safefood/72a80447b2.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
     "arizona|fool hollow": [
       {
         "id": "safefood-78ce4718aa",
@@ -41877,22 +41848,6 @@
         "source": "safefood-corrected-master"
       },
       {
-        "id": "safefood-a3c71b22e2",
-        "title": "Mont Well",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/a3c71b22e2.webp",
-        "thumbnailUrl": "assets/badges/safefood/a3c71b22e2.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-be4bce2fe8",
-        "title": "Mont well badge",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/be4bce2fe8.webp",
-        "thumbnailUrl": "assets/badges/safefood/be4bce2fe8.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
         "id": "safefood-6af091faca",
         "title": "Mont wooden Badge",
         "type": "Badge",
@@ -41946,56 +41901,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/e39044059b.webp",
         "thumbnailUrl": "assets/badges/safefood/e39044059b.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-6003118d10",
-        "title": "Montezuma Well",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/6003118d10.webp",
-        "thumbnailUrl": "assets/badges/safefood/6003118d10.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-c1c678e15c",
-        "title": "Montezuma Well",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/c1c678e15c.webp",
-        "thumbnailUrl": "assets/badges/safefood/c1c678e15c.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "arizona|montezuma well": [
-      {
-        "id": "safefood-a3c71b22e2",
-        "title": "Mont Well",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/a3c71b22e2.webp",
-        "thumbnailUrl": "assets/badges/safefood/a3c71b22e2.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-be4bce2fe8",
-        "title": "Mont well badge",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/be4bce2fe8.webp",
-        "thumbnailUrl": "assets/badges/safefood/be4bce2fe8.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-6003118d10",
-        "title": "Montezuma Well",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/6003118d10.webp",
-        "thumbnailUrl": "assets/badges/safefood/6003118d10.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-c1c678e15c",
-        "title": "Montezuma Well",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/c1c678e15c.webp",
-        "thumbnailUrl": "assets/badges/safefood/c1c678e15c.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -43961,14 +43866,6 @@
     ],
     "arizona|sonoran desert nm": [
       {
-        "id": "safefood-72a80447b2",
-        "title": "Sesert Fishes",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/72a80447b2.webp",
-        "thumbnailUrl": "assets/badges/safefood/72a80447b2.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
         "id": "safefood-c956cb6659",
         "title": "Sonoran Desert NM patch",
         "type": "Badge",
@@ -44574,74 +44471,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/94d398d30b.webp",
         "thumbnailUrl": "assets/badges/safefood/94d398d30b.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "arizona|tumac cori national historical park": [
-      {
-        "id": "safefood-bc691d27e4",
-        "title": "Tum",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/bc691d27e4.webp",
-        "thumbnailUrl": "assets/badges/safefood/bc691d27e4.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-7278162ef8",
-        "title": "Tumacacori badge",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/7278162ef8.webp",
-        "thumbnailUrl": "assets/badges/safefood/7278162ef8.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-7c8d1fab78",
-        "title": "Tumac\u00e1cori National Historical Park",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/7c8d1fab78.webp",
-        "thumbnailUrl": "assets/badges/safefood/7c8d1fab78.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-854490cacd",
-        "title": "Tumac\u00e1cori National Historical Park",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/854490cacd.webp",
-        "thumbnailUrl": "assets/badges/safefood/854490cacd.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "arizona|tumacacori nhp": [
-      {
-        "id": "safefood-bc691d27e4",
-        "title": "Tum",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/bc691d27e4.webp",
-        "thumbnailUrl": "assets/badges/safefood/bc691d27e4.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-7278162ef8",
-        "title": "Tumacacori badge",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/7278162ef8.webp",
-        "thumbnailUrl": "assets/badges/safefood/7278162ef8.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-7c8d1fab78",
-        "title": "Tumac\u00e1cori National Historical Park",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/7c8d1fab78.webp",
-        "thumbnailUrl": "assets/badges/safefood/7c8d1fab78.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-854490cacd",
-        "title": "Tumac\u00e1cori National Historical Park",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/854490cacd.webp",
-        "thumbnailUrl": "assets/badges/safefood/854490cacd.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -49639,16 +49468,6 @@
         "source": "safefood-corrected-master"
       }
     ],
-    "california|candlestick point state recreation area": [
-      {
-        "id": "safefood-aa184a64ca",
-        "title": "SJR-Alaska-012 - Indian CAn",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/aa184a64ca.webp",
-        "thumbnailUrl": "assets/badges/safefood/aa184a64ca.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
     "california|carrizo plain nm": [
       {
         "id": "safefood-c810a3c71d",
@@ -50151,16 +49970,6 @@
         "source": "safefood-corrected-master"
       }
     ],
-    "california|harbors beach": [
-      {
-        "id": "safefood-ac259bb076",
-        "title": "SJR-Alaska-200 - Harbors Beach",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/ac259bb076.webp",
-        "thumbnailUrl": "assets/badges/safefood/ac259bb076.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
     "california|hea cas": [
       {
         "id": "safefood-a7de79cb95",
@@ -50198,16 +50007,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/30473d95d7.webp",
         "thumbnailUrl": "assets/badges/safefood/30473d95d7.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "california|indian can": [
-      {
-        "id": "safefood-aa184a64ca",
-        "title": "SJR-Alaska-012 - Indian CAn",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/aa184a64ca.webp",
-        "thumbnailUrl": "assets/badges/safefood/aa184a64ca.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -51846,16 +51645,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/92e9a309e2.webp",
         "thumbnailUrl": "assets/badges/safefood/92e9a309e2.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "california|refugio state beach": [
-      {
-        "id": "safefood-ac259bb076",
-        "title": "SJR-Alaska-200 - Harbors Beach",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/ac259bb076.webp",
-        "thumbnailUrl": "assets/badges/safefood/ac259bb076.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -55823,14 +55612,6 @@
         "imageUrl": "assets/badges/safefood/d5446397ce.webp",
         "thumbnailUrl": "assets/badges/safefood/d5446397ce.webp",
         "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-1527e34285",
-        "title": "SJR-Intermountain-071 - Pountain Creek",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/1527e34285.webp",
-        "thumbnailUrl": "assets/badges/safefood/1527e34285.webp",
-        "source": "safefood-corrected-master"
       }
     ],
     "colorado|chimney rock san juan national forest": [
@@ -57672,16 +57453,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/6dc66835c4.webp",
         "thumbnailUrl": "assets/badges/safefood/6dc66835c4.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "colorado|pountain creek": [
-      {
-        "id": "safefood-1527e34285",
-        "title": "SJR-Intermountain-071 - Pountain Creek",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/1527e34285.webp",
-        "thumbnailUrl": "assets/badges/safefood/1527e34285.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -60815,42 +60586,6 @@
         "source": "safefood-corrected-master"
       }
     ],
-    "florida|timucuan ehp": [
-      {
-        "id": "safefood-2c9fcb32fa",
-        "title": "Tim1",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/2c9fcb32fa.webp",
-        "thumbnailUrl": "assets/badges/safefood/2c9fcb32fa.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-324dbd30fc",
-        "title": "Timucuan",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/324dbd30fc.webp",
-        "thumbnailUrl": "assets/badges/safefood/324dbd30fc.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "florida|timucuan trail": [
-      {
-        "id": "safefood-2c9fcb32fa",
-        "title": "Tim1",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/2c9fcb32fa.webp",
-        "thumbnailUrl": "assets/badges/safefood/2c9fcb32fa.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-324dbd30fc",
-        "title": "Timucuan",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/324dbd30fc.webp",
-        "thumbnailUrl": "assets/badges/safefood/324dbd30fc.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
     "georgia|4a3b09 21fb73df8b1748139ab475ddf4e1c695 mv2": [
       {
         "id": "safefood-ca420ceaa1",
@@ -63543,26 +63278,6 @@
         "source": "safefood-corrected-master"
       }
     ],
-    "georgia|indian springs": [
-      {
-        "id": "safefood-871b431d31",
-        "title": "SJR-Southeast-070 - Indian Springs State Park",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/871b431d31.webp",
-        "thumbnailUrl": "assets/badges/safefood/871b431d31.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "georgia|indian springs state park": [
-      {
-        "id": "safefood-871b431d31",
-        "title": "SJR-Southeast-070 - Indian Springs State Park",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/871b431d31.webp",
-        "thumbnailUrl": "assets/badges/safefood/871b431d31.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
     "georgia|james": [
       {
         "id": "safefood-8e896bf957",
@@ -64054,14 +63769,6 @@
       }
     ],
     "georgia|magnolia springs sp": [
-      {
-        "id": "safefood-871b431d31",
-        "title": "SJR-Southeast-070 - Indian Springs State Park",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/871b431d31.webp",
-        "thumbnailUrl": "assets/badges/safefood/871b431d31.webp",
-        "source": "safefood-corrected-master"
-      },
       {
         "id": "safefood-19c8c79b6a",
         "title": "SJR-Southeast-077 - Magnolia Springs State Park",
@@ -72497,6 +72204,16 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "iowa|desoto nwr": [
+      {
+        "id": "safefood-4171af6472",
+        "title": "Desoto",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/4171af6472.webp",
+        "thumbnailUrl": "assets/badges/safefood/4171af6472.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "iowa|effigy mounds national monument": [
       {
         "id": "safefood-8da7334c6b",
@@ -73098,6 +72815,16 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/5eeb0961d9.webp",
         "thumbnailUrl": "assets/badges/safefood/5eeb0961d9.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "iowa|neal smith nwr": [
+      {
+        "id": "safefood-9f7d4a19fe",
+        "title": "Neil Smith",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/9f7d4a19fe.webp",
+        "thumbnailUrl": "assets/badges/safefood/9f7d4a19fe.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -73949,26 +73676,6 @@
         "source": "safefood-corrected-master"
       }
     ],
-    "kentucky|green river lake": [
-      {
-        "id": "safefood-64f5ec92c5",
-        "title": "Gren Riv",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/64f5ec92c5.webp",
-        "thumbnailUrl": "assets/badges/safefood/64f5ec92c5.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "kentucky|gren riv": [
-      {
-        "id": "safefood-64f5ec92c5",
-        "title": "Gren Riv",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/64f5ec92c5.webp",
-        "thumbnailUrl": "assets/badges/safefood/64f5ec92c5.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
     "kentucky|junior naturalist": [
       {
         "id": "safefood-27e3b4f666",
@@ -74250,6 +73957,16 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/df0b69dc53.webp",
         "thumbnailUrl": "assets/badges/safefood/df0b69dc53.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "louisiana|caddo lake national wildlife refuge": [
+      {
+        "id": "safefood-ae46dd4b46",
+        "title": "Caddo Lake",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/ae46dd4b46.webp",
+        "thumbnailUrl": "assets/badges/safefood/ae46dd4b46.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -74590,6 +74307,34 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/691eef8548.webp",
         "thumbnailUrl": "assets/badges/safefood/691eef8548.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "louisiana|se lou national wildlife refuge": [
+      {
+        "id": "safefood-281fab9af5",
+        "title": "SE Lou",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/281fab9af5.webp",
+        "thumbnailUrl": "assets/badges/safefood/281fab9af5.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "louisiana|southeast louisiana nwr": [
+      {
+        "id": "safefood-281fab9af5",
+        "title": "SE Lou",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/281fab9af5.webp",
+        "thumbnailUrl": "assets/badges/safefood/281fab9af5.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-b75ccd0838",
+        "title": "SE Louisanna",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/b75ccd0838.webp",
+        "thumbnailUrl": "assets/badges/safefood/b75ccd0838.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -77569,6 +77314,24 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "maryland|agent of discovery patuxent national wildlife refuge": [
+      {
+        "id": "safefood-edc4b167f6",
+        "title": "Agent of Discovery Patuxent",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/edc4b167f6.webp",
+        "thumbnailUrl": "assets/badges/safefood/edc4b167f6.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-7c5a71cade",
+        "title": "Agent of Discovery Patuxent Pin",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/7c5a71cade.webp",
+        "thumbnailUrl": "assets/badges/safefood/7c5a71cade.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "maryland|antietam national battlefield": [
       {
         "id": "safefood-d28399c94f",
@@ -78711,25 +78474,7 @@
         "source": "safefood-corrected-master"
       }
     ],
-    "maryland|maryland squirrel": [
-      {
-        "id": "safefood-138ac8e0f1",
-        "title": "SJR-Northeast-022 - Maryland squirrel",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/138ac8e0f1.webp",
-        "thumbnailUrl": "assets/badges/safefood/138ac8e0f1.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
     "maryland|maryland state parks": [
-      {
-        "id": "safefood-138ac8e0f1",
-        "title": "SJR-Northeast-022 - Maryland squirrel",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/138ac8e0f1.webp",
-        "thumbnailUrl": "assets/badges/safefood/138ac8e0f1.webp",
-        "source": "safefood-corrected-master"
-      },
       {
         "id": "safefood-7f96e756fc",
         "title": "SJR-Northeast-023 - 4a3b09 3eddc49e119b4d3ea3b58d8c1fda5901 mv2",
@@ -79040,6 +78785,22 @@
       }
     ],
     "maryland|patuxent research refuge": [
+      {
+        "id": "safefood-edc4b167f6",
+        "title": "Agent of Discovery Patuxent",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/edc4b167f6.webp",
+        "thumbnailUrl": "assets/badges/safefood/edc4b167f6.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-7c5a71cade",
+        "title": "Agent of Discovery Patuxent Pin",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/7c5a71cade.webp",
+        "thumbnailUrl": "assets/badges/safefood/7c5a71cade.webp",
+        "source": "safefood-corrected-master"
+      },
       {
         "id": "safefood-cfcd65ab2a",
         "title": "Patuxent",
@@ -79845,6 +79606,16 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "massachusetts|cambridge": [
+      {
+        "id": "safefood-cffb7d479b",
+        "title": "SJR-Northeast-048 - Cambridge",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/cffb7d479b.webp",
+        "thumbnailUrl": "assets/badges/safefood/cffb7d479b.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "massachusetts|cap cod2": [
       {
         "id": "safefood-807e7306b7",
@@ -80334,6 +80105,16 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/d621fd1d0c.webp",
         "thumbnailUrl": "assets/badges/safefood/d621fd1d0c.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "massachusetts|natural bridge sp": [
+      {
+        "id": "safefood-cffb7d479b",
+        "title": "SJR-Northeast-048 - Cambridge",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/cffb7d479b.webp",
+        "thumbnailUrl": "assets/badges/safefood/cffb7d479b.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -81215,6 +80996,16 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "michigan|desoto national wildlife refuge": [
+      {
+        "id": "safefood-4171af6472",
+        "title": "Desoto",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/4171af6472.webp",
+        "thumbnailUrl": "assets/badges/safefood/4171af6472.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "michigan|isle royale national park": [
       {
         "id": "safefood-0f9505dd82",
@@ -81385,43 +81176,11 @@
         "source": "safefood-corrected-master"
       },
       {
-        "id": "safefood-12e3497bb1",
-        "title": "SJR-Midwest-058 - portage ebdurance",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "thumbnailUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-89d6abbdf7",
-        "title": "SJR-Midwest-059 - portage arts",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "thumbnailUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
         "id": "safefood-5c6ffbcb46",
         "title": "SJR-Midwest-060 - 4a3b09 b59d9e1d211141bf9d5e4313784a6c89 mv2",
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/5c6ffbcb46.webp",
         "thumbnailUrl": "assets/badges/safefood/5c6ffbcb46.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-4385ac500e",
-        "title": "SJR-Midwest-061 - portage service",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/4385ac500e.webp",
-        "thumbnailUrl": "assets/badges/safefood/4385ac500e.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-54d0f1e90d",
-        "title": "SJR-Midwest-062 - portage history",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "thumbnailUrl": "assets/badges/safefood/54d0f1e90d.webp",
         "source": "safefood-corrected-master"
       },
       {
@@ -81433,43 +81192,11 @@
         "source": "safefood-corrected-master"
       },
       {
-        "id": "safefood-fb405739cb",
-        "title": "SJR-Midwest-064 - portage survival",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/fb405739cb.webp",
-        "thumbnailUrl": "assets/badges/safefood/fb405739cb.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-8ea56ff861",
-        "title": "SJR-Midwest-065 - portage heath",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "thumbnailUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
         "id": "safefood-7e7df64b69",
         "title": "SJR-Midwest-066 - 4a3b09 f6f666caa1ff4de0bc489ca73cdeaf21 mv2",
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/7e7df64b69.webp",
         "thumbnailUrl": "assets/badges/safefood/7e7df64b69.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-07f20b1a68",
-        "title": "SJR-Midwest-067 - portage Science",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "thumbnailUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-29e8768583",
-        "title": "SJR-Midwest-068 - portage nature",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/29e8768583.webp",
-        "thumbnailUrl": "assets/badges/safefood/29e8768583.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -81589,6 +81316,16 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "michigan|neil smith national wildlife refuge": [
+      {
+        "id": "safefood-9f7d4a19fe",
+        "title": "Neil Smith",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/9f7d4a19fe.webp",
+        "thumbnailUrl": "assets/badges/safefood/9f7d4a19fe.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "michigan|pictured rocks national lakeshore": [
       {
         "id": "safefood-8b87bbc708",
@@ -81702,600 +81439,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/5c7aa0023d.webp",
         "thumbnailUrl": "assets/badges/safefood/5c7aa0023d.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "michigan|portage arts": [
-      {
-        "id": "safefood-12e3497bb1",
-        "title": "SJR-Midwest-058 - portage ebdurance",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "thumbnailUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-89d6abbdf7",
-        "title": "SJR-Midwest-059 - portage arts",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "thumbnailUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-4385ac500e",
-        "title": "SJR-Midwest-061 - portage service",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/4385ac500e.webp",
-        "thumbnailUrl": "assets/badges/safefood/4385ac500e.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-54d0f1e90d",
-        "title": "SJR-Midwest-062 - portage history",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "thumbnailUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-fb405739cb",
-        "title": "SJR-Midwest-064 - portage survival",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/fb405739cb.webp",
-        "thumbnailUrl": "assets/badges/safefood/fb405739cb.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-8ea56ff861",
-        "title": "SJR-Midwest-065 - portage heath",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "thumbnailUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-07f20b1a68",
-        "title": "SJR-Midwest-067 - portage Science",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "thumbnailUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-29e8768583",
-        "title": "SJR-Midwest-068 - portage nature",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/29e8768583.webp",
-        "thumbnailUrl": "assets/badges/safefood/29e8768583.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "michigan|portage ebdurance": [
-      {
-        "id": "safefood-12e3497bb1",
-        "title": "SJR-Midwest-058 - portage ebdurance",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "thumbnailUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-89d6abbdf7",
-        "title": "SJR-Midwest-059 - portage arts",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "thumbnailUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-4385ac500e",
-        "title": "SJR-Midwest-061 - portage service",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/4385ac500e.webp",
-        "thumbnailUrl": "assets/badges/safefood/4385ac500e.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-54d0f1e90d",
-        "title": "SJR-Midwest-062 - portage history",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "thumbnailUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-fb405739cb",
-        "title": "SJR-Midwest-064 - portage survival",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/fb405739cb.webp",
-        "thumbnailUrl": "assets/badges/safefood/fb405739cb.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-8ea56ff861",
-        "title": "SJR-Midwest-065 - portage heath",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "thumbnailUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-07f20b1a68",
-        "title": "SJR-Midwest-067 - portage Science",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "thumbnailUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-29e8768583",
-        "title": "SJR-Midwest-068 - portage nature",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/29e8768583.webp",
-        "thumbnailUrl": "assets/badges/safefood/29e8768583.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "michigan|portage heath": [
-      {
-        "id": "safefood-12e3497bb1",
-        "title": "SJR-Midwest-058 - portage ebdurance",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "thumbnailUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-89d6abbdf7",
-        "title": "SJR-Midwest-059 - portage arts",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "thumbnailUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-4385ac500e",
-        "title": "SJR-Midwest-061 - portage service",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/4385ac500e.webp",
-        "thumbnailUrl": "assets/badges/safefood/4385ac500e.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-54d0f1e90d",
-        "title": "SJR-Midwest-062 - portage history",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "thumbnailUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-fb405739cb",
-        "title": "SJR-Midwest-064 - portage survival",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/fb405739cb.webp",
-        "thumbnailUrl": "assets/badges/safefood/fb405739cb.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-8ea56ff861",
-        "title": "SJR-Midwest-065 - portage heath",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "thumbnailUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-07f20b1a68",
-        "title": "SJR-Midwest-067 - portage Science",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "thumbnailUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-29e8768583",
-        "title": "SJR-Midwest-068 - portage nature",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/29e8768583.webp",
-        "thumbnailUrl": "assets/badges/safefood/29e8768583.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "michigan|portage history": [
-      {
-        "id": "safefood-12e3497bb1",
-        "title": "SJR-Midwest-058 - portage ebdurance",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "thumbnailUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-89d6abbdf7",
-        "title": "SJR-Midwest-059 - portage arts",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "thumbnailUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-4385ac500e",
-        "title": "SJR-Midwest-061 - portage service",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/4385ac500e.webp",
-        "thumbnailUrl": "assets/badges/safefood/4385ac500e.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-54d0f1e90d",
-        "title": "SJR-Midwest-062 - portage history",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "thumbnailUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-fb405739cb",
-        "title": "SJR-Midwest-064 - portage survival",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/fb405739cb.webp",
-        "thumbnailUrl": "assets/badges/safefood/fb405739cb.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-8ea56ff861",
-        "title": "SJR-Midwest-065 - portage heath",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "thumbnailUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-07f20b1a68",
-        "title": "SJR-Midwest-067 - portage Science",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "thumbnailUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-29e8768583",
-        "title": "SJR-Midwest-068 - portage nature",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/29e8768583.webp",
-        "thumbnailUrl": "assets/badges/safefood/29e8768583.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "michigan|portage nature": [
-      {
-        "id": "safefood-12e3497bb1",
-        "title": "SJR-Midwest-058 - portage ebdurance",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "thumbnailUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-89d6abbdf7",
-        "title": "SJR-Midwest-059 - portage arts",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "thumbnailUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-4385ac500e",
-        "title": "SJR-Midwest-061 - portage service",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/4385ac500e.webp",
-        "thumbnailUrl": "assets/badges/safefood/4385ac500e.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-54d0f1e90d",
-        "title": "SJR-Midwest-062 - portage history",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "thumbnailUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-fb405739cb",
-        "title": "SJR-Midwest-064 - portage survival",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/fb405739cb.webp",
-        "thumbnailUrl": "assets/badges/safefood/fb405739cb.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-8ea56ff861",
-        "title": "SJR-Midwest-065 - portage heath",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "thumbnailUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-07f20b1a68",
-        "title": "SJR-Midwest-067 - portage Science",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "thumbnailUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-29e8768583",
-        "title": "SJR-Midwest-068 - portage nature",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/29e8768583.webp",
-        "thumbnailUrl": "assets/badges/safefood/29e8768583.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "michigan|portage parks": [
-      {
-        "id": "safefood-12e3497bb1",
-        "title": "SJR-Midwest-058 - portage ebdurance",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "thumbnailUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-89d6abbdf7",
-        "title": "SJR-Midwest-059 - portage arts",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "thumbnailUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-4385ac500e",
-        "title": "SJR-Midwest-061 - portage service",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/4385ac500e.webp",
-        "thumbnailUrl": "assets/badges/safefood/4385ac500e.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-54d0f1e90d",
-        "title": "SJR-Midwest-062 - portage history",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "thumbnailUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-fb405739cb",
-        "title": "SJR-Midwest-064 - portage survival",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/fb405739cb.webp",
-        "thumbnailUrl": "assets/badges/safefood/fb405739cb.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-8ea56ff861",
-        "title": "SJR-Midwest-065 - portage heath",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "thumbnailUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-07f20b1a68",
-        "title": "SJR-Midwest-067 - portage Science",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "thumbnailUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-29e8768583",
-        "title": "SJR-Midwest-068 - portage nature",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/29e8768583.webp",
-        "thumbnailUrl": "assets/badges/safefood/29e8768583.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "michigan|portage science": [
-      {
-        "id": "safefood-12e3497bb1",
-        "title": "SJR-Midwest-058 - portage ebdurance",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "thumbnailUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-89d6abbdf7",
-        "title": "SJR-Midwest-059 - portage arts",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "thumbnailUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-4385ac500e",
-        "title": "SJR-Midwest-061 - portage service",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/4385ac500e.webp",
-        "thumbnailUrl": "assets/badges/safefood/4385ac500e.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-54d0f1e90d",
-        "title": "SJR-Midwest-062 - portage history",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "thumbnailUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-fb405739cb",
-        "title": "SJR-Midwest-064 - portage survival",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/fb405739cb.webp",
-        "thumbnailUrl": "assets/badges/safefood/fb405739cb.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-8ea56ff861",
-        "title": "SJR-Midwest-065 - portage heath",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "thumbnailUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-07f20b1a68",
-        "title": "SJR-Midwest-067 - portage Science",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "thumbnailUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-29e8768583",
-        "title": "SJR-Midwest-068 - portage nature",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/29e8768583.webp",
-        "thumbnailUrl": "assets/badges/safefood/29e8768583.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "michigan|portage service": [
-      {
-        "id": "safefood-12e3497bb1",
-        "title": "SJR-Midwest-058 - portage ebdurance",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "thumbnailUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-89d6abbdf7",
-        "title": "SJR-Midwest-059 - portage arts",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "thumbnailUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-4385ac500e",
-        "title": "SJR-Midwest-061 - portage service",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/4385ac500e.webp",
-        "thumbnailUrl": "assets/badges/safefood/4385ac500e.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-54d0f1e90d",
-        "title": "SJR-Midwest-062 - portage history",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "thumbnailUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-fb405739cb",
-        "title": "SJR-Midwest-064 - portage survival",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/fb405739cb.webp",
-        "thumbnailUrl": "assets/badges/safefood/fb405739cb.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-8ea56ff861",
-        "title": "SJR-Midwest-065 - portage heath",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "thumbnailUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-07f20b1a68",
-        "title": "SJR-Midwest-067 - portage Science",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "thumbnailUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-29e8768583",
-        "title": "SJR-Midwest-068 - portage nature",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/29e8768583.webp",
-        "thumbnailUrl": "assets/badges/safefood/29e8768583.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "michigan|portage survival": [
-      {
-        "id": "safefood-12e3497bb1",
-        "title": "SJR-Midwest-058 - portage ebdurance",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "thumbnailUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-89d6abbdf7",
-        "title": "SJR-Midwest-059 - portage arts",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "thumbnailUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-4385ac500e",
-        "title": "SJR-Midwest-061 - portage service",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/4385ac500e.webp",
-        "thumbnailUrl": "assets/badges/safefood/4385ac500e.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-54d0f1e90d",
-        "title": "SJR-Midwest-062 - portage history",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "thumbnailUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-fb405739cb",
-        "title": "SJR-Midwest-064 - portage survival",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/fb405739cb.webp",
-        "thumbnailUrl": "assets/badges/safefood/fb405739cb.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-8ea56ff861",
-        "title": "SJR-Midwest-065 - portage heath",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "thumbnailUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-07f20b1a68",
-        "title": "SJR-Midwest-067 - portage Science",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "thumbnailUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-29e8768583",
-        "title": "SJR-Midwest-068 - portage nature",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/29e8768583.webp",
-        "thumbnailUrl": "assets/badges/safefood/29e8768583.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -84341,6 +83484,16 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "montana|ash meadows national wildlife refuge": [
+      {
+        "id": "safefood-faca8b72f4",
+        "title": "Ash Meadows pin",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/faca8b72f4.webp",
+        "thumbnailUrl": "assets/badges/safefood/faca8b72f4.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "montana|bannack badge": [
       {
         "id": "safefood-e5c4d4c26b",
@@ -84893,6 +84046,16 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "montana|moapa national wildlife refuge": [
+      {
+        "id": "safefood-fa8fd6ac78",
+        "title": "Moapa",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/fa8fd6ac78.webp",
+        "thumbnailUrl": "assets/badges/safefood/fa8fd6ac78.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "montana|montana s state parks": [
       {
         "id": "safefood-c4f154db32",
@@ -85121,6 +84284,36 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "nebraska|bitter lake1 national wildlife refuge": [
+      {
+        "id": "safefood-24156d25ae",
+        "title": "Bitter Lake1",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/24156d25ae.webp",
+        "thumbnailUrl": "assets/badges/safefood/24156d25ae.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "nebraska|bitter lake2 national wildlife refuge": [
+      {
+        "id": "safefood-bec23f6c4e",
+        "title": "Bitter Lake2",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/bec23f6c4e.webp",
+        "thumbnailUrl": "assets/badges/safefood/bec23f6c4e.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "nebraska|bos national wildlife refuge": [
+      {
+        "id": "safefood-f81fdf94b3",
+        "title": "Bos",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/f81fdf94b3.webp",
+        "thumbnailUrl": "assets/badges/safefood/f81fdf94b3.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "nebraska|crater lake national park": [
       {
         "id": "safefood-6db412b616",
@@ -85160,6 +84353,16 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/499a4d4746.webp",
         "thumbnailUrl": "assets/badges/safefood/499a4d4746.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "nebraska|desoto national wildlife refuge": [
+      {
+        "id": "safefood-4171af6472",
+        "title": "Desoto",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/4171af6472.webp",
+        "thumbnailUrl": "assets/badges/safefood/4171af6472.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -85232,26 +84435,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/7c5a89ca84.webp",
         "thumbnailUrl": "assets/badges/safefood/7c5a89ca84.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "nebraska|hudson meng": [
-      {
-        "id": "safefood-7f02066bf3",
-        "title": "Hudson Ming",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/7f02066bf3.webp",
-        "thumbnailUrl": "assets/badges/safefood/7f02066bf3.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "nebraska|hudson ming": [
-      {
-        "id": "safefood-7f02066bf3",
-        "title": "Hudson Ming",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/7f02066bf3.webp",
-        "thumbnailUrl": "assets/badges/safefood/7f02066bf3.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -85392,6 +84575,16 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/39cbb6ba17.webp",
         "thumbnailUrl": "assets/badges/safefood/39cbb6ba17.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "nebraska|valley de oro national wildlife refuge": [
+      {
+        "id": "safefood-90d0f21902",
+        "title": "valley de oro",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/90d0f21902.webp",
+        "thumbnailUrl": "assets/badges/safefood/90d0f21902.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -87949,6 +87142,26 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "nevada|southern nevada s nwr ash meadows nwr": [
+      {
+        "id": "safefood-faca8b72f4",
+        "title": "Ash Meadows pin",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/faca8b72f4.webp",
+        "thumbnailUrl": "assets/badges/safefood/faca8b72f4.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "nevada|southern nevada s nwr moapa valley nwr": [
+      {
+        "id": "safefood-fa8fd6ac78",
+        "title": "Moapa",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/fa8fd6ac78.webp",
+        "thumbnailUrl": "assets/badges/safefood/fa8fd6ac78.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "nevada|tule springs fossil beds national monument": [
       {
         "id": "safefood-af434f6a48",
@@ -90233,6 +89446,32 @@
         "imageUrl": "assets/badges/safefood/ea9cb02386.webp",
         "thumbnailUrl": "assets/badges/safefood/ea9cb02386.webp",
         "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-24156d25ae",
+        "title": "Bitter Lake1",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/24156d25ae.webp",
+        "thumbnailUrl": "assets/badges/safefood/24156d25ae.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-bec23f6c4e",
+        "title": "Bitter Lake2",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/bec23f6c4e.webp",
+        "thumbnailUrl": "assets/badges/safefood/bec23f6c4e.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "new mexico|bosque del apache nwr": [
+      {
+        "id": "safefood-f81fdf94b3",
+        "title": "Bos",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/f81fdf94b3.webp",
+        "thumbnailUrl": "assets/badges/safefood/f81fdf94b3.webp",
+        "source": "safefood-corrected-master"
       }
     ],
     "new mexico|capulin volcano national monument": [
@@ -92434,6 +91673,16 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/39cbb6ba17.webp",
         "thumbnailUrl": "assets/badges/safefood/39cbb6ba17.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "new mexico|valle de oro nwr": [
+      {
+        "id": "safefood-90d0f21902",
+        "title": "valley de oro",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/90d0f21902.webp",
+        "thumbnailUrl": "assets/badges/safefood/90d0f21902.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -96593,6 +95842,24 @@
         "imageUrl": "assets/badges/safefood/bb6134e049.webp",
         "thumbnailUrl": "assets/badges/safefood/bb6134e049.webp",
         "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-2ec5b1911b",
+        "title": "Niagiria Badge",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/2ec5b1911b.webp",
+        "thumbnailUrl": "assets/badges/safefood/2ec5b1911b.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "new york|o long island national wildlife refuge": [
+      {
+        "id": "safefood-94a4c6f5cf",
+        "title": "Wertheim \u200b( 631) 286-0485 C-O Long Island NWR Complex . Has a VC, longis",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/94a4c6f5cf.webp",
+        "thumbnailUrl": "assets/badges/safefood/94a4c6f5cf.webp",
+        "source": "safefood-corrected-master"
       }
     ],
     "new york|sagamore hill national historic site": [
@@ -97259,6 +96526,16 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "new york|wertheim 286 0485 c o long island nwr complex has a vc longislandrefuges fws gov cd 2 29 25 still the plastic": [
+      {
+        "id": "safefood-94a4c6f5cf",
+        "title": "Wertheim \u200b( 631) 286-0485 C-O Long Island NWR Complex . Has a VC, longis",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/94a4c6f5cf.webp",
+        "thumbnailUrl": "assets/badges/safefood/94a4c6f5cf.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "new york|wertheim national wildlife refuge": [
       {
         "id": "safefood-ec14f76b68",
@@ -97276,6 +96553,14 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/ec14f76b68.webp",
         "thumbnailUrl": "assets/badges/safefood/ec14f76b68.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-94a4c6f5cf",
+        "title": "Wertheim \u200b( 631) 286-0485 C-O Long Island NWR Complex . Has a VC, longis",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/94a4c6f5cf.webp",
+        "thumbnailUrl": "assets/badges/safefood/94a4c6f5cf.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -104661,6 +103946,16 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "oklahoma|cape roman national wildlife refuge": [
+      {
+        "id": "safefood-a64f69a3b5",
+        "title": "Cape Roman",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/a64f69a3b5.webp",
+        "thumbnailUrl": "assets/badges/safefood/a64f69a3b5.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "oklahoma|chickasaw national recreation area": [
       {
         "id": "safefood-d952fd4732",
@@ -106175,26 +105470,6 @@
         "source": "safefood-corrected-master"
       }
     ],
-    "oregon|provolt recreation area": [
-      {
-        "id": "safefood-0282a65960",
-        "title": "Provolt Recreation Site",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/0282a65960.webp",
-        "thumbnailUrl": "assets/badges/safefood/0282a65960.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "oregon|provolt recreation site": [
-      {
-        "id": "safefood-0282a65960",
-        "title": "Provolt Recreation Site",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/0282a65960.webp",
-        "thumbnailUrl": "assets/badges/safefood/0282a65960.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
     "oregon|siuslaw national forest": [
       {
         "id": "safefood-caa43afc4c",
@@ -107026,6 +106301,14 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/bd84a70673.webp",
         "thumbnailUrl": "assets/badges/safefood/bd84a70673.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-a136529dcb",
+        "title": "Willapa patch",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/a136529dcb.webp",
+        "thumbnailUrl": "assets/badges/safefood/a136529dcb.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -108681,6 +107964,26 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "pennsylvania|tigoa": [
+      {
+        "id": "safefood-e5fed4c838",
+        "title": "Tigoa",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/e5fed4c838.webp",
+        "thumbnailUrl": "assets/badges/safefood/e5fed4c838.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "pennsylvania|tioga hammond lakes recreation area visitor center": [
+      {
+        "id": "safefood-e5fed4c838",
+        "title": "Tigoa",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/e5fed4c838.webp",
+        "thumbnailUrl": "assets/badges/safefood/e5fed4c838.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "pennsylvania|valley forge national historical park": [
       {
         "id": "safefood-6f5490b0af",
@@ -108823,6 +108126,16 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "pennsylvania|willapa national wildlife refuge": [
+      {
+        "id": "safefood-a136529dcb",
+        "title": "Willapa patch",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/a136529dcb.webp",
+        "thumbnailUrl": "assets/badges/safefood/a136529dcb.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "rhode island|roger williams national memorial": [
       {
         "id": "safefood-16ae9dceff",
@@ -108938,6 +108251,16 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/e340e0bcf6.webp",
         "thumbnailUrl": "assets/badges/safefood/e340e0bcf6.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "south carolina|cape romain nwr": [
+      {
+        "id": "safefood-a64f69a3b5",
+        "title": "Cape Roman",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/a64f69a3b5.webp",
+        "thumbnailUrl": "assets/badges/safefood/a64f69a3b5.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -113615,14 +112938,6 @@
         "imageUrl": "assets/badges/safefood/24544b7144.webp",
         "thumbnailUrl": "assets/badges/safefood/24544b7144.webp",
         "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-6fd5738f1d",
-        "title": "SJR-Southeast-192 - Warner Parks",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/6fd5738f1d.webp",
-        "thumbnailUrl": "assets/badges/safefood/6fd5738f1d.webp",
-        "source": "safefood-corrected-master"
       }
     ],
     "tennessee|tennessee state parks": [
@@ -113640,26 +112955,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/24544b7144.webp",
         "thumbnailUrl": "assets/badges/safefood/24544b7144.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "tennessee|warner parks": [
-      {
-        "id": "safefood-6fd5738f1d",
-        "title": "SJR-Southeast-192 - Warner Parks",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/6fd5738f1d.webp",
-        "thumbnailUrl": "assets/badges/safefood/6fd5738f1d.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "tennessee|warner parks patch": [
-      {
-        "id": "safefood-6fd5738f1d",
-        "title": "SJR-Southeast-192 - Warner Parks",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/6fd5738f1d.webp",
-        "thumbnailUrl": "assets/badges/safefood/6fd5738f1d.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -117190,6 +116485,16 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/d38eb244f5.webp",
         "thumbnailUrl": "assets/badges/safefood/d38eb244f5.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "texas|caddo lake nwr": [
+      {
+        "id": "safefood-ae46dd4b46",
+        "title": "Caddo Lake",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/ae46dd4b46.webp",
+        "thumbnailUrl": "assets/badges/safefood/ae46dd4b46.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -120903,7 +120208,35 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "utah|bear river migratory bird refuge": [
+      {
+        "id": "safefood-8c94c036f4",
+        "title": "Bear Rvier",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/8c94c036f4.webp",
+        "thumbnailUrl": "assets/badges/safefood/8c94c036f4.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "utah|bear rvier national wildlife refuge": [
+      {
+        "id": "safefood-8c94c036f4",
+        "title": "Bear Rvier",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/8c94c036f4.webp",
+        "thumbnailUrl": "assets/badges/safefood/8c94c036f4.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "utah|bryce canyon national park": [
+      {
+        "id": "safefood-1d3a1c934e",
+        "title": "Brice wooden badge",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/1d3a1c934e.webp",
+        "thumbnailUrl": "assets/badges/safefood/1d3a1c934e.webp",
+        "source": "safefood-corrected-master"
+      },
       {
         "id": "safefood-ec7e57a4cc",
         "title": "bry pla",
@@ -120994,6 +120327,14 @@
       }
     ],
     "utah|bryce canyon np": [
+      {
+        "id": "safefood-1d3a1c934e",
+        "title": "Brice wooden badge",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/1d3a1c934e.webp",
+        "thumbnailUrl": "assets/badges/safefood/1d3a1c934e.webp",
+        "source": "safefood-corrected-master"
+      },
       {
         "id": "safefood-ec7e57a4cc",
         "title": "bry pla",
@@ -121764,6 +121105,14 @@
       }
     ],
     "utah|generic": [
+      {
+        "id": "safefood-1d3a1c934e",
+        "title": "Brice wooden badge",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/1d3a1c934e.webp",
+        "thumbnailUrl": "assets/badges/safefood/1d3a1c934e.webp",
+        "source": "safefood-corrected-master"
+      },
       {
         "id": "safefood-ec7e57a4cc",
         "title": "bry pla",
@@ -123115,6 +122464,34 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "vermont|chincotteague national wildlife refuge": [
+      {
+        "id": "safefood-3b340a2791",
+        "title": "Chincotteague National Wildlife Refuge",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/3b340a2791.webp",
+        "thumbnailUrl": "assets/badges/safefood/3b340a2791.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-e09fbcc2d4",
+        "title": "Chincotteague patch",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/e09fbcc2d4.webp",
+        "thumbnailUrl": "assets/badges/safefood/e09fbcc2d4.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "vermont|chincotteague patch2 national wildlife refuge": [
+      {
+        "id": "safefood-8779279d66",
+        "title": "Chincotteague patch2",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/8779279d66.webp",
+        "thumbnailUrl": "assets/badges/safefood/8779279d66.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "vermont|eastern shore of virginia national wildlife refuge": [
       {
         "id": "safefood-60ab5486e4",
@@ -123206,6 +122583,16 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/1a1d511f75.webp",
         "thumbnailUrl": "assets/badges/safefood/1a1d511f75.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "vermont|vermont chincoteague national wildlife refuge": [
+      {
+        "id": "safefood-df62ae8cbc",
+        "title": "Chincoteague National Wildlife Refuge pa",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/df62ae8cbc.webp",
+        "thumbnailUrl": "assets/badges/safefood/df62ae8cbc.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -126584,6 +125971,40 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/79a21382b4.webp",
         "thumbnailUrl": "assets/badges/safefood/79a21382b4.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "virginia|chincoteague nwr": [
+      {
+        "id": "safefood-df62ae8cbc",
+        "title": "Chincoteague National Wildlife Refuge pa",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/df62ae8cbc.webp",
+        "thumbnailUrl": "assets/badges/safefood/df62ae8cbc.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-3b340a2791",
+        "title": "Chincotteague National Wildlife Refuge",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/3b340a2791.webp",
+        "thumbnailUrl": "assets/badges/safefood/3b340a2791.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-e09fbcc2d4",
+        "title": "Chincotteague patch",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/e09fbcc2d4.webp",
+        "thumbnailUrl": "assets/badges/safefood/e09fbcc2d4.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-8779279d66",
+        "title": "Chincotteague patch2",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/8779279d66.webp",
+        "thumbnailUrl": "assets/badges/safefood/8779279d66.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -132271,6 +131692,14 @@
         "imageUrl": "assets/badges/safefood/67f7a04841.webp",
         "thumbnailUrl": "assets/badges/safefood/67f7a04841.webp",
         "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-a136529dcb",
+        "title": "Willapa patch",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/a136529dcb.webp",
+        "thumbnailUrl": "assets/badges/safefood/a136529dcb.webp",
+        "source": "safefood-corrected-master"
       }
     ],
     "west virginia|4a3b09 11005ea9daf041a09f2f61d5297e3481 mv2": [
@@ -134273,6 +133702,72 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "wisconsin|necedah nwr": [
+      {
+        "id": "safefood-9b1f8df815",
+        "title": "Nec But",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/9b1f8df815.webp",
+        "thumbnailUrl": "assets/badges/safefood/9b1f8df815.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-76f8af504f",
+        "title": "Nec flo",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/76f8af504f.webp",
+        "thumbnailUrl": "assets/badges/safefood/76f8af504f.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-0b412778a0",
+        "title": "Nec pri",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/0b412778a0.webp",
+        "thumbnailUrl": "assets/badges/safefood/0b412778a0.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "wisconsin|se louisanna national wildlife refuge": [
+      {
+        "id": "safefood-b75ccd0838",
+        "title": "SE Louisanna",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/b75ccd0838.webp",
+        "thumbnailUrl": "assets/badges/safefood/b75ccd0838.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "wisconsin|trempealeau 539 2311 sam 2 23 26 casey bryan no program": [
+      {
+        "id": "safefood-450db6ba39",
+        "title": "Whittlesey Creek National Wildlife Refuge",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/450db6ba39.webp",
+        "thumbnailUrl": "assets/badges/safefood/450db6ba39.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "wisconsin|trempealeau 608 539 2311 sam 2 23 26 casey bryan no program national wildlife refuge": [
+      {
+        "id": "safefood-450db6ba39",
+        "title": "Whittlesey Creek National Wildlife Refuge",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/450db6ba39.webp",
+        "thumbnailUrl": "assets/badges/safefood/450db6ba39.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "wisconsin|whittlesey creel nwr": [
+      {
+        "id": "safefood-450db6ba39",
+        "title": "Whittlesey Creek National Wildlife Refuge",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/450db6ba39.webp",
+        "thumbnailUrl": "assets/badges/safefood/450db6ba39.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "wisconsin|wisconsin state parks": [
       {
         "id": "safefood-5ae38fc836",
@@ -135382,6 +134877,36 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/545709794e.webp",
         "thumbnailUrl": "assets/badges/safefood/545709794e.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "wyoming|nec but national wildlife refuge": [
+      {
+        "id": "safefood-9b1f8df815",
+        "title": "Nec But",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/9b1f8df815.webp",
+        "thumbnailUrl": "assets/badges/safefood/9b1f8df815.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "wyoming|nec flo national wildlife refuge": [
+      {
+        "id": "safefood-76f8af504f",
+        "title": "Nec flo",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/76f8af504f.webp",
+        "thumbnailUrl": "assets/badges/safefood/76f8af504f.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "wyoming|nec pri national wildlife refuge": [
+      {
+        "id": "safefood-0b412778a0",
+        "title": "Nec pri",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/0b412778a0.webp",
+        "thumbnailUrl": "assets/badges/safefood/0b412778a0.webp",
         "source": "safefood-corrected-master"
       }
     ]
@@ -136871,14 +136396,6 @@
         "imageUrl": "assets/badges/safefood/d1d0d3a0e2.webp",
         "thumbnailUrl": "assets/badges/safefood/d1d0d3a0e2.webp",
         "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-12913e7f86",
-        "title": "National Trails",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12913e7f86.webp",
-        "thumbnailUrl": "assets/badges/safefood/12913e7f86.webp",
-        "source": "safefood-corrected-master"
       }
     ],
     "alaska|bering land bridge": [
@@ -137290,14 +136807,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/d1d0d3a0e2.webp",
         "thumbnailUrl": "assets/badges/safefood/d1d0d3a0e2.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-12913e7f86",
-        "title": "National Trails",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12913e7f86.webp",
-        "thumbnailUrl": "assets/badges/safefood/12913e7f86.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -137983,6 +137492,14 @@
     ],
     "alaska|tongass": [
       {
+        "id": "safefood-93d441f21b",
+        "title": "Discovery",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/93d441f21b.webp",
+        "thumbnailUrl": "assets/badges/safefood/93d441f21b.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
         "id": "safefood-b010cc5b52",
         "title": "tongass",
         "type": "Badge",
@@ -138134,14 +137651,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/57379ebe81.webp",
         "thumbnailUrl": "assets/badges/safefood/57379ebe81.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-12913e7f86",
-        "title": "National Trails",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12913e7f86.webp",
-        "thumbnailUrl": "assets/badges/safefood/12913e7f86.webp",
         "source": "safefood-corrected-master"
       },
       {
@@ -138456,24 +137965,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/ba20aa0933.webp",
         "thumbnailUrl": "assets/badges/safefood/ba20aa0933.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-38d0af0251",
-        "title": "Yukon Flats",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/38d0af0251.webp",
-        "thumbnailUrl": "assets/badges/safefood/38d0af0251.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "alaska|yukon flats": [
-      {
-        "id": "safefood-38d0af0251",
-        "title": "Yukon Flats",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/38d0af0251.webp",
-        "thumbnailUrl": "assets/badges/safefood/38d0af0251.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -140815,16 +140306,6 @@
         "source": "safefood-corrected-master"
       }
     ],
-    "arizona|desert fishes": [
-      {
-        "id": "safefood-72a80447b2",
-        "title": "Sesert Fishes",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/72a80447b2.webp",
-        "thumbnailUrl": "assets/badges/safefood/72a80447b2.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
     "arizona|fool hollow": [
       {
         "id": "safefood-78ce4718aa",
@@ -142177,22 +141658,6 @@
         "source": "safefood-corrected-master"
       },
       {
-        "id": "safefood-a3c71b22e2",
-        "title": "Mont Well",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/a3c71b22e2.webp",
-        "thumbnailUrl": "assets/badges/safefood/a3c71b22e2.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-be4bce2fe8",
-        "title": "Mont well badge",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/be4bce2fe8.webp",
-        "thumbnailUrl": "assets/badges/safefood/be4bce2fe8.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
         "id": "safefood-6af091faca",
         "title": "Mont wooden Badge",
         "type": "Badge",
@@ -142246,56 +141711,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/e39044059b.webp",
         "thumbnailUrl": "assets/badges/safefood/e39044059b.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-6003118d10",
-        "title": "Montezuma Well",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/6003118d10.webp",
-        "thumbnailUrl": "assets/badges/safefood/6003118d10.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-c1c678e15c",
-        "title": "Montezuma Well",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/c1c678e15c.webp",
-        "thumbnailUrl": "assets/badges/safefood/c1c678e15c.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "arizona|montezuma well": [
-      {
-        "id": "safefood-a3c71b22e2",
-        "title": "Mont Well",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/a3c71b22e2.webp",
-        "thumbnailUrl": "assets/badges/safefood/a3c71b22e2.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-be4bce2fe8",
-        "title": "Mont well badge",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/be4bce2fe8.webp",
-        "thumbnailUrl": "assets/badges/safefood/be4bce2fe8.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-6003118d10",
-        "title": "Montezuma Well",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/6003118d10.webp",
-        "thumbnailUrl": "assets/badges/safefood/6003118d10.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-c1c678e15c",
-        "title": "Montezuma Well",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/c1c678e15c.webp",
-        "thumbnailUrl": "assets/badges/safefood/c1c678e15c.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -143639,14 +143054,6 @@
     ],
     "arizona|sonoran desert": [
       {
-        "id": "safefood-72a80447b2",
-        "title": "Sesert Fishes",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/72a80447b2.webp",
-        "thumbnailUrl": "assets/badges/safefood/72a80447b2.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
         "id": "safefood-c956cb6659",
         "title": "Sonoran Desert NM patch",
         "type": "Badge",
@@ -144336,74 +143743,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/94d398d30b.webp",
         "thumbnailUrl": "assets/badges/safefood/94d398d30b.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "arizona|tumac cori": [
-      {
-        "id": "safefood-bc691d27e4",
-        "title": "Tum",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/bc691d27e4.webp",
-        "thumbnailUrl": "assets/badges/safefood/bc691d27e4.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-7278162ef8",
-        "title": "Tumacacori badge",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/7278162ef8.webp",
-        "thumbnailUrl": "assets/badges/safefood/7278162ef8.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-7c8d1fab78",
-        "title": "Tumac\u00e1cori National Historical Park",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/7c8d1fab78.webp",
-        "thumbnailUrl": "assets/badges/safefood/7c8d1fab78.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-854490cacd",
-        "title": "Tumac\u00e1cori National Historical Park",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/854490cacd.webp",
-        "thumbnailUrl": "assets/badges/safefood/854490cacd.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "arizona|tumacacori": [
-      {
-        "id": "safefood-bc691d27e4",
-        "title": "Tum",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/bc691d27e4.webp",
-        "thumbnailUrl": "assets/badges/safefood/bc691d27e4.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-7278162ef8",
-        "title": "Tumacacori badge",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/7278162ef8.webp",
-        "thumbnailUrl": "assets/badges/safefood/7278162ef8.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-7c8d1fab78",
-        "title": "Tumac\u00e1cori National Historical Park",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/7c8d1fab78.webp",
-        "thumbnailUrl": "assets/badges/safefood/7c8d1fab78.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-854490cacd",
-        "title": "Tumac\u00e1cori National Historical Park",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/854490cacd.webp",
-        "thumbnailUrl": "assets/badges/safefood/854490cacd.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -148829,16 +148168,6 @@
         "source": "safefood-corrected-master"
       }
     ],
-    "california|candlestick point": [
-      {
-        "id": "safefood-aa184a64ca",
-        "title": "SJR-Alaska-012 - Indian CAn",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/aa184a64ca.webp",
-        "thumbnailUrl": "assets/badges/safefood/aa184a64ca.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
     "california|carrizo plain": [
       {
         "id": "safefood-c810a3c71d",
@@ -149131,16 +148460,6 @@
         "source": "safefood-corrected-master"
       }
     ],
-    "california|harbors beach": [
-      {
-        "id": "safefood-ac259bb076",
-        "title": "SJR-Alaska-200 - Harbors Beach",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/ac259bb076.webp",
-        "thumbnailUrl": "assets/badges/safefood/ac259bb076.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
     "california|hea cas": [
       {
         "id": "safefood-a7de79cb95",
@@ -149178,16 +148497,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/30473d95d7.webp",
         "thumbnailUrl": "assets/badges/safefood/30473d95d7.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "california|indian can": [
-      {
-        "id": "safefood-aa184a64ca",
-        "title": "SJR-Alaska-012 - Indian CAn",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/aa184a64ca.webp",
-        "thumbnailUrl": "assets/badges/safefood/aa184a64ca.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -150040,16 +149349,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/92e9a309e2.webp",
         "thumbnailUrl": "assets/badges/safefood/92e9a309e2.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "california|refugio beach": [
-      {
-        "id": "safefood-ac259bb076",
-        "title": "SJR-Alaska-200 - Harbors Beach",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/ac259bb076.webp",
-        "thumbnailUrl": "assets/badges/safefood/ac259bb076.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -153391,14 +152690,6 @@
         "imageUrl": "assets/badges/safefood/d5446397ce.webp",
         "thumbnailUrl": "assets/badges/safefood/d5446397ce.webp",
         "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-1527e34285",
-        "title": "SJR-Intermountain-071 - Pountain Creek",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/1527e34285.webp",
-        "thumbnailUrl": "assets/badges/safefood/1527e34285.webp",
-        "source": "safefood-corrected-master"
       }
     ],
     "colorado|chimney rock san juan": [
@@ -154656,16 +153947,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/6dc66835c4.webp",
         "thumbnailUrl": "assets/badges/safefood/6dc66835c4.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "colorado|pountain creek": [
-      {
-        "id": "safefood-1527e34285",
-        "title": "SJR-Intermountain-071 - Pountain Creek",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/1527e34285.webp",
-        "thumbnailUrl": "assets/badges/safefood/1527e34285.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -157089,42 +156370,6 @@
         "source": "safefood-corrected-master"
       }
     ],
-    "florida|timucuan ehp": [
-      {
-        "id": "safefood-2c9fcb32fa",
-        "title": "Tim1",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/2c9fcb32fa.webp",
-        "thumbnailUrl": "assets/badges/safefood/2c9fcb32fa.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-324dbd30fc",
-        "title": "Timucuan",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/324dbd30fc.webp",
-        "thumbnailUrl": "assets/badges/safefood/324dbd30fc.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "florida|timucuan trail": [
-      {
-        "id": "safefood-2c9fcb32fa",
-        "title": "Tim1",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/2c9fcb32fa.webp",
-        "thumbnailUrl": "assets/badges/safefood/2c9fcb32fa.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-324dbd30fc",
-        "title": "Timucuan",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/324dbd30fc.webp",
-        "thumbnailUrl": "assets/badges/safefood/324dbd30fc.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
     "georgia|4a3b09 21fb73df8b1748139ab475ddf4e1c695 mv2": [
       {
         "id": "safefood-ca420ceaa1",
@@ -159011,16 +158256,6 @@
         "source": "safefood-corrected-master"
       }
     ],
-    "georgia|indian springs": [
-      {
-        "id": "safefood-871b431d31",
-        "title": "SJR-Southeast-070 - Indian Springs State Park",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/871b431d31.webp",
-        "thumbnailUrl": "assets/badges/safefood/871b431d31.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
     "georgia|james": [
       {
         "id": "safefood-8e896bf957",
@@ -159330,14 +158565,6 @@
       }
     ],
     "georgia|magnolia springs": [
-      {
-        "id": "safefood-871b431d31",
-        "title": "SJR-Southeast-070 - Indian Springs State Park",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/871b431d31.webp",
-        "thumbnailUrl": "assets/badges/safefood/871b431d31.webp",
-        "source": "safefood-corrected-master"
-      },
       {
         "id": "safefood-19c8c79b6a",
         "title": "SJR-Southeast-077 - Magnolia Springs State Park",
@@ -166479,6 +165706,16 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "iowa|desoto": [
+      {
+        "id": "safefood-4171af6472",
+        "title": "Desoto",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/4171af6472.webp",
+        "thumbnailUrl": "assets/badges/safefood/4171af6472.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "iowa|effigy mounds": [
       {
         "id": "safefood-8da7334c6b",
@@ -166940,6 +166177,16 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/5eeb0961d9.webp",
         "thumbnailUrl": "assets/badges/safefood/5eeb0961d9.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "iowa|neal smith": [
+      {
+        "id": "safefood-9f7d4a19fe",
+        "title": "Neil Smith",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/9f7d4a19fe.webp",
+        "thumbnailUrl": "assets/badges/safefood/9f7d4a19fe.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -167475,26 +166722,6 @@
         "source": "safefood-corrected-master"
       }
     ],
-    "kentucky|green river lake": [
-      {
-        "id": "safefood-64f5ec92c5",
-        "title": "Gren Riv",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/64f5ec92c5.webp",
-        "thumbnailUrl": "assets/badges/safefood/64f5ec92c5.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "kentucky|gren riv": [
-      {
-        "id": "safefood-64f5ec92c5",
-        "title": "Gren Riv",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/64f5ec92c5.webp",
-        "thumbnailUrl": "assets/badges/safefood/64f5ec92c5.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
     "kentucky|kentucky parks naturalist": [
       {
         "id": "safefood-27e3b4f666",
@@ -167680,6 +166907,16 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/df0b69dc53.webp",
         "thumbnailUrl": "assets/badges/safefood/df0b69dc53.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "louisiana|caddo lake": [
+      {
+        "id": "safefood-ae46dd4b46",
+        "title": "Caddo Lake",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/ae46dd4b46.webp",
+        "thumbnailUrl": "assets/badges/safefood/ae46dd4b46.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -167904,6 +167141,34 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/691eef8548.webp",
         "thumbnailUrl": "assets/badges/safefood/691eef8548.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "louisiana|se lou": [
+      {
+        "id": "safefood-281fab9af5",
+        "title": "SE Lou",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/281fab9af5.webp",
+        "thumbnailUrl": "assets/badges/safefood/281fab9af5.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "louisiana|southeast louisiana": [
+      {
+        "id": "safefood-281fab9af5",
+        "title": "SE Lou",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/281fab9af5.webp",
+        "thumbnailUrl": "assets/badges/safefood/281fab9af5.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-b75ccd0838",
+        "title": "SE Louisanna",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/b75ccd0838.webp",
+        "thumbnailUrl": "assets/badges/safefood/b75ccd0838.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -170799,6 +170064,24 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "maryland|agent discovery patuxent": [
+      {
+        "id": "safefood-edc4b167f6",
+        "title": "Agent of Discovery Patuxent",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/edc4b167f6.webp",
+        "thumbnailUrl": "assets/badges/safefood/edc4b167f6.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-7c5a71cade",
+        "title": "Agent of Discovery Patuxent Pin",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/7c5a71cade.webp",
+        "thumbnailUrl": "assets/badges/safefood/7c5a71cade.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "maryland|antietam": [
       {
         "id": "safefood-d28399c94f",
@@ -171687,14 +170970,6 @@
     ],
     "maryland|maryland parks": [
       {
-        "id": "safefood-138ac8e0f1",
-        "title": "SJR-Northeast-022 - Maryland squirrel",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/138ac8e0f1.webp",
-        "thumbnailUrl": "assets/badges/safefood/138ac8e0f1.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
         "id": "safefood-7f96e756fc",
         "title": "SJR-Northeast-023 - 4a3b09 3eddc49e119b4d3ea3b58d8c1fda5901 mv2",
         "type": "Badge",
@@ -171788,16 +171063,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/ea48a55e08.webp",
         "thumbnailUrl": "assets/badges/safefood/ea48a55e08.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "maryland|maryland squirrel": [
-      {
-        "id": "safefood-138ac8e0f1",
-        "title": "SJR-Northeast-022 - Maryland squirrel",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/138ac8e0f1.webp",
-        "thumbnailUrl": "assets/badges/safefood/138ac8e0f1.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -171912,6 +171177,22 @@
       }
     ],
     "maryland|patuxent research refuge": [
+      {
+        "id": "safefood-edc4b167f6",
+        "title": "Agent of Discovery Patuxent",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/edc4b167f6.webp",
+        "thumbnailUrl": "assets/badges/safefood/edc4b167f6.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-7c5a71cade",
+        "title": "Agent of Discovery Patuxent Pin",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/7c5a71cade.webp",
+        "thumbnailUrl": "assets/badges/safefood/7c5a71cade.webp",
+        "source": "safefood-corrected-master"
+      },
       {
         "id": "safefood-cfcd65ab2a",
         "title": "Patuxent",
@@ -172477,6 +171758,16 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "massachusetts|cambridge": [
+      {
+        "id": "safefood-cffb7d479b",
+        "title": "SJR-Northeast-048 - Cambridge",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/cffb7d479b.webp",
+        "thumbnailUrl": "assets/badges/safefood/cffb7d479b.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "massachusetts|cap cod2": [
       {
         "id": "safefood-807e7306b7",
@@ -172770,6 +172061,16 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/d621fd1d0c.webp",
         "thumbnailUrl": "assets/badges/safefood/d621fd1d0c.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "massachusetts|natural bridge": [
+      {
+        "id": "safefood-cffb7d479b",
+        "title": "SJR-Northeast-048 - Cambridge",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/cffb7d479b.webp",
+        "thumbnailUrl": "assets/badges/safefood/cffb7d479b.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -173425,6 +172726,16 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "michigan|desoto": [
+      {
+        "id": "safefood-4171af6472",
+        "title": "Desoto",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/4171af6472.webp",
+        "thumbnailUrl": "assets/badges/safefood/4171af6472.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "michigan|isle royale": [
       {
         "id": "safefood-0f9505dd82",
@@ -173527,43 +172838,11 @@
         "source": "safefood-corrected-master"
       },
       {
-        "id": "safefood-12e3497bb1",
-        "title": "SJR-Midwest-058 - portage ebdurance",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "thumbnailUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-89d6abbdf7",
-        "title": "SJR-Midwest-059 - portage arts",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "thumbnailUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
         "id": "safefood-5c6ffbcb46",
         "title": "SJR-Midwest-060 - 4a3b09 b59d9e1d211141bf9d5e4313784a6c89 mv2",
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/5c6ffbcb46.webp",
         "thumbnailUrl": "assets/badges/safefood/5c6ffbcb46.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-4385ac500e",
-        "title": "SJR-Midwest-061 - portage service",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/4385ac500e.webp",
-        "thumbnailUrl": "assets/badges/safefood/4385ac500e.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-54d0f1e90d",
-        "title": "SJR-Midwest-062 - portage history",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "thumbnailUrl": "assets/badges/safefood/54d0f1e90d.webp",
         "source": "safefood-corrected-master"
       },
       {
@@ -173575,43 +172854,21 @@
         "source": "safefood-corrected-master"
       },
       {
-        "id": "safefood-fb405739cb",
-        "title": "SJR-Midwest-064 - portage survival",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/fb405739cb.webp",
-        "thumbnailUrl": "assets/badges/safefood/fb405739cb.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-8ea56ff861",
-        "title": "SJR-Midwest-065 - portage heath",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "thumbnailUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
         "id": "safefood-7e7df64b69",
         "title": "SJR-Midwest-066 - 4a3b09 f6f666caa1ff4de0bc489ca73cdeaf21 mv2",
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/7e7df64b69.webp",
         "thumbnailUrl": "assets/badges/safefood/7e7df64b69.webp",
         "source": "safefood-corrected-master"
-      },
+      }
+    ],
+    "michigan|neil smith": [
       {
-        "id": "safefood-07f20b1a68",
-        "title": "SJR-Midwest-067 - portage Science",
+        "id": "safefood-9f7d4a19fe",
+        "title": "Neil Smith",
         "type": "Badge",
-        "imageUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "thumbnailUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-29e8768583",
-        "title": "SJR-Midwest-068 - portage nature",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/29e8768583.webp",
-        "thumbnailUrl": "assets/badges/safefood/29e8768583.webp",
+        "imageUrl": "assets/badges/safefood/9f7d4a19fe.webp",
+        "thumbnailUrl": "assets/badges/safefood/9f7d4a19fe.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -173670,600 +172927,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/5c7aa0023d.webp",
         "thumbnailUrl": "assets/badges/safefood/5c7aa0023d.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "michigan|portage": [
-      {
-        "id": "safefood-12e3497bb1",
-        "title": "SJR-Midwest-058 - portage ebdurance",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "thumbnailUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-89d6abbdf7",
-        "title": "SJR-Midwest-059 - portage arts",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "thumbnailUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-4385ac500e",
-        "title": "SJR-Midwest-061 - portage service",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/4385ac500e.webp",
-        "thumbnailUrl": "assets/badges/safefood/4385ac500e.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-54d0f1e90d",
-        "title": "SJR-Midwest-062 - portage history",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "thumbnailUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-fb405739cb",
-        "title": "SJR-Midwest-064 - portage survival",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/fb405739cb.webp",
-        "thumbnailUrl": "assets/badges/safefood/fb405739cb.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-8ea56ff861",
-        "title": "SJR-Midwest-065 - portage heath",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "thumbnailUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-07f20b1a68",
-        "title": "SJR-Midwest-067 - portage Science",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "thumbnailUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-29e8768583",
-        "title": "SJR-Midwest-068 - portage nature",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/29e8768583.webp",
-        "thumbnailUrl": "assets/badges/safefood/29e8768583.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "michigan|portage arts": [
-      {
-        "id": "safefood-12e3497bb1",
-        "title": "SJR-Midwest-058 - portage ebdurance",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "thumbnailUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-89d6abbdf7",
-        "title": "SJR-Midwest-059 - portage arts",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "thumbnailUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-4385ac500e",
-        "title": "SJR-Midwest-061 - portage service",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/4385ac500e.webp",
-        "thumbnailUrl": "assets/badges/safefood/4385ac500e.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-54d0f1e90d",
-        "title": "SJR-Midwest-062 - portage history",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "thumbnailUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-fb405739cb",
-        "title": "SJR-Midwest-064 - portage survival",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/fb405739cb.webp",
-        "thumbnailUrl": "assets/badges/safefood/fb405739cb.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-8ea56ff861",
-        "title": "SJR-Midwest-065 - portage heath",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "thumbnailUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-07f20b1a68",
-        "title": "SJR-Midwest-067 - portage Science",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "thumbnailUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-29e8768583",
-        "title": "SJR-Midwest-068 - portage nature",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/29e8768583.webp",
-        "thumbnailUrl": "assets/badges/safefood/29e8768583.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "michigan|portage ebdurance": [
-      {
-        "id": "safefood-12e3497bb1",
-        "title": "SJR-Midwest-058 - portage ebdurance",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "thumbnailUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-89d6abbdf7",
-        "title": "SJR-Midwest-059 - portage arts",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "thumbnailUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-4385ac500e",
-        "title": "SJR-Midwest-061 - portage service",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/4385ac500e.webp",
-        "thumbnailUrl": "assets/badges/safefood/4385ac500e.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-54d0f1e90d",
-        "title": "SJR-Midwest-062 - portage history",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "thumbnailUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-fb405739cb",
-        "title": "SJR-Midwest-064 - portage survival",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/fb405739cb.webp",
-        "thumbnailUrl": "assets/badges/safefood/fb405739cb.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-8ea56ff861",
-        "title": "SJR-Midwest-065 - portage heath",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "thumbnailUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-07f20b1a68",
-        "title": "SJR-Midwest-067 - portage Science",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "thumbnailUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-29e8768583",
-        "title": "SJR-Midwest-068 - portage nature",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/29e8768583.webp",
-        "thumbnailUrl": "assets/badges/safefood/29e8768583.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "michigan|portage heath": [
-      {
-        "id": "safefood-12e3497bb1",
-        "title": "SJR-Midwest-058 - portage ebdurance",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "thumbnailUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-89d6abbdf7",
-        "title": "SJR-Midwest-059 - portage arts",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "thumbnailUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-4385ac500e",
-        "title": "SJR-Midwest-061 - portage service",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/4385ac500e.webp",
-        "thumbnailUrl": "assets/badges/safefood/4385ac500e.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-54d0f1e90d",
-        "title": "SJR-Midwest-062 - portage history",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "thumbnailUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-fb405739cb",
-        "title": "SJR-Midwest-064 - portage survival",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/fb405739cb.webp",
-        "thumbnailUrl": "assets/badges/safefood/fb405739cb.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-8ea56ff861",
-        "title": "SJR-Midwest-065 - portage heath",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "thumbnailUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-07f20b1a68",
-        "title": "SJR-Midwest-067 - portage Science",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "thumbnailUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-29e8768583",
-        "title": "SJR-Midwest-068 - portage nature",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/29e8768583.webp",
-        "thumbnailUrl": "assets/badges/safefood/29e8768583.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "michigan|portage history": [
-      {
-        "id": "safefood-12e3497bb1",
-        "title": "SJR-Midwest-058 - portage ebdurance",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "thumbnailUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-89d6abbdf7",
-        "title": "SJR-Midwest-059 - portage arts",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "thumbnailUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-4385ac500e",
-        "title": "SJR-Midwest-061 - portage service",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/4385ac500e.webp",
-        "thumbnailUrl": "assets/badges/safefood/4385ac500e.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-54d0f1e90d",
-        "title": "SJR-Midwest-062 - portage history",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "thumbnailUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-fb405739cb",
-        "title": "SJR-Midwest-064 - portage survival",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/fb405739cb.webp",
-        "thumbnailUrl": "assets/badges/safefood/fb405739cb.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-8ea56ff861",
-        "title": "SJR-Midwest-065 - portage heath",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "thumbnailUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-07f20b1a68",
-        "title": "SJR-Midwest-067 - portage Science",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "thumbnailUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-29e8768583",
-        "title": "SJR-Midwest-068 - portage nature",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/29e8768583.webp",
-        "thumbnailUrl": "assets/badges/safefood/29e8768583.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "michigan|portage nature": [
-      {
-        "id": "safefood-12e3497bb1",
-        "title": "SJR-Midwest-058 - portage ebdurance",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "thumbnailUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-89d6abbdf7",
-        "title": "SJR-Midwest-059 - portage arts",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "thumbnailUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-4385ac500e",
-        "title": "SJR-Midwest-061 - portage service",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/4385ac500e.webp",
-        "thumbnailUrl": "assets/badges/safefood/4385ac500e.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-54d0f1e90d",
-        "title": "SJR-Midwest-062 - portage history",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "thumbnailUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-fb405739cb",
-        "title": "SJR-Midwest-064 - portage survival",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/fb405739cb.webp",
-        "thumbnailUrl": "assets/badges/safefood/fb405739cb.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-8ea56ff861",
-        "title": "SJR-Midwest-065 - portage heath",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "thumbnailUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-07f20b1a68",
-        "title": "SJR-Midwest-067 - portage Science",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "thumbnailUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-29e8768583",
-        "title": "SJR-Midwest-068 - portage nature",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/29e8768583.webp",
-        "thumbnailUrl": "assets/badges/safefood/29e8768583.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "michigan|portage parks": [
-      {
-        "id": "safefood-12e3497bb1",
-        "title": "SJR-Midwest-058 - portage ebdurance",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "thumbnailUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-89d6abbdf7",
-        "title": "SJR-Midwest-059 - portage arts",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "thumbnailUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-4385ac500e",
-        "title": "SJR-Midwest-061 - portage service",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/4385ac500e.webp",
-        "thumbnailUrl": "assets/badges/safefood/4385ac500e.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-54d0f1e90d",
-        "title": "SJR-Midwest-062 - portage history",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "thumbnailUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-fb405739cb",
-        "title": "SJR-Midwest-064 - portage survival",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/fb405739cb.webp",
-        "thumbnailUrl": "assets/badges/safefood/fb405739cb.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-8ea56ff861",
-        "title": "SJR-Midwest-065 - portage heath",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "thumbnailUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-07f20b1a68",
-        "title": "SJR-Midwest-067 - portage Science",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "thumbnailUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-29e8768583",
-        "title": "SJR-Midwest-068 - portage nature",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/29e8768583.webp",
-        "thumbnailUrl": "assets/badges/safefood/29e8768583.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "michigan|portage science": [
-      {
-        "id": "safefood-12e3497bb1",
-        "title": "SJR-Midwest-058 - portage ebdurance",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "thumbnailUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-89d6abbdf7",
-        "title": "SJR-Midwest-059 - portage arts",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "thumbnailUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-4385ac500e",
-        "title": "SJR-Midwest-061 - portage service",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/4385ac500e.webp",
-        "thumbnailUrl": "assets/badges/safefood/4385ac500e.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-54d0f1e90d",
-        "title": "SJR-Midwest-062 - portage history",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "thumbnailUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-fb405739cb",
-        "title": "SJR-Midwest-064 - portage survival",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/fb405739cb.webp",
-        "thumbnailUrl": "assets/badges/safefood/fb405739cb.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-8ea56ff861",
-        "title": "SJR-Midwest-065 - portage heath",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "thumbnailUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-07f20b1a68",
-        "title": "SJR-Midwest-067 - portage Science",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "thumbnailUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-29e8768583",
-        "title": "SJR-Midwest-068 - portage nature",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/29e8768583.webp",
-        "thumbnailUrl": "assets/badges/safefood/29e8768583.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "michigan|portage survival": [
-      {
-        "id": "safefood-12e3497bb1",
-        "title": "SJR-Midwest-058 - portage ebdurance",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "thumbnailUrl": "assets/badges/safefood/12e3497bb1.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-89d6abbdf7",
-        "title": "SJR-Midwest-059 - portage arts",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "thumbnailUrl": "assets/badges/safefood/89d6abbdf7.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-4385ac500e",
-        "title": "SJR-Midwest-061 - portage service",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/4385ac500e.webp",
-        "thumbnailUrl": "assets/badges/safefood/4385ac500e.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-54d0f1e90d",
-        "title": "SJR-Midwest-062 - portage history",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "thumbnailUrl": "assets/badges/safefood/54d0f1e90d.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-fb405739cb",
-        "title": "SJR-Midwest-064 - portage survival",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/fb405739cb.webp",
-        "thumbnailUrl": "assets/badges/safefood/fb405739cb.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-8ea56ff861",
-        "title": "SJR-Midwest-065 - portage heath",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "thumbnailUrl": "assets/badges/safefood/8ea56ff861.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-07f20b1a68",
-        "title": "SJR-Midwest-067 - portage Science",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "thumbnailUrl": "assets/badges/safefood/07f20b1a68.webp",
-        "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-29e8768583",
-        "title": "SJR-Midwest-068 - portage nature",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/29e8768583.webp",
-        "thumbnailUrl": "assets/badges/safefood/29e8768583.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -175631,6 +174294,16 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "montana|ash meadows": [
+      {
+        "id": "safefood-faca8b72f4",
+        "title": "Ash Meadows pin",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/faca8b72f4.webp",
+        "thumbnailUrl": "assets/badges/safefood/faca8b72f4.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "montana|bannack": [
       {
         "id": "safefood-e5c4d4c26b",
@@ -175959,6 +174632,16 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "montana|moapa": [
+      {
+        "id": "safefood-fa8fd6ac78",
+        "title": "Moapa",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/fa8fd6ac78.webp",
+        "thumbnailUrl": "assets/badges/safefood/fa8fd6ac78.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "montana|montana parks": [
       {
         "id": "safefood-c4f154db32",
@@ -176091,6 +174774,36 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "nebraska|bitter lake1": [
+      {
+        "id": "safefood-24156d25ae",
+        "title": "Bitter Lake1",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/24156d25ae.webp",
+        "thumbnailUrl": "assets/badges/safefood/24156d25ae.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "nebraska|bitter lake2": [
+      {
+        "id": "safefood-bec23f6c4e",
+        "title": "Bitter Lake2",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/bec23f6c4e.webp",
+        "thumbnailUrl": "assets/badges/safefood/bec23f6c4e.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "nebraska|bos": [
+      {
+        "id": "safefood-f81fdf94b3",
+        "title": "Bos",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/f81fdf94b3.webp",
+        "thumbnailUrl": "assets/badges/safefood/f81fdf94b3.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "nebraska|crater lake": [
       {
         "id": "safefood-6db412b616",
@@ -176133,6 +174846,16 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "nebraska|desoto": [
+      {
+        "id": "safefood-4171af6472",
+        "title": "Desoto",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/4171af6472.webp",
+        "thumbnailUrl": "assets/badges/safefood/4171af6472.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "nebraska|fort niobrara": [
       {
         "id": "safefood-3c58ddab80",
@@ -176166,26 +174889,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/7c5a89ca84.webp",
         "thumbnailUrl": "assets/badges/safefood/7c5a89ca84.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "nebraska|hudson meng": [
-      {
-        "id": "safefood-7f02066bf3",
-        "title": "Hudson Ming",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/7f02066bf3.webp",
-        "thumbnailUrl": "assets/badges/safefood/7f02066bf3.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "nebraska|hudson ming": [
-      {
-        "id": "safefood-7f02066bf3",
-        "title": "Hudson Ming",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/7f02066bf3.webp",
-        "thumbnailUrl": "assets/badges/safefood/7f02066bf3.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -176284,6 +174987,16 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/39cbb6ba17.webp",
         "thumbnailUrl": "assets/badges/safefood/39cbb6ba17.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "nebraska|valley de oro": [
+      {
+        "id": "safefood-90d0f21902",
+        "title": "valley de oro",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/90d0f21902.webp",
+        "thumbnailUrl": "assets/badges/safefood/90d0f21902.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -178559,6 +177272,26 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "nevada|southern nevada ash meadows": [
+      {
+        "id": "safefood-faca8b72f4",
+        "title": "Ash Meadows pin",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/faca8b72f4.webp",
+        "thumbnailUrl": "assets/badges/safefood/faca8b72f4.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "nevada|southern nevada moapa valley": [
+      {
+        "id": "safefood-fa8fd6ac78",
+        "title": "Moapa",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/fa8fd6ac78.webp",
+        "thumbnailUrl": "assets/badges/safefood/fa8fd6ac78.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "nevada|tule springs fossil beds": [
       {
         "id": "safefood-af434f6a48",
@@ -180497,6 +179230,32 @@
         "imageUrl": "assets/badges/safefood/ea9cb02386.webp",
         "thumbnailUrl": "assets/badges/safefood/ea9cb02386.webp",
         "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-24156d25ae",
+        "title": "Bitter Lake1",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/24156d25ae.webp",
+        "thumbnailUrl": "assets/badges/safefood/24156d25ae.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-bec23f6c4e",
+        "title": "Bitter Lake2",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/bec23f6c4e.webp",
+        "thumbnailUrl": "assets/badges/safefood/bec23f6c4e.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "new mexico|bosque del apache": [
+      {
+        "id": "safefood-f81fdf94b3",
+        "title": "Bos",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/f81fdf94b3.webp",
+        "thumbnailUrl": "assets/badges/safefood/f81fdf94b3.webp",
+        "source": "safefood-corrected-master"
       }
     ],
     "new mexico|capulin volcano": [
@@ -181898,6 +180657,16 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/d92a55670a.webp",
         "thumbnailUrl": "assets/badges/safefood/d92a55670a.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "new mexico|valle de oro": [
+      {
+        "id": "safefood-90d0f21902",
+        "title": "valley de oro",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/90d0f21902.webp",
+        "thumbnailUrl": "assets/badges/safefood/90d0f21902.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -185235,6 +184004,16 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "new york|long island": [
+      {
+        "id": "safefood-94a4c6f5cf",
+        "title": "Wertheim \u200b( 631) 286-0485 C-O Long Island NWR Complex . Has a VC, longis",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/94a4c6f5cf.webp",
+        "thumbnailUrl": "assets/badges/safefood/94a4c6f5cf.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "new york|martin van buren": [
       {
         "id": "safefood-fb709b5711",
@@ -185386,6 +184165,14 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/bb6134e049.webp",
         "thumbnailUrl": "assets/badges/safefood/bb6134e049.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-2ec5b1911b",
+        "title": "Niagiria Badge",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/2ec5b1911b.webp",
+        "thumbnailUrl": "assets/badges/safefood/2ec5b1911b.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -185856,6 +184643,24 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/ec14f76b68.webp",
         "thumbnailUrl": "assets/badges/safefood/ec14f76b68.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-94a4c6f5cf",
+        "title": "Wertheim \u200b( 631) 286-0485 C-O Long Island NWR Complex . Has a VC, longis",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/94a4c6f5cf.webp",
+        "thumbnailUrl": "assets/badges/safefood/94a4c6f5cf.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "new york|wertheim long island complex has longislandrefuges fws gov cd still": [
+      {
+        "id": "safefood-94a4c6f5cf",
+        "title": "Wertheim \u200b( 631) 286-0485 C-O Long Island NWR Complex . Has a VC, longis",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/94a4c6f5cf.webp",
+        "thumbnailUrl": "assets/badges/safefood/94a4c6f5cf.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -191305,6 +190110,16 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "oklahoma|cape roman": [
+      {
+        "id": "safefood-a64f69a3b5",
+        "title": "Cape Roman",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/a64f69a3b5.webp",
+        "thumbnailUrl": "assets/badges/safefood/a64f69a3b5.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "oklahoma|chickasaw": [
       {
         "id": "safefood-d952fd4732",
@@ -192480,26 +191295,6 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/168b83a8c0.webp",
         "thumbnailUrl": "assets/badges/safefood/168b83a8c0.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "oregon|provolt": [
-      {
-        "id": "safefood-0282a65960",
-        "title": "Provolt Recreation Site",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/0282a65960.webp",
-        "thumbnailUrl": "assets/badges/safefood/0282a65960.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "oregon|provolt recreation": [
-      {
-        "id": "safefood-0282a65960",
-        "title": "Provolt Recreation Site",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/0282a65960.webp",
-        "thumbnailUrl": "assets/badges/safefood/0282a65960.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -193971,6 +192766,14 @@
         "imageUrl": "assets/badges/safefood/bd84a70673.webp",
         "thumbnailUrl": "assets/badges/safefood/bd84a70673.webp",
         "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-a136529dcb",
+        "title": "Willapa patch",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/a136529dcb.webp",
+        "thumbnailUrl": "assets/badges/safefood/a136529dcb.webp",
+        "source": "safefood-corrected-master"
       }
     ],
     "pennsylvania|thaddeus kosciuszko": [
@@ -193996,6 +192799,26 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/e27df9572e.webp",
         "thumbnailUrl": "assets/badges/safefood/e27df9572e.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "pennsylvania|tigoa": [
+      {
+        "id": "safefood-e5fed4c838",
+        "title": "Tigoa",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/e5fed4c838.webp",
+        "thumbnailUrl": "assets/badges/safefood/e5fed4c838.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "pennsylvania|tioga hammond lakes": [
+      {
+        "id": "safefood-e5fed4c838",
+        "title": "Tigoa",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/e5fed4c838.webp",
+        "thumbnailUrl": "assets/badges/safefood/e5fed4c838.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -194359,6 +193182,16 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "pennsylvania|willapa": [
+      {
+        "id": "safefood-a136529dcb",
+        "title": "Willapa patch",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/a136529dcb.webp",
+        "thumbnailUrl": "assets/badges/safefood/a136529dcb.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "rhode island|roger williams": [
       {
         "id": "safefood-16ae9dceff",
@@ -194430,6 +193263,16 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/e340e0bcf6.webp",
         "thumbnailUrl": "assets/badges/safefood/e340e0bcf6.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "south carolina|cape romain": [
+      {
+        "id": "safefood-a64f69a3b5",
+        "title": "Cape Roman",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/a64f69a3b5.webp",
+        "thumbnailUrl": "assets/badges/safefood/a64f69a3b5.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -198213,24 +197056,6 @@
         "imageUrl": "assets/badges/safefood/24544b7144.webp",
         "thumbnailUrl": "assets/badges/safefood/24544b7144.webp",
         "source": "safefood-corrected-master"
-      },
-      {
-        "id": "safefood-6fd5738f1d",
-        "title": "SJR-Southeast-192 - Warner Parks",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/6fd5738f1d.webp",
-        "thumbnailUrl": "assets/badges/safefood/6fd5738f1d.webp",
-        "source": "safefood-corrected-master"
-      }
-    ],
-    "tennessee|warner parks": [
-      {
-        "id": "safefood-6fd5738f1d",
-        "title": "SJR-Southeast-192 - Warner Parks",
-        "type": "Badge",
-        "imageUrl": "assets/badges/safefood/6fd5738f1d.webp",
-        "thumbnailUrl": "assets/badges/safefood/6fd5738f1d.webp",
-        "source": "safefood-corrected-master"
       }
     ],
     "texas|4a3b09 01a34d11a3c541ab81233542f5bcf057 mv2": [
@@ -201525,6 +200350,16 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "texas|caddo lake": [
+      {
+        "id": "safefood-ae46dd4b46",
+        "title": "Caddo Lake",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/ae46dd4b46.webp",
+        "thumbnailUrl": "assets/badges/safefood/ae46dd4b46.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "texas|chamizal": [
       {
         "id": "safefood-6e9c1310a8",
@@ -204473,7 +203308,35 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "utah|bear river migratory bird refuge": [
+      {
+        "id": "safefood-8c94c036f4",
+        "title": "Bear Rvier",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/8c94c036f4.webp",
+        "thumbnailUrl": "assets/badges/safefood/8c94c036f4.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "utah|bear rvier": [
+      {
+        "id": "safefood-8c94c036f4",
+        "title": "Bear Rvier",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/8c94c036f4.webp",
+        "thumbnailUrl": "assets/badges/safefood/8c94c036f4.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "utah|bryce canyon": [
+      {
+        "id": "safefood-1d3a1c934e",
+        "title": "Brice wooden badge",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/1d3a1c934e.webp",
+        "thumbnailUrl": "assets/badges/safefood/1d3a1c934e.webp",
+        "source": "safefood-corrected-master"
+      },
       {
         "id": "safefood-ec7e57a4cc",
         "title": "bry pla",
@@ -204962,6 +203825,14 @@
       }
     ],
     "utah|generic": [
+      {
+        "id": "safefood-1d3a1c934e",
+        "title": "Brice wooden badge",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/1d3a1c934e.webp",
+        "thumbnailUrl": "assets/badges/safefood/1d3a1c934e.webp",
+        "source": "safefood-corrected-master"
+      },
       {
         "id": "safefood-ec7e57a4cc",
         "title": "bry pla",
@@ -205999,6 +204870,34 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "vermont|chincotteague": [
+      {
+        "id": "safefood-3b340a2791",
+        "title": "Chincotteague National Wildlife Refuge",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/3b340a2791.webp",
+        "thumbnailUrl": "assets/badges/safefood/3b340a2791.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-e09fbcc2d4",
+        "title": "Chincotteague patch",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/e09fbcc2d4.webp",
+        "thumbnailUrl": "assets/badges/safefood/e09fbcc2d4.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "vermont|chincotteague patch2": [
+      {
+        "id": "safefood-8779279d66",
+        "title": "Chincotteague patch2",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/8779279d66.webp",
+        "thumbnailUrl": "assets/badges/safefood/8779279d66.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "vermont|eastern shore virginia": [
       {
         "id": "safefood-60ab5486e4",
@@ -206048,6 +204947,16 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/1a1d511f75.webp",
         "thumbnailUrl": "assets/badges/safefood/1a1d511f75.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "vermont|vermont chincoteague": [
+      {
+        "id": "safefood-df62ae8cbc",
+        "title": "Chincoteague National Wildlife Refuge pa",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/df62ae8cbc.webp",
+        "thumbnailUrl": "assets/badges/safefood/df62ae8cbc.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -209244,6 +208153,40 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/79a21382b4.webp",
         "thumbnailUrl": "assets/badges/safefood/79a21382b4.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "virginia|chincoteague": [
+      {
+        "id": "safefood-df62ae8cbc",
+        "title": "Chincoteague National Wildlife Refuge pa",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/df62ae8cbc.webp",
+        "thumbnailUrl": "assets/badges/safefood/df62ae8cbc.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-3b340a2791",
+        "title": "Chincotteague National Wildlife Refuge",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/3b340a2791.webp",
+        "thumbnailUrl": "assets/badges/safefood/3b340a2791.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-e09fbcc2d4",
+        "title": "Chincotteague patch",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/e09fbcc2d4.webp",
+        "thumbnailUrl": "assets/badges/safefood/e09fbcc2d4.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-8779279d66",
+        "title": "Chincotteague patch2",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/8779279d66.webp",
+        "thumbnailUrl": "assets/badges/safefood/8779279d66.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -213629,6 +212572,14 @@
         "imageUrl": "assets/badges/safefood/67f7a04841.webp",
         "thumbnailUrl": "assets/badges/safefood/67f7a04841.webp",
         "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-a136529dcb",
+        "title": "Willapa patch",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/a136529dcb.webp",
+        "thumbnailUrl": "assets/badges/safefood/a136529dcb.webp",
+        "source": "safefood-corrected-master"
       }
     ],
     "west virginia|4a3b09 11005ea9daf041a09f2f61d5297e3481 mv2": [
@@ -215431,6 +214382,42 @@
         "source": "safefood-corrected-master"
       }
     ],
+    "wisconsin|necedah": [
+      {
+        "id": "safefood-9b1f8df815",
+        "title": "Nec But",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/9b1f8df815.webp",
+        "thumbnailUrl": "assets/badges/safefood/9b1f8df815.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-76f8af504f",
+        "title": "Nec flo",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/76f8af504f.webp",
+        "thumbnailUrl": "assets/badges/safefood/76f8af504f.webp",
+        "source": "safefood-corrected-master"
+      },
+      {
+        "id": "safefood-0b412778a0",
+        "title": "Nec pri",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/0b412778a0.webp",
+        "thumbnailUrl": "assets/badges/safefood/0b412778a0.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "wisconsin|se louisanna": [
+      {
+        "id": "safefood-b75ccd0838",
+        "title": "SE Louisanna",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/b75ccd0838.webp",
+        "thumbnailUrl": "assets/badges/safefood/b75ccd0838.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
     "wisconsin|trails": [
       {
         "id": "safefood-00efc12f92",
@@ -215478,6 +214465,26 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/fb91451971.webp",
         "thumbnailUrl": "assets/badges/safefood/fb91451971.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "wisconsin|trempealeau sam casey bryan no": [
+      {
+        "id": "safefood-450db6ba39",
+        "title": "Whittlesey Creek National Wildlife Refuge",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/450db6ba39.webp",
+        "thumbnailUrl": "assets/badges/safefood/450db6ba39.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "wisconsin|whittlesey creel": [
+      {
+        "id": "safefood-450db6ba39",
+        "title": "Whittlesey Creek National Wildlife Refuge",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/450db6ba39.webp",
+        "thumbnailUrl": "assets/badges/safefood/450db6ba39.webp",
         "source": "safefood-corrected-master"
       }
     ],
@@ -216072,6 +215079,36 @@
         "type": "Badge",
         "imageUrl": "assets/badges/safefood/21bf4a386b.webp",
         "thumbnailUrl": "assets/badges/safefood/21bf4a386b.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "wyoming|nec but": [
+      {
+        "id": "safefood-9b1f8df815",
+        "title": "Nec But",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/9b1f8df815.webp",
+        "thumbnailUrl": "assets/badges/safefood/9b1f8df815.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "wyoming|nec flo": [
+      {
+        "id": "safefood-76f8af504f",
+        "title": "Nec flo",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/76f8af504f.webp",
+        "thumbnailUrl": "assets/badges/safefood/76f8af504f.webp",
+        "source": "safefood-corrected-master"
+      }
+    ],
+    "wyoming|nec pri": [
+      {
+        "id": "safefood-0b412778a0",
+        "title": "Nec pri",
+        "type": "Badge",
+        "imageUrl": "assets/badges/safefood/0b412778a0.webp",
+        "thumbnailUrl": "assets/badges/safefood/0b412778a0.webp",
         "source": "safefood-corrected-master"
       }
     ],
