@@ -131,8 +131,26 @@
         }
     }
 
+    function getGoogleDriveFileId(imageUrl) {
+        try {
+            const url = new URL(imageUrl);
+            if (url.hostname !== 'drive.google.com') return '';
+
+            const filePathMatch = url.pathname.match(/\/file\/d\/([^/]+)/);
+            if (filePathMatch) return filePathMatch[1];
+
+            return url.searchParams.get('id') || '';
+        } catch (_error) {
+            return '';
+        }
+    }
+
     function getDisplayImageUrl(imageUrl) {
         const cleanedUrl = cleanText(imageUrl);
+        const driveFileId = getGoogleDriveFileId(cleanedUrl);
+        if (driveFileId) {
+            return `https://drive.google.com/thumbnail?id=${encodeURIComponent(driveFileId)}&sz=w1600`;
+        }
         return shouldProxyImageUrl(cleanedUrl)
             ? `/api/badge-image?url=${encodeURIComponent(cleanedUrl)}`
             : cleanedUrl;

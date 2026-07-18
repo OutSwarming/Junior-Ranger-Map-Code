@@ -85,7 +85,11 @@ function getCellLink(cell = {}) {
 
     const runs = Array.isArray(cell.textFormatRuns) ? cell.textFormatRuns : [];
     const runWithLink = runs.find(run => run && run.format && run.format.link && run.format.link.uri);
-    return runWithLink ? runWithLink.format.link.uri : '';
+    if (runWithLink) return runWithLink.format.link.uri;
+
+    const formula = cell.userEnteredValue && cell.userEnteredValue.formulaValue;
+    const formulaLink = String(formula || '').match(/^=HYPERLINK\("((?:""|[^"])*)"/i);
+    return formulaLink ? formulaLink[1].replace(/""/g, '"') : '';
 }
 
 function getCellColor(cell = {}) {
@@ -243,6 +247,32 @@ function isTradingCardsTag(value) {
     return /^trading cards?:?$/i.test(normalizeTagLabel(value));
 }
 
+function isBadgesTag(value) {
+    return /^badges?:?$/i.test(normalizeTagLabel(value));
+}
+
+function isNoRewardTag(value) {
+    return /^\(?\s*no\s+(badge|patch|reward|rewards?)\s*\)?$/i.test(normalizeTagLabel(value));
+}
+
+function stripBadgeLabel(value) {
+    return normalizeTagLabel(value).replace(/^\s*\(|\)\s*$/g, '').trim();
+}
+
+function addBadgeLink(entry, label, tagCell) {
+    if (!entry) return;
+    if (isNoRewardTag(label)) return;
+
+    const url = cleanValue(getCellLink(tagCell));
+    if (!url) return;
+
+    const cleanedLabel = stripBadgeLabel(label);
+    entry.badgeLinks.push({
+        label: cleanedLabel || `Badge ${entry.badgeLinks.length + 1}`,
+        url
+    });
+}
+
 function addTag(entry, tagCell) {
     if (!entry) return;
     const text = getCellText(tagCell);
@@ -253,6 +283,16 @@ function addTag(entry, tagCell) {
         .map(normalizeTagLabel)
         .filter(Boolean)
         .forEach(label => {
+            if (isBadgesTag(label)) {
+                entry.isBadgeBlock = true;
+                return;
+            }
+            if (entry.isBadgeBlock && (isParentheticalTag(label) || isNoRewardTag(label))) {
+                addBadgeLink(entry, label, tagCell);
+                return;
+            }
+
+            entry.isBadgeBlock = false;
             if (entry.isTradingCardsBlock && isParentheticalTag(label)) return;
             entry.tags.push({ label, url });
             entry.isTradingCardsBlock = isTradingCardsTag(label);
@@ -291,6 +331,24 @@ function buildTagPayload(tags) {
     };
 }
 
+function buildBadgePicturesPayload(badgeLinks) {
+    const seen = new Set();
+    const lines = [];
+
+    (Array.isArray(badgeLinks) ? badgeLinks : []).forEach(link => {
+        const label = normalizeTagLabel(link && link.label);
+        const url = cleanValue(link && link.url);
+        if (!url) return;
+
+        const key = url.toLowerCase();
+        if (seen.has(key)) return;
+        seen.add(key);
+        lines.push(label ? `${label}: ${url}` : url);
+    });
+
+    return lines.join('\n');
+}
+
 function createEntry({
     rowNumber,
     name,
@@ -325,6 +383,8 @@ function createEntry({
         siteSpecific: normalizeSiteSpecificValue(siteSpecific),
         isAcrossSection: isAcrossSection === true,
         isTradingCardsBlock: false,
+        isBadgeBlock: false,
+        badgeLinks: [],
         tags: []
     };
 }
@@ -439,7 +499,7 @@ function extractCatalogRowsFromGrid(spreadsheet, options = {}) {
             address: '',
             agency: entry.agency,
             historyTimelineInfo: '',
-            badgePictures: '',
+            badgePictures: buildBadgePicturesPayload(entry.badgeLinks),
             officialGovWebsite: '',
             websiteLinks: '',
             lastUpdated: options.today || new Date().toISOString().slice(0, 10),

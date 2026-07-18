@@ -17,6 +17,7 @@ const {
 function cell(value, options = {}) {
     const out = { formattedValue: value };
     if (options.link) out.hyperlink = options.link;
+    if (options.formula) out.userEnteredValue = { formulaValue: options.formula };
     if (options.color) out.effectiveFormat = { backgroundColor: options.color };
     return out;
 }
@@ -422,6 +423,48 @@ test('extractCatalogRowsFromGrid skips parenthesized trading card names without 
         'Junior Ranger: https://example.com/selma-jr.pdf\nTrading Cards: https://example.com/trading-cards.pdf\nCivil Rights Explorer: https://example.com/explorer.pdf'
     );
     assert.doesNotMatch(rows[0].specialPrograms, /Brown Chapel|Edmund Pettus/);
+});
+
+test('extractCatalogRowsFromGrid maps Badges block links to badgePictures only', () => {
+    const spreadsheet = sheet([
+        row([cell('Master Map for Planning'), {}, {}, cell('Track Trails')]),
+        row([
+            cell('Alabama'),
+            cell('', { color: { blue: 1 } }),
+            cell('Birmingham Civil Rights NM'),
+            cell('site specific JR Book', { link: 'https://example.com/birmingham-book.pdf' }),
+            cell('Yes'),
+            cell('33.5160727'),
+            cell('-86.8145312'),
+            cell('jr_alabama_birmingham_civil_rights_nm')
+        ]),
+        row([{}, cell('', { color: { blue: 1 } }), {}, cell('Badges:')]),
+        row([{}, cell('', { color: { blue: 1 } }), {}, cell('     (Current Badge)', { link: 'https://example.com/birmingham-current-badge.webp' })]),
+        row([{}, cell('', { color: { blue: 1 } }), {}, cell('     (Current Patch)', { formula: '=HYPERLINK("https://example.com/birmingham-current-patch.webp","     (Current Patch)")' })]),
+        row([{}, cell('', { color: { blue: 1 } }), {}, cell('     (no reward)')]),
+        row([
+            {},
+            cell('', { color: { blue: 1 } }),
+            cell('Freedom Riders NM'),
+            cell('Junior Ranger', { link: 'https://example.com/freedom-book.pdf' }),
+            cell('Yes'),
+            cell('33.6581126'),
+            cell('-85.831166'),
+            cell('jr_alabama_freedom_riders_nm')
+        ])
+    ]);
+
+    const rows = extractCatalogRowsFromGrid(spreadsheet, { state: 'Alabama', today: '2026-05-25' });
+
+    assert.equal(rows.length, 2);
+    assert.equal(rows[0].specialPrograms, 'site specific JR Book');
+    assert.equal(rows[0].jrBooks, 'site specific JR Book: https://example.com/birmingham-book.pdf');
+    assert.equal(
+        rows[0].badgePictures,
+        'Current Badge: https://example.com/birmingham-current-badge.webp\nCurrent Patch: https://example.com/birmingham-current-patch.webp'
+    );
+    assert.equal(rows[1].siteID, 'jr_alabama_freedom_riders_nm');
+    assert.equal(rows[1].badgePictures, '');
 });
 
 test('extractCatalogRowsFromGrid honors explicit state suffixes and generates a temporary site id', () => {

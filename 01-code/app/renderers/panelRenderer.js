@@ -128,6 +128,21 @@ function getUniqueHttpUrls(value) {
     });
 }
 
+function getLabeledHttpLinks(value, fallbackPrefix) {
+    const source = String(value || '');
+    const urls = getUniqueHttpUrls(source);
+    return urls.map((url, index) => {
+        const urlIndex = source.indexOf(url);
+        const prefix = urlIndex > -1
+            ? source.slice(0, urlIndex).split(/\r?\n/).pop().replace(/[:\-\s]+$/, '').trim()
+            : '';
+        return {
+            url,
+            label: prefix || `${fallbackPrefix} ${index + 1}`
+        };
+    });
+}
+
 function configureExternalLink(link, href) {
     link.href = href;
     link.target = '_blank';
@@ -426,12 +441,12 @@ function createBadgeImageCard(badge, index) {
 }
 
 function getCsvBadgePictureBadges(place = {}) {
-    return getUniqueHttpUrls(place.pics || '').map((url, index) => ({
+    return getLabeledHttpLinks(place.pics || '', 'Badge Picture').map((link, index) => ({
         id: `csv-picture-${index + 1}`,
-        title: `Badge Picture ${index + 1}`,
+        title: link.label || `Badge Picture ${index + 1}`,
         type: 'Badge Picture',
-        imageUrl: url,
-        thumbnailUrl: url,
+        imageUrl: link.url,
+        thumbnailUrl: link.url,
         source: 'site-row'
     }));
 }
