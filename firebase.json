@@ -92,6 +92,10 @@
       {
         "source": "/api/junior-ranger-catalog",
         "function": "getJuniorRangerCatalog"
+      },
+      {
+        "source": "/api/badge-image",
+        "function": "getBadgeImage"
       }
     ]
   }

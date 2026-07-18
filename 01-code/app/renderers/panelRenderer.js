@@ -119,6 +119,15 @@ function getSafeHttpUrls(value) {
         .filter(Boolean);
 }
 
+function getUniqueHttpUrls(value) {
+    const seen = new Set();
+    return getSafeHttpUrls(value).filter(url => {
+        if (seen.has(url)) return false;
+        seen.add(url);
+        return true;
+    });
+}
+
 function configureExternalLink(link, href) {
     link.href = href;
     link.target = '_blank';
@@ -289,6 +298,124 @@ function getBookLinks(place = {}) {
 
 function getRenderableBookLinks(place = {}) {
     return place && place._isPickupLocation ? [] : getBookLinks(place);
+}
+
+function createBadgeImageCard(badge, index) {
+    const card = document.createElement('a');
+    card.className = 'badge-image-card';
+    configureExternalLink(card, badge.imageUrl);
+    card.setAttribute('aria-label', `Open ${badge.title || `Badge ${index + 1}`} image`);
+
+    const imageFrame = document.createElement('div');
+    imageFrame.className = 'badge-image-frame';
+
+    const image = document.createElement('img');
+    const badgeService = window.BARK.services && window.BARK.services.badgeImages;
+    const rawImageUrl = badge.thumbnailUrl || badge.imageUrl;
+    image.src = badgeService && typeof badgeService.getDisplayImageUrl === 'function'
+        ? badgeService.getDisplayImageUrl(rawImageUrl)
+        : rawImageUrl;
+    image.alt = badge.title || `Badge ${index + 1}`;
+    image.loading = 'lazy';
+    image.decoding = 'async';
+    image.referrerPolicy = 'no-referrer';
+    image.addEventListener('error', () => {
+        card.classList.add('badge-image-card-error');
+        imageFrame.textContent = 'Image unavailable';
+    }, { once: true });
+
+    imageFrame.appendChild(image);
+    card.appendChild(imageFrame);
+
+    const caption = document.createElement('div');
+    caption.className = 'badge-image-caption';
+    caption.textContent = badge.title || `Badge ${index + 1}`;
+    card.appendChild(caption);
+
+    return card;
+}
+
+function getCsvBadgePictureBadges(place = {}) {
+    return getUniqueHttpUrls(place.pics || '').map((url, index) => ({
+        id: `csv-picture-${index + 1}`,
+        title: `Badge Picture ${index + 1}`,
+        type: 'Badge Picture',
+        imageUrl: url,
+        thumbnailUrl: url,
+        source: 'site-row'
+    }));
+}
+
+function mergeBadgeImages(manifestBadges, csvBadges) {
+    const seen = new Set();
+    return manifestBadges.concat(csvBadges).filter(badge => {
+        const key = badge && badge.imageUrl;
+        if (!key || seen.has(key)) return false;
+        seen.add(key);
+        return true;
+    });
+}
+
+function renderBadgeGalleryImages(container, badges, place) {
+    clearElement(container);
+    container.className = 'badge-gallery';
+    container.dataset.pinId = place.id || '';
+    container.style.display = badges.length ? 'grid' : 'none';
+    if (!badges.length) return;
+
+    const heading = document.createElement('div');
+    heading.className = 'badge-gallery-heading';
+
+    const title = document.createElement('div');
+    title.className = 'badge-gallery-title';
+    title.textContent = 'Badges';
+    heading.appendChild(title);
+
+    const count = document.createElement('div');
+    count.className = 'badge-gallery-count';
+    count.textContent = `${badges.length} ${badges.length === 1 ? 'image' : 'images'}`;
+    heading.appendChild(count);
+    container.appendChild(heading);
+
+    const grid = document.createElement('div');
+    grid.className = 'badge-gallery-grid';
+    badges.forEach((badge, index) => grid.appendChild(createBadgeImageCard(badge, index)));
+    container.appendChild(grid);
+}
+
+function renderBadgeGallery(container, place = {}) {
+    if (!container) return;
+    const pinId = place.id || '';
+    const csvBadges = getCsvBadgePictureBadges(place);
+    container.dataset.pinId = pinId;
+
+    if (csvBadges.length) {
+        renderBadgeGalleryImages(container, csvBadges, place);
+    } else {
+        container.style.display = 'none';
+        clearElement(container);
+    }
+
+    const badgeService = window.BARK.services && window.BARK.services.badgeImages;
+    if (!badgeService || !pinId) return;
+
+    const loadBadges = typeof badgeService.getBadgesForPlace === 'function'
+        ? badgeService.getBadgesForPlace(place)
+        : badgeService.getBadgesForPin(pinId);
+
+    loadBadges.then(manifestBadges => {
+        if (container.dataset.pinId !== pinId) return;
+        const badges = mergeBadgeImages(manifestBadges, csvBadges);
+        renderBadgeGalleryImages(container, badges, place);
+    }).catch(error => {
+        console.warn('[panelRenderer] Unable to load badge images for selected pin.', {
+            pinId,
+            name: place.name,
+            error
+        });
+    });
+
+    return csvBadges.length > 0;
 }
 
 function createPanelButton({ text, className = '', href = '', onClick = null, actionKey = '' }) {
@@ -651,18 +778,21 @@ function renderMarkerClickPanel(context) {
 
     const videoUrl = getSafeHttpUrls(d.video || '')[0];
     const mediaLinks = document.getElementById('media-links');
+    renderBadgeGallery(picsEl, d);
     if (videoUrl) {
         if (mediaLinks) mediaLinks.style.display = 'flex';
+    } else {
+        if (mediaLinks) mediaLinks.style.display = 'none';
+    }
+    if (videoUrl) {
         if (videoEl) {
             videoEl.style.display = 'block';
             configureExternalLink(videoEl, videoUrl);
         }
     } else {
-        if (mediaLinks) mediaLinks.style.display = 'none';
         if (videoEl) { videoEl.style.display = 'none'; videoEl.removeAttribute('href'); }
     }
 
-    if (picsEl) { picsEl.style.display = 'none'; clearElement(picsEl); }
     if (websitesContainer) {
         clearElement(websitesContainer);
         websitesContainer.style.display = 'none';

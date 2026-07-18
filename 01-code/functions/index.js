@@ -19,9 +19,31 @@ admin.initializeApp();
 
 const JUNIOR_RANGER_CATALOG_CACHE_TTL_MS = 4 * 60 * 1000;
 const juniorRangerCatalogCache = new Map();
+const BADGE_IMAGE_PROXY_MAX_BYTES = 8 * 1024 * 1024;
+const BADGE_IMAGE_PROXY_ALLOWED_HOSTS = new Set([
+    'mymaps.usercontent.google.com',
+    'lh3.googleusercontent.com',
+    'lh4.googleusercontent.com',
+    'lh5.googleusercontent.com',
+    'lh6.googleusercontent.com'
+]);
 
 function shouldBypassJuniorRangerCatalogCache(query = {}) {
     return Boolean(query && (query.cache_bypass || query.no_cache || query.refresh));
+}
+
+function getAllowedBadgeImageUrl(value) {
+    const rawUrl = String(value || '').trim();
+    if (!rawUrl) return null;
+
+    try {
+        const url = new URL(rawUrl);
+        if (url.protocol !== 'https:') return null;
+        if (!BADGE_IMAGE_PROXY_ALLOWED_HOSTS.has(url.hostname)) return null;
+        return url.href;
+    } catch (_error) {
+        return null;
+    }
 }
 
 // Keep admin callables compatible with the current admin page. The backend
@@ -2271,6 +2293,60 @@ exports.submitFeedback = functions.https.onCall(async (requestOrData, context) =
     return handleSubmitFeedback(requestOrData, context);
 });
 
+async function handleBadgeImageRequest(req, res) {
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.set('Access-Control-Allow-Headers', 'Content-Type');
+
+    if (req.method === 'OPTIONS') {
+        res.status(204).send('');
+        return;
+    }
+
+    if (req.method !== 'GET') {
+        res.status(405).send('Method not allowed');
+        return;
+    }
+
+    const imageUrl = getAllowedBadgeImageUrl(req.query && req.query.url);
+    if (!imageUrl) {
+        res.status(400).type('text/plain').send('Unsupported badge image URL.');
+        return;
+    }
+
+    try {
+        const response = await axios.get(imageUrl, {
+            responseType: 'arraybuffer',
+            timeout: 15000,
+            maxContentLength: BADGE_IMAGE_PROXY_MAX_BYTES,
+            headers: {
+                'User-Agent': 'USBARKRANGERS/1.0 badge-image-proxy'
+            },
+            validateStatus: status => status >= 200 && status < 300
+        });
+        const contentType = String(response.headers && response.headers['content-type'] || '').toLowerCase();
+        if (!contentType.startsWith('image/')) {
+            res.status(415).type('text/plain').send('Badge image URL did not return an image.');
+            return;
+        }
+
+        res.set('Cache-Control', 'public, max-age=86400, s-maxage=604800');
+        res.set('Content-Type', contentType);
+        res.status(200).send(Buffer.from(response.data));
+    } catch (error) {
+        console.error('[badgeImageProxy] Failed to fetch badge image:', {
+            url: imageUrl,
+            message: error && error.message,
+            code: error && error.code
+        });
+        res.status(502).type('text/plain').send('Unable to load badge image.');
+    }
+}
+
+exports.getBadgeImage = functions
+    .runWith({ timeoutSeconds: 30, memory: '512MB' })
+    .https.onRequest(handleBadgeImageRequest);
+
 async function handleJuniorRangerCatalogRequest(req, res) {
     res.set('Access-Control-Allow-Origin', '*');
     res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
@@ -2393,6 +2469,8 @@ if (process.env.NODE_ENV === "test") {
         handleRedeemAccessOrPromoCode,
         isActiveAccessCodeEntitlement,
         getActiveAccessCodeFallback,
+        getAllowedBadgeImageUrl,
+        handleBadgeImageRequest,
         verifyLemonSqueezyWebhookSignature,
         deriveLemonSqueezyEventId,
         buildLemonSqueezyEventDocId,
