@@ -1,0 +1,19 @@
+{
+  "badgesMappedToPins": 2835,
+  "livePinsWithCoordinates": 2104,
+  "matchTypes": {
+    "state_core_contains": 34,
+    "state_core_exact": 512,
+    "state_name_exact": 43,
+    "unique_core_exact": 27,
+    "unique_name_exact": 9
+  },
+  "matchedRows": 625,
+  "pinsWithBadges": 620,
+  "resolvedSourceImages": 4582,
+  "safefoodRowsWithResolvedImages": 1307,
+  "sourceImageCountFromRows": 5624,
+  "uniqueBadgeAssets": 2829,
+  "unmatchedRows": 682,
+  "writtenBadgeAssets": 2829
+}

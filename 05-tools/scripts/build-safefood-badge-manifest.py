@@ -1,0 +1,838 @@
+#!/usr/bin/env python3
+"""Build local badge images and a map lookup manifest from SafeFood exports."""
+
+from __future__ import annotations
+
+import argparse
+import csv
+import hashlib
+import io
+import json
+import math
+import os
+import re
+import shutil
+import sys
+import urllib.request
+from collections import Counter, defaultdict, deque
+from datetime import datetime, timezone
+from pathlib import Path
+
+from PIL import Image
+
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+DEFAULT_SAFEFOOD_DIR = Path("/Users/carterswarm/Downloads/SafeFoodCert_Badges")
+DEFAULT_LIVE_CATALOG_URL = "https://junior-ranger-map-auth.web.app/api/junior-ranger-catalog"
+DEFAULT_MANIFEST_PATH = REPO_ROOT / "01-code/app/assets/data/badge-manifest.json"
+DEFAULT_BADGE_ASSET_DIR = REPO_ROOT / "01-code/app/assets/badges/safefood"
+DEFAULT_REPORT_DIR = REPO_ROOT / "05-tools/reports"
+
+STATE_NAMES = {
+    "alabama",
+    "alaska",
+    "arizona",
+    "arkansas",
+    "california",
+    "colorado",
+    "connecticut",
+    "delaware",
+    "florida",
+    "georgia",
+    "hawaii",
+    "idaho",
+    "illinois",
+    "indiana",
+    "iowa",
+    "kansas",
+    "kentucky",
+    "louisiana",
+    "maine",
+    "maryland",
+    "massachusetts",
+    "michigan",
+    "minnesota",
+    "mississippi",
+    "missouri",
+    "montana",
+    "nebraska",
+    "nevada",
+    "new hampshire",
+    "new jersey",
+    "new mexico",
+    "new york",
+    "north carolina",
+    "north dakota",
+    "ohio",
+    "oklahoma",
+    "oregon",
+    "pennsylvania",
+    "rhode island",
+    "south carolina",
+    "south dakota",
+    "tennessee",
+    "texas",
+    "utah",
+    "vermont",
+    "virginia",
+    "washington",
+    "west virginia",
+    "wisconsin",
+    "wyoming",
+    "district of columbia",
+    "washington dc",
+    "puerto rico",
+    "guam",
+    "virgin islands",
+    "american samoa",
+    "northern mariana islands",
+}
+
+AGENCY_ALIASES = {
+    "nps": "national park service",
+    "national park service": "national park service",
+    "national wildlife refuge": "national wildlife refuge",
+    "nwr": "national wildlife refuge",
+    "u s fish and wildlife service": "national wildlife refuge",
+    "us fish and wildlife service": "national wildlife refuge",
+    "us fish and wildlife": "national wildlife refuge",
+    "usfws": "national wildlife refuge",
+    "state": "state parks",
+    "state park": "state parks",
+    "state parks": "state parks",
+    "u s forest service": "us forest service",
+    "us forest service": "us forest service",
+    "usfs": "us forest service",
+    "forest service": "us forest service",
+    "us forest service national forest": "us forest service",
+    "bureau of land management": "bureau of land management",
+    "blm": "bureau of land management",
+    "army corps": "army corps",
+    "us army corps of engineers": "army corps",
+    "u s army corps of engineers": "army corps",
+    "usace": "army corps",
+}
+
+DESIGNATION_PHRASES = [
+    "national historical park",
+    "national historic site",
+    "national historic trail",
+    "national scenic trail",
+    "national military park",
+    "national battlefield park",
+    "national battlefield",
+    "national memorial",
+    "national monument",
+    "national conservation area",
+    "national heritage area",
+    "national park and preserve",
+    "national park",
+    "national preserve",
+    "national reserve",
+    "national recreation area",
+    "national seashore",
+    "national lakeshore",
+    "national river and recreation area",
+    "national river",
+    "national wild and scenic river",
+    "national forest",
+    "national grassland",
+    "national wildlife refuge",
+    "wildlife refuge",
+    "state historic park",
+    "state historic site",
+    "state historical park",
+    "state park and historic site",
+    "state park",
+    "state recreation area",
+    "outstanding natural area",
+    "natural area",
+    "nature center",
+    "regional park",
+    "historic site",
+    "historical park",
+    "visitor center",
+    "ranger station",
+    "memorial",
+    "monument",
+    "preserve",
+    "reserve",
+    "recreation area",
+    "seashore",
+    "lakeshore",
+    "battlefield",
+    "military park",
+    "forest",
+    "grassland",
+    "park",
+]
+
+DESIGNATION_ABBREVIATIONS = [
+    "nhs",
+    "nhp",
+    "nht",
+    "nst",
+    "nmp",
+    "nbp",
+    "nb",
+    "nmem",
+    "nm",
+    "np",
+    "npr",
+    "npres",
+    "pres",
+    "pr",
+    "nr",
+    "nra",
+    "ns",
+    "nl",
+    "nwr",
+    "nf",
+    "ng",
+    "nca",
+    "nha",
+    "ona",
+    "nhl",
+    "sp",
+    "shs",
+    "shp",
+    "sra",
+    "vc",
+    "rs",
+]
+
+STOP_WORDS = {
+    "the",
+    "and",
+    "of",
+    "jr",
+    "junior",
+    "ranger",
+    "badge",
+    "badges",
+    "patch",
+    "plastic",
+    "wooden",
+    "wood",
+    "medal",
+    "token",
+    "pin",
+    "sticker",
+    "certificate",
+    "program",
+    "book",
+    "booklet",
+    "activity",
+    "guide",
+    "explorer",
+    "passport",
+    "picture",
+    "pix",
+    "photo",
+    "logo",
+    "banner",
+    "page",
+    "header",
+    "national",
+    "park",
+    "service",
+    "state",
+    "edition",
+    "ed",
+    "comes",
+    "with",
+    "attached",
+    "ribbon",
+    "unit",
+    "units",
+    "site",
+}
+
+BAD_SITE_NAMES = {
+    "miscellaneous",
+    "unknown",
+    "_page header",
+    "page header",
+    "agency header",
+    "header",
+    "banner",
+    "logo",
+    "pix",
+    "picture",
+    "pictures",
+    "photo",
+    "photos",
+    "sticker",
+    "stickers",
+}
+
+PATH_RE = re.compile(
+    r"/Users/carterswarm/Downloads/SafeFoodCert_Badges/.*?\s-\s[0-9a-f]{10}\.(?:jpg|jpeg|png|webp)",
+    re.IGNORECASE,
+)
+HASH_RE = re.compile(r"-\s*([0-9a-f]{10})\.(?:jpg|jpeg|png|webp)$", re.IGNORECASE)
+IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
+
+
+def clean(value: object) -> str:
+    return str(value or "").strip()
+
+
+def normalize_text(value: object) -> str:
+    text = clean(value).lower().replace("&", " and ")
+    text = re.sub(r"https?://\S+", " ", text)
+    text = re.sub(r"\([^)]*\)", " ", text)
+    text = re.sub(r"[,;:/|]+", " ", text)
+    text = re.sub(r"[^a-z0-9]+", " ", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def canonical_agency(value: object) -> str:
+    normalized = normalize_text(value)
+    return AGENCY_ALIASES.get(normalized, normalized)
+
+
+def canonical_site(value: object) -> str:
+    text = normalize_text(value)
+    text = re.sub(r"\b\d{2,}\b", " ", text)
+    for phrase in DESIGNATION_PHRASES:
+        text = re.sub(r"\b" + re.escape(phrase) + r"\b", " ", text)
+    for abbreviation in DESIGNATION_ABBREVIATIONS:
+        text = re.sub(r"\b" + re.escape(abbreviation) + r"\b", " ", text)
+    tokens = [token for token in text.split() if token not in STOP_WORDS and len(token) > 1]
+    return " ".join(tokens).strip()
+
+
+def state_name_key(state: object, name: object) -> str:
+    normalized_state = normalize_text(state)
+    normalized_name = normalize_text(name)
+    return f"{normalized_state}|{normalized_name}" if normalized_state and normalized_name else ""
+
+
+def state_canonical_key(state: object, name: object) -> str:
+    normalized_state = normalize_text(state)
+    normalized_name = canonical_site(name)
+    return f"{normalized_state}|{normalized_name}" if normalized_state and normalized_name else ""
+
+
+def agency_compatible(source_agency: object, pin_agency: object) -> bool:
+    source = canonical_agency(source_agency)
+    pin = canonical_agency(pin_agency)
+    if not source or not pin:
+        return True
+    if source == pin:
+        return True
+    if source == "state parks" and pin.startswith("state"):
+        return True
+    if pin == "state parks" and source.startswith("state"):
+        return True
+    return False
+
+
+def is_bad_site_name(value: object) -> bool:
+    normalized = normalize_text(value)
+    canonical = canonical_site(value)
+    return (
+        not normalized
+        or normalized in BAD_SITE_NAMES
+        or canonical in BAD_SITE_NAMES
+        or normalized in STATE_NAMES
+        or canonical in STATE_NAMES
+        or len(canonical) < 3
+    )
+
+
+def read_csv(path: Path) -> list[dict[str, str]]:
+    with path.open("r", encoding="utf-8-sig", newline="") as handle:
+        return list(csv.DictReader(handle))
+
+
+def fetch_live_catalog(url: str) -> list[dict[str, str]]:
+    separator = "&" if "?" in url else "?"
+    cache_busted_url = f"{url}{separator}cache_bypass=safefood-badge-build"
+    with urllib.request.urlopen(cache_busted_url, timeout=45) as response:
+        csv_text = response.read().decode("utf-8-sig")
+    return list(csv.DictReader(io.StringIO(csv_text)))
+
+
+def load_pins(rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    pins = []
+    for row in rows:
+        if not clean(row.get("latitude")) or not clean(row.get("longitude")):
+            continue
+        pins.append(
+            {
+                "id": clean(row.get("siteID")),
+                "name": clean(row.get("siteName")),
+                "state": clean(row.get("state")),
+                "agency": clean(row.get("agency")),
+                "normalized_name": normalize_text(row.get("siteName")),
+                "canonical_name": canonical_site(row.get("siteName")),
+            }
+        )
+    return pins
+
+
+def build_pin_indexes(pins: list[dict[str, str]]) -> dict[str, defaultdict]:
+    indexes = {
+        "by_state_name": defaultdict(list),
+        "by_state_canonical": defaultdict(list),
+        "by_name": defaultdict(list),
+        "by_canonical": defaultdict(list),
+        "by_state": defaultdict(list),
+    }
+    for pin in pins:
+        state = normalize_text(pin["state"])
+        indexes["by_state_name"][(state, pin["normalized_name"])].append(pin)
+        indexes["by_state_canonical"][(state, pin["canonical_name"])].append(pin)
+        indexes["by_name"][pin["normalized_name"]].append(pin)
+        indexes["by_canonical"][pin["canonical_name"]].append(pin)
+        indexes["by_state"][state].append(pin)
+    return indexes
+
+
+def candidate_names(row: dict[str, str]) -> list[str]:
+    site_name = clean(row.get("Site Name"))
+    names = [site_name]
+    if ";" in site_name:
+        names.append(site_name.split(";", 1)[0].strip())
+
+    aliases = clean(row.get("Merged Aliases / Badge Labels"))
+    for part in aliases.split(";"):
+        left = part.split("|", 1)[0].strip()
+        left = re.sub(r"^Tracking row:\s*", "", left, flags=re.IGNORECASE).strip()
+        if left:
+            names.append(left)
+
+    unique_names = []
+    for name in names:
+        if not name or is_bad_site_name(name):
+            continue
+        if name not in unique_names:
+            unique_names.append(name)
+    return unique_names
+
+
+def find_contains_match(
+    row: dict[str, str],
+    name: str,
+    indexes: dict[str, defaultdict],
+) -> dict[str, str] | None:
+    state = normalize_text(row.get("State/Region"))
+    canonical_name = canonical_site(name)
+    row_tokens = set(canonical_name.split())
+    if not state or len(canonical_name) < 5:
+        return None
+
+    candidates = []
+    for pin in indexes["by_state"].get(state, []):
+        if not agency_compatible(row.get("Agency"), pin["agency"]):
+            continue
+        pin_tokens = set(pin["canonical_name"].split())
+        if min(len(pin_tokens), len(row_tokens)) < 2:
+            continue
+        if pin_tokens.issubset(row_tokens) or row_tokens.issubset(pin_tokens):
+            overlap = len(pin_tokens & row_tokens) / max(len(pin_tokens), len(row_tokens))
+            if overlap >= 0.55:
+                candidates.append(pin)
+
+    return candidates[0] if len(candidates) == 1 else None
+
+
+def map_row_to_pin(
+    row: dict[str, str],
+    indexes: dict[str, defaultdict],
+) -> tuple[dict[str, str] | None, str, str]:
+    state = normalize_text(row.get("State/Region"))
+    names = candidate_names(row)
+
+    for name in names:
+        normalized_name = normalize_text(name)
+        canonical_name = canonical_site(name)
+        exact_matches = indexes["by_state_name"].get((state, normalized_name), [])
+        if len(exact_matches) == 1:
+            return exact_matches[0], "state_name_exact", name
+
+        core_matches = indexes["by_state_canonical"].get((state, canonical_name), [])
+        if len(core_matches) == 1 and agency_compatible(row.get("Agency"), core_matches[0]["agency"]):
+            return core_matches[0], "state_core_exact", name
+
+    for name in names:
+        normalized_name = normalize_text(name)
+        canonical_name = canonical_site(name)
+        exact_matches = indexes["by_name"].get(normalized_name, [])
+        if len(exact_matches) == 1:
+            return exact_matches[0], "unique_name_exact", name
+
+        core_matches = indexes["by_canonical"].get(canonical_name, [])
+        if len(core_matches) == 1 and agency_compatible(row.get("Agency"), core_matches[0]["agency"]):
+            return core_matches[0], "unique_core_exact", name
+
+    for name in names:
+        match = find_contains_match(row, name, indexes)
+        if match:
+            return match, "state_core_contains", name
+
+    return None, "", names[0] if names else ""
+
+
+def find_actual_images(safefood_dir: Path) -> dict[str, Path]:
+    images_by_hash = {}
+    for root, _dirs, files in os.walk(safefood_dir):
+        for filename in files:
+            path = Path(root) / filename
+            if path.suffix.lower() not in IMAGE_EXTENSIONS:
+                continue
+            match = HASH_RE.search(str(path))
+            if match:
+                images_by_hash.setdefault(match.group(1).lower(), path)
+    return images_by_hash
+
+
+def source_image_hash(path: Path) -> str:
+    match = HASH_RE.search(str(path))
+    if match:
+        return match.group(1).lower()
+    digest = hashlib.sha1(str(path).encode("utf-8")).hexdigest()
+    return digest[:10]
+
+
+def resolve_example_paths(row: dict[str, str], actual_images: dict[str, Path]) -> list[Path]:
+    resolved = []
+    seen = set()
+    for raw_path in PATH_RE.findall(clean(row.get("Example Image Files"))):
+        match = HASH_RE.search(raw_path)
+        path = Path(raw_path)
+        if path.exists():
+            actual_path = path
+        elif match and match.group(1).lower() in actual_images:
+            actual_path = actual_images[match.group(1).lower()]
+        else:
+            continue
+
+        key = str(actual_path)
+        if key in seen:
+            continue
+        seen.add(key)
+        resolved.append(actual_path)
+    return resolved
+
+
+def display_title(row: dict[str, str], image_path: Path, image_number: int) -> str:
+    site_name = clean(row.get("Site Name"))
+    filename = re.sub(r"^\d+\s*-\s*", "", image_path.name)
+    filename = re.sub(r"\s-\s[0-9a-f]{10}\.(?:jpg|jpeg|png|webp)$", "", filename, flags=re.IGNORECASE)
+    filename = re.sub(r"\.(?:jpg|jpeg|png|webp)$", "", filename, flags=re.IGNORECASE).strip()
+    if filename and normalize_text(filename) not in {"page header", "agency header"}:
+        return filename
+    if site_name:
+        return site_name
+    return f"Badge {image_number}"
+
+
+def likely_background_color(image: Image.Image) -> tuple[int, int, int]:
+    width, height = image.size
+    pixels = image.load()
+    edge = max(2, min(width, height) // 18)
+    samples = []
+    for y in range(height):
+        for x in range(width):
+            if x >= edge and x < width - edge and y >= edge and y < height - edge:
+                continue
+            red, green, blue, alpha = pixels[x, y]
+            if alpha > 0:
+                samples.append((red // 8 * 8, green // 8 * 8, blue // 8 * 8))
+    if not samples:
+        return (0, 0, 0)
+    return Counter(samples).most_common(1)[0][0]
+
+
+def replace_edge_background(image: Image.Image) -> Image.Image:
+    image = image.convert("RGBA")
+    width, height = image.size
+    pixels = image.load()
+    background = likely_background_color(image)
+    threshold = 54
+    visited = bytearray(width * height)
+    queue: deque[tuple[int, int]] = deque()
+
+    def close_to_background(x: int, y: int) -> bool:
+        red, green, blue, alpha = pixels[x, y]
+        if alpha < 16:
+            return True
+        distance = math.sqrt(
+            (red - background[0]) ** 2
+            + (green - background[1]) ** 2
+            + (blue - background[2]) ** 2
+        )
+        brightness = (red + green + blue) / 3
+        return distance <= threshold and (blue >= red - 8 or brightness > 218)
+
+    for x in range(width):
+        if close_to_background(x, 0):
+            queue.append((x, 0))
+        if close_to_background(x, height - 1):
+            queue.append((x, height - 1))
+    for y in range(height):
+        if close_to_background(0, y):
+            queue.append((0, y))
+        if close_to_background(width - 1, y):
+            queue.append((width - 1, y))
+
+    while queue:
+        x, y = queue.popleft()
+        index = y * width + x
+        if visited[index] or not close_to_background(x, y):
+            continue
+        visited[index] = 1
+        for next_x, next_y in ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)):
+            if 0 <= next_x < width and 0 <= next_y < height and not visited[next_y * width + next_x]:
+                queue.append((next_x, next_y))
+
+    for y in range(height):
+        for x in range(width):
+            if visited[y * width + x]:
+                pixels[x, y] = (0, 0, 0, 255)
+
+    return image
+
+
+def write_black_webp(source_path: Path, output_path: Path, min_side: int, max_side: int, quality: int) -> None:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    image = replace_edge_background(Image.open(source_path))
+    width, height = image.size
+    side = max(width, height)
+    scale = 1.0
+    if side < min_side:
+        scale = min_side / side
+    elif side > max_side:
+        scale = max_side / side
+    if scale != 1.0:
+        image = image.resize((round(width * scale), round(height * scale)), Image.Resampling.LANCZOS)
+        width, height = image.size
+        side = max(width, height)
+
+    canvas = Image.new("RGB", (side, side), (0, 0, 0))
+    canvas.paste(image.convert("RGB"), ((side - width) // 2, (side - height) // 2))
+    canvas.save(output_path, "WEBP", quality=quality, method=6)
+
+
+def add_badges(target: dict[str, list[dict[str, str]]], key: str, badges: list[dict[str, str]]) -> None:
+    if not key:
+        return
+    existing = target.setdefault(key, [])
+    seen = {badge["id"] for badge in existing}
+    for badge in badges:
+        if badge["id"] not in seen:
+            existing.append(badge)
+            seen.add(badge["id"])
+
+
+def csv_escape(value: object) -> str:
+    text = str(value or "")
+    if any(char in text for char in [",", "\"", "\n", "\r"]):
+        return '"' + text.replace('"', '""') + '"'
+    return text
+
+
+def write_csv(path: Path, headers: list[str], rows: list[dict[str, object]]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        handle.write(",".join(headers) + "\n")
+        for row in rows:
+            handle.write(",".join(csv_escape(row.get(header, "")) for header in headers) + "\n")
+
+
+def build_manifest(args: argparse.Namespace) -> dict[str, object]:
+    safefood_dir = Path(args.safefood_dir).expanduser().resolve()
+    master_path = safefood_dir / "compiled_tracking_data/folder_image_master_corrected/Folder_Image_JR_Program_Master_Corrected.csv"
+    if not master_path.exists():
+        raise FileNotFoundError(f"Corrected SafeFood master not found: {master_path}")
+
+    catalog_rows = fetch_live_catalog(args.catalog_url)
+    pins = load_pins(catalog_rows)
+    indexes = build_pin_indexes(pins)
+    actual_images = find_actual_images(safefood_dir)
+    master_rows = read_csv(master_path)
+
+    badge_asset_dir = Path(args.badge_asset_dir).resolve()
+    if args.clean and badge_asset_dir.exists():
+        shutil.rmtree(badge_asset_dir)
+    badge_asset_dir.mkdir(parents=True, exist_ok=True)
+
+    badges_by_pin_id: dict[str, list[dict[str, str]]] = {}
+    badges_by_state_name: dict[str, list[dict[str, str]]] = {}
+    badges_by_state_canonical_name: dict[str, list[dict[str, str]]] = {}
+    asset_cache: dict[str, str] = {}
+    matched_rows = []
+    unmatched_rows = []
+    match_counts: Counter[str] = Counter()
+    total_source_images = 0
+    total_resolved_images = 0
+    total_written_images = 0
+
+    for row in master_rows:
+        image_paths = resolve_example_paths(row, actual_images)
+        if not image_paths:
+            continue
+        total_source_images += int(clean(row.get("Image Count")) or len(image_paths))
+        total_resolved_images += len(image_paths)
+
+        pin, match_type, matched_label = map_row_to_pin(row, indexes)
+        candidate_site_names = candidate_names(row)
+        if not pin:
+            unmatched_rows.append(
+                {
+                    "state": clean(row.get("State/Region")),
+                    "agency": clean(row.get("Agency")),
+                    "siteName": clean(row.get("Site Name")),
+                    "imageCount": clean(row.get("Image Count")),
+                    "resolvedImageCount": len(image_paths),
+                    "candidateName": matched_label,
+                    "reason": "No confident pin match",
+                }
+            )
+            continue
+
+        row_badges = []
+        for image_number, image_path in enumerate(image_paths, start=1):
+            image_hash = source_image_hash(image_path)
+            output_relative = asset_cache.get(image_hash)
+            if not output_relative:
+                output_path = badge_asset_dir / f"{image_hash}.webp"
+                write_black_webp(
+                    image_path,
+                    output_path,
+                    min_side=args.min_side,
+                    max_side=args.max_side,
+                    quality=args.quality,
+                )
+                output_relative = output_path.relative_to(REPO_ROOT / "01-code/app").as_posix()
+                asset_cache[image_hash] = output_relative
+                total_written_images += 1
+
+            badge_id = f"safefood-{image_hash}"
+            row_badges.append(
+                {
+                    "id": badge_id,
+                    "title": display_title(row, image_path, image_number),
+                    "type": "Badge",
+                    "imageUrl": output_relative,
+                    "thumbnailUrl": output_relative,
+                    "source": "safefood-corrected-master",
+                }
+            )
+
+        add_badges(badges_by_pin_id, pin["id"], row_badges)
+        add_badges(badges_by_state_name, state_name_key(pin["state"], pin["name"]), row_badges)
+        add_badges(badges_by_state_canonical_name, state_canonical_key(pin["state"], pin["name"]), row_badges)
+        for site_name in candidate_site_names:
+            add_badges(badges_by_state_name, state_name_key(row.get("State/Region"), site_name), row_badges)
+            add_badges(
+                badges_by_state_canonical_name,
+                state_canonical_key(row.get("State/Region"), site_name),
+                row_badges,
+            )
+
+        match_counts[match_type] += 1
+        matched_rows.append(
+            {
+                "pinId": pin["id"],
+                "pinState": pin["state"],
+                "pinName": pin["name"],
+                "pinAgency": pin["agency"],
+                "sourceState": clean(row.get("State/Region")),
+                "sourceAgency": clean(row.get("Agency")),
+                "sourceSiteName": clean(row.get("Site Name")),
+                "matchedLabel": matched_label,
+                "matchType": match_type,
+                "badgeCount": len(row_badges),
+            }
+        )
+
+    for mapping in (badges_by_pin_id, badges_by_state_name, badges_by_state_canonical_name):
+        for key in list(mapping.keys()):
+            mapping[key] = sorted(mapping[key], key=lambda badge: (badge["title"].lower(), badge["id"]))
+
+    manifest = {
+        "version": 2,
+        "updatedAt": datetime.now(timezone.utc).isoformat(),
+        "source": {
+            "name": "SafeFoodCert_Badges corrected folder master",
+            "folder": str(safefood_dir),
+            "catalogUrl": args.catalog_url,
+        },
+        "summary": {
+            "livePinsWithCoordinates": len(pins),
+            "safefoodRowsWithResolvedImages": len(matched_rows) + len(unmatched_rows),
+            "matchedRows": len(matched_rows),
+            "unmatchedRows": len(unmatched_rows),
+            "pinsWithBadges": len(badges_by_pin_id),
+            "badgesMappedToPins": sum(len(values) for values in badges_by_pin_id.values()),
+            "uniqueBadgeAssets": len(asset_cache),
+            "sourceImageCountFromRows": total_source_images,
+            "resolvedSourceImages": total_resolved_images,
+            "writtenBadgeAssets": total_written_images,
+            "matchTypes": dict(sorted(match_counts.items())),
+        },
+        "badgesByPinId": dict(sorted(badges_by_pin_id.items())),
+        "badgesByStateName": dict(sorted(badges_by_state_name.items())),
+        "badgesByStateCanonicalName": dict(sorted(badges_by_state_canonical_name.items())),
+    }
+
+    manifest_path = Path(args.manifest_path).resolve()
+    manifest_path.parent.mkdir(parents=True, exist_ok=True)
+    manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=False) + "\n", encoding="utf-8")
+
+    report_dir = Path(args.report_dir).resolve()
+    report_dir.mkdir(parents=True, exist_ok=True)
+    summary_path = report_dir / "safefood-badge-map-summary.json"
+    summary_path.write_text(json.dumps(manifest["summary"], indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    write_csv(
+        report_dir / "safefood-badge-map-matches.csv",
+        [
+            "pinId",
+            "pinState",
+            "pinName",
+            "pinAgency",
+            "sourceState",
+            "sourceAgency",
+            "sourceSiteName",
+            "matchedLabel",
+            "matchType",
+            "badgeCount",
+        ],
+        matched_rows,
+    )
+    write_csv(
+        report_dir / "safefood-badge-map-unmatched.csv",
+        ["state", "agency", "siteName", "imageCount", "resolvedImageCount", "candidateName", "reason"],
+        unmatched_rows,
+    )
+
+    return manifest["summary"]
+
+
+def parse_args(argv: list[str]) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--safefood-dir", default=str(DEFAULT_SAFEFOOD_DIR))
+    parser.add_argument("--catalog-url", default=DEFAULT_LIVE_CATALOG_URL)
+    parser.add_argument("--manifest-path", default=str(DEFAULT_MANIFEST_PATH))
+    parser.add_argument("--badge-asset-dir", default=str(DEFAULT_BADGE_ASSET_DIR))
+    parser.add_argument("--report-dir", default=str(DEFAULT_REPORT_DIR))
+    parser.add_argument("--min-side", type=int, default=512)
+    parser.add_argument("--max-side", type=int, default=900)
+    parser.add_argument("--quality", type=int, default=82)
+    parser.add_argument("--clean", action="store_true", help="Remove generated badge assets before rebuilding.")
+    return parser.parse_args(argv)
+
+
+def main(argv: list[str]) -> int:
+    args = parse_args(argv)
+    summary = build_manifest(args)
+    print(json.dumps(summary, indent=2, sort_keys=True))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv[1:]))

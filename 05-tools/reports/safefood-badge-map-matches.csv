@@ -1,0 +1,626 @@
+pinId,pinState,pinName,pinAgency,sourceState,sourceAgency,sourceSiteName,matchedLabel,matchType,badgeCount
+jr_alaska_campbell_creek_science_center,Alaska,Campbell Creek Science Center,BLM,,Bureau of Land Management,Campbell Creek Science Center,Campbell Creek Science Center,unique_name_exact,1
+jr_alaska_iditarod_nht,Alaska,Iditarod NHT,BLM,,Bureau of Land Management,Iditarod NHT,Iditarod NHT,unique_name_exact,2
+jr_arizona_gila_box_riparian_nca,Arizona,Gila Box Riparian NCA,BLM,Arizona,Bureau of Land Management,Gila Box Riparian National Conservation Area,Gila Box Riparian National Conservation Area,state_core_exact,1
+jr_arizona_grand_canyon_parashant_nm,Arizona,Grand Canyon-Parashant NM,BLM,Arizona,Bureau of Land Management,Grand Canyon-Parashant National Monument,Grand Canyon-Parashant National Monument,state_core_exact,9
+jr_arizona_ironwood_forest_nm,Arizona,Ironwood Forest NM,BLM,Arizona,Bureau of Land Management,Ironwood Forest National Monument,Ironwood Forest National Monument,state_core_exact,1
+jr_arizona_las_cienegas_nca,Arizona,Las Cienegas NCA,BLM,Arizona,Bureau of Land Management,Las Cienegas National Conservation Area,Las Cienegas National Conservation Area,state_core_exact,1
+jr_arizona_san_pedro_riparian_nca,Arizona,San Pedro Riparian NCA,BLM,Arizona,Bureau of Land Management,San Pedro Riparian National Conservation Area,San Pedro Riparian National Conservation Area,state_core_exact,1
+jr_arizona_sonoran_desert_nm_phoenix_district_office,Arizona,Sonoran Desert NM (Phoenix District Office),BLM,Arizona,Bureau of Land Management,Sonoran Desert National Monument,Sonoran Desert National Monument,state_core_exact,1
+jr_arizona_vermilion_cliffs_nm,Arizona,Vermilion Cliffs NM,BLM,Arizona,Bureau of Land Management,Vermilion Cliffs National Monument,Vermilion Cliffs National Monument,state_core_exact,1
+jr_colorado_canyons_of_the_ancients_nm,Colorado,Canyons of the Ancients NM,BLM,Colorado,Bureau of Land Management,Canyons of the Ancients National Monument,Canyons of the Ancients National Monument,state_core_exact,3
+jr_colorado_dominguez_escalante_nca,Colorado,Dominguez-Escalante NCA,BLM,Colorado,Bureau of Land Management,Dominguez-Escalante National Conservation Area,Dominguez-Escalante National Conservation Area,state_core_exact,1
+jr_colorado_gunnison_gorge_nca,Colorado,Gunnison Gorge NCA,BLM,Colorado,Bureau of Land Management,Gunnison Gorge National Conservation Area,Gunnison Gorge National Conservation Area,state_core_exact,1
+jr_colorado_mcinnis_canyons_nca,Colorado,McInnis Canyons NCA,BLM,Colorado,Bureau of Land Management,McInnis Canyons National Conservation Area,McInnis Canyons National Conservation Area,state_core_exact,2
+jr_arizona_agua_fria_nm,Arizona,Agua Fria NM,BLM,Idaho,Bureau of Land Management,Agua Fria National Monument,Agua Fria National Monument,unique_core_exact,2
+jr_arizona_aravaipa_canyon_wilderness,Arizona,Aravaipa Canyon Wilderness,BLM,Idaho,Bureau of Land Management,Aravaipa Canyon Wilderness,Aravaipa Canyon Wilderness,unique_name_exact,1
+jr_idaho_morley_nelson_snake_river_birds_of_prey_nca,Idaho,Morley Nelson Snake River Birds of Prey NCA,BLM,Idaho,Bureau of Land Management,Morley Nelson Snake River Birds of Prey National Conservation Area,Morley Nelson Snake River Birds of Prey National Conservation Area,state_core_exact,2
+jr_montana_pompeys_pillar_nm,Montana,Pompeys Pillar NM,BLM,Montana,Bureau of Land Management,Pompeys Pillar National Monument,Pompeys Pillar National Monument,state_core_exact,3
+jr_montana_upper_missouri_river_breaks_nm,Montana,Upper Missouri River Breaks NM,BLM,Montana,Bureau of Land Management,Upper Missouri River Breaks National Monument,Upper Missouri River Breaks National Monument,state_core_exact,1
+jr_nevada_california_trail_interpretive_center,Nevada,California Trail Interpretive Center,BLM,Nevada,Bureau of Land Management,California Trail Interpretive Center,California Trail Interpretive Center,state_name_exact,2
+jr_nevada_red_rock_canyon_nca,Nevada,Red Rock Canyon NCA,BLM,Nevada,Bureau of Land Management,Red Rock Canyon National Conservation Area,Red Rock Canyon National Conservation Area,state_core_exact,2
+jr_nevada_sloan_canyon_nca,Nevada,Sloan Canyon NCA,BLM,Nevada,Bureau of Land Management,Sloan Canyon National Conservation Area,Sloan Canyon National Conservation Area,state_core_exact,7
+jr_new_mexico_dripping_springs_na_and,New Mexico,Dripping Springs NA and,BLM,New Mexico,Bureau of Land Management,Dripping Springs Natural Area,Dripping Springs Natural Area,state_core_contains,1
+jr_new_mexico_el_malpais_nca,New Mexico,El Malpais NCA,BLM,New Mexico,Bureau of Land Management,El Malpais National Conservation Area,El Malpais National Conservation Area,state_core_contains,2
+jr_new_mexico_kasha_katuwe_tent_rocks_nm,New Mexico,Kasha-Katuwe Tent Rocks NM,BLM,New Mexico,Bureau of Land Management,Kasha-Katuwe Tent Rocks National Monument,Kasha-Katuwe Tent Rocks National Monument,state_core_exact,4
+jr_new_mexico_organ_mountains_desert_peaks_nm,New Mexico,Organ Mountains-Desert Peaks NM,BLM,New Mexico,Bureau of Land Management,Organ Mountains / Desert Peaks National Monument,Organ Mountains / Desert Peaks National Monument,state_core_exact,1
+jr_oregon_cascade_siskiyou_nm,Oregon,Cascade-Siskiyou NM,BLM,Oregon,Bureau of Land Management,Cascade-Siskiyou National Monument,Cascade-Siskiyou National Monument,state_core_exact,2
+jr_oregon_oregon_trail_interpretive_center,Oregon,Oregon Trail Interpretive Center,BLM,Oregon,Bureau of Land Management,National Historic Oregon Trail Interpretive Center,National Historic Oregon Trail Interpretive Center,state_core_contains,2
+jr_oregon_new_river_nature_center,Oregon,New River Nature Center,BLM,Oregon,Bureau of Land Management,New River Nature Center,New River Nature Center,state_name_exact,1
+jr_oregon_wildwood_recreation_center,Oregon,Wildwood Recreation Center,BLM,Oregon,Bureau of Land Management,Wildwood Recreation Site,Wildwood Recreation Site,state_core_contains,4
+jr_oregon_yaquina_head_ona,Oregon,Yaquina Head ONA,BLM,Oregon,Bureau of Land Management,Yaquina Head Outstanding Natural Area,Yaquina Head Outstanding Natural Area,state_core_exact,10
+jr_utah_grand_staircase_escalante,Utah,Grand Staircase - Escalante,BLM,Utah,Bureau of Land Management,Grand Staircase-Escalante National Monument,Grand Staircase-Escalante National Monument,state_core_exact,5
+jr_california_carrizo_plain_nm,California,Carrizo Plain NM,BLM,Washington,Bureau of Land Management,Carrizo Plain National Monument,Carrizo Plain National Monument,unique_core_exact,1
+jr_california_fort_ord_nm,California,Fort Ord NM,BLM,Washington,Bureau of Land Management,Fort Ord National Monument,Fort Ord National Monument,unique_core_exact,1
+jr_california_king_range_nca,California,King Range NCA,BLM,Washington,Bureau of Land Management,King Range National Conservation Area,King Range National Conservation Area,unique_core_exact,1
+jr_wyoming_national_historic_trails_interpretive_center,Wyoming,National Historic Trails Interpretive Center,BLM,Wyoming,Bureau of Land Management,National Historic Trails Interpretive Center,National Historic Trails Interpretive Center,state_name_exact,1
+jr_northern_mariana_islands_american_memorial_park,Northern Mariana Islands,American Memorial Park,NPS,,National Park Service,American Memorial Park,American Memorial Park,unique_name_exact,4
+jr_virgin_islands_buck_island_reef_nm,Virgin Islands,Buck Island Reef NM,NPS,,National Park Service,Buck Island Reef National Monument,Buck Island Reef National Monument,unique_core_exact,1
+jr_virgin_islands_christiansted_nhs,Virgin Islands,Christiansted NHS,NPS,,National Park Service,Christiansted National Historic Site,Christiansted National Historic Site,unique_core_exact,2
+jr__national_capital_parks_east,Maryland,National Capital Parks East,NPS,,National Park Service,National Capital Parks-East,National Capital Parks-East,unique_name_exact,2
+jr_washington_d_c_national_mall_and_memorial_parks,"Washington, DC",National Mall & Memorial Parks,NPS,,National Park Service,National Mall and Memorial Parks,National Mall and Memorial Parks,unique_name_exact,7
+jr_washington_d_c_national_mall_and_memorial_parks,"Washington, DC",National Mall & Memorial Parks,NPS,,National Park Service,National Mall and Memorial Parks; Cherry Blossom Festival,National Mall and Memorial Parks,unique_name_exact,4
+jr_washington_d_c_president_s_park,"Washington, DC",President's Park,NPS,,National Park Service,President's Park (White House),President's Park (White House),unique_name_exact,5
+jr_washington_d_c_rock_creek_park,"Washington, DC",Rock Creek Park,NPS,,National Park Service,Rock Creek Park National Park,Rock Creek Park National Park,unique_core_exact,8
+jr_virgin_islands_virgin_islands_coral_reef_nm,Virgin Islands,Virgin Islands Coral Reef NM,NPS,,National Park Service,Virgin Islands Coral Reef National Monument,Virgin Islands Coral Reef National Monument,unique_core_exact,1
+jr_guam_war_in_the_pacific,Guam,War in the Pacific,NPS,,National Park Service,War in the Pacific National Historical Park,War in the Pacific National Historical Park,unique_core_exact,3
+jr_alabama_birmingham_civil_rights_nm,Alabama,Birmingham Civil Rights NM,NPS,Alabama,National Park Service,Birmingham Civil Rights National Monument,Birmingham Civil Rights National Monument,state_core_exact,2
+jr_alabama_freedom_riders_nm,Alabama,Freedom Riders NM,NPS,Alabama,National Park Service,Freedom Riders National Monument,Freedom Riders National Monument,state_core_exact,2
+jr_alabama_horseshoe_bend_nmp,Alabama,Horseshoe Bend NMP,NPS,Alabama,National Park Service,Horseshoe Bend National Military Park,Horseshoe Bend National Military Park,state_core_exact,12
+jr_alabama_little_river_canyon_npr,Alabama,Little River Canyon NPr,NPS,Alabama,National Park Service,Little River Canyon National Preserve,Little River Canyon National Preserve,state_core_exact,5
+jr_alabama_muscle_shoals_nha,Alabama,Muscle Shoals NHA,NPS,Alabama,National Park Service,Muscle Shoals National Heritage Area,Muscle Shoals National Heritage Area,state_core_exact,4
+jr_alabama_russell_cave_nm,Alabama,Russell Cave NM,NPS,Alabama,National Park Service,Russell Cave National Monument,Russell Cave National Monument,state_core_exact,5
+jr_alabama_selma_to_montgomery_nht,Alabama,Selma to Montgomery NHT,NPS,Alabama,National Park Service,Selma To Montgomery National Historic Trail,Selma To Montgomery National Historic Trail,state_core_exact,10
+jr_alabama_tuskegee_airmen_nhs,Alabama,Tuskegee Airmen NHS,NPS,Alabama,National Park Service,Tuskegee Airmen National Historic Site,Tuskegee Airmen National Historic Site,state_core_exact,7
+jr_alabama_tuskegee_institute_nhs,Alabama,Tuskegee Institute NHS,NPS,Alabama,National Park Service,Tuskegee Institute National Historic Site,Tuskegee Institute National Historic Site,state_core_exact,6
+jr_alaska_alaska_public_lands_information_center,Alaska,Alaska Public Lands Information Center,NPS,Alaska,National Park Service,Alaska Public Lands Information Center,Alaska Public Lands Information Center,state_name_exact,7
+jr_alaska_aniakchak_nm_and_pr,Alaska,Aniakchak NM & Pr,NPS,Alaska,National Park Service,Aniakchak National Monument and Preserve,Aniakchak National Monument and Preserve,state_core_exact,1
+jr_alaska_gates_of_the_arctic_np_and_pr_arctic_interagency_visitor_center,Alaska,Gates of the Arctic NP & Pr - Arctic Interagency Visitor Center,NPS,Alaska,National Park Service,Arctic Interagency Visitor Center,Arctic Interagency Visitor Center,state_core_contains,2
+jr_alaska_bering_land_bridge_npr,Alaska,Bering Land Bridge NPr,NPS,Alaska,National Park Service,Bering Land Bridge National Preserve,Bering Land Bridge National Preserve,state_core_exact,5
+jr_alaska_denali_np_and_pr,Alaska,Denali NP & Pr,NPS,Alaska,National Park Service,Denali National Park and Preserve,Denali National Park and Preserve,state_core_exact,12
+jr_alaska_gates_of_the_arctic_np_and_pr,Alaska,Gates of the Arctic NP & Pr,NPS,Alaska,National Park Service,Gates Of The Arctic National Park and Preserve,Gates Of The Arctic National Park and Preserve,state_core_exact,7
+jr_alaska_glacier_bay_np_and_pr,Alaska,Glacier Bay NP & Pr,NPS,Alaska,National Park Service,Glacier Bay National Park and Preserve,Glacier Bay National Park and Preserve,state_core_exact,9
+jr_alaska_katmai_np_and_pr,Alaska,Katmai NP & Pr,NPS,Alaska,National Park Service,Katmai National Park and Preserve,Katmai National Park and Preserve,state_core_exact,7
+jr_alaska_kenai_fjords_np,Alaska,Kenai Fjords NP,NPS,Alaska,National Park Service,Kenai Fjords National Park and Preserve,Kenai Fjords National Park and Preserve,state_core_exact,11
+jr_alaska_klondike_gold_rush_nhp,Alaska,Klondike Gold Rush NHP,NPS,Alaska,National Park Service,Klondike Gold Rush - Skagway Unit National Historical Park,Klondike Gold Rush - Skagway Unit National Historical Park,state_core_contains,12
+jr_alaska_lake_clark_np_and_pr,Alaska,Lake Clark NP & Pr,NPS,Alaska,National Park Service,Lake Clark National Park and Preserve,Lake Clark National Park and Preserve,state_core_exact,6
+jr_alaska_sitka_nhp,Alaska,Sitka NHP,NPS,Alaska,National Park Service,Sitka National Historical Park,Sitka National Historical Park,state_core_exact,9
+jr_alaska_western_arctic_national_parklands,Alaska,Western Arctic National Parklands,NPS,Alaska,National Park Service,Western Arctic National Parklands,Western Arctic National Parklands,state_name_exact,9
+jr_alaska_wrangell_st_elias_np_and_pr,Alaska,Wrangell-St. Elias NP & Pr,NPS,Alaska,National Park Service,Wrangell-St Elias National Park and Preserve,Wrangell-St Elias National Park and Preserve,state_core_exact,12
+jr_alaska_yukon_charley_rivers_npr,Alaska,Yukon-Charley Rivers NPr,NPS,Alaska,National Park Service,Yukon-Charley Rivers National Park and Preserve,Yukon-Charley Rivers National Park and Preserve,state_core_exact,3
+jr_arizona_canyon_de_chelly_nm,Arizona,Canyon De Chelly NM,NPS,Arizona,National Park Service,Canyon De Chelly National Monument,Canyon De Chelly National Monument,state_core_exact,4
+jr_arizona_casa_grande_ruins_nm,Arizona,Casa Grande Ruins NM,NPS,Arizona,National Park Service,Casa Grande Ruins National Monument,Casa Grande Ruins National Monument,state_core_exact,10
+jr_arizona_chiricahua_nm,Arizona,Chiricahua NM,NPS,Arizona,National Park Service,Chiricahua National Monument,Chiricahua National Monument,state_core_exact,6
+jr_arizona_fort_bowie_nhs,Arizona,Fort Bowie NHS,NPS,Arizona,National Park Service,Fort Bowie National Historic Site,Fort Bowie National Historic Site,state_core_exact,4
+jr_across_glen_canyon_nra,Arizona,Glen Canyon NRA,NPS,Arizona,National Park Service,Glen Canyon Nationa l Recreation Area,Glen Canyon Nationa l Recreation Area,state_core_contains,4
+jr_arizona_grand_canyon_np,Arizona,Grand Canyon NP,NPS,Arizona,National Park Service,Grand Canyon National Park,Grand Canyon National Park,state_core_exact,12
+jr_arizona_hubbell_trading_post_nhs,Arizona,Hubbell Trading Post NHS,NPS,Arizona,National Park Service,Hubbell Trading Post National Historic Site,Hubbell Trading Post National Historic Site,state_core_exact,4
+jr_arizona_montezuma_castle_nm,Arizona,Montezuma Castle NM,NPS,Arizona,National Park Service,Montezuma Castle National Monument,Montezuma Castle National Monument,state_core_exact,8
+jr_arizona_navajo_nm,Arizona,Navajo NM,NPS,Arizona,National Park Service,Navajo National Monument,Navajo National Monument,state_core_exact,11
+jr_arizona_organ_pipe_cactus_nm,Arizona,Organ Pipe Cactus NM,NPS,Arizona,National Park Service,Organ Pipe Cactus National Monument,Organ Pipe Cactus National Monument,state_core_exact,11
+jr_arizona_petrified_forest_np,Arizona,Petrified Forest NP,NPS,Arizona,National Park Service,Petrified Forest National Park,Petrified Forest National Park,state_core_exact,8
+jr_arizona_pipe_spring_nm,Arizona,Pipe Spring NM,NPS,Arizona,National Park Service,Pipe Spring National Monument,Pipe Spring National Monument,state_core_exact,7
+jr_arizona_saguaro_np,Arizona,Saguaro NP,NPS,Arizona,National Park Service,Saguaro National Park,Saguaro National Park,state_core_exact,12
+jr_arizona_sunset_crater_volcano_nm,Arizona,Sunset Crater Volcano NM,NPS,Arizona,National Park Service,Sunset Crater Volcano National Monument,Sunset Crater Volcano National Monument,state_core_exact,4
+jr_arizona_tuzigoot_nm,Arizona,Tuzigoot NM,NPS,Arizona,National Park Service,Tuzigoot National Monument,Tuzigoot National Monument,state_core_exact,8
+jr_arizona_walnut_canyon_nm,Arizona,Walnut Canyon NM,NPS,Arizona,National Park Service,Walnut Canyon National Monument,Walnut Canyon National Monument,state_core_exact,7
+jr_arizona_wupatki_nm,Arizona,Wupatki NM,NPS,Arizona,National Park Service,Wupatki National Monument,Wupatki National Monument,state_core_exact,6
+jr_arkansas_arkansas_post_nm,Arkansas,Arkansas Post NM,NPS,Arkansas,National Park Service,Arkansas Post National Memorial,Arkansas Post National Memorial,state_core_exact,6
+jr_arkansas_buffalo_nr,Arkansas,Buffalo NR,NPS,Arkansas,National Park Service,Buffalo National River,Buffalo National River,state_core_exact,3
+jr_arkansas_hot_springs_np,Arkansas,Hot Springs NP,NPS,Arkansas,National Park Service,Hot Springs National Park,Hot Springs National Park,state_core_exact,3
+jr_arkansas_little_rock_central_high_school_nhs,Arkansas,Little Rock Central High School NHS,NPS,Arkansas,National Park Service,Little Rock Central High School National Historic Site,Little Rock Central High School National Historic Site,state_core_exact,6
+jr_arkansas_pea_ridge_nmp,Arkansas,Pea Ridge NMP,NPS,Arkansas,National Park Service,Pea Ridge National Military Park,Pea Ridge National Military Park,state_core_exact,8
+jr_arkansas_president_william_jefferson_clinton_birthplace_home_nhs,Arkansas,President William Jefferson Clinton Birthplace Home NHS,NPS,Arkansas,National Park Service,President William Jefferson Clinton Birthplace Home National Historic Site,President William Jefferson Clinton Birthplace Home National Historic Site,state_core_exact,6
+jr_california_alcatraz_island,California,Alcatraz Island,NPS,California,National Park Service,Alcatraz Island,Alcatraz Island,state_name_exact,6
+jr_california_cabrillo_nm,California,Cabrillo NM,NPS,California,National Park Service,Cabrillo National Monument,Cabrillo National Monument,state_core_exact,12
+jr_california_channel_islands_np,California,Channel Islands NP,NPS,California,National Park Service,Channel Islands National Park,Channel Islands National Park,state_core_exact,6
+jr_california_c_sar_e_ch_vez_nm,California,César E. Chávez NM,NPS,California,National Park Service,César E. Chávez National Monument,César E. Chávez National Monument,state_core_exact,2
+jr_california_death_valley_np,California,Death Valley NP,NPS,California,National Park Service,Death Valley National Park,Death Valley National Park,state_core_exact,6
+jr_california_eugene_o_neill_nhs,California,Eugene O'Neill NHS,NPS,California,National Park Service,Eugene O'Neill National Historic Site,Eugene O'Neill National Historic Site,state_core_exact,1
+jr_california_fort_point_nhs,California,Fort Point NHS,NPS,California,National Park Service,Fort Point National Historic Site,Fort Point National Historic Site,state_core_exact,2
+jr_california_golden_gate_nra,California,Golden Gate NRA,NPS,California,National Park Service,Golden Gate National Recreation Area,Golden Gate NRA,state_name_exact,12
+jr_california_john_muir_nhs,California,John Muir NHS,NPS,California,National Park Service,John Muir National Historic Site,John Muir National Historic Site,state_core_exact,6
+jr_california_joshua_tree_np,California,Joshua Tree NP,NPS,California,National Park Service,Joshua Tree National Park,Joshua Tree National Park,state_core_exact,9
+jr_california_lassen_volcanic_np,California,Lassen Volcanic NP,NPS,California,National Park Service,Lassen Volcanic National Park,Lassen Volcanic National Park,state_core_exact,12
+jr_california_lava_beds_nm,California,Lava Beds NM,NPS,California,National Park Service,Lava Beds National Monument,Lava Beds National Monument,state_core_exact,12
+jr_california_manzanar_nhs,California,Manzanar NHS,NPS,California,National Park Service,Manzanar National Historic Site,Manzanar National Historic Site,state_core_exact,5
+jr_california_mojave_npr,California,Mojave NPr,NPS,California,National Park Service,Mojave National Preserve,Mojave National Preserve,state_core_exact,12
+jr_california_muir_woods_nm,California,Muir Woods NM,NPS,California,National Park Service,Muir Woods National Monument,Muir Woods National Monument,state_core_exact,8
+jr_california_pinnacles_np,California,Pinnacles NP,NPS,California,National Park Service,Pinnacles National Park,Pinnacles National Park,state_core_exact,3
+jr_california_point_reyes_ns,California,Point Reyes NS,NPS,California,National Park Service,Point Reyes National Seashore,Point Reyes National Seashore,state_core_exact,12
+jr_california_redwood_np_and_sp,California,Redwood NP and SP,NPS,California,National Park Service,Redwood National and State Park,Redwood National and State Park,state_core_exact,11
+jr_california_san_francisco_maritime_nhp,California,San Francisco Maritime NHP,NPS,California,National Park Service,San Francisco Maritime National Historical Park,San Francisco Maritime National Historical Park,state_core_exact,7
+jr_california_santa_monica_mountains_nra,California,Santa Monica Mountains NRA,NPS,California,National Park Service,Santa Monica Mountains National Recreation Area,Santa Monica Mountains National Recreation Area,state_core_exact,9
+jr_california_sequoia_np_kings_canyon_visitor_center,California,Sequoia NP - Kings Canyon Visitor Center,NPS,California,National Park Service,Sequoia and Kings Canyon National Park,Sequoia and Kings Canyon National Park,state_core_exact,12
+jr_california_tule_lake_nm,California,Tule Lake NM,NPS,California,National Park Service,Tule Lake National Monument,Tule Lake National Monument,state_core_exact,2
+jr_california_whiskeytown_nra,California,Whiskeytown NRA,NPS,California,National Park Service,Whiskeytown National Recreation Area,Whiskeytown National Recreation Area,state_core_exact,12
+jr_california_yosemite_np,California,Yosemite NP,NPS,California,National Park Service,Yosemite National Park,Yosemite National Park,state_core_exact,12
+jr_colorado_amache_nhs,Colorado,Amache NHS,NPS,Colorado,National Park Service,Amache National Historic Site,Amache National Historic Site,state_core_exact,4
+jr_colorado_bent_s_old_fort_nhs,Colorado,Bent's Old Fort NHS,NPS,Colorado,National Park Service,Bent's Old Fort National Historic Site,Bent's Old Fort National Historic Site,state_core_exact,3
+jr_colorado_black_canyon_of_the_gunnison_np,Colorado,Black Canyon of the Gunnison NP,NPS,Colorado,National Park Service,Black Canyon Of The Gunnison National Park,Black Canyon Of The Gunnison National Park,state_core_exact,12
+jr_colorado_dinosaur_nm,Colorado,Dinosaur NM,NPS,Colorado,National Park Service,Dinosaur National Monument,Dinosaur National Monument,state_core_exact,3
+jr_colorado_florissant_fossil_beds_nm,Colorado,Florissant Fossil Beds NM,NPS,Colorado,National Park Service,Florissant Fossil Beds National Monument,Florissant Fossil Beds National Monument,state_core_exact,9
+jr_colorado_great_sand_dunes_np_and_pr,Colorado,Great Sand Dunes NP & Pr,NPS,Colorado,National Park Service,Great Sand Dunes National Park and Preserve,Great Sand Dunes National Park and Preserve,state_core_exact,12
+jr_across_hovenweep_nm,Colorado,Hovenweep NM,NPS,Colorado,National Park Service,Hovenweep National Monument,Hovenweep National Monument,state_core_exact,9
+jr_colorado_mesa_verde_np,Colorado,Mesa Verde NP,NPS,Colorado,National Park Service,Mesa Verde National Park,Mesa Verde National Park,state_core_exact,12
+jr_colorado_rocky_mountain_np,Colorado,Rocky Mountain NP,NPS,Colorado,National Park Service,Rocky Mountain National Park,Rocky Mountain National Park,state_core_exact,12
+jr_colorado_sand_creek_massacre_nhs,Colorado,Sand Creek Massacre NHS,NPS,Colorado,National Park Service,Sand Creek Massacre National Historic Site,Sand Creek Massacre National Historic Site,state_core_exact,7
+jr_connecticut_weir_farm_nhp,Connecticut,Weir Farm NHP,NPS,Connecticut,National Park Service,Weir Farm National Historical Park,Weir Farm National Historical Park,state_core_exact,6
+jr_florida_big_cypress_npr,Florida,Big Cypress NPr,NPS,Florida,National Park Service,Big Cypress National Preserve,Big Cypress National Preserve,state_core_exact,8
+jr_florida_biscayne_np,Florida,Biscayne NP,NPS,Florida,National Park Service,Biscayne National Park,Biscayne National Park,state_core_exact,7
+jr_florida_canaveral_ns,Florida,Canaveral NS,NPS,Florida,National Park Service,Canaveral National Seashore,Canaveral National Seashore,state_core_exact,6
+jr_florida_castillo_de_san_marcos_nm,Florida,Castillo de San Marcos NM,NPS,Florida,National Park Service,Castillo de San Marcos National Monument,Castillo de San Marcos National Monument,state_core_exact,8
+jr_florida_de_soto_nm,Florida,De Soto NM,NPS,Florida,National Park Service,De Soto National Memorial,De Soto National Memorial,state_core_exact,8
+jr_florida_dry_tortugas_np,Florida,Dry Tortugas NP,NPS,Florida,National Park Service,Dry Tortugas National Park,Dry Tortugas National Park,state_core_exact,4
+jr_florida_everglades_np,Florida,Everglades NP,NPS,Florida,National Park Service,Everglades National Park,Everglades National Park,state_core_exact,6
+jr_florida_fort_caroline_nm,Florida,Fort Caroline NM,NPS,Florida,National Park Service,Fort Caroline National Memorial,Fort Caroline National Memorial,state_core_exact,6
+jr_florida_fort_matanzas_nm,Florida,Fort Matanzas NM,NPS,Florida,National Park Service,Fort Matanzas National Monument,Fort Matanzas National Monument,state_core_exact,8
+jr_georgia_andersonville_nhs,Georgia,Andersonville NHS,NPS,Georgia,National Park Service,Andersonville National Historic Site,Andersonville National Historic Site,state_core_exact,4
+jr_georgia_arabia_mountain_nha,Georgia,Arabia Mountain NHA,NPS,Georgia,National Park Service,Arabia Mountain National Heritage Area,Arabia Mountain National Heritage Area,state_core_exact,2
+jr_georgia_chattahoochee_river_nra,Georgia,Chattahoochee River NRA,NPS,Georgia,National Park Service,Chattahoochee River National Recreation Area,Chattahoochee River National Recreation Area,state_core_exact,9
+jr_georgia_chickamauga_and_chattanooga_nmp,Georgia,Chickamauga & Chattanooga NMP,NPS,Georgia,National Park Service,Chickamauga and Chattanooga National Military Park,Chickamauga and Chattanooga National Military Park,state_core_exact,12
+jr_georgia_cumberland_island_ns,Georgia,Cumberland Island NS,NPS,Georgia,National Park Service,Cumberland Island National Seashore,Cumberland Island National Seashore,state_core_exact,4
+jr_georgia_fort_frederica_nm,Georgia,Fort Frederica NM,NPS,Georgia,National Park Service,Fort Frederica National Monument,Fort Frederica National Monument,state_core_exact,6
+jr_georgia_fort_pulaski_nm,Georgia,Fort Pulaski NM,NPS,Georgia,National Park Service,Fort Pulaski National Monument,Fort Pulaski National Monument,state_core_exact,6
+jr_georgia_jimmy_carter_nhp,Georgia,Jimmy Carter NHP,NPS,Georgia,National Park Service,Jimmy Carter National Historical Park,Jimmy Carter National Historical Park,state_core_exact,8
+jr_georgia_kennesaw_mountain_nbp,Georgia,Kennesaw Mountain NBP,NPS,Georgia,National Park Service,Kennesaw Mountain National Battlefield Park,Kennesaw Mountain National Battlefield Park,state_core_exact,8
+jr_georgia_martin_luther_king_jr_nhp,Georgia,"Martin Luther King, Jr. NHP",NPS,Georgia,National Park Service,Martin Luther King Jr National Historical Park,Martin Luther King Jr National Historical Park,state_core_exact,5
+jr_hawaii_ala_kahakai_nht,Hawaii,Ala Kahakai NHT,NPS,Hawaii,National Park Service,Ala Kahakai National Historic Trail,Ala Kahakai National Historic Trail,state_core_exact,4
+jr_hawaii_haleakal_np,Hawaii,Haleakalā NP,NPS,Hawaii,National Park Service,Haleakalā National Park,Haleakalā National Park,state_core_exact,6
+jr_hawaii_kaloko_honok_hau_nhp,Hawaii,Kaloko-Honokōhau NHP,NPS,Hawaii,National Park Service,Kaloko-Honokōhau National Historical Park,Kaloko-Honokōhau National Historical Park,state_core_exact,11
+jr_hawaii_pearl_harbor_nm,Hawaii,Pearl Harbor NM,NPS,Hawaii,National Park Service,Pearl Harbor National Memorial,Pearl Harbor National Memorial,state_core_exact,8
+jr_hawaii_pu_uhonua_o_h_naunau_nhp,Hawaii,Pu'uhonua o Hōnaunau NHP,NPS,Hawaii,National Park Service,Pu`uhonua O Hōnaunau National Historical Park,Pu`uhonua O Hōnaunau National Historical Park,state_core_exact,11
+jr_hawaii_pu_ukohol_heiau_nhs,Hawaii,Pu'ukoholā Heiau NHS,NPS,Hawaii,National Park Service,Pu`ukoholā Heiau National Historic Site,Pu`ukoholā Heiau National Historic Site,state_core_exact,7
+jr_idaho_city_of_rocks_nr,Idaho,City of Rocks NR,NPS,Idaho,National Park Service,City Of Rocks National Reserve,City Of Rocks National Reserve,state_core_exact,8
+jr_idaho_craters_of_the_moon_nm_and_pr,Idaho,Craters of the Moon NM & Pr,NPS,Idaho,National Park Service,Craters Of The Moon National Monument and Preserve,Craters Of The Moon National Monument and Preserve,state_core_exact,11
+jr_idaho_hagerman_fossil_beds_nm,Idaho,Hagerman Fossil Beds NM,NPS,Idaho,National Park Service,Hagerman Fossil Beds National Monument,Hagerman Fossil Beds National Monument,state_core_exact,8
+jr_illinois_lincoln_home_nhs,Illinois,Lincoln Home NHS,NPS,Illinois,National Park Service,Lincoln Home National Historic Site,Lincoln Home National Historic Site,state_core_exact,11
+jr_illinois_pullman_nhp,Illinois,Pullman NHP,NPS,Illinois,National Park Service,Pullman National Historical Park,Pullman National Historical Park,state_core_exact,12
+jr_indiana_george_rogers_clark_nhp,Indiana,George Rogers Clark NHP,NPS,Indiana,National Park Service,George Rogers Clark National Historical Park,George Rogers Clark National Historical Park,state_core_exact,7
+jr_indiana_indiana_dunes_np,Indiana,Indiana Dunes NP,NPS,Indiana,National Park Service,Indiana Dunes National Park,Indiana Dunes National Park,state_core_contains,2
+jr_indiana_lincoln_boyhood_nm,Indiana,Lincoln Boyhood NM,NPS,Indiana,National Park Service,Lincoln Boyhood National Memorial,Lincoln Boyhood National Memorial,state_core_exact,5
+jr_iowa_effigy_mounds_nm,Iowa,Effigy Mounds NM,NPS,Iowa,National Park Service,Effigy Mounds National Monument,Effigy Mounds National Monument,state_core_exact,12
+jr_iowa_herbert_hoover_nhs,Iowa,Herbert Hoover NHS,NPS,Iowa,National Park Service,Herbert Hoover National Historic Site,Herbert Hoover National Historic Site,state_core_exact,5
+jr_kansas_brown_v_board_of_education_nhs,Kansas,Brown v. Board of Education NHS,NPS,Kansas,National Park Service,Brown v. Board of Education National Historic Site,Brown v. Board of Education National Historic Site,state_core_exact,4
+jr_kansas_fort_larned_nhs,Kansas,Fort Larned NHS,NPS,Kansas,National Park Service,Fort Larned National Historic Site,Fort Larned National Historic Site,state_core_exact,3
+jr_kansas_fort_scott_nhs,Kansas,Fort Scott NHS,NPS,Kansas,National Park Service,Fort Scott National Historic Site,Fort Scott National Historic Site,state_core_exact,3
+jr_kansas_nicodemus_nhs,Kansas,Nicodemus NHS,NPS,Kansas,National Park Service,Nicodemus National Historic Site,Nicodemus National Historic Site,state_core_exact,4
+jr_kansas_tallgrass_prairie_npr,Kansas,Tallgrass Prairie NPr,NPS,Kansas,National Park Service,Tallgrass Prairie National Preserve,Tallgrass Prairie National Preserve,state_core_exact,10
+jr_kentucky_abraham_lincoln_birthplace_nhp,Kentucky,Abraham Lincoln Birthplace NHP,NPS,Kentucky,National Park Service,Abraham Lincoln Birthplace National Historical Park,Abraham Lincoln Birthplace National Historical Park,state_core_exact,5
+jr_pentathlon_card_camp_nelson_nm,Kentucky,Camp Nelson NM,NPS,Kentucky,National Park Service,Camp Nelson National Monument,Camp Nelson National Monument,state_core_exact,4
+jr_pentathlon_card_mammoth_cave_np,Kentucky,Mammoth Cave NP,NPS,Kentucky,National Park Service,Mammoth Cave National Historical Park,Mammoth Cave National Historical Park,state_core_exact,6
+jr_pentathlon_card_mill_springs_battlefield_nm,Kentucky,Mill Springs Battlefield NM,NPS,Kentucky,National Park Service,Mill Springs Battlefield National Monument,Mill Springs Battlefield National Monument,state_core_exact,4
+jr_louisiana_cane_river_creole_nhp,Louisiana,Cane River Creole NHP,NPS,Louisiana,National Park Service,Cane River Creole National Historical Park,Cane River Creole National Historical Park,state_core_exact,5
+jr_louisiana_cane_river_nha,Louisiana,Cane River National Heritage Area,State,Louisiana,National Park Service,Cane River National Heritage Area,Cane River National Heritage Area,state_name_exact,2
+jr_louisiana_jean_lafitte_nhp_and_barataria_p,Louisiana,Jean Lafitte NHP & Barataria P,NPS,Louisiana,National Park Service,Jean Lafitte National Historical Park and Preserve,Jean Lafitte National Historical Park and Preserve,state_core_contains,6
+jr_louisiana_new_orleans_jazz_nhp,Louisiana,New Orleans Jazz NHP,NPS,Louisiana,National Park Service,New Orleans Jazz National Historical Park,New Orleans Jazz National Historical Park,state_core_exact,3
+jr_louisiana_poverty_point_nm,Louisiana,Poverty Point NM,NPS,Louisiana,National Park Service,Poverty Point National Monument,Poverty Point National Monument,state_core_exact,2
+jr_maine_acadia_np,Maine,Acadia NP,NPS,Maine,National Park Service,Acadia National Park,Acadia National Park,state_core_exact,12
+jr_maine_saint_croix_island_nhs,Maine,Saint Croix Island NHS,NPS,Maine,National Park Service,Saint Croix Island International Historic Park,Saint Croix Island International Historic Park,state_core_contains,3
+jr_maryland_antietam_nb,Maryland,Antietam NB,NPS,Maryland,National Park Service,Antietam National Battlefield,Antietam National Battlefield,state_core_exact,6
+jr_across_assateague_island_ns,Maryland,Assateague Island NS,NPS,Maryland,National Park Service,Assateague Island National Seashore,Assateague Island National Seashore,state_core_exact,12
+jr_maryland_catoctin_mountain_park,Maryland,Catoctin Mountain Park,NPS,Maryland,National Park Service,Catoctin Mountain Park,Catoctin Mountain Park,state_name_exact,5
+jr__clara_barton_nhs,Maryland,Clara Barton NHS,NPS,Maryland,National Park Service,Clara Barton National Historic Site,Clara Barton National Historic Site,state_core_exact,7
+jr__fort_washington_park,Maryland,Fort Washington Park,NPS,Maryland,National Park Service,Fort Washington Park,Fort Washington Park,state_name_exact,6
+jr__glen_echo_park,Maryland,Glen Echo Park,NPS,Maryland,National Park Service,Glen Echo Park,Glen Echo Park,state_name_exact,6
+jr__greenbelt_park,Maryland,Greenbelt Park,NPS,Maryland,National Park Service,Greenbelt Park,Greenbelt Park,state_name_exact,4
+jr__hampton_nhs,Maryland,Hampton NHS,NPS,Maryland,National Park Service,Hampton National Historic Site,Hampton National Historic Site,state_core_exact,4
+jr__harriet_tubman_underground_railroad_nhp,Maryland,Harriet Tubman Underground Railroad  NHP,NPS,Maryland,National Park Service,Harriet Tubman Underground Railroad National Monument,Harriet Tubman Underground Railroad National Monument,state_core_exact,5
+jr__monocacy_nb,Maryland,Monocacy NB,NPS,Maryland,National Park Service,Monocacy National Battlefield,Monocacy National Battlefield,state_core_exact,6
+jr__oxon_cove_park_and_oxon_hill_farm,Maryland,Oxon Cove Park & Oxon Hill Farm,NPS,Maryland,National Park Service,Oxon Cove Park and Oxon Hill Farm,Oxon Cove Park and Oxon Hill Farm,state_name_exact,7
+jr__thomas_stone_nhs,Maryland,Thomas Stone NHS,NPS,Maryland,National Park Service,Thomas Stone National Historic Site,Thomas Stone National Historic Site,state_core_exact,6
+jr_massachusetts_adams_nhp,Massachusetts,Adams NHP,NPS,Massachusetts,National Park Service,Adams National Historical Park,Adams National Historical Park,state_core_exact,4
+jr_massachusetts_boston_african_american_nhs,Massachusetts,Boston African American NHS,NPS,Massachusetts,National Park Service,Boston African American National Historic Site,Boston African American National Historic Site,state_core_exact,2
+jr_massachusetts_boston_harbor_islands_nra,Massachusetts,Boston Harbor Islands NRA,NPS,Massachusetts,National Park Service,Boston Harbor Islands National Recreation Area,Boston Harbor Islands National Recreation Area,state_core_exact,12
+jr_massachusetts_boston_nhp,Massachusetts,Boston NHP,NPS,Massachusetts,National Park Service,Boston National Historical Park,Boston National Historical Park,state_core_exact,12
+jr_massachusetts_cape_cod_ns,Massachusetts,Cape Cod NS,NPS,Massachusetts,National Park Service,Cape Cod National Seashore,Cape Cod National Seashore,state_core_exact,8
+jr_massachusetts_frederick_law_olmsted_nhs,Massachusetts,Frederick Law Olmsted NHS,NPS,Massachusetts,National Park Service,Frederick Law Olmsted National Historic Site,Frederick Law Olmsted National Historic Site,state_core_exact,2
+jr_massachusetts_john_fitzgerald_kennedy_nhs,Massachusetts,John Fitzgerald Kennedy NHS,NPS,Massachusetts,National Park Service,John Fitzgerald Kennedy National Historic Site,John Fitzgerald Kennedy National Historic Site,state_core_exact,4
+jr_massachusetts_longfellow_house_washington_s_headquarters_nhs,Massachusetts,Longfellow House-Washington's Headquarters NHS,NPS,Massachusetts,National Park Service,Longfellow House - Washington's Headquarters National Historic Site,Longfellow House - Washington's Headquarters National Historic Site,state_core_exact,1
+jr_massachusetts_lowell_nhp,Massachusetts,Lowell NHP,NPS,Massachusetts,National Park Service,Lowell National Historical Park,Lowell National Historical Park,state_core_exact,4
+jr_massachusetts_minute_man_nhp,Massachusetts,Minute Man NHP,NPS,Massachusetts,National Park Service,Minute Man National Historical Park,Minute Man National Historical Park,state_core_exact,5
+jr_massachusetts_new_bedford_whaling_nhp,Massachusetts,New Bedford Whaling NHP,NPS,Massachusetts,National Park Service,New Bedford Whaling National Historical Park,New Bedford Whaling National Historical Park,state_core_exact,6
+jr_massachusetts_salem_maritime_nhs,Massachusetts,Salem Maritime NHS,NPS,Massachusetts,National Park Service,Salem Maritime National Historic Site,Salem Maritime National Historic Site,state_core_exact,9
+jr_massachusetts_saugus_iron_works_nhs,Massachusetts,Saugus Iron Works NHS,NPS,Massachusetts,National Park Service,Saugus Iron Works National Historic Site,Saugus Iron Works National Historic Site,state_core_exact,5
+jr_massachusetts_springfield_armory_nhs,Massachusetts,Springfield Armory NHS,NPS,Massachusetts,National Park Service,Springfield Armory National Historic Site,Springfield Armory National Historic Site,state_core_exact,7
+jr_michigan_isle_royale_np,Michigan,Isle Royale NP,NPS,Michigan,National Park Service,Isle Royale National Park,Isle Royale National Park,state_core_exact,5
+jr_michigan_keweenaw_nhp,Michigan,Keweenaw NHP,NPS,Michigan,National Park Service,Keweenaw National Historical Park,Keweenaw National Historical Park,state_core_exact,4
+jr_michigan_pictured_rocks_nl,Michigan,Pictured Rocks NL,NPS,Michigan,National Park Service,Pictured Rocks National Lakeshore,Pictured Rocks National Lakeshore,state_core_exact,7
+jr_michigan_river_raisin_nbp,Michigan,River Raisin NBP,NPS,Michigan,National Park Service,River Raisin National Battlefield Park,River Raisin National Battlefield Park,state_core_exact,3
+jr_michigan_sleeping_bear_dunes_nl,Michigan,Sleeping Bear Dunes NL,NPS,Michigan,National Park Service,Sleeping Bear Dunes National Lakeshore,Sleeping Bear Dunes National Lakeshore,state_core_exact,8
+jr_minnesota_grand_portage,Minnesota,Grand Portage,NPS,Minnesota,National Park Service,Grand Portage National Monument,Grand Portage National Monument,state_core_exact,7
+jr_minnesota_pipestone_nm,Minnesota,Pipestone NM,NPS,Minnesota,National Park Service,Pipestone National Monument,Pipestone National Monument,state_core_exact,9
+jr_minnesota_voyageurs_np,Minnesota,Voyageurs NP,NPS,Minnesota,National Park Service,Voyageurs National Park,Voyageurs National Park,state_core_exact,4
+jr_mississippi_natchez_nhp,Mississippi,Natchez NHP,NPS,Mississippi,National Park Service,Natchez National Historical Park,Natchez National Historical Park,state_core_exact,5
+jr_oregon_crater_lake_np,Oregon,Crater Lake NP,NPS,Mississippi,National Park Service,"Natchez Trace Parkway , Al, MS, TN",Crater Lake National Park,unique_core_exact,9
+jr_mississippi_vicksburg_nmp,Mississippi,Vicksburg NMP,NPS,Mississippi,National Park Service,Vicksburg National Military Park,Vicksburg National Military Park,state_core_exact,6
+jr_missouri_gateway_arch_np,Missouri,Gateway Arch NP,NPS,Missouri,National Park Service,Gateway Arch National Park,Gateway Arch National Park,state_core_exact,11
+jr_missouri_george_washington_carver_nm,Missouri,George Washington Carver NM,NPS,Missouri,National Park Service,George Washington Carver National Monument,George Washington Carver National Monument,state_core_exact,11
+jr_missouri_harry_s_truman_nhs,Missouri,Harry S Truman NHS,NPS,Missouri,National Park Service,Harry S Truman National Historic Site,Harry S Truman National Historic Site,state_core_exact,4
+jr_missouri_ste_genevieve_nhp,Missouri,Ste. Genevieve NHP,NPS,Missouri,National Park Service,Ste. Genevieve National Historical Park,Ste. Genevieve National Historical Park,state_core_exact,5
+jr_missouri_ulysses_s_grant_nhs,Missouri,Ulysses S. Grant NHS,NPS,Missouri,National Park Service,Ulysses S Grant National Historic Site,Ulysses S Grant National Historic Site,state_core_exact,7
+jr_missouri_wilson_s_creek_nb,Missouri,Wilson's Creek NB,NPS,Missouri,National Park Service,Wilson's Creek National Battlefield,Wilson's Creek National Battlefield,state_core_exact,9
+jr_montana_big_hole_nb,Montana,Big Hole NB,NPS,Montana,National Park Service,Big Hole National Battlefield,Big Hole National Battlefield,state_core_exact,3
+jr_montana_glacier_np,Montana,Glacier NP,NPS,Montana,National Park Service,Glacier National Park,Glacier National Park,state_core_exact,8
+jr_montana_grant_kohrs_ranch_nhs,Montana,Grant-Kohrs Ranch NHS,NPS,Montana,National Park Service,Grant-Kohrs Ranch National Historic Site,Grant-Kohrs Ranch National Historic Site,state_core_exact,5
+jr_montana_little_bighorn_battlefield_nm,Montana,Little Bighorn Battlefield NM,NPS,Montana,National Park Service,Little Bighorn Battlefield National Monument,Little Bighorn Battlefield National Monument,state_core_exact,3
+jr_nebraska_agate_fossil_beds_nm,Nebraska,Agate Fossil Beds NM,NPS,Nebraska,National Park Service,Agate Fossil Beds National Monument,Agate Fossil Beds National Monument,state_core_exact,4
+jr_nebraska_homestead_nhp,Nebraska,Homestead NHP,NPS,Nebraska,National Park Service,Homestead National Historical Park,Homestead National Historical Park,state_core_exact,1
+jr_nebraska_scotts_bluff_nm,Nebraska,Scotts Bluff NM,NPS,Nebraska,National Park Service,Scotts Bluff National Monument,Scotts Bluff National Monument,state_core_exact,6
+jr_nevada_great_basin_np,Nevada,Great Basin NP,NPS,Nevada,National Park Service,Great Basin National Park,Great Basin National Park,state_core_exact,12
+jr_across_lake_mead_nra,Arizona,Lake Mead NRA,NPS,Nevada,National Park Service,Lake Mead National Recreation Area,Lake Mead National Recreation Area,unique_core_exact,11
+jr_nevada_tule_springs_fossil_beds_nm,Nevada,Tule Springs Fossil Beds NM,NPS,Nevada,National Park Service,Tule Springs Fossil Beds National Monument,Tule Springs Fossil Beds National Monument,state_core_exact,6
+jr_new_hampshire_saint_gaudens_nhp,New Hampshire,Saint-Gaudens NHP,NPS,New Hampshire,National Park Service,Saint-Gaudens National Historical Park,Saint-Gaudens National Historical Park,state_core_exact,4
+jr_new_jersey_great_egg_harbor_river,New Jersey,Great Egg Harbor River,Other,New Jersey,National Park Service,Great Egg Harbor River,Great Egg Harbor River,state_name_exact,3
+jr_new_jersey_morristown_nhp,New Jersey,Morristown NHP,NPS,New Jersey,National Park Service,Morristown National Historical Park,Morristown National Historical Park,state_core_exact,4
+jr_new_jersey_thomas_edison_nhp,New Jersey,Thomas Edison NHP,NPS,New Jersey,National Park Service,Thomas Edison National Historical Park,Thomas Edison National Historical Park,state_core_exact,6
+jr_new_mexico_aztec_ruins_nm,New Mexico,Aztec Ruins NM,NPS,New Mexico,National Park Service,Aztec Ruins National Monument,Aztec Ruins National Monument,state_core_exact,9
+jr_new_mexico_bandelier_nm,New Mexico,Bandelier NM,NPS,New Mexico,National Park Service,Bandelier National Monument,Bandelier National Monument,state_core_exact,11
+jr_new_mexico_capulin_volcano_nm,New Mexico,Capulin Volcano NM,NPS,New Mexico,National Park Service,Capulin Volcano National Monument,Capulin Volcano National Monument,state_core_exact,9
+jr_new_mexico_carlsbad_caverns_np,New Mexico,Carlsbad Caverns NP,NPS,New Mexico,National Park Service,Carlsbad Caverns National Park,Carlsbad Caverns National Park,state_core_exact,8
+jr_new_mexico_chaco_culture_nhp,New Mexico,Chaco Culture NHP,NPS,New Mexico,National Park Service,Chaco Culture National Historical Park,Chaco Culture National Historical Park,state_core_exact,9
+jr_new_mexico_el_malpais_nm,New Mexico,El Malpais NM,NPS,New Mexico,National Park Service,El Malpais National Monument,El Malpais National Monument,state_core_contains,5
+jr_new_mexico_el_morro_nm,New Mexico,El Morro NM,NPS,New Mexico,National Park Service,El Morro National Monument,El Morro National Monument,state_core_exact,8
+jr_new_mexico_fort_union_nm,New Mexico,Fort Union NM,NPS,New Mexico,National Park Service,Fort Union National Monument,Fort Union National Monument,state_core_exact,9
+jr_new_mexico_gila_cliff_dwellings_nm,New Mexico,Gila Cliff Dwellings NM,NPS,New Mexico,National Park Service,Gila Cliff Dwellings National Monument,Gila Cliff Dwellings National Monument,state_core_exact,9
+jr_new_mexico_pecos_nhp,New Mexico,Pecos NHP,NPS,New Mexico,National Park Service,Pecos National Historical Park,Pecos National Historical Park,state_core_exact,9
+jr_new_mexico_petroglyph_nm,New Mexico,Petroglyph NM,NPS,New Mexico,National Park Service,Petroglyph National Monument,Petroglyph National Monument,state_core_exact,12
+jr_new_mexico_valles_caldera_npr,New Mexico,Valles Caldera NPR,NPS,New Mexico,National Park Service,Valles Caldera National Preserve,Valles Caldera National Preserve,state_core_exact,11
+jr_new_mexico_white_sands_np,New Mexico,White Sands NP,NPS,New Mexico,National Park Service,White Sands National Park,White Sands National Park,state_core_exact,6
+jr_new_york_african_burial_ground_nm,New York,African Burial Ground NM,NPS,New York,National Park Service,African Burial Ground National Monument,African Burial Ground National Monument,state_core_exact,5
+jr_new_york_castle_clinton,New York,Castle Clinton,NPS,New York,National Park Service,Castle Clinton National Monument,Castle Clinton National Monument,state_core_exact,5
+jr_new_york_eleanor_roosevelt_nhs,New York,Eleanor Roosevelt NHS,NPS,New York,National Park Service,Eleanor Roosevelt National Historic Site,Eleanor Roosevelt National Historic Site,state_core_exact,1
+jr_new_york_fire_island_ns,New York,Fire Island NS,NPS,New York,National Park Service,Fire Island National Seashore,Fire Island National Seashore,state_core_exact,12
+jr_new_york_fort_stanwix_nm,New York,Fort Stanwix NM,NPS,New York,National Park Service,Fort Stanwix National Monument,Fort Stanwix National Monument,state_core_exact,9
+jr_across_gateway_nra,New Jersey,Gateway NRA,NPS,New York,National Park Service,Gateway National Recreation Area,Gateway National Recreation Area,unique_core_exact,12
+jr_new_york_general_grant_nm,New York,General Grant NM,NPS,New York,National Park Service,General Grant National Memorial,General Grant National Memorial,state_core_exact,4
+jr_new_york_governors_island_nm,New York,Governors Island NM,NPS,New York,National Park Service,Governors Island National Monument,Governors Island National Monument,state_core_exact,4
+jr_new_york_hamilton_grange_nm,New York,Hamilton Grange NM,NPS,New York,National Park Service,Hamilton Grange National Memorial,Hamilton Grange National Memorial,state_core_exact,4
+jr_new_york_harriet_tubman_nhp,New York,Harriet Tubman NHP,NPS,New York,National Park Service,Harriet Tubman National Historical Park,Harriet Tubman National Historical Park,state_core_exact,2
+jr_new_york_home_of_franklin_d_roosevelt_nhs,New York,Home of Franklin D. Roosevelt NHS,NPS,New York,National Park Service,Home Of Franklin D Roosevelt National Historic Site,Home Of Franklin D Roosevelt National Historic Site,state_core_exact,4
+jr_new_york_martin_van_buren_nhs,New York,Martin Van Buren NHS,NPS,New York,National Park Service,Martin Van Buren National Historic Site,Martin Van Buren National Historic Site,state_core_exact,2
+jr_new_york_niagara_falls_nha,New York,Niagara Falls National Heritage Area,NPS,New York,National Park Service,Niagara Falls National Heritage Area,Niagara Falls National Heritage Area,state_name_exact,5
+jr_new_york_sagamore_hill_nhs,New York,Sagamore Hill NHS,NPS,New York,National Park Service,Sagamore Hill National Historic Site,Sagamore Hill National Historic Site,state_core_exact,8
+jr_new_york_saint_paul_s_church_nhs,New York,Saint Paul's Church NHS,NPS,New York,National Park Service,Saint Paul's Church National Historic Site,Saint Paul's Church National Historic Site,state_core_exact,4
+jr_new_york_saratoga_nhp,New York,Saratoga NHP,NPS,New York,National Park Service,Saratoga National Historical Park,Saratoga National Historical Park,state_core_exact,8
+jr_across_statue_of_liberty_nm_ellis_island_ellis_island_museum,New Jersey,"Statue of Liberty NM (Ellis Island, Ellis Island Museum)",NPS,New York,National Park Service,Statue Of Liberty National Monument,Statue Of Liberty National Monument,unique_core_exact,10
+jr_new_york_stonewall_nm,New York,Stonewall NM,NPS,New York,National Park Service,Stonewall National Monument,Stonewall National Monument,state_core_exact,2
+jr_new_york_theodore_roosevelt_birthplace_nhs,New York,Theodore Roosevelt Birthplace NHS,NPS,New York,National Park Service,Theodore Roosevelt Birthplace National Historic Site,Theodore Roosevelt Birthplace National Historic Site,state_core_exact,9
+jr_new_york_vanderbilt_mansion_nhs,New York,Vanderbilt Mansion NHS,NPS,New York,National Park Service,Vanderbilt Mansion National Historic Site,Vanderbilt Mansion National Historic Site,state_core_exact,2
+jr_new_york_women_s_rights_nhp,New York,Women's Rights NHP,NPS,New York,National Park Service,Women's Rights National Historical Park,Women's Rights National Historical Park,state_core_exact,4
+jr_north_carolina_cape_hatteras_ns,North Carolina,Cape Hatteras NS,NPS,North Carolina,National Park Service,Cape Hatteras National Seashore,Cape Hatteras National Seashore,state_core_exact,12
+jr_north_carolina_cape_lookout_ns,North Carolina,Cape Lookout NS,NPS,North Carolina,National Park Service,Cape Lookout National Seashore,Cape Lookout National Seashore,state_core_exact,11
+jr_north_carolina_carl_sandburg_home_nhs,North Carolina,Carl Sandburg Home NHS,NPS,North Carolina,National Park Service,Carl Sandburg Home National Historic Site,Carl Sandburg Home National Historic Site,state_core_exact,9
+jr_north_carolina_fort_raleigh_nhs,North Carolina,Fort Raleigh NHS,NPS,North Carolina,National Park Service,Fort Raleigh National Historic Site,Fort Raleigh National Historic Site,state_core_exact,5
+jr_north_carolina_guilford_courthouse_nmp,North Carolina,Guilford Courthouse NMP,NPS,North Carolina,National Park Service,Guilford Courthouse National Military Park,Guilford Courthouse National Military Park,state_core_exact,6
+jr_north_carolina_moores_creek_nb,North Carolina,Moores Creek NB,NPS,North Carolina,National Park Service,Moores Creek National Battlefield,Moores Creek National Battlefield,state_core_exact,12
+jr_north_carolina_wright_brothers_nm,North Carolina,Wright Brothers NM,NPS,North Carolina,National Park Service,Wright Brothers National Memorial,Wright Brothers National Memorial,state_core_exact,8
+jr_north_dakota_fort_union_trading_post_nhs,North Dakota,Fort Union Trading Post NHS,NPS,North Dakota,National Park Service,"Fort Union Trading Post National Historic Site, MT,ND","Fort Union Trading Post National Historic Site, MT,ND",state_core_contains,5
+jr_north_dakota_knife_river_indian_villages_nhs,North Dakota,Knife River Indian Villages NHS,NPS,North Dakota,National Park Service,Knife River Indian Villages National Historic Site,Knife River Indian Villages National Historic Site,state_core_exact,7
+jr_north_dakota_theodore_roosevelt_np,North Dakota,Theodore Roosevelt NP,NPS,North Dakota,National Park Service,Theodore Roosevelt National Park,Theodore Roosevelt National Park,state_core_exact,12
+jr_ohio_charles_young_buffalo_soldiers_nm,Ohio,Charles Young Buffalo Soldiers NM,NPS,Ohio,National Park Service,Charles Young Buffalo Soldiers National Monument,Charles Young Buffalo Soldiers National Monument,state_core_exact,7
+jr_ohio_cuyahoga_valley_np,Ohio,Cuyahoga Valley NP,NPS,Ohio,National Park Service,Cuyahoga Valley National Park,Cuyahoga Valley National Park,state_core_exact,12
+jr_ohio_dayton_aviation_heritage_nhp,Ohio,Dayton Aviation Heritage NHP,NPS,Ohio,National Park Service,Dayton Aviation Heritage National Historical Park,Dayton Aviation Heritage National Historical Park,state_core_exact,6
+jr_ohio_first_ladies_nhs,Ohio,First Ladies NHS,NPS,Ohio,National Park Service,First Ladies National Historic Site,First Ladies National Historic Site,state_core_exact,5
+jr_ohio_hopewell_culture_nhs,Ohio,Hopewell Culture NHS,NPS,Ohio,National Park Service,Hopewell Culture National Historical Park,Hopewell Culture National Historical Park,state_core_exact,12
+jr_ohio_james_a_garfield_nhs,Ohio,James A Garfield NHS,NPS,Ohio,National Park Service,James A Garfield National Historic Site,James A Garfield National Historic Site,state_core_exact,4
+jr_ohio_perry_s_victory_and_international_peace_m,Ohio,Perry's Victory and International Peace M,NPS,Ohio,National Park Service,Perry's Victory and International Peace Memorial,Perry's Victory and International Peace Memorial,state_core_exact,4
+jr_ohio_william_howard_taft_nhs,Ohio,William Howard Taft NHS,NPS,Ohio,National Park Service,William Howard Taft National Historic Site,William Howard Taft National Historic Site,state_core_exact,10
+jr_oklahoma_chickasaw_nra,Oklahoma,Chickasaw NRA,NPS,Oklahoma,National Park Service,Chickasaw National Recreation Area,Chickasaw National Recreation Area,state_core_exact,3
+jr_oklahoma_oklahoma_city_nm,Oklahoma,Oklahoma City NM,NPS,Oklahoma,National Park Service,Oklahoma City National Memorial,Oklahoma City National Memorial,state_core_exact,8
+jr_oklahoma_washita_battlefield_nhs,Oklahoma,Washita Battlefield NHS,NPS,Oklahoma,National Park Service,Washita Battlefield National Historic Site,Washita Battlefield National Historic Site,state_core_exact,5
+jr_oregon_crater_lake_np,Oregon,Crater Lake NP,NPS,Oregon,National Park Service,Crater Lake National Park,Crater Lake National Park,state_core_exact,12
+jr_oregon_john_day_fossil_beds_nm,Oregon,John Day Fossil Beds NM,NPS,Oregon,National Park Service,John Day Fossil Beds National Monument,John Day Fossil Beds National Monument,state_core_exact,10
+jr_oregon_oregon_caves_nm_and_pr,Oregon,Oregon Caves NM & Pr,NPS,Oregon,National Park Service,Oregon Caves National Monument and Preserve,Oregon Caves National Monument and Preserve,state_core_exact,12
+jr_pennsylvania_allegheny_portage_railroad_nhs,Pennsylvania,Allegheny Portage Railroad NHS,NPS,Pennsylvania,National Park Service,Allegheny Portage Railroad National Historic Site,Allegheny Portage Railroad National Historic Site,state_core_exact,6
+jr_pennsylvania_eisenhower_nhs,Pennsylvania,Eisenhower NHS,NPS,Pennsylvania,National Park Service,Eisenhower National Historic Site,Eisenhower National Historic Site,state_core_exact,4
+jr_pennsylvania_flight_93_nm,Pennsylvania,Flight 93 NM,NPS,Pennsylvania,National Park Service,Flight 93 National Memorial,Flight 93 National Memorial,state_core_exact,7
+jr_pennsylvania_fort_necessity_nb,Pennsylvania,Fort Necessity NB,NPS,Pennsylvania,National Park Service,Fort Necessity National Battlefield,Fort Necessity National Battlefield,state_core_exact,2
+jr_pennsylvania_friendship_hill_nhs,Pennsylvania,Friendship Hill NHS,NPS,Pennsylvania,National Park Service,Friendship Hill National Historic Site,Friendship Hill National Historic Site,state_core_exact,11
+jr_pennsylvania_gettysburg_nmp,Pennsylvania,Gettysburg NMP,NPS,Pennsylvania,National Park Service,Gettysburg National Military Park,Gettysburg National Military Park,state_core_exact,9
+jr_pennsylvania_hopewell_furnace_nhs,Pennsylvania,Hopewell Furnace NHS,NPS,Pennsylvania,National Park Service,Hopewell Furnace National Historic Site,Hopewell Furnace National Historic Site,state_core_exact,11
+jr_pennsylvania_independence_nhp,Pennsylvania,Independence NHP,NPS,Pennsylvania,National Park Service,Independence National Historical Park,Independence National Historical Park,state_core_exact,11
+jr_pennsylvania_johnstown_flood_nm,Pennsylvania,Johnstown Flood NM,NPS,Pennsylvania,National Park Service,Johnstown Flood National Memorial,Johnstown Flood National Memorial,state_core_exact,7
+jr_pennsylvania_steamtown_nhs,Pennsylvania,Steamtown NHS,NPS,Pennsylvania,National Park Service,Steamtown National Historic Site,Steamtown National Historic Site,state_core_exact,8
+jr_pennsylvania_thaddeus_kosciuszko_nm,Pennsylvania,Thaddeus Kosciuszko NM,NPS,Pennsylvania,National Park Service,Thaddeus Kosciuszko National Memorial,Thaddeus Kosciuszko National Memorial,state_core_exact,3
+jr_pennsylvania_valley_forge_nhp,Pennsylvania,Valley Forge NHP,NPS,Pennsylvania,National Park Service,Valley Forge National Historical Park,Valley Forge National Historical Park,state_core_exact,8
+jr_rhode_island_roger_williams_nm,Rhode Island,Roger Williams NM,NPS,Rhode Island,National Park Service,Roger Williams National Memorial.,Roger Williams National Memorial.,state_core_exact,4
+jr_rhode_island_touro_synagogue_nhs,Rhode Island,Touro Synagogue NHS,NPS,Rhode Island,National Park Service,Touro Synagogue National Historic Site,Touro Synagogue National Historic Site,state_core_exact,1
+jr_south_carolina_charles_pinckney_nhs,South Carolina,Charles Pinckney NHS,NPS,South Carolina,National Park Service,Charles Pinckney National Historic Site,Charles Pinckney National Historic Site,state_core_exact,5
+jr_south_carolina_congaree_np,South Carolina,Congaree NP,NPS,South Carolina,National Park Service,Congaree National Park,Congaree National Park,state_core_exact,4
+jr_south_carolina_cowpens_nb,South Carolina,Cowpens NB,NPS,South Carolina,National Park Service,Cowpens National Battlefield,Cowpens National Battlefield,state_core_exact,5
+jr_south_carolina_fort_sumter_and_fort_moultrie_nhp,South Carolina,Fort Sumter & Fort Moultrie NHP,NPS,South Carolina,National Park Service,Fort Sumter National Monument,Fort Sumter National Monument,state_core_contains,6
+jr_south_carolina_fort_sumter_and_fort_moultrie_nhp,South Carolina,Fort Sumter & Fort Moultrie NHP,NPS,South Carolina,National Park Service,Fort Sumter and Fort Moultrie National Historical Park,Fort Sumter and Fort Moultrie National Historical Park,state_core_exact,3
+jr_south_carolina_kings_mountain_nmp,South Carolina,Kings Mountain NMP,NPS,South Carolina,National Park Service,Kings Mountain National Military Park,Kings Mountain National Military Park,state_core_contains,6
+jr_south_carolina_ninety_six_nhs,South Carolina,Ninety Six NHS,NPS,South Carolina,National Park Service,Ninety Six National Historic Site,Ninety Six National Historic Site,state_core_exact,6
+jr_south_carolina_reconstruction_era_nhp,South Carolina,Reconstruction Era NHP,NPS,South Carolina,National Park Service,Reconstruction Era National Historical Park,Reconstruction Era National Historical Park,state_core_exact,6
+jr_south_dakota_badlands_np,South Dakota,Badlands NP,NPS,South Dakota,National Park Service,Badlands National Park,Badlands National Park,state_core_exact,10
+jr_south_dakota_jewel_cave_nm,South Dakota,Jewel Cave NM,NPS,South Dakota,National Park Service,Jewel Cave National Monument,Jewel Cave National Monument,state_core_exact,1
+jr_south_dakota_minuteman_missile_nhs,South Dakota,Minuteman Missile NHS,NPS,South Dakota,National Park Service,Minuteman Missile National Historic Site,Minuteman Missile National Historic Site,state_core_exact,6
+jr_south_dakota_mount_rushmore_nm,South Dakota,Mount Rushmore NM,NPS,South Dakota,National Park Service,Mount Rushmore National Memorial,Mount Rushmore National Memorial,state_core_exact,9
+jr_south_dakota_wind_cave_np,South Dakota,Wind Cave NP,NPS,South Dakota,National Park Service,Wind Cave National Park,Wind Cave National Park,state_core_exact,6
+jr_tennessee_andrew_johnson_nhs,Tennessee,Andrew Johnson NHS,NPS,Tennessee,National Park Service,Andrew Johnson National Historic Site,Andrew Johnson National Historic Site,state_core_exact,5
+jr_tennessee_fort_donelson_nb,Tennessee,Fort Donelson NB,NPS,Tennessee,National Park Service,Fort Donelson National Battlefield,Fort Donelson National Battlefield,state_core_exact,12
+jr_across_manhattan_project_nhp,New Mexico,Manhattan Project NHP,NPS,Tennessee,National Park Service,"Manhattan Project National Historical Park, (Also Washington State and New Mexico )","Manhattan Project National Historical Park, (Also Washington State and New Mexico )",unique_core_exact,5
+jr_tennessee_stones_river_nb,Tennessee,Stones River NB,NPS,Tennessee,National Park Service,Stones River National Battlefield,Stones River National Battlefield,state_core_exact,7
+jr_texas_alibates_flint_quarries_nm,Texas,Alibates Flint Quarries NM,NPS,Texas,National Park Service,Alibates Flint Quarries National Monument,Alibates Flint Quarries National Monument,state_core_exact,3
+jr_texas_amistad_nra,Texas,Amistad NRA,NPS,Texas,National Park Service,Amistad National Recreation Area,Amistad National Recreation Area,state_core_exact,4
+jr_texas_big_bend_np,Texas,Big Bend NP,NPS,Texas,National Park Service,Big Bend National Park,Big Bend National Park,state_core_exact,12
+jr_texas_big_thicket_npr,Texas,Big Thicket NPr,NPS,Texas,National Park Service,Big Thicket National Preserve,Big Thicket National Preserve,state_core_exact,7
+jr_texas_chamizal_nm,Texas,Chamizal NM,NPS,Texas,National Park Service,Chamizal National Memorial,Chamizal National Memorial,state_core_exact,5
+jr_texas_fort_davis_nhs,Texas,Fort Davis NHS,NPS,Texas,National Park Service,Fort Davis National Historic Site,Fort Davis National Historic Site,state_core_exact,7
+jr_texas_guadalupe_mountains_np,Texas,Guadalupe Mountains NP,NPS,Texas,National Park Service,Guadalupe Mountains National Park,Guadalupe Mountains National Park,state_core_exact,6
+jr_texas_lake_meredith_nra,Texas,Lake Meredith NRA,NPS,Texas,National Park Service,Lake Meredith National Recreation Area,Lake Meredith National Recreation Area,state_core_exact,4
+jr_texas_lyndon_b_johnson_nhp,Texas,Lyndon B Johnson NHP,NPS,Texas,National Park Service,Lyndon B Johnson National Historical Park,Lyndon B Johnson National Historical Park,state_core_exact,9
+jr_texas_padre_island_ns,Texas,Padre Island NS,NPS,Texas,National Park Service,Padre Island National Seashore,Padre Island National Seashore,state_core_exact,11
+jr_texas_palo_alto_battlefield_nhp,Texas,Palo Alto Battlefield NHP,NPS,Texas,National Park Service,Palo Alto Battlefield National Historical Park,Palo Alto Battlefield National Historical Park,state_core_exact,7
+jr_texas_san_antonio_missions_nhp,Texas,San Antonio Missions NHP,NPS,Texas,National Park Service,San Antonio Missions National Historical Park,San Antonio Missions National Historical Park,state_core_exact,12
+jr_texas_waco_mammoth_nm,Texas,Waco Mammoth NM,NPS,Texas,National Park Service,Waco Mammoth National Monument,Waco Mammoth National Monument,state_core_exact,4
+jr_utah_arches_np,Utah,Arches NP,NPS,Utah,National Park Service,Arches National Park,Arches National Park,state_core_exact,12
+jr_utah_bryce_canyon_np,Utah,Bryce Canyon NP,NPS,Utah,National Park Service,Bryce Canyon National Park,Bryce Canyon National Park,state_core_exact,12
+jr_utah_canyonlands_np,Utah,Canyonlands NP,NPS,Utah,National Park Service,Canyonlands National Park,Canyonlands National Park,state_core_exact,10
+jr_utah_capitol_reef_np,Utah,Capitol Reef NP,NPS,Utah,National Park Service,Capitol Reef National Park,Capitol Reef National Park,state_core_exact,7
+jr_utah_cedar_breaks_nm,Utah,Cedar Breaks NM,NPS,Utah,National Park Service,Cedar Breaks National Monument,Cedar Breaks National Monument,state_core_exact,6
+jr_utah_golden_spike_nhp,Utah,Golden Spike NHP,NPS,Utah,National Park Service,Golden Spike National Historical Park,Golden Spike National Historical Park,state_core_exact,8
+jr_utah_natural_bridges_nm,Utah,Natural Bridges NM,NPS,Utah,National Park Service,Natural Bridges National Monument,Natural Bridges National Monument,state_core_exact,3
+jr_utah_rainbow_bridge_nm,Utah,Rainbow Bridge NM,NPS,Utah,National Park Service,Rainbow Bridge National Monument,Rainbow Bridge National Monument,state_core_exact,2
+jr_utah_timpanogos_cave_nm,Utah,Timpanogos Cave NM,NPS,Utah,National Park Service,Timpanogos Cave National Monument,Timpanogos Cave National Monument,state_core_exact,5
+jr_utah_zion_np,Utah,Zion NP,NPS,Utah,National Park Service,Zion National Park,Zion National Park,state_core_exact,12
+jr_vermont_marsh_billings_rockefeller_nhp,Vermont,Marsh-Billings-Rockefeller NHP,NPS,Vermont,National Park Service,Marsh - Billings - Rockefeller National Historical Park,Marsh - Billings - Rockefeller National Historical Park,state_core_exact,5
+jr_virginia_appomattox_court_house_nhp,Virginia,Appomattox Court House NHP,NPS,Virginia,National Park Service,Appomattox Court House National Historical Park,Appomattox Court House National Historical Park,state_core_exact,6
+jr_virginia_arlington_house_the_robert_e_lee_memorial,Virginia,"Arlington House,The Robert E. Lee Memorial",NPS,Virginia,National Park Service,"Arlington House, The Robert E. Lee National Memorial","Arlington House, The Robert E. Lee National Memorial",state_core_exact,6
+jr_virginia_booker_t_washington_nm,Virginia,Booker T. Washington NM,NPS,Virginia,National Park Service,Booker T Washington National Monument,Booker T Washington National Monument,state_core_exact,5
+jr_virginia_cedar_creek_and_belle_grove_nhp,Virginia,Cedar Creek & Belle Grove NHP,NPS,Virginia,National Park Service,Cedar Creek and Belle Grove National Historical Park,Cedar Creek and Belle Grove National Historical Park,state_core_exact,3
+jr_virginia_colonial_nhp,Virginia,Colonial NHP,NPS,Virginia,National Park Service,"Colonial National Historical Park, (See Jamestown and Yorktown)","Colonial National Historical Park, (See Jamestown and Yorktown)",state_core_exact,3
+jr_virginia_fort_monroe_nm,Virginia,Fort Monroe NM,NPS,Virginia,National Park Service,Fort Monroe National Monument,Fort Monroe National Monument,state_core_exact,4
+jr_virginia_fredericksburg_and_spotsylvania_nmp,Virginia,Fredericksburg & Spotsylvania NMP,NPS,Virginia,National Park Service,Fredericksburg and Spotsylvania National Military Park,Fredericksburg and Spotsylvania National Military Park,state_core_exact,10
+jr_virginia_george_washington_birthplace_nm,Virginia,George Washington Birthplace NM,NPS,Virginia,National Park Service,George Washington Birthplace National Monument,George Washington Birthplace National Monument,state_core_exact,7
+jr_across_george_washington_memorial_parkway,Virginia,George Washington Memorial Parkway,NPS,Virginia,National Park Service,"George Washington Memorial Parkway, Fort Hunt","George Washington Memorial Parkway, Fort Hunt",state_core_contains,3
+jr_virginia_great_falls_park,Virginia,Great Falls Park,NPS,Virginia,National Park Service,Great Falls Park,Great Falls Park,state_name_exact,12
+jr_virginia_maggie_l_walker_nhs,Virginia,Maggie L. Walker NHS,NPS,Virginia,National Park Service,Maggie L Walker National Historic Site,Maggie L Walker National Historic Site,state_core_exact,6
+jr_virginia_manassas_nbp,Virginia,Manassas NBP,NPS,Virginia,National Park Service,Manassas National Battlefield,Manassas National Battlefield,state_core_exact,7
+jr_virginia_petersburg_national_battlefield,Virginia,Petersburg National Battlefield,NPS,Virginia,National Park Service,Petersburg National Battlefield,Petersburg National Battlefield,state_name_exact,3
+jr_virginia_prince_william_forest_park,Virginia,Prince William Forest Park,NPS,Virginia,National Park Service,Prince William Forest Park,Prince William Forest Park,state_name_exact,4
+jr_virginia_richmond_nbp,Virginia,Richmond NBP,NPS,Virginia,National Park Service,Richmond National Battlefield Park,Richmond National Battlefield Park,state_core_exact,12
+jr_virginia_shenandoah_np,Virginia,Shenandoah NP,NPS,Virginia,National Park Service,Shenandoah National Park,Shenandoah National Park,state_core_exact,10
+jr_virginia_wolf_trap_np_for_the_performing_arts,Virginia,Wolf Trap National Park for the Performing Arts,NPS,Virginia,National Park Service,Wolf Trap National Park for the Performing Arts,Wolf Trap National Park for the Performing Arts,state_name_exact,3
+jr_washington_bainbridge_island_japanese_american_exclusion_memorial,Washington,Bainbridge Island Japanese American Exclusion Memorial,NPS,Washington,National Park Service,"Bainbridge Island Japanese American, Exclusion Memorial","Bainbridge Island Japanese American, Exclusion Memorial",state_name_exact,2
+jr_washington_lake_roosevelt_nra,Washington,Lake Roosevelt NRA,NPS,Washington,National Park Service,Lake Roosevelt National Recreation Area,Lake Roosevelt National Recreation Area,state_core_exact,3
+jr_washington_mount_rainier_np,Washington,Mount Rainier NP,NPS,Washington,National Park Service,Mount Rainier National Park,Mount Rainier National Park,state_core_exact,12
+jr_washington_north_cascades_np,Washington,North Cascades NP,NPS,Washington,National Park Service,North Cascades National Park,North Cascades National Park,state_core_exact,12
+jr_washington_olympic_np,Washington,Olympic NP,NPS,Washington,National Park Service,Olympic National Park,Olympic National Park,state_core_exact,11
+jr_washington_san_juan_island_nhp,Washington,San Juan Island NHP,NPS,Washington,National Park Service,San Juan Island National Historical Park,San Juan Island National Historical Park,state_core_exact,12
+jr_west_virginia_new_river_gorge_np_and_pr,West Virginia,New River Gorge NP and Pr,NPS,West Virginia,National Park Service,New River Gorge National Park and Preserve,New River Gorge National Park and Preserve,state_core_exact,12
+jr_wisconsin_apostle_islands_nl,Wisconsin,Apostle Islands NL,NPS,Wisconsin,National Park Service,Apostle Islands National Lakeshore,Apostle Islands National Lakeshore,state_core_exact,6
+jr_wyoming_devils_tower_nm,Wyoming,Devils Tower NM,NPS,Wyoming,National Park Service,Devils Tower National Monument,Devils Tower National Monument,state_core_exact,12
+jr_wyoming_fort_laramie_nhs,Wyoming,Fort Laramie NHS,NPS,Wyoming,National Park Service,Fort Laramie National Historic Site,Fort Laramie National Historic Site,state_core_exact,7
+jr_wyoming_fossil_butte_nm,Wyoming,Fossil Butte NM,NPS,Wyoming,National Park Service,Fossil Butte National Monument,Fossil Butte National Monument,state_core_exact,5
+jr_wyoming_grand_teton_np,Wyoming,Grand Teton NP,NPS,Wyoming,National Park Service,Grand Teton National Park,Grand Teton National Park,state_core_exact,9
+jr_alaska_alaska_maritime_nwr,Alaska,Alaska Maritime NWR,US Fish & Wildlife Service,Alaska,National Wildlife Refuge,Alaska Maritime National Wildlife Refuge,Alaska Maritime National Wildlife Refuge,state_core_exact,2
+jr_alaska_kenai_nwr,Alaska,Kenai NWR,US Fish & Wildlife Service,Alaska,National Wildlife Refuge,Kenai National Wildlife Refuge,Kenai National Wildlife Refuge,state_core_exact,1
+jr_alaska_kodiak_nwr,Alaska,Kodiak NWR,US Fish & Wildlife Service,Alaska,National Wildlife Refuge,Kodiak National Wildlife Refuge,Kodiak National Wildlife Refuge,state_core_exact,2
+jr_alaska_selawik_nwr,Alaska,Selawik NWR,US Fish & Wildlife Service,Alaska,National Wildlife Refuge,Selawik National Wildlife Refuge,Selawik National Wildlife Refuge,state_core_exact,1
+jr_alaska_yukon_delta_nwr,Alaska,Yukon Delta NWR,US Fish & Wildlife Service,Alaska,National Wildlife Refuge,Yukon Delta National Wildlife Refuge,Yukon Delta National Wildlife Refuge,state_core_exact,1
+jr_california_klamath_basin_nwr,California,Klamath Basin NWR,US Fish & Wildlife Service,California,National Wildlife Refuge,Klamath Basin National Wildlife Refuge,Klamath Basin National Wildlife Refuge,state_core_exact,1
+jr_california_sacramento_nwr,California,Sacramento NWR,US Fish & Wildlife Service,California,National Wildlife Refuge,Sacramento National Wildlife Refuge,Sacramento National Wildlife Refuge,state_core_exact,1
+jr_delaware_bombay_hook_nwr,Delaware,Bombay Hook NWR,US Fish & Wildlife Service,Delaware,National Wildlife Refuge,Bombay Hook National Wildlife Refuge,Bombay Hook National Wildlife Refuge,state_core_exact,1
+jr_florida_jn_ding_darling_nwr,Florida,"JN ""Ding"" Darling NWR",US Fish & Wildlife Service,Florida,National Wildlife Refuge,JN Ding National Wildlife Refuge,JN Ding National Wildlife Refuge,state_core_contains,1
+jr_florida_merritt_island_nwr,Florida,Merritt Island NWR,US Fish & Wildlife Service,Florida,National Wildlife Refuge,Merritt Island National Wildlife Refuge,Merritt Island National Wildlife Refuge,state_core_exact,1
+jr_florida_st_marks_nwr,Florida,St. Marks NWR,US Fish & Wildlife Service,Florida,National Wildlife Refuge,St Marks National Wildlife Refuge,St Marks National Wildlife Refuge,state_core_exact,1
+jr_georgia_harris_neck_nwr,Georgia,Harris Neck NWR,US Fish & Wildlife Service,Georgia,National Wildlife Refuge,Harris Neck National Wildlife Refuge,Harris Neck National Wildlife Refuge,state_core_exact,2
+jr_georgia_okefenokee_nwr,Georgia,Okefenokee NWR,US Fish & Wildlife Service,Georgia,National Wildlife Refuge,Okefenokee National Wildlife Refuge,Okefenokee National Wildlife Refuge,state_core_exact,3
+jr_illinois_crab_orchard_nwr,Illinois,Crab Orchard NWR,US Fish & Wildlife Service,Illinois,National Wildlife Refuge,Crab Orchard National Wildlife Refuge,Crab Orchard National Wildlife Refuge,state_core_exact,1
+jr_indiana_muscatatuck_national_wildlife_refuge,Indiana,Muscatatuck National Wildlife Refuge,,Indiana,National Wildlife Refuge,Muscatatuck National Wildlife Refuge,Muscatatuck National Wildlife Refuge,state_name_exact,1
+jr_kansas_quivira_nwr,Kansas,Quivira NWR,US Fish & Wildlife Service,Kansas,National Wildlife Refuge,Quivira National Wildlife Refuge,Quivira National Wildlife Refuge,state_core_exact,2
+jr_louisiana_cameron_prairie_nwr,Louisiana,Cameron Prairie NWR,US Fish & Wildlife Service,Louisiana,National Wildlife Refuge,Cameron Prairie National Wildlife Refuge,Cameron Prairie National Wildlife Refuge,state_core_exact,1
+jr_louisiana_lacassine_nwr,Louisiana,Lacassine NWR,US Fish & Wildlife Service,Louisiana,National Wildlife Refuge,Lacassine National Wildlife Refuge,Lacassine National Wildlife Refuge,state_core_exact,1
+jr_massachusetts_parker_river_nwr,Massachusetts,Parker River NWR,US Fish & Wildlife Service,Massachusetts,National Wildlife Refuge,Parker National Wildlife Refuge,Parker River ​(978),state_core_exact,1
+jr_michigan_seney_nwr,Michigan,Seney NWR,US Fish & Wildlife Service,Michigan,National Wildlife Refuge,Seney National Wildlife Refuge,Seney National Wildlife Refuge,state_core_exact,1
+jr_mississippi_mississippi_sandhill_crane_nwr,Mississippi,Mississippi Sandhill Crane NWR,US Fish & Wildlife Service,Mississippi,National Wildlife Refuge,Sandhill Crane National Wildlife Refuge,Sandhill Crane National Wildlife Refuge,state_core_contains,1
+jr_new_mexico_bitter_lake_nwr,New Mexico,Bitter Lake NWR,US Fish & Wildlife Service,Nebraska,National Wildlife Refuge,Bitter Lake National Wildlife Refuge,Bitter Lake National Wildlife Refuge,unique_core_exact,1
+jr_nebraska_fort_niobrara_nwr,Nebraska,Fort Niobrara NWR,US Fish & Wildlife Service,Nebraska,National Wildlife Refuge,Fort Niobrara National Wildlife Refuge,Fort Niobrara National Wildlife Refuge,state_core_exact,3
+jr_new_mexico_sevilleta_nwr,New Mexico,Sevilleta NWR,US Fish & Wildlife Service,Nebraska,National Wildlife Refuge,Sevilleta National Wildlife Refuge,Sevilleta National Wildlife Refuge,unique_core_exact,1
+jr_nevada_desert_national_wildlife_refuge,Nevada,Desert National Wildlife Refuge,BLM,Nevada,National Wildlife Refuge,Desert National Wildlife Refuge,Desert National Wildlife Refuge,state_name_exact,1
+jr_new_jersey_edwin_b_forsythe_nwr,New Jersey,Edwin B. Forsythe NWR,US Fish & Wildlife Service,New Jersey,National Wildlife Refuge,Edwin B Forsythe National Wildlife Refuge,Edwin B Forsythe National Wildlife Refuge,state_core_exact,1
+jr_new_jersey_great_swamp_nwr,New Jersey,Great Swamp NWR,US Fish & Wildlife Service,New Jersey,National Wildlife Refuge,Great Swamp National Wildlife Refuge,Great Swamp National Wildlife Refuge,state_core_exact,1
+jr_new_jersey_wallkill_river_nwr,New Jersey,Wallkill River NWR,US Fish & Wildlife Service,New Jersey,National Wildlife Refuge,Wallkill River National Wildlife Refuge,Wallkill River National Wildlife Refuge,state_core_exact,1
+jr_new_york_wertheim_nwr,New York,Wertheim NWR,US Fish & Wildlife Service,New York,National Wildlife Refuge,Wertheim National Wildlife Refuge,Wertheim National Wildlife Refuge,state_core_exact,1
+jr_north_dakota_audubon_nwr,North Dakota,Audubon NWR,US Fish & Wildlife Service,North Dakota,National Wildlife Refuge,Audubon National Wildlife Refuge,Audubon National Wildlife Refuge,state_core_exact,1
+jr_ohio_ottawa_nwr,Ohio,Ottawa NWR,US Fish & Wildlife Service,Ohio,National Wildlife Refuge,Ottawa National Wildlife Refuge,Ottawa National Wildlife Refuge,state_core_exact,1
+jr_south_carolina_pinckney_island_nwr,South Carolina,Pinckney Island NWR,US Fish & Wildlife Service,Oklahoma,National Wildlife Refuge,Pinckney Island National Wildlife Refuge,Pinckney Island National Wildlife Refuge,unique_core_exact,2
+jr_across_savannah_nwr,Georgia,Savannah NWR,US Fish & Wildlife Service,Oklahoma,National Wildlife Refuge,Savannah National Wildlife Refuge,Savannah National Wildlife Refuge,unique_core_exact,2
+jr_virginia_eastern_shore_of_virginia_nwr,Virginia,Eastern Shore of Virginia NWR,US Fish & Wildlife Service,Pennsylvania,National Wildlife Refuge,Eastern Shore of Virginia National Wildlife Refuge,Eastern Shore of Virginia National Wildlife Refuge,unique_core_exact,1
+jr_tennessee_cross_creeks_nwr,Tennessee,Cross Creeks NWR,US Fish & Wildlife Service,Tennessee,National Wildlife Refuge,Cross Creeks National Wildlife Refuge,Cross Creeks National Wildlife Refuge,state_core_exact,1
+jr_texas_aransas_nwr,Texas,Aransas NWR,US Fish & Wildlife Service,Texas,National Wildlife Refuge,Aransas National Wildlife Refuge,Aransas National Wildlife Refuge,state_core_exact,1
+jr_texas_hagerman_nwr,Texas,Hagerman NWR,US Fish & Wildlife Service,Texas,National Wildlife Refuge,Hagerman National Wildlife Refuge,Hagerman National Wildlife Refuge,state_core_exact,1
+jr_texas_santa_ana_nwr,Texas,Santa Ana NWR,US Fish & Wildlife Service,Texas,National Wildlife Refuge,Santa Ana National Wildlife Refuge,Santa Ana National Wildlife Refuge,state_core_exact,1
+jr_virginia_back_bay_nwr,Virginia,Back Bay NWR,US Fish & Wildlife Service,Vermont,National Wildlife Refuge,Back Bay National Wildlife Refuge,Back Bay National Wildlife Refuge,unique_core_exact,4
+jr_virginia_eastern_shore_of_virginia_nwr,Virginia,Eastern Shore of Virginia NWR,US Fish & Wildlife Service,Vermont,National Wildlife Refuge,Eastern Shore of Virginia National Wildlife Refuge,Eastern Shore of Virginia National Wildlife Refuge,unique_core_exact,1
+jr_washington_billy_frank_jr_nisqually_nwr,Washington,Billy Frank Jr. Nisqually NWR,US Fish & Wildlife Service,Washington,National Wildlife Refuge,Billy Frank National Wildlife Refuge,Billy Frank National Wildlife Refuge,state_core_contains,1
+jr_west_virginia_canaan_valley_nwr,West Virginia,Canaan Valley NWR,US Fish & Wildlife Service,West Virginia,National Wildlife Refuge,Canaan Valley National Wildlife Refuge,Canaan Valley National Wildlife Refuge,state_core_exact,1
+jr_wyoming_national_elk_refuge,Wyoming,National Elk Refuge,US Fish & Wildlife Service,Wyoming,National Wildlife Refuge,Elk Refuge,Elk Refuge,state_core_exact,1
+jr_nebraska_midwest_archeological_center,Nebraska,Midwest Archeological Center,Other,,Other,Midwest Archeological Center,Midwest Archeological Center,unique_name_exact,3
+jr_arizona_titan_missile_museum_nhl,Arizona,Titan Missile Museum NHL,Other,,Other,Titan Missile Museum,Titan Missile Museum,unique_core_exact,1
+jr_alaska_eagle_river_nature_center,Alaska,Eagle River Nature Center,NPS,Alaska,State Parks,Eagle River Nature Center,Eagle River Nature Center,state_name_exact,1
+jr_alaska_sitka_sound_science_center,Alaska,Sitka Sound Science Center,Other,Alaska,State Parks,Sitka Sound Science Center,Sitka Sound Science Center,state_name_exact,1
+jr_arizona_dead_horse_ranch_sp,Arizona,Dead Horse Ranch SP,State,Arizona,State Parks,Dead Horse,Dead Horse,state_core_contains,3
+jr_arizona_homolovi_sp,Arizona,Homolovi SP,State,Arizona,State Parks,Homolovi,Homolovi,state_core_exact,1
+jr_arizona_kartchner_caverns_sp,Arizona,Kartchner Caverns SP,State,Arizona,State Parks,Kartchner Caverns,Kartchner Caverns,state_core_exact,1
+jr_arizona_lowell_observatory,Arizona,Lowell Observatory,Other,Arizona,State Parks,Lowell Observatory,Lowell Observatory,state_name_exact,1
+jr_arizona_oracle_sp,Arizona,Oracle SP,State,Arizona,State Parks,Oracle,Oracle,state_core_exact,2
+jr_arizona_red_rock_sp,Arizona,Red Rock SP,State,Arizona,State Parks,Red Rock,Red Rock,state_core_exact,1
+jr_arizona_slide_rock_sp,Arizona,Slide Rock SP,State,Arizona,State Parks,Slide Rock,Slide Rock,state_core_exact,1
+jr_arizona_tonto_natural_bridge_sp,Arizona,Tonto Natural Bridge SP,State,Arizona,State Parks,Tonto natural Bridge,Tonto natural Bridge,state_core_exact,1
+jr_california_anza_borrego_desert_sp,California,Anza-Borrego Desert SP,State,California,State Parks,Anza-Borrego Desert SP,Anza-Borrego Desert SP,state_name_exact,1
+jr_california_auburn_sra,California,Auburn SRA,State,California,State Parks,Auburn SRA,Auburn SRA,state_name_exact,2
+jr_california_california_s_sp_joint_program,California,California's State Parks Joint Program,State,California,State Parks,California State Parks,California State Parks,state_core_contains,13
+jr_california_hollister_hills_svra,California,Hollister Hills SVRA,State,California,State Parks,Hollister Hills SVRA,Hollister Hills SVRA,state_name_exact,1
+jr_california_limekiln_sp,California,Limekiln SP,State,California,State Parks,Limekiln State Park,Limekiln State Park,state_core_exact,1
+jr_california_marshall_gold_discovery_shp,California,Marshall Gold Discovery SHP,State,California,State Parks,Marshall Gold Discovery,Marshall Gold Discovery,state_core_exact,1
+jr_california_pio_pico_state_historic_park,California,Pio Pico State Historic Park,State,California,State Parks,Pio Pico State Historic Park,Pio Pico State Historic Park,state_name_exact,1
+jr_california_portola_redwoods_sp_visitor_center,California,Portola Redwoods State Park Visitor Center,State,California,State Parks,Portola Redwoods State Park,Portola Redwoods State Park,state_core_exact,1
+jr_california_santa_barbara_county_parks,California,Santa Barbara County Parks,Other,California,State Parks,Santa Barbara County Parks,Santa Barbara County Parks,state_name_exact,1
+jr_california_santa_cruz_mission_state_historic_park,California,Santa Cruz Mission State Historic Park,State,California,State Parks,Santa Cruz Mission SHP,Santa Cruz Mission SHP,state_core_exact,1
+jr_colorado_bear_creek_lake_park,Colorado,Bear Creek Lake Park,Other,Colorado,State Parks,Bear Creek Lake Park,Bear Creek Lake Park,state_name_exact,1
+jr_colorado_bear_creek_nature_center,Colorado,Bear Creek Nature Center,Other,Colorado,State Parks,Bear Creek Nature Center,Bear Creek Nature Center,state_name_exact,2
+jr_colorado_colorado_parks_and_wildlife,Colorado,Colorado Parks and Wildlife,State,Colorado,State Parks,Colorado Parks and Wildlife,Colorado Parks and Wildlife,state_name_exact,1
+jr_colorado_colorado_parks_and_wildlife,Colorado,Colorado Parks and Wildlife,State,Colorado,State Parks,Colorado State Parks,Colorado State Parks,state_core_contains,12
+jr_colorado_durango_parks_and_recreation,Colorado,Durango Parks and Recreation,Other,Colorado,State Parks,Durango Parks and Recreation,Durango Parks and Recreation,state_name_exact,1
+jr_colorado_garden_of_the_gods,Colorado,Garden of the Gods,Other,Colorado,State Parks,Garden of the Gods,Garden of the Gods,state_name_exact,2
+jr_colorado_lory_sp,Colorado,Lory SP,State,Colorado,State Parks,Lory State Park,Lory State Park,state_core_exact,1
+jr_colorado_pikes_peak,Colorado,Pikes Peak,Other,Colorado,State Parks,Pikes Peak,Pikes Peak,state_name_exact,1
+jr_florida_bahia_honda_sp,Florida,Bahia Honda SP,State,Florida,State Parks,Bahia Honda State Park,Bahia Honda State Park,state_core_exact,1
+jr_florida_florida_s_sp,Florida,Florida's State Parks,State,Florida,State Parks,Florida State Parks,Florida State Parks,state_core_exact,5
+jr_georgia_a_h_stephens_sp,Georgia,A.H. Stephens SP,State,Georgia,State Parks,A.H. Stephens State Park,A.H. Stephens State Park,state_core_exact,2
+jr_georgia_amicalola_falls_sp,Georgia,Amicalola Falls SP,State,Georgia,State Parks,Amicalola Falls State Park,Amicalola Falls State Park,state_core_exact,1
+jr_georgia_black_rock_mountain_sp,Georgia,Black Rock Mountain SP,State,Georgia,State Parks,Black Rock Mountain State Park,Black Rock Mountain State Park,state_core_exact,1
+jr_georgia_chattahoochee_bend_sp,Georgia,Chattahoochee Bend SP,State,Georgia,State Parks,Chattahoochee Bend State Park,Chattahoochee Bend State Park,state_core_exact,1
+jr_georgia_chief_vann_house_shs,Georgia,Chief Vann House SHS,State,Georgia,State Parks,Chief Vann House State Historic Site,Chief Vann House State Historic Site,state_core_exact,1
+jr_georgia_cloudland_canyon_sp,Georgia,Cloudland Canyon SP,State,Georgia,State Parks,Cloudland Canyon State Park,Cloudland Canyon State Park,state_core_exact,1
+jr_georgia_crooked_river_sp,Georgia,Crooked River SP,State,Georgia,State Parks,Crooked River State Park,Crooked River State Park,state_core_exact,1
+jr_georgia_dahlonega_gold_museum_shs,Georgia,Dahlonega Gold Museum SHS,State,Georgia,State Parks,Dahlonega Gold Museum State Historic Site,Dahlonega Gold Museum State Historic Site,state_core_exact,1
+jr_georgia_don_carter_sp,Georgia,Don Carter SP,State,Georgia,State Parks,Don Carter State Park,Don Carter State Park,state_core_exact,1
+jr_georgia_elijah_clark_sp,Georgia,Elijah Clark SP,State,Georgia,State Parks,Elijah Clark State Park,Elijah Clark State Park,state_core_exact,1
+jr_georgia_etowah_indian_mounds_shs,Georgia,Etowah Indian Mounds SHS,State,Georgia,State Parks,Etowah Indian Mounds State Historic Site,Etowah Indian Mounds State Historic Site,state_core_exact,1
+jr_georgia_f_d_roosevelt_sp,Georgia,F. D. Roosevelt SP,State,Georgia,State Parks,F.D. Roosevelt State Park,F.D. Roosevelt State Park,state_core_exact,1
+jr_georgia_florence_marina_sp,Georgia,Florence Marina SP,State,Georgia,State Parks,Florence Marina State Park,Florence Marina State Park,state_core_exact,1
+jr_georgia_fort_king_george_shs,Georgia,Fort King George SHS,State,Georgia,State Parks,Fort King George State Historic Site,Fort King George State Historic Site,state_core_exact,1
+jr_georgia_fort_mcallister_sp,Georgia,Fort McAllister SP,State,Georgia,State Parks,Fort McAllister State Park,Fort McAllister State Park,state_core_exact,1
+jr_georgia_fort_morris_shs,Georgia,Fort Morris SHS,State,Georgia,State Parks,Fort Morris State Historic Site,Fort Morris State Historic Site,state_core_exact,1
+jr_georgia_fort_mountain_sp,Georgia,Fort Mountain SP,State,Georgia,State Parks,Fort Mountain State Park,Fort Mountain State Park,state_core_exact,1
+jr_georgia_fort_yargo_sp,Georgia,Fort Yargo SP,State,Georgia,State Parks,Fort Yargo State Park,Fort Yargo State Park,state_core_exact,1
+jr_georgia_general_coffee_sp,Georgia,General Coffee SP,State,Georgia,State Parks,General Coffee State Park,General Coffee State Park,state_core_exact,1
+jr_georgia_george_l_smith_sp,Georgia,George L. Smith SP,State,Georgia,State Parks,George L. Smith State Park,George L. Smith State Park,state_core_exact,1
+jr_georgia_george_t_bagby_sp,Georgia,George T. Bagby SP,State,Georgia,State Parks,George T. Bagby State Park,George T. Bagby State Park,state_core_exact,1
+jr_georgia_georgia_s_sp,Georgia,Georgia's State Parks,State,Georgia,State Parks,Georgia State Parks,Georgia State Parks,state_core_exact,10
+jr_georgia_georgia_veterans_sp,Georgia,Georgia Veterans SP,State,Georgia,State Parks,Georgia Veterans State Park,Georgia Veterans State Park,state_core_exact,1
+jr_georgia_gordonia_alatamaha_sp,Georgia,Gordonia-Alatamaha SP,State,Georgia,State Parks,Gordonia-Alatamaha State Park,Gordonia-Alatamaha State Park,state_core_exact,1
+jr_georgia_hamburg_sp,Georgia,Hamburg SP,State,Georgia,State Parks,Hamburg State Park,Hamburg State Park,state_core_exact,1
+jr_georgia_hard_labor_creek_sp,Georgia,Hard Labor Creek SP,State,Georgia,State Parks,Hard Labor Creek State Park,Hard Labor Creek State Park,state_core_exact,2
+jr_georgia_high_falls_sp,Georgia,High Falls SP,State,Georgia,State Parks,High Falls State Park,High Falls State Park,state_core_exact,1
+jr_georgia_hofwyl_broadfield_plantation_shs,Georgia,Hofwyl-Broadfield Plantation SHS,State,Georgia,State Parks,Hofwyl-Broadfield Plantation State Historic Site,Hofwyl-Broadfield Plantation State Historic Site,state_core_exact,1
+jr_georgia_james_h_floyd_sp,Georgia,James H. Floyd SP,State,Georgia,State Parks,James H. Floyd State Park,James H. Floyd State Park,state_core_exact,1
+jr_georgia_jarrell_plantation_shs,Georgia,Jarrell Plantation SHS,State,Georgia,State Parks,Jarrell Plantation State Historic Site,Jarrell Plantation State Historic Site,state_core_exact,1
+jr_georgia_kolomoki_mounds_sp,Georgia,Kolomoki Mounds SP,State,Georgia,State Parks,Kolomoki Mounds State Park,Kolomoki Mounds State Park,state_core_exact,1
+jr_georgia_laura_s_walker_sp,Georgia,Laura S. Walker SP,State,Georgia,State Parks,Laura S. Walker State Park,Laura S. Walker State Park,state_core_exact,1
+jr_georgia_little_ocmulgee_sp,Georgia,Little Ocmulgee SP,State,Georgia,State Parks,Little Ocmulgee State Park,Little Ocmulgee State Park,state_core_exact,2
+jr_georgia_magnolia_springs_sp,Georgia,Magnolia Springs SP,State,Georgia,State Parks,Magnolia Springs State Park,Magnolia Springs State Park,state_core_exact,1
+jr_georgia_mistletoe_sp,Georgia,MIstletoe SP,State,Georgia,State Parks,Mistletoe State Park,Mistletoe State Park,state_core_exact,1
+jr_georgia_moccasin_creek_sp,Georgia,Moccasin Creek SP,State,Georgia,State Parks,Moccasin Creek State Park,Moccasin Creek State Park,state_core_exact,1
+jr_georgia_new_echota_shs,Georgia,New Echota SHS,State,Georgia,State Parks,New Echota State Historic Site,New Echota State Historic Site,state_core_exact,2
+jr_georgia_panola_mountain_sp,Georgia,Panola Mountain SP,State,Georgia,State Parks,Panola Mountain State Park,Panola Mountain State Park,state_core_exact,1
+jr_georgia_pickett_s_mill_battlefield_shs,Georgia,PIckett's Mill Battlefield SHS,State,Georgia,State Parks,Pickett's Mill Battlefield State Historic Site,Pickett's Mill Battlefield State Historic Site,state_core_exact,1
+jr_georgia_providence_canyon_sp,Georgia,Providence Canyon SP,State,Georgia,State Parks,Providence Canyon State Park,Providence Canyon State Park,state_core_exact,1
+jr_georgia_red_top_mountain_sp,Georgia,Red Top Mountain SP,State,Georgia,State Parks,Red Top Mountain State Park,Red Top Mountain State Park,state_core_exact,1
+jr_georgia_reed_bingham_sp,Georgia,Reed Bingham SP,State,Georgia,State Parks,Reed Bingham State Park,Reed Bingham State Park,state_core_exact,1
+jr_georgia_richard_b_russell_sp,Georgia,Richard B. Russell SP,State,Georgia,State Parks,Richard B. Russell State Park,Richard B. Russell State Park,state_core_exact,1
+jr_georgia_seminole_sp,Georgia,Seminole State Park,State,Georgia,State Parks,Seminole State Park,Seminole State Park,state_name_exact,1
+jr_georgia_skidaway_island_sp,Georgia,Skidaway Island SP,State,Georgia,State Parks,Skidaway Island State Park,Skidaway Island State Park,state_core_exact,1
+jr_georgia_smithgall_woods_sp,Georgia,Smithgall Woods SP,State,Georgia,State Parks,Smithgall Woods State Park,Smithgall Woods State Park,state_core_exact,1
+jr_georgia_stephen_c_foster_sp,Georgia,Stephen C. Foster SP,State,Georgia,State Parks,Stephen C. Foster State Park,Stephen C. Foster State Park,state_core_exact,1
+jr_georgia_sweetwater_creek_sp,Georgia,Sweetwater Creek SP,State,Georgia,State Parks,Sweetwater Creek State Park,Sweetwater Creek State Park,state_core_exact,1
+jr_georgia_tallulah_gorge_sp,Georgia,Tallulah Gorge SP,State,Georgia,State Parks,Tallulah Gorge State Park,Tallulah Gorge State Park,state_core_exact,1
+jr_georgia_traveler_s_rest_shs,Georgia,Traveler's Rest SHS,State,Georgia,State Parks,Traveler's Rest State Historic Site,Traveler's Rest State Historic Site,state_core_exact,1
+jr_georgia_tugaloo_sp,Georgia,Tugaloo SP,State,Georgia,State Parks,Tugaloo State Park,Tugaloo State Park,state_core_exact,1
+jr_georgia_unicoi_sp,Georgia,Unicoi SP,State,Georgia,State Parks,Unicoi State Park,Unicoi State Park,state_core_exact,1
+jr_georgia_victoria_bryant_sp,Georgia,Victoria Bryant SP,State,Georgia,State Parks,Victoria Bryant State Park,Victoria Bryant State Park,state_core_exact,1
+jr_georgia_vogel_sp,Georgia,Vogel SP,State,Georgia,State Parks,Vogel State Park,Vogel State Park,state_core_exact,1
+jr_georgia_watson_mill_bridge_sp,Georgia,Watson Mill Bridge SP,State,Georgia,State Parks,Watson Mill Bridge State Park,Watson Mill Bridge State Park,state_core_exact,1
+jr_georgia_wormsloe_shs,Georgia,Wormsloe SHS,State,Georgia,State Parks,Wormsloe State Historic Site,Wormsloe State Historic Site,state_core_exact,1
+jr_idaho_hells_gate_sp,Idaho,Hells Gate SP,State,Idaho,State Parks,Hells Gate,Hells Gate,state_core_exact,1
+jr_idaho_round_lake_sp,Idaho,Round Lake SP,State,Idaho,State Parks,Round Lake Badge,Round Lake Badge,state_core_exact,1
+jr_idaho_thousand_springs_sp,Idaho,Thousand Springs SP,State,Idaho,State Parks,Thousand Springs,Thousand Springs,state_core_exact,1
+jr_idaho_three_island_crossing_sp,Idaho,Three Island Crossing SP,State,Idaho,State Parks,Three Island Crossing Badge,Three Island Crossing Badge,state_core_exact,1
+jr_illinois_starved_rock_sp_and_nhl,Illinois,Starved Rock SP and NHL,State,Illinois,State Parks,Starved Rock State Park,Starved Rock State Park,state_core_exact,2
+jr_south_carolina_sesquicentennial_sp,South Carolina,Sesquicentennial State Park,State,Kansas,State Parks,Sesquicentennial patch,Sesquicentennial patch,unique_core_exact,1
+jr_maine_lamoine_sp,Maine,Lamoine SP,State,Maine,State Parks,Lamoine,Lamoine,state_core_exact,1
+jr__maryland_sp,Maryland,Maryland State Parks,State,Maryland,State Parks,Maryland State Parks,Maryland State Parks,state_name_exact,12
+jr_michigan_michigan_s_sp,Michigan,Michigan's State Parks,State,Michigan,State Parks,Michigan State Parks,Michigan State Parks,state_core_exact,7
+jr_montana_bannack_sp,Montana,Bannack State Park,State,Montana,State Parks,Bannack Badge,Bannack Badge,state_core_exact,1
+jr_montana_montana_s_sp,Montana,Montana's State Parks,State,Montana,State Parks,Montana State Parks,Montana State Parks,state_core_exact,3
+jr_nevada_nevada_s_sp,Nevada,Nevada's State Parks,State,Nevada,State Parks,Nevada State Parks,Nevada State Parks,state_core_exact,12
+jr_new_mexico_new_mexico_s_sp,New Mexico,New Mexico's State Parks,State,New Mexico,State Parks,New Mexico State Parks,New Mexico State Parks,state_core_exact,12
+jr_new_york_new_york_s_sp,New York,New York's State Parks,State,New York,State Parks,New York State Parks,New York State Parks,state_core_exact,12
+jr_north_carolina_bentonville_battlefield_shs,North Carolina,Bentonville Battlefield SHS,State,North Carolina,State Parks,Bentonville Battlefield State Historic Site,Bentonville Battlefield State Historic Site,state_core_exact,1
+jr_north_carolina_carolina_beach_sp,North Carolina,Carolina Beach SP,State,North Carolina,State Parks,Carolina Beach State Park,Carolina Beach State Park,state_core_exact,1
+jr_north_carolina_carvers_creek_sp,North Carolina,Carvers Creek SP,State,North Carolina,State Parks,Carvers Creek State Park,Carvers Creek State Park,state_core_exact,1
+jr_north_carolina_chimney_rock_sp,North Carolina,Chimney Rock SP,State,North Carolina,State Parks,Chimney Rock State Park,Chimney Rock State Park,state_core_exact,1
+jr_north_carolina_cliffs_of_neuse_sp,North Carolina,Cliffs of Neuse SP,State,North Carolina,State Parks,Cliffs of the Neuse State Park,Cliffs of the Neuse State Park,state_core_exact,1
+jr_north_carolina_crowders_mountain_sp,North Carolina,Crowders Mountain SP,State,North Carolina,State Parks,Crowders Mountain State Park,Crowders Mountain State Park,state_core_exact,1
+jr_north_carolina_dismal_swamp_sp,North Carolina,Dismal Swamp SP,State,North Carolina,State Parks,Dismal Swamp State Park,Dismal Swamp State Park,state_core_exact,1
+jr_north_carolina_elk_knob_sp,North Carolina,Elk Knob SP,State,North Carolina,State Parks,Elk Knob State Park,Elk Knob State Park,state_core_exact,1
+jr_north_carolina_eno_river_sp,North Carolina,Eno River SP,State,North Carolina,State Parks,Eno River State Park,Eno River State Park,state_core_exact,1
+jr_north_carolina_falls_lake_sra,North Carolina,Falls Lake SRA,State,North Carolina,State Parks,Falls Lake State Recreation Area,Falls Lake State Recreation Area,state_core_contains,1
+jr_north_carolina_fort_fisher_sra,North Carolina,Fort Fisher SRA,State,North Carolina,State Parks,Fort Fisher State Recreation Area,Fort Fisher State Recreation Area,state_core_exact,1
+jr_north_carolina_fort_macon_sp,North Carolina,Fort Macon SP,State,North Carolina,State Parks,Fort Macon State Park,Fort Macon State Park,state_core_exact,1
+jr_north_carolina_goose_creek_sp,North Carolina,Goose Creek SP,State,North Carolina,State Parks,Goose Creek State Park,Goose Creek State Park,state_core_exact,1
+jr_north_carolina_gorges_sp,North Carolina,Gorges SP,State,North Carolina,State Parks,Gorges State Park,Gorges State Park,state_core_exact,1
+jr_north_carolina_grandfather_mountain,North Carolina,Grandfather Mountain,Other,North Carolina,State Parks,Grandfather Mountain State Park,Grandfather Mountain,state_name_exact,1
+jr_north_carolina_hammocks_beach_sp,North Carolina,Hammocks Beach SP,State,North Carolina,State Parks,Hammocks Beach State Park,Hammocks Beach State Park,state_core_exact,1
+jr_north_carolina_hanging_rock_sp,North Carolina,Hanging Rock SP,State,North Carolina,State Parks,Hanging Rock State Park,Hanging Rock State Park,state_core_exact,1
+jr_north_carolina_haw_river_sp,North Carolina,Haw River SP,State,North Carolina,State Parks,Haw River State Park,Haw River State Park,state_core_exact,1
+jr_north_carolina_jockey_s_ridge_sp,North Carolina,Jockey's Ridge SP,State,North Carolina,State Parks,Jockey's Ridge State Park,Jockey's Ridge State Park,state_core_exact,1
+jr_north_carolina_jones_lake_sp,North Carolina,Jones Lake SP,State,North Carolina,State Parks,Jones Lake State Park,Jones Lake State Park,state_core_exact,1
+jr_north_carolina_jordan_lake_sra,North Carolina,Jordan Lake SRA,State,North Carolina,State Parks,Jordan Lake State Recreation Area,Jordan Lake State Recreation Area,state_core_exact,1
+jr_north_carolina_kerr_lake_sra,North Carolina,Kerr Lake SRA,State,North Carolina,State Parks,Kerr Lake State Recreation Area,Kerr Lake State Recreation Area,state_core_exact,1
+jr_north_carolina_lake_james_sp,North Carolina,Lake James SP,State,North Carolina,State Parks,Lake James State Park,Lake James State Park,state_core_exact,1
+jr_north_carolina_lake_norman_sp,North Carolina,Lake Norman SP,State,North Carolina,State Parks,Lake Norman State Park,Lake Norman State Park,state_core_exact,1
+jr_north_carolina_lake_waccamaw_sp,North Carolina,Lake Waccamaw SP,State,North Carolina,State Parks,Lake Waccamaw State Park,Lake Waccamaw State Park,state_core_exact,1
+jr_north_carolina_lumber_river_sp,North Carolina,Lumber River SP,State,North Carolina,State Parks,Lumber River State Park,Lumber River State Park,state_core_exact,1
+jr_north_carolina_mayo_river_sp,North Carolina,Mayo River SP,State,North Carolina,State Parks,Mayo River State Park,Mayo River State Park,state_core_exact,1
+jr_north_carolina_medoc_mountain_sp,North Carolina,Medoc Mountain SP,State,North Carolina,State Parks,Medoc Mountain State Park,Medoc Mountain State Park,state_core_exact,1
+jr_north_carolina_merchants_millpond_sp,North Carolina,Merchants Millpond SP,State,North Carolina,State Parks,Merchants Millpond State Park,Merchants Millpond State Park,state_core_exact,1
+jr_north_carolina_morrow_mountain_sp,North Carolina,Morrow Mountain SP,State,North Carolina,State Parks,Morrow Mountain State Park,Morrow Mountain State Park,state_core_exact,1
+jr_north_carolina_mount_jefferson,North Carolina,Mount Jefferson,State,North Carolina,State Parks,Mount Jefferson State Natural Area,Mount Jefferson State Natural Area,state_core_exact,1
+jr_north_carolina_mt_mitchell_sp,North Carolina,Mt. Mitchell SP,State,North Carolina,State Parks,Mount Mitchell State Park,Mt Mitchell,state_core_exact,1
+jr_north_carolina_new_river_sp,North Carolina,New River SP,State,North Carolina,State Parks,New River State Park,New River State Park,state_core_exact,1
+jr_north_carolina_north_carolina_s_sp,North Carolina,North Carolina's State Parks,State,North Carolina,State Parks,North Carolina State Parks,North Carolina State Parks,state_core_exact,12
+jr_north_carolina_pettigrew_sp,North Carolina,Pettigrew SP,State,North Carolina,State Parks,Pettigrew State Park,Pettigrew State Park,state_core_exact,1
+jr_north_carolina_pilot_mountain_sp,North Carolina,Pilot Mountain SP,State,North Carolina,State Parks,Pilot Mountain State Park,Pilot Mountain State Park,state_core_exact,1
+jr_north_carolina_singletary_lake_sp,North Carolina,Singletary Lake SP,State,North Carolina,State Parks,Singletary Lake State Park,Singletary Lake State Park,state_core_exact,1
+jr_north_carolina_south_mountains_sp,North Carolina,South Mountains SP,State,North Carolina,State Parks,South Mountains State Park,South Mountains State Park,state_core_exact,1
+jr_north_carolina_stone_mountain_sp,North Carolina,Stone Mountain SP,State,North Carolina,State Parks,Stone Mountain State Park,Stone Mountain State Park,state_core_exact,1
+jr_north_carolina_weymouth_woods_nature_preserve,North Carolina,Weymouth Woods Nature Preserve,State,North Carolina,State Parks,Weymouth Woods-Sandhills Nature Preserve,Weymouth Woods-Sandhills Nature Preserve,state_core_contains,2
+jr_north_carolina_william_b_umstead_sp,North Carolina,William B. Umstead SP,State,North Carolina,State Parks,William B. Umstead State Park,William B. Umstead State Park,state_core_exact,1
+jr_new_jersey_washington_crossing_sp,New Jersey,Washington Crossing SP,State,Pennsylvania,State Parks,Washington Crossing,Washington Crossing,unique_core_exact,1
+jr_south_dakota_custer_sp,South Dakota,Custer SP,State,South Dakota,State Parks,Custer,Custer,state_core_exact,4
+jr_south_dakota_south_dakota_s_sp,South Dakota,South Dakota's SP,State,South Dakota,State Parks,South Dakota State Parks,South Dakota State Parks,state_core_contains,12
+jr_tennessee_tennessee_s_sp,Tennessee,Tennessee's State Parks,State,Tennessee,State Parks,Tennessee State Parks,Tennessee State Parks,state_core_exact,2
+jr_texas_brazos_bend_sp,Texas,Brazos Bend SP,State,Texas,State Parks,Brazos Bend SP,Brazos Bend SP,state_name_exact,3
+jr_texas_eisenhower_sp,Texas,Eisenhower SP,State,Texas,State Parks,Eisenho wer SP,Eisenhower Badge,state_core_exact,1
+jr_texas_hueco_tanks_sp_and_hs,Texas,Hueco Tanks SP & HS,State,Texas,State Parks,Hueco Tanks SP,Hueco Tanks SP,state_core_contains,1
+jr_texas_palo_duro_canyon_sp,Texas,Palo Duro Canyon SP,State,Texas,State Parks,Palo Duro Canyo n SP,Palo Duro Patch,state_core_contains,1
+jr_texas_texas_s_sp,Texas,Texas's State Parks,State,Texas,State Parks,Texas State Parks,Texas State Parks,state_core_exact,12
+jr_wisconsin_copper_falls_sp,Wisconsin,Copper Falls SP,State,Unknown - Midwest State Parks,State Parks,Copper Falls,Copper Falls,unique_core_exact,1
+jr_wisconsin_big_bay_sp,Wisconsin,Big Bay SP,State,Unknown - Midwest State Parks,State Parks,big bay,big bay,unique_core_exact,1
+jr_utah_coral_pink_sand_dunes_sp,Utah,Coral Pink Sand Dunes SP,State,Utah,State Parks,Coral Pink Sand Dunes,Coral Pink Sand Dunes,state_core_exact,1
+jr_utah_dead_horse_point_sp,Utah,Dead Horse Point SP,State,Utah,State Parks,Dead Horse Point,Dead Horse Point,state_core_exact,2
+jr_utah_edge_of_the_cedars_sp,Utah,Edge of the Cedars SP,State,Utah,State Parks,Edge of the Cedars,Edge of the Cedars,state_core_exact,4
+jr_utah_goblin_valley_sp,Utah,Goblin Valley SP,State,Utah,State Parks,Goblin Valley,Goblin Valley,state_core_exact,1
+jr_washington_rockport_sp,Washington,Rockport SP,State,Utah,State Parks,Rockport,Rockport,unique_core_exact,1
+jr_utah_utah_field_house_of_natural_history_sp_museum,Utah,Utah Field House of Natural History SP Museum,State,Utah,State Parks,Utah Field House of Natural History,Utah Field House of Natural History,state_core_contains,2
+jr_utah_wasatch_mountain_sp,Utah,Wasatch Mountain SP,State,Utah,State Parks,Wasatch Mountain,Wasatch Mountain,state_core_exact,1
+jr_virginia_bear_creek_lake_sp,Virginia,Bear Creek Lake SP,State,Virginia,State Parks,Bear Creek,Bear Creek Lake Badge,state_core_exact,2
+jr_virginia_claytor_lake_sp,Virginia,Claytor Lake SP,State,Virginia,State Parks,Claytor Lake,Claytor Lake,state_core_exact,1
+jr_virginia_douthat_sp,Virginia,Douthat SP,State,Virginia,State Parks,Douthat,Douthat,state_core_exact,1
+jr_virginia_fairy_stone_sp,Virginia,Fairy Stone SP,State,Virginia,State Parks,Fairy Stone,Fairy Stone,state_core_exact,2
+jr_virginia_hungry_mother_sp,Virginia,Hungry Mother SP,State,Virginia,State Parks,Hungry Mother,Hungry Mother,state_core_exact,2
+jr_virginia_james_river_sp,Virginia,James River SP,State,Virginia,State Parks,James River Patch,James River Patch,state_core_exact,1
+jr_virginia_leesylvania_sp,Virginia,Leesylvania SP,State,Virginia,State Parks,Leesylvania,Leesylvania,state_core_exact,1
+jr_virginia_pocahontas_sp,Virginia,Pocahontas SP,State,Virginia,State Parks,Pocahontas,Pocahontas,state_core_exact,1
+jr_virginia_shenandoah_river_sp,Virginia,Shenandoah River SP,State,Virginia,State Parks,Shenandoah River,Shenandoah River,state_core_exact,2
+jr_virginia_sky_meadows_sp,Virginia,Sky Meadows SP,State,Virginia,State Parks,Sky Meadows,Sky Meadows,state_core_exact,1
+jr_virginia_smith_mountain_lake_sp,Virginia,Smith Mountain Lake SP,State,Virginia,State Parks,Smith Mountain Lake,Smith Mountain Lake,state_core_exact,1
+jr_virginia_virginia_s_sp,Virginia,Virginia's State Parks,State,Virginia,State Parks,Virginia State Parks,Virginia State Parks,state_core_exact,12
+jr_virginia_westmoreland_sp,Virginia,Westmoreland SP,State,Virginia,State Parks,Westmoreland,Westmoreland,state_core_exact,1
+jr_virginia_york_river_sp,Virginia,York River SP,State,Virginia,State Parks,York River,York River,state_core_exact,1
+jr_washington_washington_s_sp,Washington,Washington's State Parks,State,Washington,State Parks,Washington State Parks,Washington State Parks,state_core_exact,12
+jr_west_virginia_west_virginia_s_sp,West Virginia,West Virginia's SP,State,West Virginia,State Parks,West Virginia State Parks,West Virginia State Parks,state_core_contains,10
+jr_wisconsin_wisconsin_sp_explorer_program,Wisconsin,Wisconsin State Parks Explorer Program,State,Wisconsin,State Parks,Wisconsin State Parks,Wisconsin State Parks,state_core_exact,8
+jr_wyoming_guernsey_sp,Wyoming,Guernsey SP,State,Wyoming,State Parks,Guernsey,Guernsey,state_core_exact,2
+jr_iowa_lake_red_rock,Iowa,Lake Red Rock,US Army Corps of Engineers,Iowa,U.S. Army Corps of Engineers,Lake Rock,Lake Rock,state_core_contains,1
+jr_iowa_saylorville_lake,Iowa,Saylorville Lake,US Army Corps of Engineers,Iowa,U.S. Army Corps of Engineers,Saylorville Lake,Saylorville Lake,state_name_exact,1
+jr_missouri_table_rock_lake,Missouri,Table Rock Lake,US Army Corps of Engineers,Missouri,U.S. Army Corps of Engineers,Table Rock,Table Rock,state_core_contains,1
+jr_montana_libby_dam_visitor_center,Montana,Libby Dam Visitor Center,US Army Corps of Engineers,Montana,U.S. Army Corps of Engineers,Libby Dam,Libby Dam,state_core_exact,1
+jr_ohio_alum_creek_lake_visitor_s_center,Ohio,Alum Creek Lake Visitor's Center,US Army Corps of Engineers,Ohio,U.S. Army Corps of Engineers,Alum Creek Lake,Alum Creek Lake,state_core_contains,1
+jr_washington_ballard_locks,Washington,Ballard Locks,US Army Corps of Engineers,Washington,U.S. Army Corps of Engineers,Ballard Locks,Ballard Locks,state_name_exact,1
+jr_alaska_chugach_nf,Alaska,Chugach NF,US Forest Service - National Forest,Alaska,U.S. Forest Service,Chugach National Forest,Chugach National Forest,state_core_exact,5
+jr_alaska_tongass_nf,Alaska,Tongass NF,US Forest Service - National Forest,Alaska,U.S. Forest Service,Tongass National Forest,Tongass National Forest,state_core_exact,7
+jr_arizona_apache_sitgreaves_nf,Arizona,Apache-SitGreaves NF,US Forest Service - National Forest,Arizona,U.S. Forest Service,Apache Sitgreaves National Forest,Apache Sitgreaves National Forest,state_core_exact,1
+jr_california_inyo_nf,California,Inyo NF,US Forest Service - National Forest,California,U.S. Forest Service,Inyo National Forest,Inyo National Forest,state_core_exact,8
+jr_california_los_padres_nf,California,Los Padres NF,US Forest Service - National Forest,California,U.S. Forest Service,Los Padres National Forest,Los Padres National Forest,state_core_exact,1
+jr_california_stanislaus_nf,California,Stanislaus NF,US Forest Service - National Forest,California,U.S. Forest Service,Stanislaus National Forest,Stanislaus National Forest,state_core_exact,3
+jr_across_selway_bitterroot_wilderness,Idaho,Selway Bitterroot Wilderness,US Forest Service - National Forest,Idaho,U.S. Forest Service,Selway-Bitterroot Wilderness,Selway-Bitterroot Wilderness,state_name_exact,1
+jr_pentathlon_card_daniel_boone_nf,Kentucky,Daniel Boone NF,US Forest Service - National Forest,Kentucky,U.S. Forest Service,Daniel Boone,Daniel Boone,state_core_exact,1
+jr_pentathlon_card_land_between_the_lakes_nra,Kentucky,Land Between the Lakes NRA,US Forest Service - National Forest,Kentucky,U.S. Forest Service,Land Between the Lakes National Recreation Area,Land Between the Lakes National Recreation Area,state_core_exact,2
+jr_montana_custer_gallatin_nf,Montana,Custer Gallatin NF,US Forest Service - National Forest,Montana,U.S. Forest Service,Custer Gallatin National Forest,Custer Gallatin National Forest,state_core_exact,3
+jr_montana_helena_lewis_and_clark_nf,Montana,Helena-Lewis and Clark NF,US Forest Service - National Forest,Montana,U.S. Forest Service,Lewis and Clark National Forest,Lewis and Clark National Forest,state_core_contains,5
+jr_nebraska_pine_ridge_ranger_district,Nebraska,Pine Ridge Ranger District,US Forest Service - National Forest,Nebraska,U.S. Forest Service,Pine Ridge,Pine Ridge,state_core_contains,1
+jr_new_mexico_cibola_nf,New Mexico,Cibola NF,US Forest Service - National Forest,New Mexico,U.S. Forest Service,Cibola National Forest,Cibola National Forest,state_core_exact,1
+jr_oregon_deschutes_nf,Oregon,Deschutes NF,US Forest Service - National Forest,Oregon,U.S. Forest Service,Deschutes National Forest,Deschutes National Forest,state_core_exact,1
+jr_oregon_umpqua_nf,Oregon,Umpqua NF,US Forest Service - National Forest,Oregon,U.S. Forest Service,Umpqua National Forest,Umpqua National Forest,state_core_exact,2
+jr_south_dakota_black_hills_nf,South Dakota,Black Hills NF,US Forest Service - National Forest,South Dakota,U.S. Forest Service,Black Hills National Forest,Black Hills National Forest,state_core_exact,2
+jr_south_dakota_buffalo_gap_ng,South Dakota,Buffalo Gap NG,US Forest Service - National Forest,South Dakota,U.S. Forest Service,Buffalo Gap National Grasslands,Buffalo Gap National Grasslands,state_core_contains,4
+jr_south_dakota_fort_pierre_ng,South Dakota,Fort Pierre NG,US Forest Service - National Forest,South Dakota,U.S. Forest Service,Fort Pierre National Grassland,Fort Pierre National Grassland,state_core_exact,2
+jr_utah_dixon_nf,Utah,Dixie NF,US Forest Service - National Forest,Utah,U.S. Forest Service,Dixie National Forest,Dixie National Forest,state_core_exact,1
+jr_wyoming_bighorn_nf,Wyoming,Bighorn NF,US Forest Service - National Forest,Wyoming,U.S. Forest Service,Bighorn National Forest,Bighorn National Forest,state_core_exact,2
