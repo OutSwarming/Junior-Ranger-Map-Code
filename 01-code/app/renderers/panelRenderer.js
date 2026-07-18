@@ -300,22 +300,116 @@ function getRenderableBookLinks(place = {}) {
     return place && place._isPickupLocation ? [] : getBookLinks(place);
 }
 
+function getBadgeDisplayImageUrl(imageUrl) {
+    const badgeService = window.BARK.services && window.BARK.services.badgeImages;
+    return badgeService && typeof badgeService.getDisplayImageUrl === 'function'
+        ? badgeService.getDisplayImageUrl(imageUrl)
+        : imageUrl;
+}
+
+function handleBadgeImageViewerKeydown(event) {
+    if (event.key === 'Escape') closeBadgeImageViewer();
+}
+
+function closeBadgeImageViewer() {
+    const viewer = document.getElementById('badge-image-viewer');
+    if (!viewer) return;
+
+    viewer.classList.remove('active');
+    viewer.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('badge-image-viewer-open');
+    document.removeEventListener('keydown', handleBadgeImageViewerKeydown);
+
+    const image = viewer.querySelector('.badge-image-viewer-image');
+    if (image) {
+        image.removeAttribute('src');
+        image.alt = '';
+    }
+}
+
+function ensureBadgeImageViewer() {
+    let viewer = document.getElementById('badge-image-viewer');
+    if (viewer) return viewer;
+
+    viewer = document.createElement('div');
+    viewer.id = 'badge-image-viewer';
+    viewer.className = 'badge-image-viewer';
+    viewer.setAttribute('aria-hidden', 'true');
+    viewer.setAttribute('aria-label', 'Badge image preview');
+    viewer.setAttribute('aria-modal', 'true');
+    viewer.setAttribute('role', 'dialog');
+
+    const closeButton = document.createElement('button');
+    closeButton.type = 'button';
+    closeButton.className = 'badge-image-viewer-close';
+    closeButton.setAttribute('aria-label', 'Close badge image');
+    closeButton.innerHTML = '&times;';
+    closeButton.addEventListener('click', closeBadgeImageViewer);
+
+    const stage = document.createElement('div');
+    stage.className = 'badge-image-viewer-stage';
+
+    const image = document.createElement('img');
+    image.className = 'badge-image-viewer-image';
+    image.alt = '';
+    image.decoding = 'async';
+    image.referrerPolicy = 'no-referrer';
+
+    stage.appendChild(image);
+    viewer.appendChild(closeButton);
+    viewer.appendChild(stage);
+    viewer.addEventListener('click', event => {
+        if (event.target === viewer || event.target === stage) closeBadgeImageViewer();
+    });
+
+    document.body.appendChild(viewer);
+    return viewer;
+}
+
+function openBadgeImageViewer(badge, index) {
+    const sourceUrl = badge && (badge.imageUrl || badge.thumbnailUrl);
+    if (!sourceUrl) return false;
+
+    const viewer = ensureBadgeImageViewer();
+    const image = viewer.querySelector('.badge-image-viewer-image');
+    const closeButton = viewer.querySelector('.badge-image-viewer-close');
+    const title = badge.title || `Badge ${index + 1}`;
+
+    if (image) {
+        image.src = getBadgeDisplayImageUrl(sourceUrl);
+        image.alt = title;
+    }
+
+    viewer.classList.add('active');
+    viewer.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('badge-image-viewer-open');
+    document.removeEventListener('keydown', handleBadgeImageViewerKeydown);
+    document.addEventListener('keydown', handleBadgeImageViewerKeydown);
+
+    if (closeButton && typeof closeButton.focus === 'function') {
+        closeButton.focus({ preventScroll: true });
+    }
+
+    return true;
+}
+
 function createBadgeImageCard(badge, index) {
     const card = document.createElement('a');
     card.className = 'badge-image-card';
-    configureExternalLink(card, badge.imageUrl);
+    card.href = getBadgeDisplayImageUrl(badge.imageUrl || badge.thumbnailUrl) || '#';
     card.setAttribute('aria-label', `Open ${badge.title || `Badge ${index + 1}`} image`);
     card.title = badge.title || `Badge ${index + 1}`;
+    card.rel = 'noopener noreferrer';
+    card.addEventListener('click', event => {
+        if (openBadgeImageViewer(badge, index)) event.preventDefault();
+    });
 
     const imageFrame = document.createElement('div');
     imageFrame.className = 'badge-image-frame';
 
     const image = document.createElement('img');
-    const badgeService = window.BARK.services && window.BARK.services.badgeImages;
     const rawImageUrl = badge.thumbnailUrl || badge.imageUrl;
-    image.src = badgeService && typeof badgeService.getDisplayImageUrl === 'function'
-        ? badgeService.getDisplayImageUrl(rawImageUrl)
-        : rawImageUrl;
+    image.src = getBadgeDisplayImageUrl(rawImageUrl);
     image.alt = badge.title || `Badge ${index + 1}`;
     image.loading = 'lazy';
     image.decoding = 'async';
@@ -642,7 +736,9 @@ window.BARK.panelRendererSafety = {
     getRenderableBookLinks,
     getSafeHttpUrls,
     getSpecialProgramLabels,
+    openBadgeImageViewer,
     openFreeVisitLimitPaywall,
+    closeBadgeImageViewer,
     setTextWithLineBreaks
 };
 
@@ -983,3 +1079,5 @@ function renderMarkerClickPanel(context) {
 }
 
 window.BARK.renderMarkerClickPanel = renderMarkerClickPanel;
+window.BARK.openBadgeImageViewer = openBadgeImageViewer;
+window.BARK.closeBadgeImageViewer = closeBadgeImageViewer;
