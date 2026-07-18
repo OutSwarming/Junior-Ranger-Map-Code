@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build local badge images and a map lookup manifest from SafeFood exports."""
+"""Build local badge images and a map lookup manifest from JR Rewards exports."""
 
 from __future__ import annotations
 
@@ -23,10 +23,10 @@ from PIL import Image
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_SAFEFOOD_DIR = Path("/Users/carterswarm/Downloads/SafeFoodCert_Badges")
+DEFAULT_JR_REWARDS_DIR = Path("/Users/carterswarm/Downloads/JR_Rewards_Badges")
 DEFAULT_LIVE_CATALOG_URL = "https://junior-ranger-map-auth.web.app/api/junior-ranger-catalog"
 DEFAULT_MANIFEST_PATH = REPO_ROOT / "01-code/app/assets/data/badge-manifest.json"
-DEFAULT_BADGE_ASSET_DIR = REPO_ROOT / "01-code/app/assets/badges/safefood"
+DEFAULT_BADGE_ASSET_DIR = REPO_ROOT / "01-code/app/assets/badges/jr-rewards"
 DEFAULT_REPORT_DIR = REPO_ROOT / "05-tools/reports"
 
 STATE_NAMES = {
@@ -385,7 +385,7 @@ OFFSITE_FILTER_MIN_IMAGES = 4
 OFFSITE_FILTER_MIN_MATCHES = 2
 
 PATH_RE = re.compile(
-    r"/Users/carterswarm/Downloads/SafeFoodCert_Badges/.*?\s-\s[0-9a-f]{10}\.(?:jpg|jpeg|png|webp)",
+    r"/Users/carterswarm/Downloads/JR_Rewards_Badges/.*?\s-\s[0-9a-f]{10}\.(?:jpg|jpeg|png|webp)",
     re.IGNORECASE,
 )
 HASH_RE = re.compile(r"-\s*([0-9a-f]{10})\.(?:jpg|jpeg|png|webp)$", re.IGNORECASE)
@@ -661,7 +661,7 @@ def read_csv(path: Path) -> list[dict[str, str]]:
 
 def fetch_live_catalog(url: str) -> list[dict[str, str]]:
     separator = "&" if "?" in url else "?"
-    cache_busted_url = f"{url}{separator}cache_bypass=safefood-badge-build"
+    cache_busted_url = f"{url}{separator}cache_bypass=jr-rewards-badge-build"
     with urllib.request.urlopen(cache_busted_url, timeout=45) as response:
         csv_text = response.read().decode("utf-8-sig")
     return list(csv.DictReader(io.StringIO(csv_text)))
@@ -888,9 +888,9 @@ def map_row_to_pin(
     return None, "", names[0] if names else ""
 
 
-def find_actual_images(safefood_dir: Path) -> dict[str, Path]:
+def find_actual_images(jr_rewards_dir: Path) -> dict[str, Path]:
     images_by_hash = {}
-    for root, _dirs, files in os.walk(safefood_dir):
+    for root, _dirs, files in os.walk(jr_rewards_dir):
         for filename in files:
             path = Path(root) / filename
             if path.suffix.lower() not in IMAGE_EXTENSIONS:
@@ -1056,15 +1056,15 @@ def write_csv(path: Path, headers: list[str], rows: list[dict[str, object]]) -> 
 
 
 def build_manifest(args: argparse.Namespace) -> dict[str, object]:
-    safefood_dir = Path(args.safefood_dir).expanduser().resolve()
-    master_path = safefood_dir / "compiled_tracking_data/folder_image_master_corrected/Folder_Image_JR_Program_Master_Corrected.csv"
+    jr_rewards_dir = Path(args.jr_rewards_dir).expanduser().resolve()
+    master_path = jr_rewards_dir / "compiled_tracking_data/folder_image_master_corrected/Folder_Image_JR_Program_Master_Corrected.csv"
     if not master_path.exists():
-        raise FileNotFoundError(f"Corrected SafeFood master not found: {master_path}")
+        raise FileNotFoundError(f"Corrected JR Rewards master not found: {master_path}")
 
     catalog_rows = fetch_live_catalog(args.catalog_url)
     pins = load_pins(catalog_rows)
     indexes = build_pin_indexes(pins)
-    actual_images = find_actual_images(safefood_dir)
+    actual_images = find_actual_images(jr_rewards_dir)
     master_rows = read_csv(master_path)
 
     badge_asset_dir = Path(args.badge_asset_dir).resolve()
@@ -1167,7 +1167,7 @@ def build_manifest(args: argparse.Namespace) -> dict[str, object]:
                 asset_cache[image_hash] = output_relative
                 total_written_images += 1
 
-            badge_id = f"safefood-{image_hash}"
+            badge_id = f"jr-reward-{image_hash}"
             row_badges.append(
                 {
                     "id": badge_id,
@@ -1175,7 +1175,7 @@ def build_manifest(args: argparse.Namespace) -> dict[str, object]:
                     "type": "Badge",
                     "imageUrl": output_relative,
                     "thumbnailUrl": output_relative,
-                    "source": "safefood-corrected-master",
+                    "source": "jr-rewards-master",
                 }
             )
 
@@ -1230,13 +1230,13 @@ def build_manifest(args: argparse.Namespace) -> dict[str, object]:
         "version": 3,
         "updatedAt": datetime.now(timezone.utc).isoformat(),
         "source": {
-            "name": "SafeFoodCert_Badges corrected folder master",
-            "folder": str(safefood_dir),
+            "name": "JR Rewards image master",
+            "folder": str(jr_rewards_dir),
             "catalogUrl": args.catalog_url,
         },
         "summary": {
             "livePinsWithCoordinates": len(pins),
-            "safefoodRowsWithResolvedImages": matched_source_rows + len(unmatched_rows),
+            "jrRewardRowsWithResolvedImages": matched_source_rows + len(unmatched_rows),
             "matchedRows": matched_source_rows,
             "matchedPinMappings": len(matched_rows),
             "unmatchedRows": len(unmatched_rows),
@@ -1260,10 +1260,10 @@ def build_manifest(args: argparse.Namespace) -> dict[str, object]:
 
     report_dir = Path(args.report_dir).resolve()
     report_dir.mkdir(parents=True, exist_ok=True)
-    summary_path = report_dir / "safefood-badge-map-summary.json"
+    summary_path = report_dir / "jr-rewards-badge-map-summary.json"
     summary_path.write_text(json.dumps(manifest["summary"], indent=2, sort_keys=True) + "\n", encoding="utf-8")
     write_csv(
-        report_dir / "safefood-badge-map-matches.csv",
+        report_dir / "jr-rewards-badge-map-matches.csv",
         [
             "pinId",
             "pinState",
@@ -1279,12 +1279,12 @@ def build_manifest(args: argparse.Namespace) -> dict[str, object]:
         matched_rows,
     )
     write_csv(
-        report_dir / "safefood-badge-map-unmatched.csv",
+        report_dir / "jr-rewards-badge-map-unmatched.csv",
         ["state", "agency", "siteName", "imageCount", "resolvedImageCount", "candidateName", "reason"],
         unmatched_rows,
     )
     write_csv(
-        report_dir / "safefood-badge-map-filtered.csv",
+        report_dir / "jr-rewards-badge-map-filtered.csv",
         ["pinIds", "sourceState", "sourceAgency", "sourceSiteName", "imageTitle", "imagePath", "reason"],
         filtered_rows,
     )
@@ -1294,7 +1294,7 @@ def build_manifest(args: argparse.Namespace) -> dict[str, object]:
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--safefood-dir", default=str(DEFAULT_SAFEFOOD_DIR))
+    parser.add_argument("--jr-rewards-dir", default=str(DEFAULT_JR_REWARDS_DIR))
     parser.add_argument("--catalog-url", default=DEFAULT_LIVE_CATALOG_URL)
     parser.add_argument("--manifest-path", default=str(DEFAULT_MANIFEST_PATH))
     parser.add_argument("--badge-asset-dir", default=str(DEFAULT_BADGE_ASSET_DIR))

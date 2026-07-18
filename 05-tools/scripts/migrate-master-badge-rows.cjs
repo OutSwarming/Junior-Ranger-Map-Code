@@ -18,6 +18,7 @@ const path = require('path');
 const REPO_ROOT = path.resolve(__dirname, '..', '..');
 const DEFAULT_SPREADSHEET_ID = '1Twoq7MNwqGn49d9t2phdDThB5ufT1H2PqY9fmcZrs_8';
 const DEFAULT_MANIFEST_PATH = path.join(REPO_ROOT, '01-code/app/assets/data/badge-manifest.json');
+const DEFAULT_DRIVE_FILES_PATH = path.join(REPO_ROOT, '05-tools/reports/jr-rewards-drive-files.json');
 const HOSTED_BADGE_BASE_URL = 'https://junior-ranger-map-auth.web.app/';
 
 const US_STATE_SHEETS = [
@@ -77,6 +78,8 @@ function parseArgs(argv) {
   const options = {
     spreadsheetId: DEFAULT_SPREADSHEET_ID,
     manifestPath: DEFAULT_MANIFEST_PATH,
+    driveFilesPath: '',
+    requestsOutPath: '',
     write: false,
     states: null,
     chunkSize: 450,
@@ -91,6 +94,10 @@ function parseArgs(argv) {
       options.spreadsheetId = argv[++index];
     } else if (arg === '--manifest') {
       options.manifestPath = path.resolve(argv[++index]);
+    } else if (arg === '--drive-files') {
+      options.driveFilesPath = path.resolve(argv[++index]);
+    } else if (arg === '--requests-out') {
+      options.requestsOutPath = path.resolve(argv[++index]);
     } else if (arg === '--states') {
       options.states = argv[++index].split(',').map(value => value.trim()).filter(Boolean);
     } else if (arg === '--chunk-size') {
@@ -119,6 +126,8 @@ Options:
   --write                 Apply the generated Sheets batchUpdate requests.
   --spreadsheet-id ID     Override the Master spreadsheet ID.
   --manifest PATH         Override badge-manifest.json path.
+  --drive-files PATH      Use an individual Drive upload manifest for badge links.
+  --requests-out PATH     Write generated Sheets API requests to a JSON file.
   --states A,B,C          Limit to comma-separated state tab names.
   --limit-states N        Dry-run or write only the first N selected states.
   --chunk-size N          Max Sheets API requests per batchUpdate call.
@@ -160,9 +169,18 @@ function cleanBadgeLabel(value, fallback) {
   return cleaned || fallback;
 }
 
-function hostedBadgeUrl(rawUrl) {
+function getBadgeAssetHash(rawUrl) {
+  const match = String(rawUrl || '').match(/\/?assets\/badges\/jr-rewards\/([a-f0-9]{10})\.webp(?:[?#].*)?$/i);
+  return match ? match[1].toLowerCase() : '';
+}
+
+function hostedBadgeUrl(rawUrl, driveFilesByHash) {
   const url = String(rawUrl || '').trim();
   if (!url) return '';
+  const assetHash = getBadgeAssetHash(url);
+  if (assetHash && driveFilesByHash && driveFilesByHash[assetHash] && driveFilesByHash[assetHash].viewUrl) {
+    return driveFilesByHash[assetHash].viewUrl;
+  }
   if (/^https?:\/\//i.test(url)) return url;
   return `${HOSTED_BADGE_BASE_URL}${url.replace(/^\/+/, '')}`;
 }
@@ -171,14 +189,14 @@ function badgeFormula(label, url) {
   return `=HYPERLINK("${escapeFormulaText(url)}","     (${escapeFormulaText(label)})")`;
 }
 
-function getBadgeRowsForSite(siteId, badgesByPinId) {
+function getBadgeRowsForSite(siteId, badgesByPinId, driveFilesByHash) {
   const seenUrls = new Set();
   const rows = ['Badges:'];
   const badges = Array.isArray(badgesByPinId[siteId]) ? badgesByPinId[siteId] : [];
 
   badges.forEach((badge, index) => {
     const rawUrl = badge.imageUrl || badge.url || badge.thumbnailUrl || '';
-    const url = hostedBadgeUrl(rawUrl);
+    const url = hostedBadgeUrl(rawUrl, driveFilesByHash);
     if (!url || seenUrls.has(url.toLowerCase())) return;
 
     seenUrls.add(url.toLowerCase());
@@ -327,7 +345,7 @@ function makeOverwriteColumnDRequest(sheetId, rowIndex, value) {
   };
 }
 
-function buildStateRequests(sheet, rows, badgesByPinId) {
+function buildStateRequests(sheet, rows, badgesByPinId, driveFilesByHash) {
   const parks = findParkRows(rows);
   const requests = [];
   const stats = {
@@ -343,7 +361,7 @@ function buildStateRequests(sheet, rows, badgesByPinId) {
   for (let parkIndex = parks.length - 1; parkIndex >= 0; parkIndex -= 1) {
     const park = parks[parkIndex];
     const nextParkRowIndex = parkIndex + 1 < parks.length ? parks[parkIndex + 1].rowIndex : rows.length;
-    const badgeRows = getBadgeRowsForSite(park.siteId, badgesByPinId);
+    const badgeRows = getBadgeRowsForSite(park.siteId, badgesByPinId, driveFilesByHash);
     if (badgeRows.length > 2 || badgeRows[1] !== '     (no reward)') stats.matchedParks += 1;
 
     const existingBlock = getExistingBadgeBlock(rows, park, nextParkRowIndex);
@@ -407,6 +425,20 @@ async function getAuthHeaders() {
   };
 }
 
+function loadDriveFilesByHash(driveFilesPath) {
+  const selectedPath = driveFilesPath || (fs.existsSync(DEFAULT_DRIVE_FILES_PATH) ? DEFAULT_DRIVE_FILES_PATH : '');
+  if (!selectedPath) return {};
+  const payload = JSON.parse(fs.readFileSync(selectedPath, 'utf8'));
+  const files = Array.isArray(payload.files) ? payload.files : [];
+  const byHash = {};
+  files.forEach(file => {
+    const hash = String(file.hash || '').toLowerCase();
+    if (!hash || !file.viewUrl) return;
+    byHash[hash] = file;
+  });
+  return byHash;
+}
+
 async function applyRequests(spreadsheetId, requests, chunkSize) {
   const headers = await getAuthHeaders();
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}:batchUpdate`;
@@ -442,12 +474,16 @@ async function main() {
 
   const manifest = JSON.parse(fs.readFileSync(options.manifestPath, 'utf8'));
   const badgesByPinId = manifest.badgesByPinId || {};
+  const driveFilesByHash = loadDriveFilesByHash(options.driveFilesPath);
+  if (Object.keys(driveFilesByHash).length) {
+    console.log(`Using ${Object.keys(driveFilesByHash).length} individual Drive image links.`);
+  }
   const allRequests = [];
   const allStats = [];
 
   for (const sheet of selectedSheets) {
     const rows = await fetchSheetRows(options.spreadsheetId, sheet.title);
-    const { requests, stats } = buildStateRequests(sheet, rows, badgesByPinId);
+    const { requests, stats } = buildStateRequests(sheet, rows, badgesByPinId, driveFilesByHash);
     allRequests.push(...requests);
     allStats.push(stats);
     console.log(`${sheet.title}: ${stats.parks} parks, ${stats.matchedParks} matched, ${stats.insertedRows} insert row(s), ${stats.existingBlocks} existing block(s)`);
@@ -467,6 +503,12 @@ async function main() {
 
   console.log('\nTotals:', JSON.stringify(totals, null, 2));
   console.log(`Generated ${allRequests.length} Sheets API request(s).`);
+
+  if (options.requestsOutPath) {
+    fs.mkdirSync(path.dirname(options.requestsOutPath), { recursive: true });
+    fs.writeFileSync(options.requestsOutPath, JSON.stringify(allRequests, null, 2) + '\n', 'utf8');
+    console.log(`Wrote generated requests to ${options.requestsOutPath}`);
+  }
 
   if (!options.write) {
     console.log('\nDry run only. Re-run with --write after confirming Sheets edit credentials.');

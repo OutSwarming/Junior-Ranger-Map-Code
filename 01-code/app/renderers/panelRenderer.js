@@ -489,6 +489,7 @@ function renderBadgeGallery(container, place = {}) {
 
     const badgeService = window.BARK.services && window.BARK.services.badgeImages;
     if (!badgeService || !pinId) return;
+    if (csvBadges.length) return true;
 
     const loadBadges = typeof badgeService.getBadgesForPlace === 'function'
         ? badgeService.getBadgesForPlace(place)
@@ -496,7 +497,7 @@ function renderBadgeGallery(container, place = {}) {
 
     loadBadges.then(manifestBadges => {
         if (container.dataset.pinId !== pinId) return;
-        const badges = mergeBadgeImages(manifestBadges, csvBadges);
+        const badges = mergeBadgeImages(manifestBadges, []);
         renderBadgeGalleryImages(container, badges, place);
     }).catch(error => {
         console.warn('[panelRenderer] Unable to load badge images for selected pin.', {
