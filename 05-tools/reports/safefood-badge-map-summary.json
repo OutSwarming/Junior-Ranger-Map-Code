@@ -1,19 +1,22 @@
 {
-  "badgesMappedToPins": 2835,
+  "badgesMappedToPins": 3944,
+  "filteredImages": 143,
   "livePinsWithCoordinates": 2104,
   "matchTypes": {
-    "state_core_contains": 34,
-    "state_core_exact": 512,
-    "state_name_exact": 43,
+    "state_core_exact": 498,
+    "state_core_fuzzy": 170,
+    "state_name_exact": 42,
+    "state_program_broad": 28,
     "unique_core_exact": 27,
     "unique_name_exact": 9
   },
-  "matchedRows": 625,
-  "pinsWithBadges": 620,
+  "matchedPinMappings": 902,
+  "matchedRows": 774,
+  "pinsWithBadges": 834,
   "resolvedSourceImages": 4582,
   "safefoodRowsWithResolvedImages": 1307,
   "sourceImageCountFromRows": 5624,
-  "uniqueBadgeAssets": 2829,
-  "unmatchedRows": 682,
-  "writtenBadgeAssets": 2829
+  "uniqueBadgeAssets": 3047,
+  "unmatchedRows": 533,
+  "writtenBadgeAssets": 3047
 }

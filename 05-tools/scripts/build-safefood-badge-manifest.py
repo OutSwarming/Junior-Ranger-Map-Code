@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import difflib
 import hashlib
 import io
 import json
@@ -266,6 +267,57 @@ BAD_SITE_NAMES = {
     "stickers",
 }
 
+FUZZY_TOKEN_STOP_WORDS = STOP_WORDS | {
+    "agency",
+    "arch",
+    "army",
+    "bad",
+    "badge1",
+    "badge2",
+    "br",
+    "button",
+    "center",
+    "corps",
+    "department",
+    "engineer",
+    "engineers",
+    "gen",
+    "generic",
+    "green",
+    "hat",
+    "jr",
+    "jun",
+    "mv2",
+    "office",
+    "outdoor",
+    "pat",
+    "pl",
+    "plastic",
+    "project",
+    "programs",
+    "silver",
+    "sp",
+    "shp",
+    "sra",
+    "stic",
+    "stick",
+    "us",
+    "visitor",
+    "visitors",
+    "wooden",
+}
+GENERIC_IMAGE_TITLES = {
+    "agency header",
+    "generic",
+    "green badge",
+    "page header",
+    "silver badge",
+    "silver badge with hat",
+    "wooden hat",
+}
+OFFSITE_FILTER_MIN_IMAGES = 4
+OFFSITE_FILTER_MIN_MATCHES = 2
+
 PATH_RE = re.compile(
     r"/Users/carterswarm/Downloads/SafeFoodCert_Badges/.*?\s-\s[0-9a-f]{10}\.(?:jpg|jpeg|png|webp)",
     re.IGNORECASE,
@@ -303,6 +355,81 @@ def canonical_site(value: object) -> str:
     return " ".join(tokens).strip()
 
 
+def matchable_tokens(value: object) -> list[str]:
+    tokens = []
+    for token in canonical_site(value).split():
+        normalized = re.sub(r"\d+$", "", token)
+        if normalized and normalized not in FUZZY_TOKEN_STOP_WORDS and len(normalized) > 1:
+            tokens.append(normalized)
+    return tokens
+
+
+def tokens_match(left: str, right: str) -> bool:
+    if left == right:
+        return True
+    if min(len(left), len(right)) >= 3 and (left.startswith(right) or right.startswith(left)):
+        return True
+    if min(len(left), len(right)) >= 5:
+        return difflib.SequenceMatcher(None, left, right).ratio() >= 0.82
+    return False
+
+
+def token_match_counts(source_tokens: list[str], target_tokens: list[str]) -> tuple[int, int]:
+    used_target_indexes: set[int] = set()
+    source_matches = 0
+    for source_token in source_tokens:
+        for target_index, target_token in enumerate(target_tokens):
+            if target_index in used_target_indexes:
+                continue
+            if tokens_match(source_token, target_token):
+                used_target_indexes.add(target_index)
+                source_matches += 1
+                break
+    return source_matches, len(used_target_indexes)
+
+
+def image_title_matches_site(title: object, site_names: list[str]) -> bool:
+    normalized_title = normalize_text(title)
+    if normalized_title in GENERIC_IMAGE_TITLES:
+        return False
+
+    title_tokens = matchable_tokens(title)
+    if not title_tokens:
+        return True
+
+    joined_title = "".join(title_tokens)
+    for site_name in site_names:
+        site_tokens = matchable_tokens(site_name)
+        if not site_tokens:
+            continue
+        source_matches, _target_matches = token_match_counts(title_tokens, site_tokens)
+        if source_matches > 0:
+            return True
+
+        initials = "".join(token[0] for token in site_tokens if token)
+        if 1 < len(joined_title) <= 4 and initials.startswith(joined_title):
+            return True
+
+        short_prefix_matches = 0
+        for title_token in title_tokens:
+            if 2 <= len(title_token) <= 3 and any(site_token.startswith(title_token) for site_token in site_tokens):
+                short_prefix_matches += 1
+        if short_prefix_matches >= 2:
+            return True
+
+    return False
+
+
+def image_title_filter_decisions(titles: list[str], site_names: list[str]) -> list[bool]:
+    if len(titles) < OFFSITE_FILTER_MIN_IMAGES:
+        return [True] * len(titles)
+
+    decisions = [image_title_matches_site(title, site_names) for title in titles]
+    if sum(1 for decision in decisions if decision) < OFFSITE_FILTER_MIN_MATCHES:
+        return [True] * len(titles)
+    return decisions
+
+
 def state_name_key(state: object, name: object) -> str:
     normalized_state = normalize_text(state)
     normalized_name = normalize_text(name)
@@ -327,6 +454,91 @@ def agency_compatible(source_agency: object, pin_agency: object) -> bool:
     if pin == "state parks" and source.startswith("state"):
         return True
     return False
+
+
+def is_state_park_pin(pin: dict[str, str]) -> bool:
+    agency = canonical_agency(pin.get("agency"))
+    if agency != "state parks" and not agency.startswith("state"):
+        return False
+
+    normalized_name = normalize_text(pin.get("name"))
+    raw_tokens = set(normalized_name.split())
+    state_park_phrases = [
+        "state historical park",
+        "state historic park",
+        "state historic site",
+        "state memorial",
+        "state natural area",
+        "state park",
+        "state parks",
+        "state recreation area",
+        "state resort park",
+    ]
+    if any(phrase in normalized_name for phrase in state_park_phrases):
+        return True
+    return bool(raw_tokens & {"sp", "shp", "shs", "sra", "snr"})
+
+
+def is_statewide_state_park_pin(pin: dict[str, str], state: str) -> bool:
+    normalized_name = normalize_text(pin.get("name"))
+    tokens = [token for token in normalized_name.split() if token != "s"]
+    if not state or state not in normalized_name:
+        return False
+    if "state parks" in normalized_name or "state park" in normalized_name:
+        return True
+    return len(tokens) <= 3 and bool(set(tokens) & {"parks", "sp"})
+
+
+def is_broad_state_program_row(row: dict[str, str]) -> bool:
+    if canonical_agency(row.get("Agency")) != "state parks":
+        return False
+    state = normalize_text(row.get("State/Region"))
+    site_name = normalize_text(row.get("Site Name"))
+    if not state or state not in site_name:
+        return False
+    broad_markers = [
+        "state parks",
+        "state park",
+        "state junior naturalist",
+        "state parks junior naturalist",
+        "state parks joint program",
+        "junior naturalist",
+    ]
+    return any(marker in site_name for marker in broad_markers)
+
+
+def find_broad_state_program_pins(
+    row: dict[str, str],
+    indexes: dict[str, defaultdict],
+) -> list[dict[str, str]]:
+    if not is_broad_state_program_row(row):
+        return []
+
+    state = normalize_text(row.get("State/Region"))
+    source_name = normalize_text(row.get("Site Name"))
+    candidates = [
+        pin
+        for pin in indexes["by_state"].get(state, [])
+        if canonical_agency(pin.get("agency")) == "state parks" or is_state_park_pin(pin)
+    ]
+    if not candidates:
+        return []
+
+    if "naturalist" in source_name:
+        naturalist_pins = [
+            pin
+            for pin in candidates
+            if "naturalist" in pin["normalized_name"] or "association of naturalists" in pin["normalized_name"]
+        ]
+        if naturalist_pins:
+            return sorted(naturalist_pins, key=lambda pin: pin["name"].lower())
+
+    statewide_pins = [pin for pin in candidates if is_statewide_state_park_pin(pin, state)]
+    if statewide_pins:
+        return sorted(statewide_pins, key=lambda pin: pin["name"].lower())
+
+    park_pins = [pin for pin in candidates if is_state_park_pin(pin)]
+    return sorted(park_pins, key=lambda pin: pin["name"].lower())
 
 
 def is_bad_site_name(value: object) -> bool:
@@ -419,24 +631,44 @@ def find_contains_match(
     indexes: dict[str, defaultdict],
 ) -> dict[str, str] | None:
     state = normalize_text(row.get("State/Region"))
-    canonical_name = canonical_site(name)
-    row_tokens = set(canonical_name.split())
-    if not state or len(canonical_name) < 5:
+    row_tokens = matchable_tokens(name)
+    if not state or not row_tokens:
         return None
 
     candidates = []
     for pin in indexes["by_state"].get(state, []):
         if not agency_compatible(row.get("Agency"), pin["agency"]):
             continue
-        pin_tokens = set(pin["canonical_name"].split())
-        if min(len(pin_tokens), len(row_tokens)) < 2:
+        pin_tokens = matchable_tokens(pin["name"])
+        if not pin_tokens:
             continue
-        if pin_tokens.issubset(row_tokens) or row_tokens.issubset(pin_tokens):
-            overlap = len(pin_tokens & row_tokens) / max(len(pin_tokens), len(row_tokens))
-            if overlap >= 0.55:
-                candidates.append(pin)
+        row_matches, pin_matches = token_match_counts(row_tokens, pin_tokens)
+        if not row_matches:
+            continue
 
-    return candidates[0] if len(candidates) == 1 else None
+        row_coverage = row_matches / len(row_tokens)
+        pin_coverage = pin_matches / len(pin_tokens)
+        confident = False
+        if len(row_tokens) == 1 and len(row_tokens[0]) >= 3:
+            confident = row_matches == 1 and pin_coverage >= 0.22
+        elif row_coverage >= 0.67 and pin_coverage >= 0.45:
+            confident = True
+        elif row_matches >= 2 and row_coverage >= 0.5 and pin_coverage >= 0.5:
+            confident = True
+        elif row_matches == 1 and len(row_tokens) == 2 and pin_coverage >= 0.45:
+            confident = True
+
+        if confident:
+            score = (row_coverage * 2) + pin_coverage + (row_matches * 0.1)
+            candidates.append((score, pin))
+
+    if not candidates:
+        return None
+
+    candidates.sort(key=lambda item: (-item[0], item[1]["name"].lower()))
+    if len(candidates) == 1 or candidates[0][0] - candidates[1][0] >= 0.08:
+        return candidates[0][1]
+    return None
 
 
 def map_row_to_pin(
@@ -471,7 +703,7 @@ def map_row_to_pin(
     for name in names:
         match = find_contains_match(row, name, indexes)
         if match:
-            return match, "state_core_contains", name
+            return match, "state_core_fuzzy", name
 
     return None, "", names[0] if names else ""
 
@@ -666,7 +898,9 @@ def build_manifest(args: argparse.Namespace) -> dict[str, object]:
     asset_cache: dict[str, str] = {}
     matched_rows = []
     unmatched_rows = []
+    filtered_rows = []
     match_counts: Counter[str] = Counter()
+    matched_source_rows = 0
     total_source_images = 0
     total_resolved_images = 0
     total_written_images = 0
@@ -678,24 +912,61 @@ def build_manifest(args: argparse.Namespace) -> dict[str, object]:
         total_source_images += int(clean(row.get("Image Count")) or len(image_paths))
         total_resolved_images += len(image_paths)
 
-        pin, match_type, matched_label = map_row_to_pin(row, indexes)
         candidate_site_names = candidate_names(row)
-        if not pin:
-            unmatched_rows.append(
-                {
-                    "state": clean(row.get("State/Region")),
-                    "agency": clean(row.get("Agency")),
-                    "siteName": clean(row.get("Site Name")),
-                    "imageCount": clean(row.get("Image Count")),
-                    "resolvedImageCount": len(image_paths),
-                    "candidateName": matched_label,
-                    "reason": "No confident pin match",
-                }
-            )
-            continue
+        broad_pins = find_broad_state_program_pins(row, indexes)
+        if broad_pins:
+            pins_for_row = broad_pins
+            match_type = "state_program_broad"
+            matched_label = clean(row.get("Site Name"))
+            is_broad_program = True
+        else:
+            pin, match_type, matched_label = map_row_to_pin(row, indexes)
+            if not pin:
+                unmatched_rows.append(
+                    {
+                        "state": clean(row.get("State/Region")),
+                        "agency": clean(row.get("Agency")),
+                        "siteName": clean(row.get("Site Name")),
+                        "imageCount": clean(row.get("Image Count")),
+                        "resolvedImageCount": len(image_paths),
+                        "candidateName": matched_label,
+                        "reason": "No confident pin match",
+                    }
+                )
+                continue
+            pins_for_row = [pin]
+            is_broad_program = False
+
+        titles = [display_title(row, image_path, image_number) for image_number, image_path in enumerate(image_paths, start=1)]
+        base_site_names_for_filter = [clean(row.get("Site Name")), matched_label] + [pin["name"] for pin in pins_for_row]
+        compatible_candidate_names = [
+            site_name
+            for site_name in candidate_site_names
+            if image_title_matches_site(site_name, base_site_names_for_filter)
+        ]
+        site_names_for_filter = base_site_names_for_filter + compatible_candidate_names
+        keep_decisions = (
+            [True] * len(image_paths)
+            if is_broad_program
+            else image_title_filter_decisions(titles, site_names_for_filter)
+        )
 
         row_badges = []
-        for image_number, image_path in enumerate(image_paths, start=1):
+        for image_number, (image_path, title, keep_image) in enumerate(zip(image_paths, titles, keep_decisions), start=1):
+            if not keep_image:
+                filtered_rows.append(
+                    {
+                        "pinIds": "; ".join(pin["id"] for pin in pins_for_row),
+                        "sourceState": clean(row.get("State/Region")),
+                        "sourceAgency": clean(row.get("Agency")),
+                        "sourceSiteName": clean(row.get("Site Name")),
+                        "imageTitle": title,
+                        "imagePath": str(image_path),
+                        "reason": "Image title did not match mapped site tokens",
+                    }
+                )
+                continue
+
             image_hash = source_image_hash(image_path)
             output_relative = asset_cache.get(image_hash)
             if not output_relative:
@@ -715,7 +986,7 @@ def build_manifest(args: argparse.Namespace) -> dict[str, object]:
             row_badges.append(
                 {
                     "id": badge_id,
-                    "title": display_title(row, image_path, image_number),
+                    "title": title,
                     "type": "Badge",
                     "imageUrl": output_relative,
                     "thumbnailUrl": output_relative,
@@ -723,39 +994,55 @@ def build_manifest(args: argparse.Namespace) -> dict[str, object]:
                 }
             )
 
-        add_badges(badges_by_pin_id, pin["id"], row_badges)
-        add_badges(badges_by_state_name, state_name_key(pin["state"], pin["name"]), row_badges)
-        add_badges(badges_by_state_canonical_name, state_canonical_key(pin["state"], pin["name"]), row_badges)
-        for site_name in candidate_site_names:
-            add_badges(badges_by_state_name, state_name_key(row.get("State/Region"), site_name), row_badges)
-            add_badges(
-                badges_by_state_canonical_name,
-                state_canonical_key(row.get("State/Region"), site_name),
-                row_badges,
+        if not row_badges:
+            unmatched_rows.append(
+                {
+                    "state": clean(row.get("State/Region")),
+                    "agency": clean(row.get("Agency")),
+                    "siteName": clean(row.get("Site Name")),
+                    "imageCount": clean(row.get("Image Count")),
+                    "resolvedImageCount": len(image_paths),
+                    "candidateName": matched_label,
+                    "reason": "All resolved images filtered as likely off-site",
+                }
             )
+            continue
 
         match_counts[match_type] += 1
-        matched_rows.append(
-            {
-                "pinId": pin["id"],
-                "pinState": pin["state"],
-                "pinName": pin["name"],
-                "pinAgency": pin["agency"],
-                "sourceState": clean(row.get("State/Region")),
-                "sourceAgency": clean(row.get("Agency")),
-                "sourceSiteName": clean(row.get("Site Name")),
-                "matchedLabel": matched_label,
-                "matchType": match_type,
-                "badgeCount": len(row_badges),
-            }
-        )
+        matched_source_rows += 1
+        for pin in pins_for_row:
+            add_badges(badges_by_pin_id, pin["id"], row_badges)
+            add_badges(badges_by_state_name, state_name_key(pin["state"], pin["name"]), row_badges)
+            add_badges(badges_by_state_canonical_name, state_canonical_key(pin["state"], pin["name"]), row_badges)
+            for site_name in candidate_site_names:
+                add_badges(badges_by_state_name, state_name_key(row.get("State/Region"), site_name), row_badges)
+                add_badges(
+                    badges_by_state_canonical_name,
+                    state_canonical_key(row.get("State/Region"), site_name),
+                    row_badges,
+                )
+
+            matched_rows.append(
+                {
+                    "pinId": pin["id"],
+                    "pinState": pin["state"],
+                    "pinName": pin["name"],
+                    "pinAgency": pin["agency"],
+                    "sourceState": clean(row.get("State/Region")),
+                    "sourceAgency": clean(row.get("Agency")),
+                    "sourceSiteName": clean(row.get("Site Name")),
+                    "matchedLabel": matched_label,
+                    "matchType": match_type,
+                    "badgeCount": len(row_badges),
+                }
+            )
 
     for mapping in (badges_by_pin_id, badges_by_state_name, badges_by_state_canonical_name):
         for key in list(mapping.keys()):
             mapping[key] = sorted(mapping[key], key=lambda badge: (badge["title"].lower(), badge["id"]))
 
     manifest = {
-        "version": 2,
+        "version": 3,
         "updatedAt": datetime.now(timezone.utc).isoformat(),
         "source": {
             "name": "SafeFoodCert_Badges corrected folder master",
@@ -764,9 +1051,11 @@ def build_manifest(args: argparse.Namespace) -> dict[str, object]:
         },
         "summary": {
             "livePinsWithCoordinates": len(pins),
-            "safefoodRowsWithResolvedImages": len(matched_rows) + len(unmatched_rows),
-            "matchedRows": len(matched_rows),
+            "safefoodRowsWithResolvedImages": matched_source_rows + len(unmatched_rows),
+            "matchedRows": matched_source_rows,
+            "matchedPinMappings": len(matched_rows),
             "unmatchedRows": len(unmatched_rows),
+            "filteredImages": len(filtered_rows),
             "pinsWithBadges": len(badges_by_pin_id),
             "badgesMappedToPins": sum(len(values) for values in badges_by_pin_id.values()),
             "uniqueBadgeAssets": len(asset_cache),
@@ -808,6 +1097,11 @@ def build_manifest(args: argparse.Namespace) -> dict[str, object]:
         report_dir / "safefood-badge-map-unmatched.csv",
         ["state", "agency", "siteName", "imageCount", "resolvedImageCount", "candidateName", "reason"],
         unmatched_rows,
+    )
+    write_csv(
+        report_dir / "safefood-badge-map-filtered.csv",
+        ["pinIds", "sourceState", "sourceAgency", "sourceSiteName", "imageTitle", "imagePath", "reason"],
+        filtered_rows,
     )
 
     return manifest["summary"]
