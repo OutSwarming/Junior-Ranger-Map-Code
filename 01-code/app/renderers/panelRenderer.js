@@ -305,6 +305,7 @@ function createBadgeImageCard(badge, index) {
     card.className = 'badge-image-card';
     configureExternalLink(card, badge.imageUrl);
     card.setAttribute('aria-label', `Open ${badge.title || `Badge ${index + 1}`} image`);
+    card.title = badge.title || `Badge ${index + 1}`;
 
     const imageFrame = document.createElement('div');
     imageFrame.className = 'badge-image-frame';
@@ -326,11 +327,6 @@ function createBadgeImageCard(badge, index) {
 
     imageFrame.appendChild(image);
     card.appendChild(imageFrame);
-
-    const caption = document.createElement('div');
-    caption.className = 'badge-image-caption';
-    caption.textContent = badge.title || `Badge ${index + 1}`;
-    card.appendChild(caption);
 
     return card;
 }
@@ -358,29 +354,15 @@ function mergeBadgeImages(manifestBadges, csvBadges) {
 
 function renderBadgeGalleryImages(container, badges, place) {
     clearElement(container);
-    container.className = 'badge-gallery';
+    container.className = 'badge-gallery badge-gallery-strip-wrap';
     container.dataset.pinId = place.id || '';
-    container.style.display = badges.length ? 'grid' : 'none';
+    container.style.display = badges.length ? 'block' : 'none';
     if (!badges.length) return;
 
-    const heading = document.createElement('div');
-    heading.className = 'badge-gallery-heading';
-
-    const title = document.createElement('div');
-    title.className = 'badge-gallery-title';
-    title.textContent = 'Badges';
-    heading.appendChild(title);
-
-    const count = document.createElement('div');
-    count.className = 'badge-gallery-count';
-    count.textContent = `${badges.length} ${badges.length === 1 ? 'image' : 'images'}`;
-    heading.appendChild(count);
-    container.appendChild(heading);
-
-    const grid = document.createElement('div');
-    grid.className = 'badge-gallery-grid';
-    badges.forEach((badge, index) => grid.appendChild(createBadgeImageCard(badge, index)));
-    container.appendChild(grid);
+    const strip = document.createElement('div');
+    strip.className = 'badge-gallery-strip';
+    badges.forEach((badge, index) => strip.appendChild(createBadgeImageCard(badge, index)));
+    container.appendChild(strip);
 }
 
 function renderBadgeGallery(container, place = {}) {
