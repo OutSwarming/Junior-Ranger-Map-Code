@@ -5,9 +5,46 @@ const axios = require("axios");
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { google } = require('googleapis');
 const { createHash, createHmac, randomUUID, timingSafeEqual } = require("crypto");
+const {
+    DEFAULT_STATE: JUNIOR_RANGER_DEFAULT_STATE,
+    SPREADSHEET_ID: JUNIOR_RANGER_SPREADSHEET_ID,
+    buildStateSheetRanges,
+    buildSheetRange,
+    catalogRowsToCsv,
+    extractCatalogRowsFromGrid
+} = require('./lib/juniorRangerSourceCatalog');
 
 // Initialize Firebase Admin SDK
 admin.initializeApp();
+
+const JUNIOR_RANGER_CATALOG_CACHE_TTL_MS = 4 * 60 * 1000;
+const juniorRangerCatalogCache = new Map();
+const BADGE_IMAGE_PROXY_MAX_BYTES = 8 * 1024 * 1024;
+const BADGE_IMAGE_PROXY_ALLOWED_HOSTS = new Set([
+    'mymaps.usercontent.google.com',
+    'lh3.googleusercontent.com',
+    'lh4.googleusercontent.com',
+    'lh5.googleusercontent.com',
+    'lh6.googleusercontent.com'
+]);
+
+function shouldBypassJuniorRangerCatalogCache(query = {}) {
+    return Boolean(query && (query.cache_bypass || query.no_cache || query.refresh));
+}
+
+function getAllowedBadgeImageUrl(value) {
+    const rawUrl = String(value || '').trim();
+    if (!rawUrl) return null;
+
+    try {
+        const url = new URL(rawUrl);
+        if (url.protocol !== 'https:') return null;
+        if (!BADGE_IMAGE_PROXY_ALLOWED_HOSTS.has(url.hostname)) return null;
+        return url.href;
+    } catch (_error) {
+        return null;
+    }
+}
 
 // Keep admin callables compatible with the current admin page. The backend
 // still enforces signed-in admin status plus per-admin rate limits.
@@ -946,12 +983,12 @@ const LEMONSQUEEZY_API_ORIGIN = "https://api.lemonsqueezy.com";
 const LEMONSQUEEZY_CHECKOUTS_URL = `${LEMONSQUEEZY_API_ORIGIN}/v1/checkouts`;
 const LEMONSQUEEZY_SUBSCRIPTIONS_URL = `${LEMONSQUEEZY_API_ORIGIN}/v1/subscriptions`;
 const LEMONSQUEEZY_CUSTOMERS_URL = `${LEMONSQUEEZY_API_ORIGIN}/v1/customers`;
-const DEFAULT_LEMONSQUEEZY_STORE_ID = "363425";
-const DEFAULT_LEMONSQUEEZY_ANNUAL_VARIANT_ID = "1604336";
+const DEFAULT_LEMONSQUEEZY_STORE_ID = "386224";
+const DEFAULT_LEMONSQUEEZY_ANNUAL_VARIANT_ID = "1699350";
 const DEFAULT_APP_BASE_URL = "https://junior-ranger-map-auth.web.app/";
-const LEMONSQUEEZY_LIVE_APPROVAL_ENV = "BARK_LEMON_LIVE_MODE_APPROVAL";
-const LEMONSQUEEZY_LIVE_APPROVAL_VALUE = "CARTER_APPROVED_LIVE_RC";
-const LEMONSQUEEZY_MODE_LOCK_REASON = "Lemon Squeezy live mode remains locked until Carter explicitly approves the final RC switch.";
+const LEMONSQUEEZY_LIVE_APPROVAL_ENV = "JUNIOR_LEMON_LIVE_MODE_APPROVAL";
+const LEMONSQUEEZY_LIVE_APPROVAL_VALUE = "CARTER_APPROVED_JUNIOR_LIVE_RC";
+const LEMONSQUEEZY_MODE_LOCK_REASON = "Lemon Squeezy live mode remains locked until Carter explicitly approves the Junior Ranger final RC switch.";
 const LEMONSQUEEZY_SUPPORTED_EVENTS = new Set([
     "subscription_created",
     "subscription_updated",
@@ -2256,6 +2293,147 @@ exports.submitFeedback = functions.https.onCall(async (requestOrData, context) =
     return handleSubmitFeedback(requestOrData, context);
 });
 
+async function handleBadgeImageRequest(req, res) {
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.set('Access-Control-Allow-Headers', 'Content-Type');
+
+    if (req.method === 'OPTIONS') {
+        res.status(204).send('');
+        return;
+    }
+
+    if (req.method !== 'GET') {
+        res.status(405).send('Method not allowed');
+        return;
+    }
+
+    const imageUrl = getAllowedBadgeImageUrl(req.query && req.query.url);
+    if (!imageUrl) {
+        res.status(400).type('text/plain').send('Unsupported badge image URL.');
+        return;
+    }
+
+    try {
+        const response = await axios.get(imageUrl, {
+            responseType: 'arraybuffer',
+            timeout: 15000,
+            maxContentLength: BADGE_IMAGE_PROXY_MAX_BYTES,
+            headers: {
+                'User-Agent': 'USBARKRANGERS/1.0 badge-image-proxy'
+            },
+            validateStatus: status => status >= 200 && status < 300
+        });
+        const contentType = String(response.headers && response.headers['content-type'] || '').toLowerCase();
+        if (!contentType.startsWith('image/')) {
+            res.status(415).type('text/plain').send('Badge image URL did not return an image.');
+            return;
+        }
+
+        res.set('Cache-Control', 'public, max-age=86400, s-maxage=604800');
+        res.set('Content-Type', contentType);
+        res.status(200).send(Buffer.from(response.data));
+    } catch (error) {
+        console.error('[badgeImageProxy] Failed to fetch badge image:', {
+            url: imageUrl,
+            message: error && error.message,
+            code: error && error.code
+        });
+        res.status(502).type('text/plain').send('Unable to load badge image.');
+    }
+}
+
+exports.getBadgeImage = functions
+    .runWith({ timeoutSeconds: 30, memory: '512MB' })
+    .https.onRequest(handleBadgeImageRequest);
+
+async function handleJuniorRangerCatalogRequest(req, res) {
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.set('Access-Control-Allow-Headers', 'Content-Type');
+
+    if (req.method === 'OPTIONS') {
+        res.status(204).send('');
+        return;
+    }
+
+    if (req.method !== 'GET') {
+        res.status(405).send('Method not allowed');
+        return;
+    }
+
+    const stateQuery = String((req.query && req.query.state) || '').trim();
+    const requestedState = stateQuery && !/^all$/i.test(stateQuery) ? stateQuery : '';
+    const cacheKey = requestedState ? `state:${requestedState.toLowerCase()}` : 'all';
+    const shouldBypassCache = shouldBypassJuniorRangerCatalogCache(req.query);
+    const cached = juniorRangerCatalogCache.get(cacheKey);
+
+    if (!shouldBypassCache && cached && cached.expiresAt > Date.now()) {
+        res.set('Cache-Control', 'public, max-age=60');
+        res.set('X-Junior-Ranger-Catalog-Source', 'master-spreadsheet');
+        res.set('X-Junior-Ranger-Catalog-Cache', 'hit');
+        res.type('text/csv; charset=utf-8').status(200).send(cached.csv);
+        return;
+    }
+
+    try {
+        const auth = new google.auth.GoogleAuth({
+            scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly']
+        });
+        const sheets = google.sheets({ version: 'v4', auth });
+        let ranges = [];
+
+        if (requestedState) {
+            ranges = [buildSheetRange(requestedState)];
+        } else {
+            const metadata = await sheets.spreadsheets.get({
+                spreadsheetId: JUNIOR_RANGER_SPREADSHEET_ID,
+                fields: 'sheets(properties(title))'
+            });
+            const titles = (metadata.data.sheets || []).map(sheet => sheet.properties && sheet.properties.title);
+            ranges = buildStateSheetRanges(titles);
+        }
+
+        if (!ranges.length) throw new Error('No Junior Ranger state tabs found.');
+
+        const response = await sheets.spreadsheets.get({
+            spreadsheetId: JUNIOR_RANGER_SPREADSHEET_ID,
+            ranges,
+            includeGridData: true,
+            fields: [
+                'sheets(properties(sheetId,title),data(rowData(values(',
+                'formattedValue,hyperlink,userEnteredValue,effectiveValue,textFormatRuns(format(link(uri))),',
+                'userEnteredFormat(backgroundColor,textFormat(link(uri))),effectiveFormat(backgroundColor)',
+                '))))'
+            ].join('')
+        });
+        const rows = extractCatalogRowsFromGrid(response.data, { state: requestedState });
+        if (!rows.length) {
+            throw new Error(`No publishable Junior Ranger rows found${requestedState ? ` for ${requestedState}` : ''}.`);
+        }
+        const csv = catalogRowsToCsv(rows);
+        juniorRangerCatalogCache.set(cacheKey, {
+            csv,
+            expiresAt: Date.now() + JUNIOR_RANGER_CATALOG_CACHE_TTL_MS
+        });
+        res.set('Cache-Control', shouldBypassCache ? 'no-store' : 'public, max-age=60');
+        res.set('X-Junior-Ranger-Catalog-Source', 'master-spreadsheet');
+        res.set('X-Junior-Ranger-Catalog-Cache', shouldBypassCache ? 'bypass' : 'miss');
+        res.type('text/csv; charset=utf-8').status(200).send(csv);
+    } catch (error) {
+        console.error('[juniorRangerCatalog] Failed to read source sheet:', {
+            state: requestedState || 'all',
+            message: error && error.message,
+            code: error && error.code
+        });
+        res.status(500).type('text/plain').send('Unable to load Junior Ranger source catalog.');
+    }
+}
+
+exports.getJuniorRangerCatalog = functions
+    .runWith({ timeoutSeconds: 60, memory: '1GB' })
+    .https.onRequest(handleJuniorRangerCatalogRequest);
+
 if (process.env.NODE_ENV === "test") {
     exports.__test = {
         normalizeEntitlement,
@@ -2291,6 +2469,8 @@ if (process.env.NODE_ENV === "test") {
         handleRedeemAccessOrPromoCode,
         isActiveAccessCodeEntitlement,
         getActiveAccessCodeFallback,
+        getAllowedBadgeImageUrl,
+        handleBadgeImageRequest,
         verifyLemonSqueezyWebhookSignature,
         deriveLemonSqueezyEventId,
         buildLemonSqueezyEventDocId,
@@ -2300,7 +2480,9 @@ if (process.env.NODE_ENV === "test") {
         processLemonSqueezyWebhookEntitlement,
         handleLemonSqueezyWebhook,
         calculateServerLeaderboardScore,
-        handleSyncLeaderboardScore
+        handleSyncLeaderboardScore,
+        shouldBypassJuniorRangerCatalogCache,
+        handleJuniorRangerCatalogRequest
     };
 }
 

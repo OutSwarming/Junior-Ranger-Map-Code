@@ -7,17 +7,62 @@ window.BARK = window.BARK || {};
 
 // ====== LOADER DISMISSAL — MODULE SCOPE ======
 // Defined here, outside initMap(), so it is always available even if initMap() throws
-// (e.g. Leaflet CDN failure). authService.js calls this after Firebase auth resolves.
-window.dismissBarkLoader = function () {
+// (e.g. Leaflet CDN failure). Keep the loader up until pins exist so users do
+// not see an empty map while the sheet/fallback race is still in flight.
+const BARK_LOADER_MAX_WAIT_MS = 45000;
+const BARK_LOADER_CHECK_MS = 250;
+let barkLoaderStartedAt = Date.now();
+let barkLoaderDismissPending = false;
+let barkLoaderCheckTimer = null;
+
+function hasRenderablePins() {
+    const markerManager = window.BARK && window.BARK.markerManager;
+    if (markerManager && markerManager.markers instanceof Map && markerManager.markers.size > 0) return true;
+
+    const parkRepo = window.BARK && window.BARK.repos && window.BARK.repos.ParkRepo;
+    return Boolean(parkRepo && typeof parkRepo.getAll === 'function' && parkRepo.getAll().length > 0);
+}
+
+function removeBarkLoader() {
     const loader = document.getElementById('bark-loader');
     if (loader && loader.style.opacity !== '0') {
         loader.style.opacity = '0';
         setTimeout(() => loader.remove(), 600);
     }
+}
+
+function scheduleBarkLoaderCheck() {
+    if (barkLoaderCheckTimer) return;
+    barkLoaderCheckTimer = setTimeout(() => {
+        barkLoaderCheckTimer = null;
+        window.dismissBarkLoader();
+    }, BARK_LOADER_CHECK_MS);
+}
+
+window.dismissBarkLoader = function (options = {}) {
+    const force = options.force === true;
+    if (force || hasRenderablePins()) {
+        removeBarkLoader();
+        return;
+    }
+
+    barkLoaderDismissPending = true;
+    if (Date.now() - barkLoaderStartedAt >= BARK_LOADER_MAX_WAIT_MS) {
+        removeBarkLoader();
+        return;
+    }
+
+    scheduleBarkLoaderCheck();
 };
 
-// Safety fallback: if Firebase auth never resolves, dismiss after 8s unconditionally.
-setTimeout(() => window.dismissBarkLoader(), 8000);
+window.BARK.notifyPinsRendered = function () {
+    if (barkLoaderDismissPending || document.getElementById('bark-loader')) {
+        window.dismissBarkLoader();
+    }
+};
+
+// Safety fallback: keep the loader longer than the old 8s, but do not trap users forever.
+setTimeout(() => window.dismissBarkLoader({ force: true }), BARK_LOADER_MAX_WAIT_MS);
 
 // ====== BATCH CSS CLASS APPLICATION ======
 /**
@@ -324,17 +369,29 @@ if (savedMapStyle !== requestedSavedMapStyle) {
     localStorage.setItem('barkMapStyle', savedMapStyle);
 }
 
-let currentTileLayer;
+const ESRI_IMAGERY_ATTRIBUTION = 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
+let currentTileLayers = [];
+const addTileLayer = (url, options) => {
+    const layer = L.tileLayer(url, options).addTo(map);
+    currentTileLayers.push(layer);
+    return layer;
+};
 const loadLayer = (style) => {
-    if (currentTileLayer) map.removeLayer(currentTileLayer);
+    currentTileLayers.forEach(layer => map.removeLayer(layer));
+    currentTileLayers = [];
     if (style === 'terrain') {
-        currentTileLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', { attribution: 'Map data: &copy; OpenStreetMap contributors, SRTM | Map style: &copy; OpenTopoMap (CC-BY-SA)', maxZoom: 17 }).addTo(map);
+        addTileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', { attribution: 'Map data: &copy; OpenStreetMap contributors, SRTM | Map style: &copy; OpenTopoMap (CC-BY-SA)', maxZoom: 17 });
     } else if (style === 'satellite') {
-        currentTileLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community', maxZoom: 18 }).addTo(map);
+        addTileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: ESRI_IMAGERY_ATTRIBUTION, maxZoom: 18 });
+    } else if (style === 'hybrid') {
+        // Satellite imagery with transparent road + place-label overlays stacked on top.
+        addTileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: ESRI_IMAGERY_ATTRIBUTION, maxZoom: 18, zIndex: 1 });
+        addTileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', { attribution: 'Labels &copy; Esri', maxZoom: 18, zIndex: 2 });
+        addTileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}', { attribution: 'Roads &copy; Esri', maxZoom: 18, zIndex: 3 });
     } else if (style === 'streets') {
-        currentTileLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', { attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012', maxZoom: 18 }).addTo(map);
+        addTileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', { attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012', maxZoom: 18 });
     } else {
-        currentTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap contributors', maxZoom: 18 }).addTo(map);
+        addTileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap contributors', maxZoom: 18 });
     }
 };
 

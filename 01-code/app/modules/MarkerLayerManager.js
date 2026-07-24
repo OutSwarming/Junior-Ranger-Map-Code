@@ -39,7 +39,15 @@ class MarkerLayerManager {
             parkData.category,
             parkData.specialPrograms,
             parkData.jrBooks,
-            parkData._cachedNormalizedName
+            parkData._cachedNormalizedName,
+            parkData._cachedPickupSearchText,
+            parkData._isPickupLocation ? 'pickup-location' : '',
+            parkData._pickupParentId,
+            parkData._pickupParentName,
+            parkData._pickupLocationName,
+            Array.isArray(parkData.pickupLocations)
+                ? parkData.pickupLocations.map(location => `${location.id}:${location.displayName}`).join('|')
+                : ''
         ].join('\u001f');
     }
 

@@ -11,6 +11,7 @@
     "save:e2e:free-b": "node 05-tools/scripts/save-playwright-storage-state.js free-b",
     "save:e2e:premium": "node 05-tools/scripts/save-playwright-storage-state.js premium",
     "report:jr-catalog-diff": "node 05-tools/scripts/report-junior-ranger-catalog-diff.js",
+    "build:jr-rewards-badges": "python3 05-tools/scripts/build-jr-rewards-badge-manifest.py --clean",
     "sync:jr-tags": "node 05-tools/scripts/sync-junior-ranger-tags.js",
     "test:unit": "node --test 03-tests/*.test.js",
     "test:functions": "npm --prefix 01-code/functions test",

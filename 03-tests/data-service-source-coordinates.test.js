@@ -21,23 +21,30 @@ function parseSimpleCsv(csvString, options) {
     options.complete({ data, errors: [] });
 }
 
-function loadDataServiceHarness() {
+function loadDataServiceHarness(options = {}) {
     let publishedPoints = null;
+    const publishedHistory = [];
     let gamificationPoints = null;
+    let replaceOptions = null;
+    const storage = new Map();
     const sandbox = {
         console,
-        fetch,
+        fetch: options.fetch || fetch,
         setTimeout,
         clearTimeout,
+        setInterval() { return 1; },
+        clearInterval() {},
         navigator: { onLine: true },
         localStorage: {
-            getItem() { return null; },
-            setItem() {}
+            getItem(key) { return storage.has(key) ? storage.get(key) : null; },
+            setItem(key, value) { storage.set(key, String(value)); },
+            removeItem(key) { storage.delete(key); }
         },
         Papa: {
             parse: parseSimpleCsv
         },
         window: {
+            location: { protocol: 'https:' },
             BARK: {
                 debugDataRefresh: false,
                 getSwagType() { return 'Other'; },
@@ -50,8 +57,10 @@ function loadDataServiceHarness() {
                 normalizeText(value) { return String(value || '').trim().toLowerCase(); },
                 repos: {
                     ParkRepo: {
-                        replaceAll(points) {
+                        replaceAll(points, options) {
                             publishedPoints = points;
+                            replaceOptions = options;
+                            publishedHistory.push({ points, options });
                             return { accepted: true };
                         }
                     }
@@ -71,7 +80,10 @@ function loadDataServiceHarness() {
     return {
         sandbox,
         getPublishedPoints: () => publishedPoints,
-        getGamificationPoints: () => gamificationPoints
+        getPublishedHistory: () => publishedHistory,
+        getGamificationPoints: () => gamificationPoints,
+        getReplaceOptions: () => replaceOptions,
+        storage
     };
 }
 
@@ -126,8 +138,8 @@ test('data service publishes Junior Ranger sheet rows by siteID and latitude/lon
     const harness = loadDataServiceHarness();
 
     harness.sandbox.window.BARK.parseCSVString([
-        'siteID,siteName,siteInfo,jrBooks,latitude,longitude,state,agency,officialGovWebsite,badgePictures,specialPrograms',
-        'jr_test_site,Test Junior Ranger Site,Main badge available,Booklet A,38.1234,-77.5678,Virginia,NPS,https://www.nps.gov/test,,Night Explorer'
+        'siteID,siteName,siteInfo,jrBooks,latitude,longitude,state,agency,officialGovWebsite,badgePictures,siteSpecific,specialPrograms',
+        'jr_test_site,Test Junior Ranger Site,Main badge available,Booklet A,38.1234,-77.5678,Virginia,NPS,https://www.nps.gov/test,,No,Night Explorer'
     ].join('\n'));
 
     const publishedPoints = harness.getPublishedPoints();
@@ -140,6 +152,145 @@ test('data service publishes Junior Ranger sheet rows by siteID and latitude/lon
     assert.equal(publishedPoints[0].agency, 'NPS');
     assert.equal(publishedPoints[0].parkCategory, 'National');
     assert.equal(publishedPoints[0].swagType, 'Special Programs');
+    assert.equal(publishedPoints[0].siteSpecific, 'No');
     assert.equal(publishedPoints[0].specialPrograms, 'Night Explorer');
     assert.match(publishedPoints[0].info, /Special programs: Night Explorer/);
+    assert.equal(harness.getReplaceOptions().source, 'junior-ranger-master-spreadsheet');
+});
+
+test('data service groups parenthesized rows as hidden pickup locations under the previous master park', () => {
+    const harness = loadDataServiceHarness();
+
+    harness.sandbox.window.BARK.parseCSVString([
+        'siteID,siteName,siteInfo,jrBooks,latitude,longitude,state,agency,officialGovWebsite,badgePictures,siteSpecific,specialPrograms',
+        'jr_denali,Denali NP & Pr,Main book,Junior Ranger,63.7281,-148.8860,Alaska,NPS,https://www.nps.gov/dena,,Yes,Night Explorer',
+        'jr_denali_visitor,(Denali Visitor Center),Pickup spot,Junior Ranger,63.7300,-148.9190,Alaska,NPS,https://www.nps.gov/dena,,,Night Explorer',
+        'jr_denali_talkeetna,(Walter Harper Talkeetna Ranger Station),Pickup spot,Junior Ranger,62.3230,-150.1090,Alaska,NPS,https://www.nps.gov/dena,,,Junior Angler',
+        'jr_eagle,Eagle River Nature Center,Separate place,Rodak Ranger,61.2360,-149.2700,Alaska,State,https://example.test,,No,'
+    ].join('\n'));
+
+    const publishedPoints = harness.getPublishedPoints();
+    const denali = publishedPoints.find(point => point.id === 'jr_denali');
+    const visitorCenter = publishedPoints.find(point => point.id === 'jr_denali_visitor');
+    const talkeetna = publishedPoints.find(point => point.id === 'jr_denali_talkeetna');
+    const eagleRiver = publishedPoints.find(point => point.id === 'jr_eagle');
+
+    assert.equal(publishedPoints.length, 4);
+    assert.deepEqual(denali.pickupLocations.map(location => location.displayName), [
+        'Denali Visitor Center',
+        'Walter Harper Talkeetna Ranger Station'
+    ]);
+    assert.equal(visitorCenter._isPickupLocation, true);
+    assert.equal(visitorCenter._pickupParentId, 'jr_denali');
+    assert.equal(visitorCenter.swagType, 'Junior Ranger');
+    assert.equal(visitorCenter.siteSpecific, 'Yes');
+    assert.equal(visitorCenter.specialPrograms, '');
+    assert.equal(visitorCenter.jrBooks, '');
+    assert.doesNotMatch(visitorCenter.info, /Special programs:/);
+    assert.doesNotMatch(visitorCenter.info, /Junior Ranger books:/);
+    assert.equal(talkeetna._pickupParentName, 'Denali NP & Pr');
+    assert.equal(talkeetna.specialPrograms, '');
+    assert.equal(talkeetna.jrBooks, '');
+    assert.equal(denali.specialPrograms, 'Night Explorer');
+    assert.match(denali._cachedPickupSearchText, /talkeetna/);
+    assert.deepEqual(eagleRiver.pickupLocations, []);
+});
+
+test('data service groups live catalog child names generated from parenthetical sheet rows', () => {
+    const harness = loadDataServiceHarness();
+
+    harness.sandbox.window.BARK.parseCSVString([
+        'siteID,siteName,siteInfo,jrBooks,latitude,longitude,state,agency,officialGovWebsite,badgePictures,siteSpecific,specialPrograms',
+        'jr_alaska_denali_np_and_pr,Denali NP & Pr,Main book,Junior Ranger,63.0691689,-151.0069842,Alaska,NPS,https://www.nps.gov/dena,,Yes,Night Explorer',
+        'jr_alaska_denali_np_and_pr_denali_visitor_center,Denali NP & Pr - Denali Visitor Center,Pickup spot,Ocean Stewards Junior Ranger: https://example.test/ocean.pdf,63.7308550,-148.9170622,Alaska,NPS,https://www.nps.gov/dena,,,Ocean Stewards Junior Ranger',
+        'jr_alaska_denali_np_and_pr_eielson_visitor_center,Denali NP & Pr - Eielson Visitor Center,Pickup spot,World Heritage Junior Ranger: https://example.test/world.pdf,63.4309992,-150.3114272,Alaska,NPS,https://www.nps.gov/dena,,,World Heritage Junior Ranger'
+    ].join('\n'));
+
+    const publishedPoints = harness.getPublishedPoints();
+    const denali = publishedPoints.find(point => point.id === 'jr_alaska_denali_np_and_pr');
+    const eielson = publishedPoints.find(point => point.id === 'jr_alaska_denali_np_and_pr_eielson_visitor_center');
+
+    assert.deepEqual(denali.pickupLocations.map(location => location.displayName), [
+        'Denali Visitor Center',
+        'Eielson Visitor Center'
+    ]);
+    assert.equal(denali.specialPrograms, 'Night Explorer');
+    assert.equal(eielson._isPickupLocation, true);
+    assert.equal(eielson._pickupParentId, 'jr_alaska_denali_np_and_pr');
+    assert.equal(eielson.siteSpecific, 'Yes');
+    assert.equal(eielson.specialPrograms, '');
+    assert.equal(eielson.jrBooks, '');
+    assert.doesNotMatch(eielson.info, /World Heritage/);
+});
+
+test('data service caches only authoritative Junior Ranger master spreadsheet data', () => {
+    const harness = loadDataServiceHarness();
+
+    harness.sandbox.window.BARK.parseCSVString([
+        'siteID,siteName,siteInfo,jrBooks,latitude,longitude,state,agency,officialGovWebsite,badgePictures,siteSpecific,specialPrograms',
+        'jr_test_site,Test Junior Ranger Site,Main badge available,Booklet A,38.1234,-77.5678,Virginia,NPS,https://www.nps.gov/test,,No,Night Explorer'
+    ].join('\n'), {
+        cacheTime: 12345
+    });
+
+    assert.equal(harness.storage.get('juniorRangerCSV_source'), 'junior-ranger-master-spreadsheet');
+});
+
+test('data service publishes bundled fallback while live catalog request is pending', async () => {
+    const requests = [];
+    const liveCatalogPromise = new Promise(() => {});
+    const fallbackCsv = [
+        'siteID,siteName,siteInfo,jrBooks,latitude,longitude,state,agency,officialGovWebsite,badgePictures,siteSpecific,specialPrograms',
+        'jr_fast_start,Fast Start Site,Main badge available,Booklet A,38.1234,-77.5678,Virginia,NPS,https://www.nps.gov/test,,Yes,'
+    ].join('\n');
+    const harness = loadDataServiceHarness({
+        fetch(url) {
+            const requestUrl = String(url);
+            requests.push(requestUrl);
+            if (requestUrl.includes('/api/junior-ranger-catalog')) return liveCatalogPromise;
+            if (requestUrl === 'assets/data/jr-fallback.csv') {
+                return Promise.resolve({
+                    ok: true,
+                    text: () => Promise.resolve(fallbackCsv)
+                });
+            }
+            return Promise.reject(new Error(`Unexpected fetch URL: ${requestUrl}`));
+        }
+    });
+
+    harness.sandbox.window.BARK.loadData();
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    assert.deepEqual(requests, ['assets/data/jr-fallback.csv', '/api/junior-ranger-catalog']);
+    assert.equal(harness.getPublishedPoints().length, 1);
+    assert.equal(harness.getPublishedPoints()[0].id, 'jr_fast_start');
+    assert.equal(harness.getReplaceOptions().source, 'bundled-static-fallback');
+});
+
+test('data service paints authoritative cache immediately and skips bundled fallback', async () => {
+    const requests = [];
+    const liveCatalogPromise = new Promise(() => {});
+    const cachedCsv = [
+        'siteID,siteName,siteInfo,jrBooks,latitude,longitude,state,agency,officialGovWebsite,badgePictures,siteSpecific,specialPrograms',
+        'jr_cached_start,Cached Start Site,Main badge available,Booklet A,39.1234,-78.5678,Virginia,NPS,https://www.nps.gov/test,,Yes,'
+    ].join('\n');
+    const harness = loadDataServiceHarness({
+        fetch(url) {
+            const requestUrl = String(url);
+            requests.push(requestUrl);
+            if (requestUrl.includes('/api/junior-ranger-catalog')) return liveCatalogPromise;
+            return Promise.reject(new Error(`Unexpected fetch URL: ${requestUrl}`));
+        }
+    });
+    harness.storage.set('juniorRangerCSV', cachedCsv);
+    harness.storage.set('juniorRangerCSV_time', '12345');
+    harness.storage.set('juniorRangerCSV_source', 'junior-ranger-master-spreadsheet');
+
+    harness.sandbox.window.BARK.loadData();
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    assert.deepEqual(requests, ['/api/junior-ranger-catalog']);
+    assert.equal(harness.getPublishedPoints().length, 1);
+    assert.equal(harness.getPublishedPoints()[0].id, 'jr_cached_start');
+    assert.equal(harness.getReplaceOptions().source, 'junior-ranger-master-spreadsheet');
 });

@@ -35,8 +35,8 @@ async function assertRejectsCode(promise, code) {
 
 const config = {
     apiKey: "test-api-key",
-    storeId: "363425",
-    annualVariantId: "1604336",
+    storeId: "386224",
+    annualVariantId: "1699350",
     appBaseUrl: "https://junior-ranger-map-auth.web.app/"
 };
 
@@ -131,7 +131,7 @@ describe("Lemon Squeezy checkout session helpers", () => {
         assert.match(defaultMode.lockReason, /Carter/i);
 
         const approvedButStillCodeLocked = getLemonSqueezyModeConfig({
-            env: { BARK_LEMON_LIVE_MODE_APPROVAL: "CARTER_APPROVED_LIVE_RC" }
+            env: { JUNIOR_LEMON_LIVE_MODE_APPROVAL: "CARTER_APPROVED_JUNIOR_LIVE_RC" }
         });
         assert.equal(approvedButStillCodeLocked.liveModeApproved, true);
         assert.equal(approvedButStillCodeLocked.checkoutTestMode, true);
@@ -139,7 +139,7 @@ describe("Lemon Squeezy checkout session helpers", () => {
 
         assert.equal(shouldAcceptLemonSqueezyWebhookMode({ test_mode: true }, { env: {} }), true);
         assert.equal(shouldAcceptLemonSqueezyWebhookMode({ test_mode: false }, {
-            env: { BARK_LEMON_LIVE_MODE_APPROVAL: "CARTER_APPROVED_LIVE_RC" }
+            env: { JUNIOR_LEMON_LIVE_MODE_APPROVAL: "CARTER_APPROVED_JUNIOR_LIVE_RC" }
         }), false);
     });
 
@@ -157,8 +157,8 @@ describe("Lemon Squeezy checkout session helpers", () => {
     it("builds restore subscription lookup URLs by signed-in email", () => {
         const url = new URL(buildLemonSqueezySubscriptionsListUrl(config, "ranger@example.test"));
         assert.equal(url.origin + url.pathname, "https://api.lemonsqueezy.com/v1/subscriptions");
-        assert.equal(url.searchParams.get("filter[store_id]"), "363425");
-        assert.equal(url.searchParams.get("filter[variant_id]"), "1604336");
+        assert.equal(url.searchParams.get("filter[store_id]"), "386224");
+        assert.equal(url.searchParams.get("filter[variant_id]"), "1699350");
         assert.equal(url.searchParams.get("filter[user_email]"), "ranger@example.test");
         assert.equal(url.searchParams.get("page[size]"), "10");
     });
@@ -170,8 +170,8 @@ describe("Lemon Squeezy checkout session helpers", () => {
                 type: "subscriptions",
                 attributes: {
                     test_mode: true,
-                    store_id: 363425,
-                    variant_id: 1604336,
+                    store_id: 386224,
+                    variant_id: 1699350,
                     user_email: "ranger@example.test",
                     status: "active",
                     updated_at: "2026-01-01T00:00:00.000Z"
@@ -182,8 +182,8 @@ describe("Lemon Squeezy checkout session helpers", () => {
                 type: "subscriptions",
                 attributes: {
                     test_mode: true,
-                    store_id: 363425,
-                    variant_id: 1604336,
+                    store_id: 386224,
+                    variant_id: 1699350,
                     user_email: "RANGER@example.test",
                     status: "active",
                     updated_at: "2026-01-05T00:00:00.000Z"
@@ -194,8 +194,8 @@ describe("Lemon Squeezy checkout session helpers", () => {
                 type: "subscriptions",
                 attributes: {
                     test_mode: true,
-                    store_id: 363425,
-                    variant_id: 1604336,
+                    store_id: 386224,
+                    variant_id: 1699350,
                     user_email: "ranger@example.test",
                     status: "refunded",
                     updated_at: "2026-01-10T00:00:00.000Z"
@@ -218,7 +218,7 @@ describe("Lemon Squeezy checkout session helpers", () => {
 
         assert.equal(payload.data.type, "checkouts");
         assert.equal(payload.data.attributes.test_mode, true);
-        assert.deepEqual(payload.data.attributes.product_options.enabled_variants, [1604336]);
+        assert.deepEqual(payload.data.attributes.product_options.enabled_variants, [1699350]);
         assert.equal(
             payload.data.attributes.product_options.redirect_url,
             "https://junior-ranger-map-auth.web.app/?checkout=success&provider=lemonsqueezy"
@@ -228,8 +228,8 @@ describe("Lemon Squeezy checkout session helpers", () => {
         assert.equal(payload.data.attributes.checkout_data.custom.firebase_uid, "real-user");
         assert.equal(payload.data.attributes.checkout_data.custom.plan, "annual");
         assert.deepEqual(payload.data.attributes.checkout_options, { discount: true });
-        assert.equal(payload.data.relationships.store.data.id, "363425");
-        assert.equal(payload.data.relationships.variant.data.id, "1604336");
+        assert.equal(payload.data.relationships.store.data.id, "386224");
+        assert.equal(payload.data.relationships.variant.data.id, "1699350");
     });
 });
 
@@ -313,7 +313,7 @@ describe("Lemon Squeezy checkout session callable", () => {
                         data: {
                             data: {
                                 attributes: {
-                                    url: "https://usbarkrangers.lemonsqueezy.com/checkout/test-session"
+                                    url: "https://carter-swarm-maps.lemonsqueezy.com/checkout/test-session"
                                 }
                             }
                         }
@@ -323,7 +323,7 @@ describe("Lemon Squeezy checkout session callable", () => {
         );
 
         assert.equal(postCalls, 1);
-        assert.equal(result.checkoutUrl, "https://usbarkrangers.lemonsqueezy.com/checkout/test-session");
+        assert.equal(result.checkoutUrl, "https://carter-swarm-maps.lemonsqueezy.com/checkout/test-session");
     });
 
     it("returns only the hosted checkout URL for signed-in users", async () => {
@@ -348,7 +348,7 @@ describe("Lemon Squeezy checkout session callable", () => {
                         data: {
                             data: {
                                 attributes: {
-                                    url: "https://usbarkrangers.lemonsqueezy.com/checkout/test-session"
+                                    url: "https://carter-swarm-maps.lemonsqueezy.com/checkout/test-session"
                                 }
                             }
                         }
@@ -358,16 +358,16 @@ describe("Lemon Squeezy checkout session callable", () => {
         );
 
         assert.deepEqual(result, {
-            checkoutUrl: "https://usbarkrangers.lemonsqueezy.com/checkout/test-session"
+            checkoutUrl: "https://carter-swarm-maps.lemonsqueezy.com/checkout/test-session"
         });
         assert.equal(captured.url, "https://api.lemonsqueezy.com/v1/checkouts");
         assert.equal(captured.requestConfig.headers.Accept, "application/vnd.api+json");
         assert.equal(captured.requestConfig.headers["Content-Type"], "application/vnd.api+json");
         assert.equal(captured.requestConfig.headers.Authorization, "Bearer test-api-key");
         assert.equal(captured.body.data.attributes.test_mode, true);
-        assert.deepEqual(captured.body.data.attributes.product_options.enabled_variants, [1604336]);
-        assert.equal(captured.body.data.relationships.store.data.id, "363425");
-        assert.equal(captured.body.data.relationships.variant.data.id, "1604336");
+        assert.deepEqual(captured.body.data.attributes.product_options.enabled_variants, [1699350]);
+        assert.equal(captured.body.data.relationships.store.data.id, "386224");
+        assert.equal(captured.body.data.relationships.variant.data.id, "1699350");
         assert.equal(captured.body.data.attributes.checkout_data.custom.firebase_uid, "server-user");
         assert.equal(captured.body.data.attributes.checkout_data.email, "server-user@example.test");
         assert.equal(captured.body.data.attributes.checkout_data.name, "Server User");
@@ -394,7 +394,7 @@ describe("Lemon Squeezy checkout session callable", () => {
                         data: {
                             data: {
                                 attributes: {
-                                    url: "https://usbarkrangers.lemonsqueezy.com/checkout/test-session"
+                                    url: "https://carter-swarm-maps.lemonsqueezy.com/checkout/test-session"
                                 }
                             }
                         }
@@ -404,9 +404,9 @@ describe("Lemon Squeezy checkout session callable", () => {
         );
 
         assert.equal(capturedBody.data.attributes.checkout_data.custom.firebase_uid, "trusted-uid");
-        assert.equal(capturedBody.data.relationships.store.data.id, "363425");
-        assert.equal(capturedBody.data.relationships.variant.data.id, "1604336");
-        assert.deepEqual(capturedBody.data.attributes.product_options.enabled_variants, [1604336]);
+        assert.equal(capturedBody.data.relationships.store.data.id, "386224");
+        assert.equal(capturedBody.data.relationships.variant.data.id, "1699350");
+        assert.deepEqual(capturedBody.data.attributes.product_options.enabled_variants, [1699350]);
         assert.equal(capturedBody.data.attributes.test_mode, true);
     });
 
@@ -433,7 +433,7 @@ describe("Lemon Squeezy checkout session callable", () => {
                         data: {
                             data: {
                                 attributes: {
-                                    url: "https://usbarkrangers.lemonsqueezy.com/checkout/test-session"
+                                    url: "https://carter-swarm-maps.lemonsqueezy.com/checkout/test-session"
                                 }
                             }
                         }
@@ -442,9 +442,9 @@ describe("Lemon Squeezy checkout session callable", () => {
             }
         );
 
-        assert.equal(capturedBody.data.relationships.store.data.id, "363425");
-        assert.equal(capturedBody.data.relationships.variant.data.id, "1604336");
-        assert.deepEqual(capturedBody.data.attributes.product_options.enabled_variants, [1604336]);
+        assert.equal(capturedBody.data.relationships.store.data.id, "386224");
+        assert.equal(capturedBody.data.relationships.variant.data.id, "1699350");
+        assert.deepEqual(capturedBody.data.attributes.product_options.enabled_variants, [1699350]);
         assert.equal(
             capturedBody.data.attributes.product_options.redirect_url,
             "https://junior-ranger-map-auth.web.app/?checkout=success&provider=lemonsqueezy"
@@ -518,7 +518,7 @@ describe("Lemon Squeezy checkout session callable", () => {
                     data: {
                         data: {
                             attributes: {
-                                url: "https://usbarkrangers.lemonsqueezy.com/checkout/test-session"
+                                url: "https://carter-swarm-maps.lemonsqueezy.com/checkout/test-session"
                             }
                         }
                     }
@@ -583,9 +583,9 @@ describe("Lemon Squeezy customer portal callable", () => {
                         data: {
                             data: {
                                 attributes: {
-                                    store_id: 363425,
+                                    store_id: 386224,
                                     urls: {
-                                        customer_portal: "https://usbarkrangers.lemonsqueezy.com/billing?expires=2099999999&signature=test"
+                                        customer_portal: "https://carter-swarm-maps.lemonsqueezy.com/billing?expires=2099999999&signature=test"
                                     }
                                 }
                             }
@@ -601,11 +601,11 @@ describe("Lemon Squeezy customer portal callable", () => {
         assert.equal(captured.requestConfig.headers.Authorization, "Bearer test-api-key");
         assert.equal(
             result.url,
-            "https://usbarkrangers.lemonsqueezy.com/billing?expires=2099999999&signature=test"
+            "https://carter-swarm-maps.lemonsqueezy.com/billing?expires=2099999999&signature=test"
         );
         assert.equal(
             result.customerPortalUrl,
-            "https://usbarkrangers.lemonsqueezy.com/billing?expires=2099999999&signature=test"
+            "https://carter-swarm-maps.lemonsqueezy.com/billing?expires=2099999999&signature=test"
         );
     });
 
@@ -633,9 +633,9 @@ describe("Lemon Squeezy customer portal callable", () => {
                         data: {
                             data: {
                                 attributes: {
-                                    store_id: 363425,
+                                    store_id: 386224,
                                     urls: {
-                                        customer_portal: "https://usbarkrangers.lemonsqueezy.com/billing?expires=2099999999&signature=customer"
+                                        customer_portal: "https://carter-swarm-maps.lemonsqueezy.com/billing?expires=2099999999&signature=customer"
                                     }
                                 }
                             }
@@ -649,7 +649,7 @@ describe("Lemon Squeezy customer portal callable", () => {
         assert.equal(captured.requestConfig.headers.Authorization, "Bearer test-api-key");
         assert.equal(
             result.url,
-            "https://usbarkrangers.lemonsqueezy.com/billing?expires=2099999999&signature=customer"
+            "https://carter-swarm-maps.lemonsqueezy.com/billing?expires=2099999999&signature=customer"
         );
         assert.equal(firestore.state.writes.length, 0);
     });
@@ -673,7 +673,7 @@ describe("Lemon Squeezy customer portal callable", () => {
                         data: {
                             data: {
                                 attributes: {
-                                    store_id: 363425,
+                                    store_id: 386224,
                                     urls: {}
                                 }
                             }
@@ -704,9 +704,9 @@ describe("Lemon Squeezy customer portal callable", () => {
                     data: {
                         data: {
                             attributes: {
-                                store_id: 363425,
+                                store_id: 386224,
                                 urls: {
-                                    customer_portal: "https://usbarkrangers.lemonsqueezy.com/"
+                                    customer_portal: "https://carter-swarm-maps.lemonsqueezy.com/"
                                 }
                             }
                         }
@@ -715,7 +715,7 @@ describe("Lemon Squeezy customer portal callable", () => {
             }
         );
 
-        assert.equal(result.url, "https://usbarkrangers.lemonsqueezy.com/");
+        assert.equal(result.url, "https://carter-swarm-maps.lemonsqueezy.com/");
     });
 
     it("syncs cancelled Lemon subscription state while retrieving a portal URL", async () => {
@@ -743,12 +743,12 @@ describe("Lemon Squeezy customer portal callable", () => {
                             type: "subscriptions",
                             attributes: {
                                 test_mode: true,
-                                store_id: 363425,
+                                store_id: 386224,
                                 status: "cancelled",
                                 ends_at: "2099-02-01T00:00:00.000Z",
                                 updated_at: "2026-01-10T00:00:00.000Z",
                                 urls: {
-                                    customer_portal: "https://usbarkrangers.lemonsqueezy.com/billing?expires=2099999999&signature=cancelled"
+                                    customer_portal: "https://carter-swarm-maps.lemonsqueezy.com/billing?expires=2099999999&signature=cancelled"
                                 }
                             }
                         }
@@ -790,12 +790,12 @@ describe("Lemon Squeezy customer portal callable", () => {
                             type: "subscriptions",
                             attributes: {
                                 test_mode: true,
-                                store_id: 363425,
+                                store_id: 386224,
                                 status: "active",
                                 renews_at: "2099-02-01T00:00:00.000Z",
                                 updated_at: "2026-01-10T00:00:00.000Z",
                                 urls: {
-                                    customer_portal: "https://usbarkrangers.lemonsqueezy.com/billing?expires=2099999999&signature=resumed"
+                                    customer_portal: "https://carter-swarm-maps.lemonsqueezy.com/billing?expires=2099999999&signature=resumed"
                                 }
                             }
                         }
@@ -836,12 +836,12 @@ describe("Lemon Squeezy customer portal callable", () => {
                             type: "subscriptions",
                             attributes: {
                                 test_mode: true,
-                                store_id: 363425,
+                                store_id: 386224,
                                 status: "paused",
                                 renews_at: "2099-02-01T00:00:00.000Z",
                                 updated_at: "2026-01-10T00:00:00.000Z",
                                 urls: {
-                                    customer_portal: "https://usbarkrangers.lemonsqueezy.com/billing?expires=2099999999&signature=paused"
+                                    customer_portal: "https://carter-swarm-maps.lemonsqueezy.com/billing?expires=2099999999&signature=paused"
                                 }
                             }
                         }
@@ -925,8 +925,8 @@ describe("Lemon Squeezy restore purchase callable", () => {
                                     type: "subscriptions",
                                     attributes: {
                                         test_mode: true,
-                                        store_id: 363425,
-                                        variant_id: 1604336,
+                                        store_id: 386224,
+                                        variant_id: 1699350,
                                         customer_id: 7022381,
                                         user_email: "ranger@example.test",
                                         status: "active",
@@ -979,8 +979,8 @@ describe("Lemon Squeezy restore purchase callable", () => {
                                 type: "subscriptions",
                                 attributes: {
                                     test_mode: true,
-                                    store_id: 363425,
-                                    variant_id: 1604336,
+                                    store_id: 386224,
+                                    variant_id: 1699350,
                                     user_email: "ranger@example.test",
                                     status: "refunded",
                                     updated_at: "2026-01-12T00:00:00.000Z"
@@ -1029,8 +1029,8 @@ describe("Lemon Squeezy restore purchase callable", () => {
                                 type: "subscriptions",
                                 attributes: {
                                     test_mode: true,
-                                    store_id: 363425,
-                                    variant_id: 1604336,
+                                    store_id: 386224,
+                                    variant_id: 1699350,
                                     user_email: "ranger@example.test",
                                     status: "active",
                                     renews_at: "2099-01-01T00:00:00.000Z",
@@ -1079,8 +1079,8 @@ describe("Lemon Squeezy restore purchase callable", () => {
                                 type: "subscriptions",
                                 attributes: {
                                     test_mode: true,
-                                    store_id: 363425,
-                                    variant_id: 1604336,
+                                    store_id: 386224,
+                                    variant_id: 1699350,
                                     user_email: "ranger@example.test",
                                     status: "paused",
                                     renews_at: "2099-01-01T00:00:00.000Z",

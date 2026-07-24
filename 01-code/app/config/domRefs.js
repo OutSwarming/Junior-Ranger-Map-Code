@@ -115,6 +115,7 @@
         clearSearchBtn: byId('clear-search-btn'),
         searchSuggestions: byId('search-suggestions'),
         typeFilter: byId('type-filter'),
+        programFilter: byId('program-filter'),
         visitedFilter: byId('visited-filter'),
         mapStyleSelect: byId('map-style-select'),
         premiumFiltersWrap: byId('premium-filters-wrap'),

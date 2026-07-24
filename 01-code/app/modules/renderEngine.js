@@ -56,6 +56,125 @@ function getSwagType(info) {
     return 'Other';
 }
 
+function getParkAgencyFilterKey(parkData = {}) {
+    if (window.MapMarkerConfig && typeof window.MapMarkerConfig.getAgencyKey === 'function') {
+        return window.MapMarkerConfig.getAgencyKey(parkData);
+    }
+    if (typeof MapMarkerConfig !== 'undefined' && typeof MapMarkerConfig.getAgencyKey === 'function') {
+        return MapMarkerConfig.getAgencyKey(parkData);
+    }
+    return 'other';
+}
+
+function matchesParkTypeFilter(parkData, activeTypeFilter) {
+    const filter = activeTypeFilter || 'all';
+    if (filter === 'all') return true;
+
+    if (filter === 'National') return getParkAgencyFilterKey(parkData) === 'nps';
+    if (filter === 'State') return getParkAgencyFilterKey(parkData) === 'state-park';
+    if (filter === 'Other') return getParkAgencyFilterKey(parkData) === 'other';
+
+    return getParkAgencyFilterKey(parkData) === filter;
+}
+
+function getSpecialProgramFilterLabels(value) {
+    const seen = new Set();
+    return String(value || '')
+        .split(/[|\n;]+/)
+        .map(part => part.replace(/^\s*[-*]\s+/, '').replace(/^\s*\d+[.)]\s+/, '').trim())
+        .filter(Boolean)
+        .filter(label => {
+            const key = getProgramFilterKey(label);
+            if (!key || seen.has(key)) return false;
+            seen.add(key);
+            return true;
+        });
+}
+
+function getProgramFilterKey(label) {
+    return String(label || '').trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+function shouldShowProgramFilterLabel(label) {
+    const key = getProgramFilterKey(label);
+    return Boolean(key && key !== 'junior ranger');
+}
+
+const MIN_PROGRAM_FILTER_PARKS = 3;
+
+function getProgramFilterSourcePoint(parkData) {
+    if (!parkData || !parkData._isPickupLocation || !parkData._pickupParentId) return parkData;
+    const parkRepo = getParkRepo();
+    return parkRepo && typeof parkRepo.getById === 'function'
+        ? (parkRepo.getById(parkData._pickupParentId) || parkData)
+        : parkData;
+}
+
+function matchesProgramFilter(parkData, activeProgramFilter) {
+    const filterKey = getProgramFilterKey(activeProgramFilter || 'all');
+    if (!filterKey || filterKey === 'all') return true;
+
+    const sourcePoint = getProgramFilterSourcePoint(parkData);
+    return getSpecialProgramFilterLabels(sourcePoint && sourcePoint.specialPrograms)
+        .some(label => getProgramFilterKey(label) === filterKey);
+}
+
+function getAvailableProgramFilters(points = []) {
+    const labelsByKey = new Map();
+    const parkIdsByKey = new Map();
+    points.forEach(point => {
+        if (point && point._isPickupLocation) return;
+        const pointProgramKeys = new Set();
+        getSpecialProgramFilterLabels(point && point.specialPrograms).forEach(label => {
+            if (!shouldShowProgramFilterLabel(label)) return;
+            const key = getProgramFilterKey(label);
+            if (!labelsByKey.has(key)) labelsByKey.set(key, label);
+            pointProgramKeys.add(key);
+        });
+
+        const pointId = (point && point.id) || point;
+        pointProgramKeys.forEach(key => {
+            if (!parkIdsByKey.has(key)) parkIdsByKey.set(key, new Set());
+            parkIdsByKey.get(key).add(pointId);
+        });
+    });
+
+    return Array.from(labelsByKey.entries())
+        .filter(([key]) => (parkIdsByKey.get(key) || new Set()).size >= MIN_PROGRAM_FILTER_PARKS)
+        .map(([, label]) => label)
+        .sort((a, b) => a.localeCompare(b));
+}
+
+function populateProgramFilterOptions(points) {
+    const select = document.getElementById('program-filter');
+    if (!select) return;
+
+    const parkRepo = getParkRepo();
+    const sourcePoints = Array.isArray(points)
+        ? points
+        : (parkRepo && typeof parkRepo.getAll === 'function' ? parkRepo.getAll() : []);
+    const labels = getAvailableProgramFilters(sourcePoints);
+    const previousValue = select.value || window.BARK.activeProgramFilter || 'all';
+    const previousKey = getProgramFilterKey(previousValue);
+
+    select.innerHTML = '';
+    const allOption = document.createElement('option');
+    allOption.value = 'all';
+    allOption.textContent = 'All Regional/National Programs';
+    select.appendChild(allOption);
+
+    labels.forEach(label => {
+        const option = document.createElement('option');
+        option.value = label;
+        option.textContent = label;
+        select.appendChild(option);
+    });
+
+    const stillAvailable = previousKey === 'all' || labels.some(label => getProgramFilterKey(label) === previousKey);
+    select.value = stillAvailable ? previousValue : 'all';
+    window.BARK.activeProgramFilter = select.value;
+}
+
 function formatSwagLinks(text) {
     if (!text) return '';
     const urlRegex = /(https?:\/\/[^\s]+)/g;
@@ -78,6 +197,12 @@ function formatSwagLinks(text) {
 window.BARK.getColor = getColor;
 window.BARK.getBadgeClass = getBadgeClass;
 window.BARK.getParkCategory = getParkCategory;
+window.BARK.getParkAgencyFilterKey = getParkAgencyFilterKey;
+window.BARK.matchesParkTypeFilter = matchesParkTypeFilter;
+window.BARK.getSpecialProgramFilterLabels = getSpecialProgramFilterLabels;
+window.BARK.matchesProgramFilter = matchesProgramFilter;
+window.BARK.getAvailableProgramFilters = getAvailableProgramFilters;
+window.BARK.populateProgramFilterOptions = populateProgramFilterOptions;
 window.BARK.getSwagType = getSwagType;
 window.BARK.formatSwagLinks = formatSwagLinks;
 
@@ -143,6 +268,68 @@ function getTripRouteParkIds() {
 
 function getTripRouteParkIdsCacheKey() {
     return Array.from(getTripRouteParkIds()).sort().join(',');
+}
+
+function getExpandedPickupParentIds() {
+    if (!(window.BARK.expandedPickupParentIds instanceof Set)) {
+        window.BARK.expandedPickupParentIds = new Set();
+    }
+    return window.BARK.expandedPickupParentIds;
+}
+
+function serializeExpandedPickupParentIds() {
+    return serializeSet(getExpandedPickupParentIds());
+}
+
+function isPickupGroupExpanded(parentId) {
+    return Boolean(parentId && getExpandedPickupParentIds().has(parentId));
+}
+
+function isPickupLocationVisible(parkData) {
+    if (!parkData || !parkData._isPickupLocation) return true;
+    return isPickupGroupExpanded(parkData._pickupParentId);
+}
+
+function getPickupGroupPoints(parentId) {
+    const parkRepo = getParkRepo();
+    const allPoints = parkRepo ? parkRepo.getAll() : [];
+    return allPoints.filter(point => point && (point.id === parentId || point._pickupParentId === parentId));
+}
+
+function framePickupGroup(parentId) {
+    const map = getUsableMap();
+    if (!map || window.stopAutoMovements) return;
+
+    const bounds = L.latLngBounds();
+    getPickupGroupPoints(parentId).forEach(point => {
+        const lat = Number(point.lat);
+        const lng = Number(point.lng);
+        if (Number.isFinite(lat) && Number.isFinite(lng)) bounds.extend([lat, lng]);
+    });
+    if (!bounds.isValid()) return;
+
+    map.flyToBounds(bounds, {
+        padding: [50, 90],
+        maxZoom: 11,
+        duration: window.lowGfxEnabled ? 0 : 0.6,
+        animate: !window.lowGfxEnabled
+    });
+}
+
+function setPickupGroupExpanded(parentId, expanded, options = {}) {
+    if (!parentId) return false;
+    const expandedIds = getExpandedPickupParentIds();
+    const wasExpanded = expandedIds.has(parentId);
+    if (expanded) expandedIds.add(parentId);
+    else expandedIds.delete(parentId);
+    if (wasExpanded === expandedIds.has(parentId)) return false;
+
+    window.BARK.invalidateMarkerVisibility();
+    if (typeof window.syncState === 'function') window.syncState();
+    if (expanded && options.frame !== false) {
+        window.setTimeout(() => framePickupGroup(parentId), 80);
+    }
+    return true;
 }
 
 function getTargetMarkerLayerType(zoom) {
@@ -244,9 +431,11 @@ function getMarkerVisibilityStateKey() {
         serializeSet(window.BARK.activeSwagFilters),
         window.BARK.activeSearchQuery || '',
         window.BARK.activeTypeFilter || 'all',
+        window.BARK.activeProgramFilter || 'all',
         window.BARK.visitedFilterState || 'all',
         routeParkIds,
         visitedIds,
+        serializeExpandedPickupParentIds(),
         searchCache.query || '',
         searchCacheStatus,
         searchCacheIds,
@@ -274,6 +463,15 @@ window.BARK.invalidateMarkerDataSync = function () {
 window.BARK.invalidateVisitedIdsCache = function () {
     window.BARK._visitedIdsCacheKey = null;
     window.BARK.invalidateMarkerVisibility();
+};
+window.BARK.isPickupGroupExpanded = isPickupGroupExpanded;
+window.BARK.isPickupLocationVisible = isPickupLocationVisible;
+window.BARK.setPickupGroupExpanded = setPickupGroupExpanded;
+window.BARK.showPickupGroup = function (parentId, options = {}) {
+    return setPickupGroupExpanded(parentId, true, options);
+};
+window.BARK.hidePickupGroup = function (parentId, options = {}) {
+    return setPickupGroupExpanded(parentId, false, options);
 };
 window.BARK.isMapVisibleByDefaultViewState = isMapVisibleByDefaultViewState;
 window.BARK.isMapViewActive = isMapVisibleByDefaultViewState;
@@ -350,6 +548,7 @@ function updateMarkers() {
     const activeSwagFilters = window.BARK.activeSwagFilters;
     const activeSearchQuery = window.BARK.activeSearchQuery;
     const activeTypeFilter = window.BARK.activeTypeFilter;
+    const activeProgramFilter = window.BARK.activeProgramFilter;
     const visitedFilterState = window.BARK.visitedFilterState;
     const tripRouteParkIds = visitedFilterState === 'route' ? getTripRouteParkIds() : null;
     const _searchResultCache = window.BARK._searchResultCache;
@@ -377,7 +576,10 @@ function updateMarkers() {
 
     allPoints.forEach(item => {
         const matchesSwag = activeSwagFilters.size === 0 || activeSwagFilters.has(item.swagType);
-        const nameNorm = item._cachedNormalizedName || window.BARK.normalizeText(item.name);
+        const nameNorm = [
+            item._cachedNormalizedName || window.BARK.normalizeText(item.name),
+            item._cachedPickupSearchText || ''
+        ].filter(Boolean).join(' ');
         let matchesSearch = true;
 
         if (activeSearchQuery) {
@@ -390,7 +592,8 @@ function updateMarkers() {
             }
         }
 
-        const matchesType = activeTypeFilter === 'all' || item.category === activeTypeFilter;
+        const matchesType = matchesParkTypeFilter(item, activeTypeFilter);
+        const matchesProgram = matchesProgramFilter(item, activeProgramFilter);
         let matchesVisited = true;
         const isVisited = typeof window.BARK.isParkVisited === 'function'
             ? window.BARK.isParkVisited(item)
@@ -402,7 +605,11 @@ function updateMarkers() {
         // Trip stops no longer force park-marker visibility (Fix #19); the trip
         // overlay layer renders badges independently. Removing this OR-clause +
         // per-park tripDays scan is a real RAF perf win.
-        let isVisible = matchesSwag && matchesSearch && matchesType && matchesVisited;
+        let isVisible = matchesSwag && matchesSearch && matchesType && matchesProgram && matchesVisited;
+
+        if (isVisible && !isPickupLocationVisible(item)) {
+            isVisible = false;
+        }
 
         // 🎯 VIEWPORT CULLING: Skip off-screen pins entirely
         if (isVisible && shouldCull && !screenBounds.contains([item.lat, item.lng])) {
@@ -436,6 +643,10 @@ function updateMarkers() {
         window.BARK.markerManager.applyVisibility(allPoints, { forceReset: forceLayerReset });
     }
 
+    if (allPoints.length > 0 && typeof window.BARK.notifyPinsRendered === 'function') {
+        window.BARK.notifyPinsRendered();
+    }
+
     // 🏭 BATCH: Apply visited-pin class (avoids interleaved read/write layout thrash)
     markerClassUpdates.forEach(({ icon, isVisited }) => {
         icon.classList.toggle('visited-pin', isVisited);
@@ -454,6 +665,7 @@ function updateMarkers() {
     const currentFilterState = [
         activeSearchQuery,
         Array.from(activeSwagFilters).join(','),
+        activeProgramFilter || 'all',
         hasLongSearchQuery && searchCacheMatchesQuery && !searchCacheComplete ? 'search-partial' : 'search-complete'
     ].join('|');
 
@@ -464,7 +676,7 @@ function updateMarkers() {
         if (
             !window.stopAutoMovements &&
             searchCacheComplete &&
-            (activeSwagFilters.size > 0 || hasLongSearchQuery) &&
+            (activeSwagFilters.size > 0 || (activeProgramFilter && activeProgramFilter !== 'all') || hasLongSearchQuery) &&
             canAutoFrameBounds(map, visibleBounds, autoFramePadding)
         ) {
             map.flyToBounds(visibleBounds, {

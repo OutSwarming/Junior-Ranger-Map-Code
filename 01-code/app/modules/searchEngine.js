@@ -663,6 +663,7 @@ function initSearchEngine() {
     const clearSearchBtn = DOM.clearSearchBtn();
     const searchSuggestions = DOM.searchSuggestions();
     const typeSelect = DOM.typeFilter();
+    const programSelect = DOM.programFilter ? DOM.programFilter() : null;
     const filterBtns = document.querySelectorAll('.filter-btn');
     let searchTimeout = null;
     let searchContinuationTimeout = null;
@@ -998,6 +999,14 @@ function initSearchEngine() {
     if (typeSelect) {
         typeSelect.addEventListener('change', (e) => {
             window.BARK.activeTypeFilter = e.target.value;
+            window.syncState();
+        });
+    }
+
+    if (programSelect) {
+        programSelect.value = window.BARK.activeProgramFilter || 'all';
+        programSelect.addEventListener('change', (e) => {
+            window.BARK.activeProgramFilter = e.target.value || 'all';
             window.syncState();
         });
     }

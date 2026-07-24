@@ -79,6 +79,18 @@ function loadPanelRendererSafety() {
 function loadRenderEngineHelpers() {
     const context = {
         URL,
+        MapMarkerConfig: {
+            getAgencyKey(parkData = {}) {
+                const agency = String(parkData.agency || '').toLowerCase();
+                if (agency.includes('army corps')) return 'army-corps';
+                if (agency.includes('forest service') || agency.includes('national forest')) return 'national-forest';
+                if (agency.includes('blm') || agency.includes('bureau of land management')) return 'blm';
+                if (agency.includes('fish & wildlife') || agency.includes('wildlife refuge')) return 'wildlife-refuge';
+                if (agency.includes('nps')) return 'nps';
+                if (agency === 'state') return 'state-park';
+                return 'other';
+            }
+        },
         window: { BARK: {} }
     };
     vm.runInNewContext(fs.readFileSync(path.join(repoRoot, '01-code', 'app', 'modules', 'renderEngine.js'), 'utf8'), context);
@@ -103,6 +115,43 @@ test('marker panel URL extraction accepts only safe http links', () => {
         'https://example.test/path',
         'https://ok.test/a?b=1'
     ]);
+});
+
+test('marker panel does not duplicate generic Junior Ranger book and tag pills', () => {
+    const safety = loadPanelRendererSafety();
+    const bookLinks = safety.getBookLinks({
+        jrBooks: [
+            'Junior Ranger: https://example.test/oklahoma-city.pdf',
+            '25th Anniversary Junior Ranger (limited edition): https://example.test/oklahoma-city-25th.pdf'
+        ].join('\n')
+    });
+
+    const specialLabels = safety.getSpecialProgramLabels(
+        'Junior Ranger | 25th Anniversary Junior Ranger (limited edition)',
+        bookLinks
+    );
+    const catalogLabels = safety.getBookCatalogLabels(bookLinks, specialLabels.map(item => item.label));
+
+    assert.deepEqual(specialLabels.map(item => item.label), [
+        'Junior Ranger Tag',
+        '25th Anniversary Junior Ranger (limited edition) Tag'
+    ]);
+    assert.deepEqual(catalogLabels, []);
+});
+
+test('pickup location panel helpers suppress child book and tag links', () => {
+    const safety = loadPanelRendererSafety();
+    const pickupLinks = safety.getRenderableBookLinks({
+        _isPickupLocation: true,
+        jrBooks: 'Ocean Stewards Junior Ranger: https://example.test/ocean.pdf'
+    });
+    const masterLinks = safety.getRenderableBookLinks({
+        jrBooks: 'Ocean Stewards Junior Ranger: https://example.test/ocean.pdf'
+    });
+
+    assert.deepEqual(pickupLinks, []);
+    assert.equal(masterLinks.length, 1);
+    assert.equal(masterLinks[0].label, 'Ocean Stewards Junior Ranger');
 });
 
 test('free visit limit uses premium paywall modal instead of browser alert when available', () => {
@@ -133,6 +182,74 @@ test('swag link formatter validates URLs and adds noopener rel', () => {
     assert.match(html, /href="https:\/\/example\.test\/"/);
     assert.match(html, /rel="noopener noreferrer"/);
     assert.doesNotMatch(html, /onclick|javascript:/);
+});
+
+test('park type filter supports expanded agency categories', () => {
+    const bark = loadRenderEngineHelpers();
+    const armyCorps = { agency: 'US Army Corps of Engineers', parkCategory: 'Other' };
+    const nationalForest = { agency: 'US Forest Service - National Forest', parkCategory: 'Other' };
+    const blm = { agency: 'BLM', parkCategory: 'Other' };
+    const wildlifeRefuge = { agency: 'US Fish & Wildlife Service', parkCategory: 'Other' };
+    const localOther = { agency: 'Other', parkCategory: 'Other' };
+    const nps = { agency: 'NPS', parkCategory: 'National' };
+    const state = { agency: 'State', parkCategory: 'State' };
+
+    assert.equal(bark.matchesParkTypeFilter(armyCorps, 'army-corps'), true);
+    assert.equal(bark.matchesParkTypeFilter(nationalForest, 'national-forest'), true);
+    assert.equal(bark.matchesParkTypeFilter(blm, 'blm'), true);
+    assert.equal(bark.matchesParkTypeFilter(wildlifeRefuge, 'wildlife-refuge'), true);
+    assert.equal(bark.matchesParkTypeFilter(localOther, 'Other'), true);
+    assert.equal(bark.matchesParkTypeFilter(armyCorps, 'Other'), false);
+    assert.equal(bark.matchesParkTypeFilter(nps, 'National'), true);
+    assert.equal(bark.matchesParkTypeFilter(nationalForest, 'National'), false);
+    assert.equal(bark.matchesParkTypeFilter(wildlifeRefuge, 'National'), false);
+    assert.equal(bark.matchesParkTypeFilter(state, 'State'), true);
+    assert.equal(bark.matchesParkTypeFilter(localOther, 'State'), false);
+});
+
+test('program filter uses regional and national tags from specialPrograms', () => {
+    const bark = loadRenderEngineHelpers();
+    const masterPoint = { id: 'jr_denali', specialPrograms: 'Night Explorer | Junior Angler' };
+    const childPickup = { _isPickupLocation: true, _pickupParentId: 'jr_denali', specialPrograms: 'Junior Angler' };
+    const points = [
+        masterPoint,
+        childPickup,
+        { id: 'jr_big_bend', specialPrograms: 'Night Explorer\nUnderwater Explorer' },
+        { id: 'jr_biscayne', specialPrograms: 'Night Explorer\nUnderwater Explorer' },
+        { id: 'jr_channel_islands', specialPrograms: 'Underwater Explorer' },
+        { id: 'jr_single_forest', specialPrograms: 'Junior Forest Ranger' },
+        { specialPrograms: 'Junior Ranger' }
+    ];
+    bark.repos = {
+        ParkRepo: {
+            getById(id) {
+                return id === 'jr_denali' ? masterPoint : null;
+            }
+        }
+    };
+
+    assert.deepEqual(bark.getAvailableProgramFilters(points), [
+        'Night Explorer',
+        'Underwater Explorer'
+    ]);
+    assert.equal(bark.matchesProgramFilter(points[0], 'Night Explorer'), true);
+    assert.equal(bark.matchesProgramFilter(childPickup, 'Night Explorer'), true);
+    assert.equal(bark.matchesProgramFilter(childPickup, 'Junior Angler'), true);
+    assert.equal(bark.matchesProgramFilter(childPickup, 'Underwater Explorer'), false);
+    assert.equal(bark.matchesProgramFilter(points[2], 'all'), true);
+});
+
+test('pickup location pins stay hidden until their master park group is expanded', () => {
+    const bark = loadRenderEngineHelpers();
+    const childPickup = { _isPickupLocation: true, _pickupParentId: 'jr_denali' };
+    const masterPin = { id: 'jr_denali' };
+
+    assert.equal(bark.isPickupLocationVisible(masterPin), true);
+    assert.equal(bark.isPickupLocationVisible(childPickup), false);
+
+    bark.expandedPickupParentIds.add('jr_denali');
+
+    assert.equal(bark.isPickupLocationVisible(childPickup), true);
 });
 
 test('panel renderer no longer assigns sheet fields directly through innerHTML', () => {

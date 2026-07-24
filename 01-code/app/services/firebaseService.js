@@ -192,7 +192,15 @@ function getVisitedPlaceEntries(placeOrId) {
         entries.push({ id: visitedId, record });
     }
 
-    const candidateIds = [place.id, getLegacyParkIdFromCoords(place.lat, place.lng)]
+    const pickupChildIds = Array.isArray(place.pickupLocations)
+        ? place.pickupLocations.map(location => location && location.id)
+        : [];
+    const candidateIds = [
+        place.id,
+        place._pickupParentId,
+        ...pickupChildIds,
+        getLegacyParkIdFromCoords(place.lat, place.lng)
+    ]
         .filter(id => id !== undefined && id !== null && id !== '');
 
     for (const candidateId of candidateIds) {

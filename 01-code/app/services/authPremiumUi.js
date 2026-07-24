@@ -8,7 +8,8 @@ window.BARK = window.BARK || {};
         mapStyle: 'default',
         visitedFilter: 'all'
     };
-    const PREMIUM_MAP_STYLES = new Set(['terrain', 'satellite', 'streets']);
+    // Map background styles are free for everyone for now, so no styles are gated.
+    const PREMIUM_MAP_STYLES = new Set();
     const PREMIUM_VISITED_FILTERS = new Set(['visited', 'unvisited', 'route']);
 
     function isPremiumActive() {
@@ -67,12 +68,9 @@ window.BARK = window.BARK || {};
     function applyNonPremiumRuntimeDefaults() {
         window.BARK.visitedFilterState = PREMIUM_RUNTIME_DEFAULTS.visitedFilter;
         persistLocalValue('barkVisitedFilter', PREMIUM_RUNTIME_DEFAULTS.visitedFilter);
-        persistLocalValue('barkMapStyle', PREMIUM_RUNTIME_DEFAULTS.mapStyle);
+        // Map background is free for everyone now, so leave the saved map style untouched.
         setPremiumClusteringDefault();
 
-        if (typeof window.BARK.loadLayer === 'function') {
-            window.BARK.loadLayer(PREMIUM_RUNTIME_DEFAULTS.mapStyle);
-        }
         if (typeof window.BARK.syncSettingsControls === 'function') {
             window.BARK.syncSettingsControls();
         }

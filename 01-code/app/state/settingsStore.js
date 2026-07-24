@@ -49,7 +49,7 @@
         reducePinMotion: false,
         removeShadows: false,
         stopResizing: false,
-        viewportCulling: false,
+        viewportCulling: true,
         forcePlainMarkers: false,
         limitZoomOut: false,
         simplifyPinsWhileMoving: false,

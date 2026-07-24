@@ -14,6 +14,7 @@
 
     let allPoints = [];
     let markerDataRevision = 0;
+    let currentDataSource = '';
     const lookup = new Map();
     const listeners = new Set();
 
@@ -89,6 +90,8 @@
     function replaceAll(nextPoints, options = {}) {
         const previousPoints = allPoints;
         const incomingPoints = Array.isArray(nextPoints) ? nextPoints : [];
+        const nextDataSource = cleanValue(options.source);
+        const sourceChanged = Boolean(nextDataSource && currentDataSource && nextDataSource !== currentDataSource);
         const previousById = new Map(previousPoints.filter(point => point && point.id).map(point => [point.id, point]));
         const nextById = new Map(incomingPoints.filter(point => point && point.id).map(point => [point.id, point]));
         const nextIds = new Set(incomingPoints.map(point => point && point.id));
@@ -111,7 +114,7 @@
             if (!nextById.has(id)) removed.add(id);
         });
 
-        if (shouldRejectDataRefresh(previousPoints.length, incomingPoints.length, droppedCanonicalIds.length)) {
+        if (!sourceChanged && shouldRejectDataRefresh(previousPoints.length, incomingPoints.length, droppedCanonicalIds.length)) {
             console.warn('[ParkRepo] Rejected destructive data refresh. A background CSV poll attempted to drop existing Park IDs.', {
                 previousCount: previousPoints.length,
                 nextCount: incomingPoints.length,
@@ -136,6 +139,7 @@
         }
 
         allPoints = incomingPoints;
+        if (nextDataSource) currentDataSource = nextDataSource;
         lookup.clear();
         allPoints.forEach((point) => {
             if (point && point.id) lookup.set(point.id, point);
@@ -151,6 +155,7 @@
             changed,
             previousPoints,
             points: allPoints,
+            source: currentDataSource,
             revision: markerDataRevision
         });
         notify(change);
@@ -163,6 +168,7 @@
             added,
             removed,
             changed,
+            source: currentDataSource,
             revision: markerDataRevision
         };
     }
@@ -182,6 +188,7 @@
         getById,
         getLookup,
         getRevision,
+        getSource: () => currentDataSource,
         setMarkerBackedPark,
         removePark,
         pruneToIds,

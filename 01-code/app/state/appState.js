@@ -10,6 +10,7 @@
         'activeSwagFilters',
         'activeSearchQuery',
         'activeTypeFilter',
+        'activeProgramFilter',
         'visitedFilterState',
         '_searchResultCache',
         'tripDays',
@@ -110,6 +111,7 @@
         fallbackValues.activeSwagFilters = hasBarkSource('activeSwagFilters') ? window.BARK.activeSwagFilters : new Set();
         fallbackValues.activeSearchQuery = hasBarkSource('activeSearchQuery') ? window.BARK.activeSearchQuery : '';
         fallbackValues.activeTypeFilter = hasBarkSource('activeTypeFilter') ? window.BARK.activeTypeFilter : 'all';
+        fallbackValues.activeProgramFilter = hasBarkSource('activeProgramFilter') ? window.BARK.activeProgramFilter : 'all';
         fallbackValues.visitedFilterState = hasBarkSource('visitedFilterState') ? window.BARK.visitedFilterState : (localStorage.getItem('barkVisitedFilter') || 'all');
         fallbackValues._searchResultCache = hasBarkSource('_searchResultCache') ? window.BARK._searchResultCache : { query: '', matchedIds: null };
         fallbackValues.tripDays = hasBarkSource('tripDays') ? window.BARK.tripDays : [{ color: '#1976D2', stops: [], notes: '' }];

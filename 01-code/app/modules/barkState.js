@@ -9,7 +9,7 @@ window.BARK.bootOrder = window.BARK.bootOrder || {};
 window.BARK.bootOrder.barkStateParsedAt = Date.now();
 
 // ====== APP VERSION ======
-let APP_VERSION = parseInt(localStorage.getItem('bark_seen_version') || '26');
+let APP_VERSION = parseInt(localStorage.getItem('bark_seen_version') || '14');
 console.log(`Junior Ranger Engine v${APP_VERSION}: Performance Optimized`);
 window.BARK.APP_VERSION = APP_VERSION;
 window.BARK.setAppVersion = function (v) { APP_VERSION = v; window.BARK.APP_VERSION = v; };
@@ -108,6 +108,7 @@ function clearActivePin() {
 let activeSwagFilters = new Set();
 let activeSearchQuery = '';
 let activeTypeFilter = 'all';
+let activeProgramFilter = 'all';
 
 let visitedFilterState = localStorage.getItem('barkVisitedFilter') || 'all';
 
@@ -143,6 +144,7 @@ Object.defineProperties(window.BARK, {
     activeSwagFilters:  { get() { return activeSwagFilters; },  set(v) { activeSwagFilters = v; } },
     activeSearchQuery:  { get() { return activeSearchQuery; },  set(v) { activeSearchQuery = v; } },
     activeTypeFilter:   { get() { return activeTypeFilter; },   set(v) { activeTypeFilter = v; } },
+    activeProgramFilter: { get() { return activeProgramFilter; }, set(v) { activeProgramFilter = v; } },
     visitedFilterState: { get() { return visitedFilterState; }, set(v) { visitedFilterState = v; } },
     tripDays:           { get() { return tripDays; },           set(v) { tripDays = v; } },
     activeDayIdx:       { get() { return activeDayIdx; },       set(v) { activeDayIdx = v; } },

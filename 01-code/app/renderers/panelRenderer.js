@@ -119,6 +119,30 @@ function getSafeHttpUrls(value) {
         .filter(Boolean);
 }
 
+function getUniqueHttpUrls(value) {
+    const seen = new Set();
+    return getSafeHttpUrls(value).filter(url => {
+        if (seen.has(url)) return false;
+        seen.add(url);
+        return true;
+    });
+}
+
+function getLabeledHttpLinks(value, fallbackPrefix) {
+    const source = String(value || '');
+    const urls = getUniqueHttpUrls(source);
+    return urls.map((url, index) => {
+        const urlIndex = source.indexOf(url);
+        const prefix = urlIndex > -1
+            ? source.slice(0, urlIndex).split(/\r?\n/).pop().replace(/[:\-\s]+$/, '').trim()
+            : '';
+        return {
+            url,
+            label: prefix || `${fallbackPrefix} ${index + 1}`
+        };
+    });
+}
+
 function configureExternalLink(link, href) {
     link.href = href;
     link.target = '_blank';
@@ -174,7 +198,23 @@ function addUniqueLabel(labels, seen, label, url = '') {
     labels.push({ label: cleaned, url });
 }
 
+function getComparableMetaLabel(value) {
+    return cleanMetaLabel(value)
+        .toLowerCase()
+        .replace(/\s+tag$/i, '')
+        .replace(/\s+book$/i, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
 function findMatchingBookUrl(label, bookLinks) {
+    const comparableLabel = getComparableMetaLabel(label);
+    const directMatch = bookLinks.find(link => {
+        const comparableBookLabel = getComparableMetaLabel(link && link.label);
+        return comparableLabel && comparableBookLabel === comparableLabel;
+    });
+    if (directMatch) return directMatch.url;
+
     const labelTokens = getMetaSearchTokens(label);
     if (!labelTokens.length) return '';
 
@@ -196,13 +236,17 @@ function getSpecialProgramLabels(value, bookLinks) {
     const seen = new Set();
     String(value || '')
         .split(/[|\n;]+/)
-        .map(part => part.replace(/^[-*\d.\s]+/, '').trim())
+        .map(part => part.replace(/^\s*[-*]\s+/, '').replace(/^\s*\d+[.)]\s+/, '').trim())
         .filter(Boolean)
         .forEach(part => addUniqueLabel(labels, seen, `${part} Tag`, findMatchingBookUrl(part, bookLinks)));
     return labels;
 }
 
 function metaLabelsOverlap(firstLabel, secondLabel) {
+    const firstComparable = getComparableMetaLabel(firstLabel);
+    const secondComparable = getComparableMetaLabel(secondLabel);
+    if (firstComparable && secondComparable && firstComparable === secondComparable) return true;
+
     const firstTokens = getMetaSearchTokens(firstLabel);
     const secondTokens = getMetaSearchTokens(secondLabel);
     if (!firstTokens.length || !secondTokens.length) return false;
@@ -236,8 +280,22 @@ function getAgencyLabel(agency) {
     return value;
 }
 
-function getDisplayPlaceName(name) {
-    return String(name || 'Unknown Park').replace(/^\s*\(?\d+\s+of\s+\d+\)?\s*/i, '').trim() || 'Unknown Park';
+function stripOuterLocationParens(value) {
+    const text = String(value || '').trim();
+    return text.length > 2 && text.startsWith('(') && text.endsWith(')')
+        ? text.slice(1, -1).trim()
+        : text;
+}
+
+function getDisplayPlaceName(placeOrName) {
+    const rawName = placeOrName && typeof placeOrName === 'object'
+        ? placeOrName.name
+        : placeOrName;
+    const cleaned = String(rawName || 'Unknown Park').replace(/^\s*\(?\d+\s+of\s+\d+\)?\s*/i, '').trim();
+    const displayName = placeOrName && typeof placeOrName === 'object' && placeOrName._isPickupLocation
+        ? stripOuterLocationParens(cleaned)
+        : cleaned;
+    return displayName || 'Unknown Park';
 }
 
 function getBookLinks(place = {}) {
@@ -251,6 +309,205 @@ function getBookLinks(place = {}) {
             label: prefix || (urls.length > 1 ? `Junior Ranger Book ${index + 1}` : 'Download Book')
         };
     });
+}
+
+function getRenderableBookLinks(place = {}) {
+    return place && place._isPickupLocation ? [] : getBookLinks(place);
+}
+
+function getBadgeDisplayImageUrl(imageUrl) {
+    const badgeService = window.BARK.services && window.BARK.services.badgeImages;
+    return badgeService && typeof badgeService.getDisplayImageUrl === 'function'
+        ? badgeService.getDisplayImageUrl(imageUrl)
+        : imageUrl;
+}
+
+function handleBadgeImageViewerKeydown(event) {
+    if (event.key === 'Escape') closeBadgeImageViewer();
+}
+
+function closeBadgeImageViewer() {
+    const viewer = document.getElementById('badge-image-viewer');
+    if (!viewer) return;
+
+    viewer.classList.remove('active');
+    viewer.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('badge-image-viewer-open');
+    document.removeEventListener('keydown', handleBadgeImageViewerKeydown);
+
+    const image = viewer.querySelector('.badge-image-viewer-image');
+    if (image) {
+        image.removeAttribute('src');
+        image.alt = '';
+    }
+}
+
+function ensureBadgeImageViewer() {
+    let viewer = document.getElementById('badge-image-viewer');
+    if (viewer) return viewer;
+
+    viewer = document.createElement('div');
+    viewer.id = 'badge-image-viewer';
+    viewer.className = 'badge-image-viewer';
+    viewer.setAttribute('aria-hidden', 'true');
+    viewer.setAttribute('aria-label', 'Badge image preview');
+    viewer.setAttribute('aria-modal', 'true');
+    viewer.setAttribute('role', 'dialog');
+
+    const closeButton = document.createElement('button');
+    closeButton.type = 'button';
+    closeButton.className = 'badge-image-viewer-close';
+    closeButton.setAttribute('aria-label', 'Close badge image');
+    closeButton.innerHTML = '&times;';
+    closeButton.addEventListener('click', closeBadgeImageViewer);
+
+    const stage = document.createElement('div');
+    stage.className = 'badge-image-viewer-stage';
+
+    const image = document.createElement('img');
+    image.className = 'badge-image-viewer-image';
+    image.alt = '';
+    image.decoding = 'async';
+    image.referrerPolicy = 'no-referrer';
+
+    stage.appendChild(image);
+    viewer.appendChild(closeButton);
+    viewer.appendChild(stage);
+    viewer.addEventListener('click', event => {
+        if (event.target === viewer || event.target === stage) closeBadgeImageViewer();
+    });
+
+    document.body.appendChild(viewer);
+    return viewer;
+}
+
+function openBadgeImageViewer(badge, index) {
+    const sourceUrl = badge && (badge.imageUrl || badge.thumbnailUrl);
+    if (!sourceUrl) return false;
+
+    const viewer = ensureBadgeImageViewer();
+    const image = viewer.querySelector('.badge-image-viewer-image');
+    const closeButton = viewer.querySelector('.badge-image-viewer-close');
+    const title = badge.title || `Badge ${index + 1}`;
+
+    if (image) {
+        image.src = getBadgeDisplayImageUrl(sourceUrl);
+        image.alt = title;
+    }
+
+    viewer.classList.add('active');
+    viewer.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('badge-image-viewer-open');
+    document.removeEventListener('keydown', handleBadgeImageViewerKeydown);
+    document.addEventListener('keydown', handleBadgeImageViewerKeydown);
+
+    if (closeButton && typeof closeButton.focus === 'function') {
+        closeButton.focus({ preventScroll: true });
+    }
+
+    return true;
+}
+
+function createBadgeImageCard(badge, index) {
+    const card = document.createElement('a');
+    card.className = 'badge-image-card';
+    card.href = getBadgeDisplayImageUrl(badge.imageUrl || badge.thumbnailUrl) || '#';
+    card.setAttribute('aria-label', `Open ${badge.title || `Badge ${index + 1}`} image`);
+    card.title = badge.title || `Badge ${index + 1}`;
+    card.rel = 'noopener noreferrer';
+    card.addEventListener('click', event => {
+        if (openBadgeImageViewer(badge, index)) event.preventDefault();
+    });
+
+    const imageFrame = document.createElement('div');
+    imageFrame.className = 'badge-image-frame';
+
+    const image = document.createElement('img');
+    const rawImageUrl = badge.thumbnailUrl || badge.imageUrl;
+    image.src = getBadgeDisplayImageUrl(rawImageUrl);
+    image.alt = badge.title || `Badge ${index + 1}`;
+    image.loading = 'lazy';
+    image.decoding = 'async';
+    image.referrerPolicy = 'no-referrer';
+    image.addEventListener('error', () => {
+        card.classList.add('badge-image-card-error');
+        imageFrame.textContent = 'Image unavailable';
+    }, { once: true });
+
+    imageFrame.appendChild(image);
+    card.appendChild(imageFrame);
+
+    return card;
+}
+
+function getCsvBadgePictureBadges(place = {}) {
+    return getLabeledHttpLinks(place.pics || '', 'Badge Picture').map((link, index) => ({
+        id: `csv-picture-${index + 1}`,
+        title: link.label || `Badge Picture ${index + 1}`,
+        type: 'Badge Picture',
+        imageUrl: link.url,
+        thumbnailUrl: link.url,
+        source: 'site-row'
+    }));
+}
+
+function mergeBadgeImages(manifestBadges, csvBadges) {
+    const seen = new Set();
+    return manifestBadges.concat(csvBadges).filter(badge => {
+        const key = badge && badge.imageUrl;
+        if (!key || seen.has(key)) return false;
+        seen.add(key);
+        return true;
+    });
+}
+
+function renderBadgeGalleryImages(container, badges, place) {
+    clearElement(container);
+    container.className = 'badge-gallery badge-gallery-strip-wrap';
+    container.dataset.pinId = place.id || '';
+    container.style.display = badges.length ? 'block' : 'none';
+    if (!badges.length) return;
+
+    const strip = document.createElement('div');
+    strip.className = 'badge-gallery-strip';
+    badges.forEach((badge, index) => strip.appendChild(createBadgeImageCard(badge, index)));
+    container.appendChild(strip);
+}
+
+function renderBadgeGallery(container, place = {}) {
+    if (!container) return;
+    const pinId = place.id || '';
+    const csvBadges = getCsvBadgePictureBadges(place);
+    container.dataset.pinId = pinId;
+
+    if (csvBadges.length) {
+        renderBadgeGalleryImages(container, csvBadges, place);
+    } else {
+        container.style.display = 'none';
+        clearElement(container);
+    }
+
+    const badgeService = window.BARK.services && window.BARK.services.badgeImages;
+    if (!badgeService || !pinId) return;
+    if (csvBadges.length) return true;
+
+    const loadBadges = typeof badgeService.getBadgesForPlace === 'function'
+        ? badgeService.getBadgesForPlace(place)
+        : badgeService.getBadgesForPin(pinId);
+
+    loadBadges.then(manifestBadges => {
+        if (container.dataset.pinId !== pinId) return;
+        const badges = mergeBadgeImages(manifestBadges, []);
+        renderBadgeGalleryImages(container, badges, place);
+    }).catch(error => {
+        console.warn('[panelRenderer] Unable to load badge images for selected pin.', {
+            pinId,
+            name: place.name,
+            error
+        });
+    });
+
+    return csvBadges.length > 0;
 }
 
 function createPanelButton({ text, className = '', href = '', onClick = null, actionKey = '' }) {
@@ -302,6 +559,12 @@ function syncVisitedActionButtons(place) {
     });
 }
 
+function getPickupLocations(place) {
+    return Array.isArray(place && place.pickupLocations)
+        ? place.pickupLocations.filter(location => location && location.id)
+        : [];
+}
+
 function renderPanelActionSet(container, actions) {
     if (!container) return;
     clearElement(container);
@@ -331,12 +594,33 @@ function buildPrimaryActions(place, bookLinks) {
         const button = document.getElementById(buttonId);
         if (button && typeof button.click === 'function') button.click();
     };
+    const pickupLocations = getPickupLocations(place);
+    const isPickupGroupExpanded = typeof window.BARK.isPickupGroupExpanded === 'function'
+        ? window.BARK.isPickupGroupExpanded(place.id)
+        : false;
     const actions = [{
         text: 'Directions',
         className: 'primary',
         href: buildMapSearchUrl(place.name, place.lat, place.lng, 'google'),
         actionKey: 'directions'
-    }, {
+    }];
+
+    if (pickupLocations.length > 0) {
+        actions.push({
+            text: isPickupGroupExpanded ? 'Hide Pickup Pins' : `Show All (${pickupLocations.length})`,
+            className: 'pickup-locations',
+            onClick: () => {
+                const nextExpanded = !(typeof window.BARK.isPickupGroupExpanded === 'function'
+                    && window.BARK.isPickupGroupExpanded(place.id));
+                const toggle = nextExpanded ? window.BARK.showPickupGroup : window.BARK.hidePickupGroup;
+                if (typeof toggle === 'function') toggle(place.id);
+                buildPrimaryActions(place, bookLinks);
+            },
+            actionKey: 'pickup-locations'
+        });
+    }
+
+    actions.push({
         text: 'Park Info',
         onClick: () => scrollPanelTo(document.getElementById('panel-info-section')),
         actionKey: 'park-info'
@@ -352,7 +636,7 @@ function buildPrimaryActions(place, bookLinks) {
         text: 'Verified Check In',
         onClick: () => clickPanelButton('verify-checkin-btn'),
         actionKey: 'verify-checkin'
-    }];
+    });
 
     renderPanelActionSet(container, actions);
     renderPanelActionSet(stickyFooter, actions);
@@ -365,6 +649,13 @@ function renderBookSection(place, bookLinks, websiteUrls) {
     const count = document.getElementById('panel-book-count');
     const linksContainer = document.getElementById('panel-book-links');
     if (!section || !linksContainer) return;
+
+    if (place && place._isPickupLocation) {
+        section.style.display = 'none';
+        clearElement(linksContainer);
+        if (count) count.textContent = '';
+        return;
+    }
 
     section.style.display = 'block';
     clearElement(linksContainer);
@@ -456,8 +747,14 @@ function buildMapSearchUrl(name, lat, lng, provider) {
 }
 
 window.BARK.panelRendererSafety = {
+    getBookCatalogLabels,
+    getBookLinks,
+    getRenderableBookLinks,
     getSafeHttpUrls,
+    getSpecialProgramLabels,
+    openBadgeImageViewer,
     openFreeVisitLimitPaywall,
+    closeBadgeImageViewer,
     setTextWithLineBreaks
 };
 
@@ -500,31 +797,44 @@ function renderMarkerClickPanel(context) {
     if (!refreshOnly) document.getElementById('filter-panel').classList.add('collapsed');
 
     const d = marker._parkData;
-    const displayName = getDisplayPlaceName(d.name);
-    const bookLinks = getBookLinks(d);
+    const displayName = getDisplayPlaceName(d);
+    const bookLinks = getRenderableBookLinks(d);
     const websiteUrls = getSafeHttpUrls(d.website || '');
 
     if (titleEl) titleEl.textContent = displayName;
     const subtitleEl = document.getElementById('panel-subtitle');
     if (subtitleEl) {
-        const subtitleParts = [getAgencyLabel(d.agency), d.state].filter(Boolean);
-        subtitleEl.textContent = subtitleParts.length ? `${subtitleParts.join(' • ')} • Junior Ranger` : 'Junior Ranger program';
+        if (d._isPickupLocation && d._pickupParentName) {
+            const subtitleParts = [`Pickup location for ${getDisplayPlaceName(d._pickupParentName)}`, d.state].filter(Boolean);
+            subtitleEl.textContent = subtitleParts.join(' • ');
+        } else {
+            const subtitleParts = [getAgencyLabel(d.agency), d.state].filter(Boolean);
+            subtitleEl.textContent = subtitleParts.length ? `${subtitleParts.join(' • ')} • Junior Ranger` : 'Junior Ranger program';
+        }
     }
 
     const metaContainer = document.getElementById('panel-meta-container');
     if (metaContainer) {
         clearElement(metaContainer);
-        metaContainer.appendChild(createMetaPill('', d.swagType, 'Junior Ranger'));
-        const specialProgramLabels = getSpecialProgramLabels(d.specialPrograms, bookLinks);
-        specialProgramLabels.forEach(({ label, url }) => {
-            metaContainer.appendChild(createMetaPill('', label, label, url));
-        });
-        getBookCatalogLabels(bookLinks, specialProgramLabels.map(item => item.label)).forEach(({ label, url }) => {
-            metaContainer.appendChild(createMetaPill('', label, label, url));
-        });
-        metaContainer.appendChild(createMetaPill('', d.specialPrograms ? 'Special Program' : 'Site-Specific Book', 'Site-Specific Book', d.specialPrograms ? '' : (bookLinks[0] && bookLinks[0].url)));
-        metaContainer.appendChild(createMetaPill('', d.state, 'Location'));
-        metaContainer.scrollLeft = 0;
+        if (d._isPickupLocation) {
+            metaContainer.scrollLeft = 0;
+        } else {
+            if (d.swagType && d.swagType !== 'Special Programs') {
+                metaContainer.appendChild(createMetaPill('', d.swagType, 'Junior Ranger'));
+            }
+            const specialProgramLabels = getSpecialProgramLabels(d.specialPrograms, bookLinks);
+            specialProgramLabels.forEach(({ label, url }) => {
+                metaContainer.appendChild(createMetaPill('', label, label, url));
+            });
+            getBookCatalogLabels(bookLinks, specialProgramLabels.map(item => item.label)).forEach(({ label, url }) => {
+                metaContainer.appendChild(createMetaPill('', label, label, url));
+            });
+            if (!d.specialPrograms) {
+                metaContainer.appendChild(createMetaPill('', 'Site-Specific Book', 'Site-Specific Book', bookLinks[0] && bookLinks[0].url));
+                metaContainer.appendChild(createMetaPill('', d.state, 'Location'));
+            }
+            metaContainer.scrollLeft = 0;
+        }
     }
 
     buildPrimaryActions(d, bookLinks);
@@ -562,18 +872,21 @@ function renderMarkerClickPanel(context) {
 
     const videoUrl = getSafeHttpUrls(d.video || '')[0];
     const mediaLinks = document.getElementById('media-links');
+    renderBadgeGallery(picsEl, d);
     if (videoUrl) {
         if (mediaLinks) mediaLinks.style.display = 'flex';
+    } else {
+        if (mediaLinks) mediaLinks.style.display = 'none';
+    }
+    if (videoUrl) {
         if (videoEl) {
             videoEl.style.display = 'block';
             configureExternalLink(videoEl, videoUrl);
         }
     } else {
-        if (mediaLinks) mediaLinks.style.display = 'none';
         if (videoEl) { videoEl.style.display = 'none'; videoEl.removeAttribute('href'); }
     }
 
-    if (picsEl) { picsEl.style.display = 'none'; clearElement(picsEl); }
     if (websitesContainer) {
         clearElement(websitesContainer);
         websitesContainer.style.display = 'none';
@@ -782,3 +1095,5 @@ function renderMarkerClickPanel(context) {
 }
 
 window.BARK.renderMarkerClickPanel = renderMarkerClickPanel;
+window.BARK.openBadgeImageViewer = openBadgeImageViewer;
+window.BARK.closeBadgeImageViewer = closeBadgeImageViewer;

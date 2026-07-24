@@ -845,7 +845,7 @@
 /* Contrast enhancement (handled in fixed report block now) */
 
 /* Button Grids */
-#websites-container, #panel-pics {
+#websites-container {
     display: grid !important;
     grid-template-columns: 1fr 1fr;
     gap: 8px;

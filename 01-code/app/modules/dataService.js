@@ -18,6 +18,7 @@ const CSV_COLUMNS = {
     TYPE: ['agency', 'Type'],
     INFO: ['siteInfo', 'Useful/Important/Other Info'],
     JR_BOOKS: ['jrBooks'],
+    SITE_SPECIFIC: ['siteSpecific', 'Site Specific'],
     SPECIAL_PROGRAMS: ['specialPrograms'],
     WEBSITE: ['officialGovWebsite', 'websiteLinks', 'Website'],
     PICS: ['badgePictures', 'Swag Pics - If available, and may not be current.'],
@@ -29,11 +30,17 @@ const CSV_COLUMNS = {
 };
 
 const SWAG_TYPE_COLUMNS = ['Swag Type', 'Swag', 'Swag Available'];
+const LIVE_SOURCE_CSV_URL = '/api/junior-ranger-catalog';
 const STATIC_FALLBACK_CSV_URL = 'assets/data/jr-fallback.csv';
+const AUTHORITATIVE_DATA_SOURCE = 'junior-ranger-master-spreadsheet';
+const STATIC_FALLBACK_DATA_SOURCE = 'bundled-static-fallback';
+const DATA_REFRESH_INTERVAL_MS = 60 * 1000;
 const DATA_CACHE_KEY = 'juniorRangerCSV';
 const DATA_CACHE_TIME_KEY = 'juniorRangerCSV_time';
+const DATA_CACHE_SOURCE_KEY = 'juniorRangerCSV_source';
 const LEGACY_DATA_CACHE_KEYS = ['barkCSV', 'barkCSV_time'];
-let staticFallbackLoadInFlight = null;
+let liveDataRefreshInFlight = null;
+let dataRefreshTimer = null;
 
 function cleanCSVValue(value) {
     if (value === undefined || value === null) return '';
@@ -79,6 +86,13 @@ function normalizeSwagType(value) {
     return window.BARK.getSwagType(value);
 }
 
+function normalizeSiteSpecificFlag(value) {
+    const normalized = cleanCSVValue(value).toLowerCase();
+    if (['yes', 'y', 'true'].includes(normalized)) return 'Yes';
+    if (['no', 'n', 'false'].includes(normalized)) return 'No';
+    return '';
+}
+
 function isJuniorRangerRow(row) {
     return Boolean(getCSVColumnKey(row, 'siteID') || getCSVColumnKey(row, 'siteName'));
 }
@@ -96,13 +110,33 @@ function buildJuniorRangerInfo(row) {
     return sections.join('\n\n');
 }
 
+function isPickupLocationRowName(name) {
+    const value = cleanCSVValue(name);
+    return value.length > 2 && value.startsWith('(') && value.endsWith(')');
+}
+
+function getPickupLocationLabel(name) {
+    const value = cleanCSVValue(name);
+    if (!isPickupLocationRowName(value)) return value;
+    return value.slice(1, -1).trim();
+}
+
+function getGeneratedPickupLocationLabel(name, parentPoint) {
+    if (!parentPoint || !parentPoint.name) return '';
+    const value = cleanCSVValue(name);
+    const prefix = `${cleanCSVValue(parentPoint.name)} - `;
+    if (!value.startsWith(prefix) || value.length <= prefix.length) return '';
+    return value.slice(prefix.length).trim();
+}
+
 function normalizeCSVRow(rawItem) {
     const row = rawItem && typeof rawItem === 'object' ? rawItem : {};
     const isJuniorRanger = isJuniorRangerRow(row);
     const info = isJuniorRanger ? buildJuniorRangerInfo(row) : getCSVValue(row, CSV_COLUMNS.INFO);
     const explicitSwag = getFirstPresentCSVValue(row, SWAG_TYPE_COLUMNS);
     const specialPrograms = getCSVValue(row, CSV_COLUMNS.SPECIAL_PROGRAMS);
-    const jrSwagType = specialPrograms ? 'Special Programs' : 'Junior Ranger';
+    const siteSpecific = normalizeSiteSpecificFlag(getCSVValue(row, CSV_COLUMNS.SITE_SPECIFIC));
+    const jrSwagType = siteSpecific === 'Yes' ? 'Junior Ranger' : 'Special Programs';
 
     return {
         parkId: getCSVValue(row, CSV_COLUMNS.PARK_ID),
@@ -118,6 +152,7 @@ function normalizeCSVRow(rawItem) {
         lng: getCSVValue(row, CSV_COLUMNS.LNG),
         address: getCSVValue(row, CSV_COLUMNS.ADDRESS),
         historyTimelineInfo: getCSVValue(row, CSV_COLUMNS.HISTORY),
+        siteSpecific,
         specialPrograms,
         jrBooks: getCSVValue(row, CSV_COLUMNS.JR_BOOKS),
         swagType: isJuniorRanger
@@ -140,9 +175,20 @@ function isCanonicalParkId(id) {
     return Boolean(value && value.toLowerCase() !== 'unknown' && !isLegacyParkId(value));
 }
 
-function processParsedResults(results) {
+function stripPickupLocationInfoSections(info) {
+    return String(info || '')
+        .split(/\n{2,}/)
+        .filter(section => {
+            const text = String(section || '').trim();
+            return !/^Special programs:/i.test(text) && !/^Junior Ranger books:/i.test(text);
+        })
+        .join('\n\n');
+}
+
+function processParsedResults(results, options = {}) {
     const newAllPoints = [];
     const seenParkIds = new Set();
+    let currentPickupParent = null;
     let missingParkIdCount = 0;
     let duplicateParkIdCount = 0;
     let missingCoordinateCount = 0;
@@ -152,6 +198,9 @@ function processParsedResults(results) {
         try {
             const item = normalizeCSVRow(rawItem);
             const name = item.name;
+            const generatedPickupLocationLabel = getGeneratedPickupLocationLabel(name, currentPickupParent);
+            const isPickupLocation = isPickupLocationRowName(name) || Boolean(generatedPickupLocationLabel);
+            const pickupLocationLabel = generatedPickupLocationLabel || getPickupLocationLabel(name);
             const state = item.state;
             const cost = item.cost;
             const category = item.category;
@@ -166,6 +215,10 @@ function processParsedResults(results) {
             let lng = item.lng;
             const id = getParkId(item);
 
+            if (!isPickupLocation) {
+                currentPickupParent = null;
+            }
+
             if (!lat || !lng) {
                 missingCoordinateCount++;
                 if (missingCoordinateSamples.length < 5) {
@@ -174,7 +227,8 @@ function processParsedResults(results) {
                 return;
             }
 
-            const swagType = item.swagType;
+            let swagType = item.swagType;
+            let specialPrograms = item.specialPrograms;
             const parkCategory = window.BARK.getParkCategory(category);
 
             if (!id) {
@@ -212,9 +266,40 @@ function processParsedResults(results) {
                 lat,
                 lng,
                 parkCategory,
-                specialPrograms: item.specialPrograms,
-                jrBooks: item.jrBooks
+                siteSpecific: item.siteSpecific,
+                specialPrograms,
+                jrBooks: item.jrBooks,
+                pickupLocations: []
             };
+
+            if (isPickupLocation && currentPickupParent) {
+                swagType = currentPickupParent.swagType;
+                specialPrograms = '';
+                parkData.swagType = swagType;
+                parkData.siteSpecific = currentPickupParent.siteSpecific;
+                parkData.specialPrograms = specialPrograms;
+                parkData.jrBooks = '';
+                parkData.info = stripPickupLocationInfoSections(parkData.info);
+                parkData._isPickupLocation = true;
+                parkData._pickupParentId = currentPickupParent.id;
+                parkData._pickupParentName = currentPickupParent.name;
+                parkData._pickupLocationName = pickupLocationLabel;
+                currentPickupParent.pickupLocations.push({
+                    id,
+                    name,
+                    displayName: pickupLocationLabel,
+                    lat,
+                    lng,
+                    state
+                });
+                currentPickupParent._cachedPickupSearchText = window.BARK.normalizeText(
+                    currentPickupParent.pickupLocations
+                        .map(location => location.displayName)
+                        .join(' ')
+                );
+            } else if (!isPickupLocation) {
+                currentPickupParent = parkData;
+            }
 
             // v25: Pre-Normalized Name
             parkData._cachedNormalizedName = window.BARK.normalizeText(name);
@@ -247,8 +332,15 @@ function processParsedResults(results) {
         throw new Error('ParkRepo is required before dataService can publish park data.');
     }
 
-    const replaceResult = parkRepo.replaceAll(newAllPoints, { debug: window.BARK.debugDataRefresh === true });
+    const replaceResult = parkRepo.replaceAll(newAllPoints, {
+        debug: window.BARK.debugDataRefresh === true,
+        source: options.source || AUTHORITATIVE_DATA_SOURCE
+    });
     if (!replaceResult.accepted) return false;
+
+    if (typeof window.BARK.populateProgramFilterOptions === 'function') {
+        window.BARK.populateProgramFilterOptions(newAllPoints);
+    }
 
     // Hydrate canonical counts for gamification
     if (window.gamificationEngine && newAllPoints.length > 0) {
@@ -269,6 +361,7 @@ function commitCSVCache(csvString, options = {}) {
     if (!options.cacheTime) return;
     localStorage.setItem(DATA_CACHE_KEY, csvString);
     localStorage.setItem(DATA_CACHE_TIME_KEY, String(options.cacheTime));
+    localStorage.setItem(DATA_CACHE_SOURCE_KEY, options.source || AUTHORITATIVE_DATA_SOURCE);
 }
 
 function hasAcceptedParkData() {
@@ -299,7 +392,7 @@ function parseCSVString(csvString, options = {}) {
             if (results.errors && results.errors.length) {
                 console.warn('[dataService] CSV parse completed with recoverable row issues:', results.errors);
             }
-            const accepted = processParsedResults(results);
+            const accepted = processParsedResults(results, options);
             if (accepted) {
                 commitCSVCache(csvString, options);
                 if (typeof options.onAccepted === 'function') options.onAccepted();
@@ -317,6 +410,7 @@ function parseCSVString(csvString, options = {}) {
         },
         error: function (err) {
             console.error('Error parsing CSV data:', err);
+            if (typeof options.onRejected === 'function') options.onRejected(err);
             isRendering = false;
         }
     });
@@ -324,41 +418,105 @@ function parseCSVString(csvString, options = {}) {
 
 window.BARK.parseCSVString = parseCSVString;
 
-function loadStaticFallbackData(reason = 'unknown') {
-    if (hasAcceptedParkData()) return Promise.resolve(false);
-    if (staticFallbackLoadInFlight) return staticFallbackLoadInFlight;
+function parseCSVStringAsPromise(csvString, options = {}) {
+    return new Promise(resolve => {
+        parseCSVString(csvString, {
+            ...options,
+            onAccepted: () => {
+                if (typeof options.onAccepted === 'function') options.onAccepted();
+                resolve(true);
+            },
+            onRejected: () => {
+                if (typeof options.onRejected === 'function') options.onRejected();
+                resolve(false);
+            }
+        });
+    });
+}
 
-    staticFallbackLoadInFlight = fetch(STATIC_FALLBACK_CSV_URL, { cache: 'no-cache' })
+function buildLiveSourceUrl(options = {}) {
+    if (options.cacheBypass !== true) return LIVE_SOURCE_CSV_URL;
+    const separator = LIVE_SOURCE_CSV_URL.includes('?') ? '&' : '?';
+    return `${LIVE_SOURCE_CSV_URL}${separator}cache_bypass=${Date.now()}`;
+}
+
+function startDataRefreshTimer() {
+    if (dataRefreshTimer || window.location.protocol === 'file:') return;
+    dataRefreshTimer = setInterval(() => {
+        if (document.hidden || !navigator.onLine) return;
+        loadLiveSourceData('scheduled sheet refresh', { cacheBypass: true, requestCache: 'no-store' });
+    }, DATA_REFRESH_INTERVAL_MS);
+}
+
+function loadLiveSourceData(reason = 'live sheet source', options = {}) {
+    if (window.location.protocol === 'file:' || !navigator.onLine) return Promise.resolve(false);
+    if (liveDataRefreshInFlight) return liveDataRefreshInFlight;
+
+    liveDataRefreshInFlight = fetch(buildLiveSourceUrl(options), { cache: options.requestCache || 'default' })
+        .then(res => {
+            if (!res.ok) throw new Error(`Live source response was not ok: ${res.status}`);
+            return res.text();
+        })
+        .then(csvString => {
+            if (!csvString || csvString.trim().length < 10) throw new Error('Live source returned an empty catalog.');
+
+            const liveHash = quickHash(csvString);
+            if (hasAcceptedParkData() && liveHash === lastDataHash) return false;
+
+            return parseCSVStringAsPromise(csvString, {
+                cacheTime: Date.now(),
+                source: AUTHORITATIVE_DATA_SOURCE,
+                onAccepted: () => {
+                    lastDataHash = liveHash;
+                    rememberDataHash(liveHash, Date.now());
+                    if (window.BARK.debugDataRefresh === true) {
+                        console.info(`[dataService] Loaded live Junior Ranger sheet data (${reason}).`);
+                    }
+                }
+            }).then(accepted => {
+                if (!accepted) throw new Error('Live source data was rejected by the park repository.');
+                return true;
+            });
+        })
+        .catch(error => {
+            console.warn('[dataService] Live Junior Ranger sheet data unavailable; keeping current data.', error);
+            return false;
+        })
+        .finally(() => {
+            liveDataRefreshInFlight = null;
+        });
+
+    return liveDataRefreshInFlight;
+}
+
+window.BARK.loadLiveSourceData = loadLiveSourceData;
+window.BARK.startDataRefreshTimer = startDataRefreshTimer;
+
+function loadStaticFallbackData(reason = 'startup fallback') {
+    if (window.location.protocol === 'file:') return Promise.resolve(false);
+    if (hasAcceptedParkData()) return Promise.resolve(false);
+
+    return fetch(STATIC_FALLBACK_CSV_URL, { cache: 'force-cache' })
         .then(res => {
             if (!res.ok) throw new Error(`Static fallback response was not ok: ${res.status}`);
             return res.text();
         })
         .then(csvString => {
-            if (!csvString || csvString.trim().length < 10 || hasAcceptedParkData()) return false;
-
-            const fallbackHash = quickHash(csvString);
-            rememberDataHash(fallbackHash, 1);
-            parseCSVString(csvString, {
-                cacheTime: Date.now(),
+            if (!csvString || csvString.trim().length < 10) throw new Error('Static fallback returned an empty catalog.');
+            return parseCSVStringAsPromise(csvString, {
+                source: STATIC_FALLBACK_DATA_SOURCE,
                 skipIfDataLoaded: true,
                 onAccepted: () => {
-                    if (lastDataHash === null) lastDataHash = fallbackHash;
                     if (window.BARK.debugDataRefresh === true) {
-                        console.info(`[dataService] Loaded hosted static fallback data (${reason}).`);
+                        console.info(`[dataService] Loaded bundled Junior Ranger fallback data (${reason}).`);
                     }
                 }
             });
-            return true;
         })
         .catch(error => {
-            console.warn('[dataService] Hosted static fallback data unavailable:', error);
+            console.warn('[dataService] Bundled Junior Ranger fallback data unavailable; waiting for live source.', error);
             return false;
-        })
-        .finally(() => {
-            staticFallbackLoadInFlight = null;
         });
-
-    return staticFallbackLoadInFlight;
 }
 
 window.BARK.loadStaticFallbackData = loadStaticFallbackData;
@@ -427,16 +585,29 @@ function clearMarkerLayersSafely() {
 function loadCachedData() {
     const cachedCsv = localStorage.getItem(DATA_CACHE_KEY);
     const cachedTime = localStorage.getItem(DATA_CACHE_TIME_KEY);
+    const cachedSource = localStorage.getItem(DATA_CACHE_SOURCE_KEY);
 
     if (!cachedCsv) return false;
+    if (cachedSource !== AUTHORITATIVE_DATA_SOURCE) {
+        localStorage.removeItem(DATA_CACHE_KEY);
+        localStorage.removeItem(DATA_CACHE_TIME_KEY);
+        localStorage.removeItem(DATA_CACHE_SOURCE_KEY);
+        return false;
+    }
     lastDataHash = quickHash(cachedCsv);
     rememberDataHash(lastDataHash, cachedTime ? parseInt(cachedTime, 10) : Date.now());
-    parseCSVString(cachedCsv);
+    parseCSVString(cachedCsv, { source: AUTHORITATIVE_DATA_SOURCE });
     return true;
 }
 
 function loadData() {
     LEGACY_DATA_CACHE_KEYS.forEach(key => localStorage.removeItem(key));
+    if (localStorage.getItem(DATA_CACHE_SOURCE_KEY) !== AUTHORITATIVE_DATA_SOURCE) {
+        localStorage.removeItem(DATA_CACHE_KEY);
+        localStorage.removeItem(DATA_CACHE_TIME_KEY);
+        localStorage.removeItem(DATA_CACHE_SOURCE_KEY);
+    }
+    startDataRefreshTimer();
 
     if (!navigator.onLine) {
         const loadedCachedData = loadCachedData();
@@ -453,9 +624,18 @@ function loadData() {
         return;
     }
 
-    loadStaticFallbackData('hosted static catalog')
-        .then(loadedStaticData => {
-            if (!loadedStaticData && !hasAcceptedParkData()) loadCachedData();
+    const loadedCachedData = loadCachedData();
+    const fallbackDataPromise = loadedCachedData
+        ? Promise.resolve(true)
+        : loadStaticFallbackData('initial startup');
+
+    loadLiveSourceData('initial sheet load')
+        .then(loadedLiveData => {
+            if (loadedLiveData || hasAcceptedParkData()) return true;
+            return fallbackDataPromise;
+        })
+        .then(loadedAuthoritativeData => {
+            if (!loadedAuthoritativeData && !hasAcceptedParkData()) loadCachedData();
         });
 }
 

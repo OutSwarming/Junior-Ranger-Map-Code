@@ -147,9 +147,15 @@ function getFreeVisitLimitBlock(visitedEntries) {
 }
 
 function createVisitRecord(parkData, verified) {
+    const visitId = parkData._isPickupLocation && parkData._pickupParentId
+        ? parkData._pickupParentId
+        : parkData.id;
+    const visitName = parkData._isPickupLocation && parkData._pickupParentName
+        ? parkData._pickupParentName
+        : parkData.name;
     return {
-        id: parkData.id,
-        name: parkData.name,
+        id: visitId,
+        name: visitName,
         lat: parkData.lat,
         lng: parkData.lng,
         verified,

@@ -46,5 +46,40 @@ test('map marker config gives active pins a yellow SVG outline', () => {
     const decoded = decodeURIComponent(MapMarkerConfig.getPinIconUrl(style, { isActive: true }));
 
     assert.match(decoded, /stroke="#FBBF24"/);
-    assert.equal(MapMarkerConfig.getIconSignature({ agency: 'NPS', parkCategory: 'National' }, false, true), 'nps|open|active');
+    assert.equal(MapMarkerConfig.getIconSignature({ agency: 'NPS', parkCategory: 'National' }, false, true), 'nps|open|active|main');
+});
+
+test('map marker config gives pickup pins a distinct amber outline without changing master pins', () => {
+    const MapMarkerConfig = loadMapMarkerConfig();
+    const style = MapMarkerConfig.getPinStyle({
+        agency: 'NPS',
+        parkCategory: 'National'
+    });
+    const pickupPark = { agency: 'NPS', parkCategory: 'National', _isPickupLocation: true };
+    const decodedPickup = decodeURIComponent(MapMarkerConfig.getPinIconUrl(style, { isPickupLocation: true }));
+    const decodedActivePickup = decodeURIComponent(MapMarkerConfig.getPinIconUrl(style, {
+        isPickupLocation: true,
+        isActive: true
+    }));
+
+    assert.match(decodedPickup, /stroke="#D97706"/);
+    assert.doesNotMatch(decodedPickup, /stroke="#FBBF24"/);
+    assert.match(decodedActivePickup, /stroke="#FBBF24"/);
+    assert.equal(MapMarkerConfig.getIconSignature(pickupPark, false, false), 'nps|open|idle|pickup');
+    assert.equal(MapMarkerConfig.getIconSignature({ agency: 'NPS', parkCategory: 'National' }, false, false), 'nps|open|idle|main');
+});
+
+test('map marker config gives visited pins a green starred center', () => {
+    const MapMarkerConfig = loadMapMarkerConfig();
+    const style = MapMarkerConfig.getPinStyle({
+        agency: 'NPS',
+        parkCategory: 'National'
+    }, true);
+    const decoded = decodeURIComponent(MapMarkerConfig.getPinIconUrl(style, { isVisited: true }));
+
+    assert.match(decoded, /stroke="#22C55E"/);
+    assert.match(decoded, /r="6\.4"/);
+    assert.match(decoded, /fill="#22C55E"/);
+    assert.match(decoded, /M16 11\.1l1\.5 3\.1/);
+    assert.equal(MapMarkerConfig.getIconSignature({ agency: 'NPS', parkCategory: 'National' }, true, false), 'nps|visited|idle|main');
 });
