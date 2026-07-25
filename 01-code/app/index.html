@@ -18,7 +18,7 @@
     <!-- QRCode JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <link rel="stylesheet" href="styles.css?v=68">
-    <link rel="stylesheet" href="styles/mapStyles.css?v=9">
+    <link rel="stylesheet" href="styles/mapStyles.css?v=10">
     <link rel="stylesheet" href="styles/trophyCase.css?v=4">
 
     <!-- PWA Manifest & App Icons -->
@@ -116,46 +116,24 @@
                 </button>
             </div>
 
-            <div class="premium-filters-section premium-locked" id="premium-filters-wrap">
+            <div class="premium-filters-section" id="map-tools-wrap">
                 <div class="filter-divider"></div>
 
                 <div class="premium-label">
-                    <span>Premium Map Tools</span>
-                    <span id="premium-lock-icon">🔒</span>
+                    <span>Map Background</span>
                 </div>
-
-                <div class="premium-trail-controls">
-                    <button class="filter-btn premium-trail-btn" data-filter="VirtualTrail" id="toggle-virtual-trail"
-                        disabled aria-disabled="true">
-                        <span class="dot green" style="background: linear-gradient(90deg, #22c55e, #fee2e2);"></span>
-                        Active Trail
-                    </button>
-                    <button class="filter-btn premium-trail-btn" data-filter="CompletedTrails"
-                        id="toggle-completed-trails" disabled aria-disabled="true">
-                        <span class="dot green"
-                            style="background: #22c55e; box-shadow: 0 0 8px rgba(34,197,94,0.6);"></span>
-                        Conquered Trails
-                    </button>
-                </div>
-
-                <button type="button" id="premium-upgrade-btn" class="premium-upgrade-btn">
-                    Upgrade to Premium
-                </button>
 
                 <div class="premium-controls">
-                    <select id="visited-filter" class="premium-select" disabled>
-                        <option value="all">Show All Places</option>
-                        <option value="visited">Only Visited Places</option>
-                        <option value="unvisited">Only Unvisited Places</option>
-                        <option value="route">Only Trip Route Pins</option>
-                    </select>
-
-                    <select id="map-style-select" class="premium-select" disabled>
+                    <select id="map-style-select" class="premium-select">
                         <option value="default">Default (OpenStreetMap)</option>
                         <option value="terrain">Terrain (TopoMap)</option>
                         <option value="satellite">Satellite (Esri)</option>
                         <option value="streets">Roads & Highways (Esri)</option>
                     </select>
+                </div>
+
+                <div class="filter-coming-soon-note">
+                    🔜 <strong>Coming soon —</strong> make a free account to track the places you've visited.
                 </div>
             </div>
         </div>
@@ -1381,7 +1359,7 @@
     <script src="services/firebaseService.js?v=11" defer></script>
     <script src="renderers/routeRenderer.js?v=5" defer></script>
     <script src="services/checkinService.js?v=5" defer></script>
-    <script src="services/authPremiumUi.js?v=3" defer></script>
+    <script src="services/authPremiumUi.js?v=4" defer></script>
     <script src="services/premiumService.js?v=2" defer></script>
     <script src="services/authAccountUi.js?v=14" defer></script>
     <script src="modules/paywallController.js?v=9" defer></script>

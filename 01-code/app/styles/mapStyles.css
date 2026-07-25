@@ -258,6 +258,21 @@ body.low-graphics .enamel-pin-wrapper:hover {
     /* Hide the lock when logged in */
 }
 
+.filter-coming-soon-note {
+    font-size: 12px;
+    line-height: 1.45;
+    color: #64748b;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 8px;
+    padding: 8px 10px;
+}
+
+.filter-coming-soon-note strong {
+    color: #475569;
+    font-weight: 800;
+}
+
 /* --- MOBILE RESPONSIVENESS FOR PREMIUM FILTERS --- */
 @media (max-width: 600px) {
     .premium-controls {
